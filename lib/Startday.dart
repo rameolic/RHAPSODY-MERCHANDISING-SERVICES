@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'Constants.dart';
+import 'package:merchandising/Journeyplan.dart';
 import 'home.dart';
 class StartDay extends StatelessWidget {
   @override
@@ -68,13 +69,16 @@ class StartDay extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              height: 30,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                color: orange,borderRadius: BorderRadius.circular(5),
+                            GestureDetector(
+                              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));},
+                              child: Container(
+                                height: 30,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  color: orange,borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
                               ),
-                              child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
                             ),
                             GestureDetector(
                               onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));},

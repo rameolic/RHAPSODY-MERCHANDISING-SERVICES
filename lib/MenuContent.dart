@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'Constants.dart';
+import 'package:merchandising/Journeyplan.dart';
 
 final menuitemscolor = Colors.black54;
 
@@ -85,7 +86,7 @@ class Menu extends StatelessWidget {
             title: 'Journey Plan',
             icon: CupertinoIcons.map_fill,
           ),
-          onTap: () {},
+          onTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));},
         ),
         ListTile(
           title: MenuElements(
