@@ -5,7 +5,7 @@ import 'package:merchandising/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:merchandising/Startday.dart';
+import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/Startday.dart';
 import 'package:merchandising/Constants.dart';
 
 

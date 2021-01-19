@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'Constants.dart';
+import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/MenuContent.dart';
-
+import 'outletdetailes.dart';
 class JourneyPlan extends StatefulWidget {
   @override
   _JourneyPlanState createState() => _JourneyPlanState();
@@ -96,22 +96,19 @@ class _JourneyPlanState extends State<JourneyPlan> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Container(
-                          child: TabBar(
-                            labelColor: Colors.white,
-                            unselectedLabelColor: Colors.black,
-                            indicatorColor: orange,
-                            tabs: [
-                              Tab(text: 'PLANNED'),
-                              Tab(text: 'VISITED'),
-                              Tab(text: 'SKIPPED'),
-                            ],
-                          ),
+                        TabBar(
+                          labelColor: Colors.white,
+                          unselectedLabelColor: Colors.black,
+                          indicatorColor: orange,
+                          tabs: [
+                            Tab(text: 'PLANNED'),
+                            Tab(text: 'VISITED'),
+                            Tab(text: 'SKIPPED'),
+                          ],
                         ),
                         Container(
                           height: 500,
                           child: TabBarView(
-                              physics: ScrollPhysics(),
                               children: <Widget>[
                             Column(
                               children: [
@@ -166,29 +163,35 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                 Column(
                                   children: [
                                     JurnyplanContent(
-                                      MarketName: " [5478] Sheba Super Market",
+                                      MarketName: "[5478] Sheba Super Market",
                                       address: "9-5/65,Nad Al Sheba,Dubai",
-                                      Number: "+91 8974581263",
+                                      Number: "+918974581263",
                                       Distance: "1.1kms",
+                                      onpress: (){
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                      },
                                     ),
                                     JurnyplanContent(
                                       MarketName: "[7085]Fair Mart Super Market",
-                                      address: " 5-2/47,Al Tayar Building ,Dubai",
-                                      Number: "+91 9885100237",
+                                      address: "5-2/47,Al Tayar Building ,Dubai",
+                                      Number: "+919885100237",
                                       Distance: "2.1kms",
+                                      onpress: (){},
                                     ),
                                     JurnyplanContent(
                                       MarketName: "[1045] Al Quoz Market",
-                                      address: "  8-14/207,Al Meydan Road,Dubai",
-                                      Number: "+91 88561149100",
+                                      address: "8-14/207,Al Meydan Road,Dubai",
+                                      Number: "+9188561149100",
                                       Distance: "3.8Kms",
+                                      onpress: (){},
                                     ),
                                     JurnyplanContent(
                                       MarketName: "[8045] Umm Al Sheif Market",
                                       address:
-                                          "  10-7/207, Al Meydan Street,Dubai",
+                                          "10-7/207, Al Meydan Street,Dubai",
                                       Number: "+91 9775411055",
                                       Distance: "4.5kms",
+                                      onpress: (){},
                                     ),
                                   ],
                                 ),
@@ -259,54 +262,58 @@ class JourneyPlanHeader extends StatelessWidget {
 }
 
 class JurnyplanContent extends StatelessWidget {
-  JurnyplanContent({this.MarketName, this.address, this.Number, this.Distance});
+  JurnyplanContent({this.MarketName, this.address, this.Number, this.Distance,@required this.onpress});
   final MarketName;
   final address;
   final Number;
   final Distance;
+  final onpress;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-      padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      height: 100,
-      width: 382,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            MarketName,
-            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
-          ),
-          Text(address,
-              style: TextStyle(
-                fontSize: 15.0,
-              )),
-          Spacer(),
-          Table(
-            children: [
-              TableRow(children: [
-                Text('Contact Number',
-                    style: TextStyle(
-                      fontSize: 13.0,
-                    )),
-                Text(":"),
-                Text(Number, style: TextStyle(color: orange)),
-              ]),
-              TableRow(children: [
-                Text('Distance',
-                    style: TextStyle(
-                      fontSize: 13.0,
-                    )),
-                Text(":"),
-                Text(Distance, style: TextStyle(color: orange)),
-              ]),
-            ],
-          ),
-        ],
+    return GestureDetector(
+      onTap: onpress,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        height: 100,
+        width: 382,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              MarketName,
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+            ),
+            Text(address,
+                style: TextStyle(
+                  fontSize: 15.0,
+                )),
+            Spacer(),
+            Table(
+              children: [
+                TableRow(children: [
+                  Text('Contact Number',
+                      style: TextStyle(
+                        fontSize: 13.0,
+                      )),
+                  Text(":"),
+                  Text(Number, style: TextStyle(color: orange)),
+                ]),
+                TableRow(children: [
+                  Text('Distance',
+                      style: TextStyle(
+                        fontSize: 13.0,
+                      )),
+                  Text(":"),
+                  Text(Distance, style: TextStyle(color: orange)),
+                ]),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

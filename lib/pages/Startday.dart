@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'Constants.dart';
-import 'package:merchandising/Journeyplan.dart';
+import '../Constants.dart';
+import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/Journeyplan.dart';
 import 'home.dart';
 class StartDay extends StatelessWidget {
   @override
@@ -18,7 +18,6 @@ class StartDay extends StatelessWidget {
               content: Builder(
                 builder: (context) {
                   // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                  var height = MediaQuery.of(context).size.height;
                   return Container(
                     height: 220,
                     child: Column(

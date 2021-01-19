@@ -6,7 +6,7 @@ final containerscolor = Color(0xffFAECE3);
 final transparentwhite = Colors.white.withOpacity(0.18);
 const grey = Color(0xFFB4B5B9);
 const orange = Color(0xFFF58426);
-
+const pink = Color(0xffFEE8DA);
 class BackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
