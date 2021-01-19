@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/MenuContent.dart';
+import 'MenuContent.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 class OutLet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,14 +22,16 @@ class OutLet extends StatelessWidget {
         children: [
           BackGround(),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 10,),
-             OutLetContainer(),
-              SizedBox(height: 10,),
               OutLetContainer(),
+              SizedBox(height: 10,),
+              OutLetContainer(
 
+              ),
             ],
-          )
+          ),
         ],
       ),
 
@@ -36,19 +39,28 @@ class OutLet extends StatelessWidget {
   }
 }
 class OutLetContainer extends StatelessWidget {
-
+  OutLetContainer({this.child});
+  final child;
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        height: 280,
+        width: MediaQuery.of(context).size.width/1.05,
         decoration: BoxDecoration(
           color: pink,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: SizedBox(height: 280,width: MediaQuery.of(context).size.width/1.05,
+        child: child,
         ),
-      ),
     );
   }
 }
 
+class Task{
+  String task;
+  String taskValue;
+  Color colour;
+
+  Task(this.colour,this.task,this.taskValue);
+}
