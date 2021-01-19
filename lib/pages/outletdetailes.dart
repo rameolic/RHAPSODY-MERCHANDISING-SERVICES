@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:merchandising/MenuContent.dart';
+import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/MenuContent.dart';
 class OutLet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

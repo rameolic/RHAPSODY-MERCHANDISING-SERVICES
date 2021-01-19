@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../Constants.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/Journeyplan.dart';
+import 'Journeyplan.dart';
 import 'home.dart';
 class StartDay extends StatelessWidget {
   @override
