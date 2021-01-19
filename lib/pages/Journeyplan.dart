@@ -168,7 +168,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                       Number: "+918974581263",
                                       Distance: "1.1kms",
                                       onpress: (){
-                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
                                       },
                                     ),
                                     JurnyplanContent(

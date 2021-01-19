@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:merchandising/Constants.dart';
 
 import 'pages/login_page.dart';
 
@@ -20,13 +21,13 @@ class MyApp extends StatelessWidget {
           elevation: 0,
           foregroundColor: Colors.white,
         ),
-        accentColor: Colors.redAccent,
+        accentColor: orange,
         textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 22.0, color: Colors.redAccent),
+          headline1: TextStyle(fontSize: 22.0, color: orange),
           headline2: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.w700,
-            color: Colors.redAccent,
+            color: orange,
           ),
           bodyText1: TextStyle(
             fontSize: 14.0,

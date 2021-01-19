@@ -12,7 +12,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isHidden = true;
   bool rememberMe = false;
 
@@ -23,14 +22,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _onRememberMeChanged(bool newValue) => setState(() {
-    rememberMe = newValue;
+        rememberMe = newValue;
 
-    if (rememberMe) {
-      // TODO: Here goes your functionality that remembers the user.
-    } else {
-      // TODO: Forget the user
-    }
-  });
+        if (rememberMe) {
+          // TODO: Here goes your functionality that remembers the user.
+        } else {
+          // TODO: Forget the user
+        }
+      });
 
   bool hidePassword = true;
   bool isApiCallProcess = false;
@@ -67,12 +66,13 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       Container(
                         width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                        margin: EdgeInsets.symmetric(vertical: 85, horizontal: 20),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                        margin:
+                            EdgeInsets.symmetric(vertical: 85, horizontal: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: transparentwhite,
-
                         ),
                         child: Form(
                           key: globalFormKey,
@@ -92,19 +92,21 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   Text(
                                     'Sign In',
-                                    style: TextStyle(fontSize: 20, color: Colors.white),
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
                                   ),
                                 ],
                               ),
                               SizedBox(height: 20),
                               Container(
                                 color: Colors.white,
-                                width: MediaQuery.of(context).size.width/1.5,
+                                width: MediaQuery.of(context).size.width / 1.5,
                                 child: Theme(
                                   data: ThemeData(primaryColor: orange),
                                   child: TextFormField(
                                     keyboardType: TextInputType.emailAddress,
-                                    onSaved: (input) => loginRequestModel.email = input,
+                                    onSaved: (input) =>
+                                        loginRequestModel.email = input,
                                     validator: (input) => !input.contains('@')
                                         ? "Email Id should be valid"
                                         : null,
@@ -125,14 +127,14 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(height: 20),
                               Container(
-                                width: MediaQuery.of(context).size.width/1.5,
+                                width: MediaQuery.of(context).size.width / 1.5,
                                 color: Colors.white,
                                 child: Theme(
                                   data: ThemeData(primaryColor: orange),
                                   child: TextFormField(
                                     keyboardType: TextInputType.text,
                                     onSaved: (input) =>
-                                    loginRequestModel.password = input,
+                                        loginRequestModel.password = input,
                                     validator: (input) => input.length < 6
                                         ? "Password should be more than 6 characters"
                                         : null,
@@ -175,29 +177,38 @@ class _LoginPageState extends State<LoginPage> {
                                     });
 
                                     APIService apiService = new APIService();
-                                    apiService.login(loginRequestModel).then((value) {
+                                    apiService
+                                        .login(loginRequestModel)
+                                        .then((value) {
                                       if (value != null) {
                                         setState(() {
                                           isApiCallProcess = false;
                                         });
 
                                         if (value.token.isNotEmpty) {
-                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-                                        }
-                                        else {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          HomePage()));
+                                        } else {
                                           final snackBar = SnackBar(
-                                              content: Text("Username/password was wrong"));
+                                            elevation: 20.00,
+                                              duration: Duration(seconds: 1),
+                                              content: Text(
+                                                  "Username/password was wrong",));
                                           scaffoldKey.currentState
                                               .showSnackBar(snackBar);
                                         }
                                       }
                                     });
                                   }
-
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(15.0),
-                                  width: MediaQuery.of(context).size.width/1.5,
+                                  width:
+                                      MediaQuery.of(context).size.width / 1.5,
                                   color: orange,
                                   child: Center(
                                     child: Text(
@@ -212,33 +223,41 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(height: 15),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width/1.5,
+                                width: MediaQuery.of(context).size.width / 1.5,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
                                       height: 10.0,
                                       width: 10.0,
                                       child: Theme(
-                                        data: ThemeData(unselectedWidgetColor: Colors.white),
-                                        child:Transform.scale(
+                                        data: ThemeData(
+                                            unselectedWidgetColor:
+                                                Colors.white),
+                                        child: Transform.scale(
                                           scale: 0.7,
                                           child: Checkbox(
                                             value: rememberMe,
                                             onChanged: _onRememberMeChanged,
                                             activeColor: orange,
-                                          ),),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     Spacer(),
                                     Text(
                                       'Remember me',
-                                      style: TextStyle(color: Colors.white,fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
                                     ),
-                                    Spacer(flex: 7,),
+                                    Spacer(
+                                      flex: 7,
+                                    ),
                                     Text(
                                       'Forgot Password?',
-                                      style: TextStyle(color: Colors.white,fontSize: 12),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
                                     ),
                                   ],
                                 ),

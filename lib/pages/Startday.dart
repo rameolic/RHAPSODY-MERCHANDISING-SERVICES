@@ -69,7 +69,7 @@ class StartDay extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));},
+                              onTap: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));},
                               child: Container(
                                 height: 30,
                                 width: 70,
@@ -80,7 +80,7 @@ class StartDay extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));},
+                              onTap: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));},
                               child: Container(
                                 height: 30,
                                 width: 70,
