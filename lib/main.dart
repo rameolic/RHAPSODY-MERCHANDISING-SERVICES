@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
-
 import 'pages/login_page.dart';
 
 void main() {

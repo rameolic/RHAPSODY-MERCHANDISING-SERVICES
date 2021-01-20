@@ -15,12 +15,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _isHidden = true;
   bool rememberMe = false;
 
-  void _toggleVisibility() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
-
   void _onRememberMeChanged(bool newValue) => setState(() {
         rememberMe = newValue;
 
@@ -286,3 +280,4 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 }
+

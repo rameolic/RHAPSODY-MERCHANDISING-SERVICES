@@ -48,9 +48,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
                     child: JourneyPlanHeader(
                       icon: Icons.calendar_today,
                       chartext: "Today's\nJourney Plan",
-                      TextColor:
+                      textcolor:
                           pressTODAY == true ? Colors.white : Colors.black,
-                      Containercolor:
+                      containercolor:
                           pressTODAY == true ? orange : Colors.white,
                     ),
                   ),
@@ -65,9 +65,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
                     child: JourneyPlanHeader(
                       icon: Icons.calendar_today_outlined,
                       chartext: " This Week's\nJounery Plan",
-                      TextColor:
+                      textcolor:
                           pressWeek == true ? Colors.white : Colors.black,
-                      Containercolor: pressWeek == true ? orange : Colors.white,
+                      containercolor: pressWeek == true ? orange : Colors.white,
                     ),
                   ),
                   GestureDetector(
@@ -81,9 +81,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
                     child: JourneyPlanHeader(
                       icon: Icons.group,
                       chartext: "My\nCustomers",
-                      TextColor:
+                      textcolor:
                           pressCustomers == true ? Colors.white : Colors.black,
-                      Containercolor:
+                      containercolor:
                           pressCustomers == true ? orange : Colors.white,
                     ),
                   ),
@@ -163,34 +163,34 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                 Column(
                                   children: [
                                     JurnyplanContent(
-                                      MarketName: "[5478] Sheba Super Market",
+                                      marketname: "[5478] Sheba Super Market",
                                       address: "9-5/65,Nad Al Sheba,Dubai",
-                                      Number: "+918974581263",
-                                      Distance: "1.1kms",
+                                      number: "+918974581263",
+                                      distance: "1.1kms",
                                       onpress: (){
                                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
                                       },
                                     ),
                                     JurnyplanContent(
-                                      MarketName: "[7085]Fair Mart Super Market",
+                                      marketname: "[7085]Fair Mart Super Market",
                                       address: "5-2/47,Al Tayar Building ,Dubai",
-                                      Number: "+919885100237",
-                                      Distance: "2.1kms",
+                                      number: "+919885100237",
+                                      distance: "2.1kms",
                                       onpress: (){},
                                     ),
                                     JurnyplanContent(
-                                      MarketName: "[1045] Al Quoz Market",
+                                      marketname: "[1045] Al Quoz Market",
                                       address: "8-14/207,Al Meydan Road,Dubai",
-                                      Number: "+9188561149100",
-                                      Distance: "3.8Kms",
+                                      number: "+9188561149100",
+                                      distance: "3.8Kms",
                                       onpress: (){},
                                     ),
                                     JurnyplanContent(
-                                      MarketName: "[8045] Umm Al Sheif Market",
+                                      marketname: "[8045] Umm Al Sheif Market",
                                       address:
                                           "10-7/207, Al Meydan Street,Dubai",
-                                      Number: "+91 9775411055",
-                                      Distance: "4.5kms",
+                                      number: "+91 9775411055",
+                                      distance: "4.5kms",
                                       onpress: (){},
                                     ),
                                   ],
@@ -226,11 +226,11 @@ class _JourneyPlanState extends State<JourneyPlan> {
 
 class JourneyPlanHeader extends StatelessWidget {
   JourneyPlanHeader(
-      {this.chartext, this.icon, this.TextColor, this.Containercolor});
+      {this.chartext, this.icon, this.textcolor, this.containercolor});
   final chartext;
   final icon;
-  final TextColor;
-  final Containercolor;
+  final textcolor;
+  final containercolor;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -239,11 +239,11 @@ class JourneyPlanHeader extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          color: Containercolor),
+          color: containercolor),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(icon, color: TextColor),
+          Icon(icon, color: textcolor),
           SizedBox(
             width: 2,
           ),
@@ -251,7 +251,7 @@ class JourneyPlanHeader extends StatelessWidget {
             chartext,
             style: TextStyle(
               fontSize: 12,
-              color: TextColor,
+              color: textcolor,
             ),
             textAlign: TextAlign.center,
           ),
@@ -262,11 +262,11 @@ class JourneyPlanHeader extends StatelessWidget {
 }
 
 class JurnyplanContent extends StatelessWidget {
-  JurnyplanContent({this.MarketName, this.address, this.Number, this.Distance,@required this.onpress});
-  final MarketName;
+  JurnyplanContent({this.marketname, this.address, this.number, this.distance,@required this.onpress});
+  final marketname;
   final address;
-  final Number;
-  final Distance;
+  final number;
+  final distance;
   final onpress;
   @override
   Widget build(BuildContext context) {
@@ -284,7 +284,7 @@ class JurnyplanContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              MarketName,
+              marketname,
               style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
             Text(address,
@@ -300,7 +300,7 @@ class JurnyplanContent extends StatelessWidget {
                         fontSize: 13.0,
                       )),
                   Text(":"),
-                  Text(Number, style: TextStyle(color: orange)),
+                  Text(number, style: TextStyle(color: orange)),
                 ]),
                 TableRow(children: [
                   Text('Distance',
@@ -308,7 +308,7 @@ class JurnyplanContent extends StatelessWidget {
                         fontSize: 13.0,
                       )),
                   Text(":"),
-                  Text(Distance, style: TextStyle(color: orange)),
+                  Text(distance, style: TextStyle(color: orange)),
                 ]),
               ],
             ),
