@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 
 class BarChatData extends StatelessWidget {
+  final barcolor = Colors.white.withOpacity(1);
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,49 +18,64 @@ class BarChatData extends StatelessWidget {
           height: 230,
           child: SurveyChart(data: [
             ChartData(
-              month: "  JUL  ",
-              visits: 1,
-              barColor: charts.ColorUtil.fromDartColor(orange ),
+              month: "JAN",
+              visits: 8,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " AUG  ",
-              visits: 1,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              month: "FEB",
+              visits: 6,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " SEP  ",
-              visits: 1,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              month: "MAR",
+              visits: 12,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " OCT  ",
-              visits: 2,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              month: "APR",
+              visits: 7,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " NOV  ",
-              visits: 4,
-              barColor: charts.ColorUtil.fromDartColor(orange),
-            ),
-            ChartData(
-              month: " DEC  ",
+              month: "MAY",
               visits: 3,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " JAN  ",
+              month: "MAR",
               visits: 2,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
-              month: " FEB  ",
-              visits: 2,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              month: "JUN",
+              visits: 7,
+              barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
-              month: " MAR  ",
-              visits: 2,
-              barColor: charts.ColorUtil.fromDartColor(orange),
+              month: "AUG",
+              visits: 11,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
+            ),
+            ChartData(
+              month: "SEP",
+              visits: 9,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
+            ),
+            ChartData(
+              month: "OCT",
+              visits: 12,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
+            ),
+            ChartData(
+              month: "NOV",
+              visits: 5,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
+            ),
+            ChartData(
+              month: "DEC",
+              visits: 7,
+              barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
 
           ],),
@@ -99,7 +115,17 @@ class SurveyChart extends StatelessWidget {
     return Card(
       color: pink,
       child: Expanded(
-        child: charts.BarChart(series, animate: true),
+        child: ShaderMask(
+          child: charts.BarChart(series, animate: true),
+          shaderCallback: (Rect bounds){
+            return LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFFF58426),Color(0xFFB4B5B9)]).createShader(bounds);
+          },
+        )
+
+
       ),
     );
   }

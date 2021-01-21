@@ -2,12 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'pages/login_page.dart';
+import 'package:merchandising/model/Location_service.dart';
+import 'dart:async';
 
 void main() {
+  const seconds = const Duration(seconds: 900);
+  Timer.periodic(seconds, (Timer t) => getLocation());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

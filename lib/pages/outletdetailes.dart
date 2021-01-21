@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'Journeyplan.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/google_maps.dart';
 
@@ -11,6 +12,7 @@ class OutLet extends StatefulWidget {
 }
 
 class _OutLetState extends State<OutLet> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +41,7 @@ class _OutLetState extends State<OutLet> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      height: 140,
+                      height: 170,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: GoogleMapsWidget(),
@@ -48,13 +50,13 @@ class _OutLetState extends State<OutLet> {
 
                     SizedBox(height: 10,),
                     OutLetContent(
-                      marketname: "[8045] Umm Al Sheif Market",
-                      address: "10-7/207, Al Meydan Street,Dubai",
-                      number: "+91 9775411055",
-                      distance: "4.5kms",
-                      lastvisit: "today",
-                      productivity: "50%",
-                      programname: "Tang 2019",
+                      omarketname: "[8045] Umm Al Sheif Market",
+                      oaddress: "10-7/207, Al Meydan Street,Dubai",
+                      onumber: "+91 9775411055",
+                      odistance: "4.5kms",
+                      olastvisit: "today",
+                      oproductivity: "50%",
+                      oprogramname: "Tang 2019",
                     ),
                   ],
                 ),
@@ -64,6 +66,16 @@ class _OutLetState extends State<OutLet> {
               ),
               OutLetContainer(
                 child: BarChatData(),
+              ),
+              SizedBox(height: 30,),
+              Container(
+                padding: EdgeInsets.all(15.0),
+                margin: EdgeInsets.only(right: 10.0) ,
+                decoration: BoxDecoration(
+                  color: pink,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text("Check In",style: TextStyle(fontSize: 16,color: orange,fontWeight: FontWeight.bold),),
               ),
             ],
           ),
@@ -75,21 +87,21 @@ class _OutLetState extends State<OutLet> {
 
 class OutLetContent extends StatelessWidget {
   OutLetContent({
-    this.marketname,
-    this.address,
-    this.lastvisit,
-    this.number,
-    this.productivity,
-    this.programname,
-    this.distance,
+    this.omarketname,
+    this.oaddress,
+    this.olastvisit,
+    this.onumber,
+    this.oproductivity,
+    this.oprogramname,
+    this.odistance,
   });
-  final marketname;
-  final address;
-  final number;
-  final distance;
-  final productivity;
-  final programname;
-  final lastvisit;
+  final omarketname;
+  final oaddress;
+  final onumber;
+  final odistance;
+  final oproductivity;
+  final oprogramname;
+  final olastvisit;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -97,10 +109,10 @@ class OutLetContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(
-          marketname,
+          omarketname,
           style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
         ),
-        Text(address,
+        Text(oaddress,
             style: TextStyle(
               fontSize: 15.0,
             )),
@@ -117,7 +129,7 @@ class OutLetContent extends StatelessWidget {
                     fontSize: 13.0,
                   )),
               Text(":"),
-              Text(number, style: TextStyle(color: orange)),
+              Text(onumber, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Programme Name',
@@ -125,7 +137,7 @@ class OutLetContent extends StatelessWidget {
                     fontSize: 13.0,
                   )),
               Text(":"),
-              Text(programname, style: TextStyle(color: orange)),
+              Text(oprogramname, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Distance',
@@ -133,7 +145,7 @@ class OutLetContent extends StatelessWidget {
                     fontSize: 13.0,
                   )),
               Text(":"),
-              Text(distance, style: TextStyle(color: orange)),
+              Text(odistance, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Coverage Productivity %',
@@ -141,7 +153,7 @@ class OutLetContent extends StatelessWidget {
                     fontSize: 13.0,
                   )),
               Text(":"),
-              Text(productivity, style: TextStyle(color: orange)),
+              Text(oproductivity, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Last Visit',
@@ -149,7 +161,7 @@ class OutLetContent extends StatelessWidget {
                     fontSize: 13.0,
                   )),
               Text(":"),
-              Text(lastvisit, style: TextStyle(color: orange)),
+              Text(olastvisit, style: TextStyle(color: orange)),
             ]),
           ],
         ),

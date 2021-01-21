@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
+@override
 class _HomePageState extends State<HomePage> {
   bool pressAttentionMTB = false;
   bool pressAttentionTODAY = true;
@@ -175,8 +175,8 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          height: 260,
-                          width: 155,
+                          height: 265,
+                          width: MediaQuery.of(context).size.width/2.6,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             color: containerscolor,
@@ -207,60 +207,57 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ]),
                         ),
-                        Container(
-                          height: 260,width: 220,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                height: 127,
-                                width: 225,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: containerscolor,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text("Journey Plan",),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        JourneryPlan(
-                                          color: Colors.orange,
-                                          percent: pressAttentionMTB == true ? 0.78 : 0.33,
-                                          textpercent: pressAttentionMTB == true ? '78' : '33',
-                                          title: "Journey Plan\nCompletion Percentage",
-                                        ),
-                                        JourneryPlan(
-                                          color: Colors.grey[600],
-                                          percent: pressAttentionMTB == true ? 0.5 : 0.1,
-                                          textpercent: pressAttentionMTB == true ? '50' : '10',
-                                          title: "Process\nCompliance",
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                        Column(
+                          children: [
+                            Container(
+                              height: 130,
+                              width: MediaQuery.of(context).size.width/1.75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
                               ),
-                              Container(
-                                height:127,
-                                width: 225,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: containerscolor,
-                                ),
-                                child: ActivityPerformance(
-                                  pprimary:pressAttentionMTB == true ? '37' : '14',
-                                  psecondary: pressAttentionMTB == true ? '38' : '18',
-                                  ptotal: pressAttentionMTB == true ? '26' : '08',
-                                  aprimary: pressAttentionMTB == true ? '48' : '34',
-                                  asecondary: pressAttentionMTB == true ? '37' : '22',
-                                  atotal: pressAttentionMTB == true ? '28' : '19',
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("Journey Plan",),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      JourneryPlan(
+                                        color: Colors.orange,
+                                        percent: pressAttentionMTB == true ? 0.78 : 0.33,
+                                        textpercent: pressAttentionMTB == true ? '78' : '33',
+                                        title: "Journey Plan\nCompletion Percentage",
+                                      ),
+                                      JourneryPlan(
+                                        color: Colors.grey[600],
+                                        percent: pressAttentionMTB == true ? 0.5 : 0.1,
+                                        textpercent: pressAttentionMTB == true ? '50' : '10',
+                                        title: "Process\nCompliance",
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 5,),
+                            Container(
+                              height:130,
+                              width: MediaQuery.of(context).size.width/1.75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: ActivityPerformance(
+                                pprimary:pressAttentionMTB == true ? '37' : '14',
+                                psecondary: pressAttentionMTB == true ? '38' : '18',
+                                ptotal: pressAttentionMTB == true ? '26' : '08',
+                                aprimary: pressAttentionMTB == true ? '48' : '34',
+                                asecondary: pressAttentionMTB == true ? '37' : '22',
+                                atotal: pressAttentionMTB == true ? '28' : '19',
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/main.dart';
+import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/model/login_model.dart';
 import 'package:merchandising/Constants.dart';
 import '../ProgressHUD.dart';
 import 'home.dart';
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isHidden = true;
   bool rememberMe = false;
 
   void _onRememberMeChanged(bool newValue) => setState(() {
@@ -198,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     });
                                   }
+                                  getLocation();
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(15.0),

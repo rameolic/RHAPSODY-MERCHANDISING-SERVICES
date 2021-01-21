@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/MenuContent.dart';
+import 'MenuContent.dart';
 import 'outletdetailes.dart';
 class JourneyPlan extends StatefulWidget {
   @override
@@ -9,6 +9,7 @@ class JourneyPlan extends StatefulWidget {
 }
 
 class _JourneyPlanState extends State<JourneyPlan> {
+  int index;
   bool pressWeek = false;
   bool pressTODAY = true;
   bool pressCustomers = false;
@@ -51,7 +52,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       textcolor:
                           pressTODAY == true ? Colors.white : Colors.black,
                       containercolor:
-                          pressTODAY == true ? orange : Colors.white,
+                          pressTODAY == true ? orange : pink,
                     ),
                   ),
                   GestureDetector(
@@ -67,7 +68,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       chartext: " This Week's\nJounery Plan",
                       textcolor:
                           pressWeek == true ? Colors.white : Colors.black,
-                      containercolor: pressWeek == true ? orange : Colors.white,
+                      containercolor: pressWeek == true ? orange : pink,
                     ),
                   ),
                   GestureDetector(
@@ -84,20 +85,22 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       textcolor:
                           pressCustomers == true ? Colors.white : Colors.black,
                       containercolor:
-                          pressCustomers == true ? orange : Colors.white,
+                          pressCustomers == true ? orange :pink,
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 20.0),
-              DefaultTabController(
-                  length: 3, // length of tabs
-                  initialIndex: 0,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        TabBar(
-                          labelColor: Colors.white,
+              Expanded(
+                child: DefaultTabController(
+                    length: 3, // length of tabs
+                    initialIndex: 0,
+                    child: Scaffold(
+                      backgroundColor: Colors.transparent,
+                      appBar: PreferredSize(
+                        preferredSize: Size.fromHeight(kToolbarHeight),
+                        child: TabBar(
+                          labelColor: pink,
                           unselectedLabelColor: Colors.black,
                           indicatorColor: orange,
                           tabs: [
@@ -106,96 +109,120 @@ class _JourneyPlanState extends State<JourneyPlan> {
                             Tab(text: 'SKIPPED'),
                           ],
                         ),
-                        Container(
-                          height: 500,
-                          child: TabBarView(
-                              children: <Widget>[
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    color: Colors.white,
+                      ),
+                      body: TabBarView(
+                          children: <Widget>[
+                            SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                  height: 40,
-                                  width: 380,
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 250,
-                                        child: Theme(
-                                          data: ThemeData(primaryColor: orange),
-                                          child: TextField(
-                                            cursorColor: orange,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              focusColor: Colors.black,
-                                              hintText:
-                                                  'Search by Customer Code/Name',
-                                              hintStyle: TextStyle(
-                                                color: grey,
-                                                fontSize: 13.0,
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                      color: pink,
+                                    ),
+                                    height: 40,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Theme(
+                                            data: ThemeData(primaryColor: orange),
+                                            child: TextField(
+                                              cursorColor: orange,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                focusColor: Colors.black,
+                                                hintText:
+                                                'Search by Customer Code/Name',
+                                                hintStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 13.0,
+                                                ),
+                                                suffixIcon:
+                                                Icon(CupertinoIcons.search,color: Colors.black,),
                                               ),
-                                              suffixIcon:
-                                                  Icon(CupertinoIcons.search),
                                             ),
                                           ),
                                         ),
+                                        Divider(
+                                          height: 40,
+                                          color: Colors.black,
+                                          thickness: 2.00,
+                                        ),
+                                        Icon(
+                                          CupertinoIcons.location_solid,
+                                          size: 15,
+                                        ),
+                                        Text("MAP VIEW"),
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    children: [
+                                      JurnyplanContent(
+                                        marketname: "[5478] Sheba Super Market",
+                                        address: "9-5/65,Nad Al Sheba,Dubai",
+                                        number: "+918974581263",
+                                        distance: "1.1kms",
+                                        setindex: (){
+                                          setState(() {
+                                            index =1;
+                                            print(index);
+                                          });
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        },
                                       ),
-                                      Divider(
-                                        height: 40,
-                                        color: Colors.black,
-                                        thickness: 2.00,
+                                      JurnyplanContent(
+                                        marketname: "[7085]Fair Mart Super Market",
+                                        address: "5-2/47,Al Tayar Building ,Dubai",
+                                        number: "+919885100237",
+                                        distance: "2.1kms",
+                                        setindex: (){
+                                          setState(() {
+                                            index =2;
+                                            print(index);
+                                          });
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        },
                                       ),
-                                      Icon(
-                                        CupertinoIcons.location_solid,
-                                        size: 15,
+                                      JurnyplanContent(
+                                        marketname: "[1045] Al Quoz Market",
+                                        address: "8-14/207,Al Meydan Road,Dubai",
+                                        number: "+9188561149100",
+                                        distance: "3.8Kms",
+                                        setindex: (){
+                                          setState(() {
+                                            index =3;
+                                            print(index);
+                                          });
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        },
                                       ),
-                                      Text("MAP VIEW"),
+                                      JurnyplanContent(
+                                        marketname: "[8045] Umm Al Sheif Market",
+                                        address:
+                                        "10-7/207, Al Meydan Street,Dubai",
+                                        number: "+91 9775411055",
+                                        distance: "4.5kms",
+                                        setindex: (){
+                                          setState(() {
+                                            index =4;
+                                            print(index);
+                                          });
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        },
+                                      ),
                                     ],
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    JurnyplanContent(
-                                      marketname: "[5478] Sheba Super Market",
-                                      address: "9-5/65,Nad Al Sheba,Dubai",
-                                      number: "+918974581263",
-                                      distance: "1.1kms",
-                                      onpress: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
-                                      },
-                                    ),
-                                    JurnyplanContent(
-                                      marketname: "[7085]Fair Mart Super Market",
-                                      address: "5-2/47,Al Tayar Building ,Dubai",
-                                      number: "+919885100237",
-                                      distance: "2.1kms",
-                                      onpress: (){},
-                                    ),
-                                    JurnyplanContent(
-                                      marketname: "[1045] Al Quoz Market",
-                                      address: "8-14/207,Al Meydan Road,Dubai",
-                                      number: "+9188561149100",
-                                      distance: "3.8Kms",
-                                      onpress: (){},
-                                    ),
-                                    JurnyplanContent(
-                                      marketname: "[8045] Umm Al Sheif Market",
-                                      address:
-                                          "10-7/207, Al Meydan Street,Dubai",
-                                      number: "+91 9775411055",
-                                      distance: "4.5kms",
-                                      onpress: (){},
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             Container(
                               child: Center(
@@ -214,9 +241,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
                               ),
                             ),
                           ]),
-                        )
-                      ])),
-            ],
+                    ),
+                ),
+              ),],
           ),
         ],
       ),
@@ -260,26 +287,25 @@ class JourneyPlanHeader extends StatelessWidget {
     );
   }
 }
-
 class JurnyplanContent extends StatelessWidget {
-  JurnyplanContent({this.marketname, this.address, this.number, this.distance,@required this.onpress});
+  JurnyplanContent({this.marketname, this.address, this.number, this.distance,@required this.setindex});
   final marketname;
   final address;
   final number;
   final distance;
-  final onpress;
+  final setindex;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onpress,
+      onTap: setindex,
       child: Container(
         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(10))),
-        height: 100,
-        width: 382,
+        height: 120,
+        width: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
