@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 
 class BarChatData extends StatelessWidget {
-  final barcolor = Colors.white.withOpacity(1);
+  final barcolor = Colors.white;
   @override
   Widget build(BuildContext context) {
     return Column(

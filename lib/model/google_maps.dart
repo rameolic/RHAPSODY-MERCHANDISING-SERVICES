@@ -13,7 +13,7 @@ class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
     return GoogleMap(
       initialCameraPosition: CameraPosition(
           target: LatLng(lat, long),
-          zoom: 13.5
+          zoom: 15
       ),
       zoomControlsEnabled: false,
       mapType: MapType.normal,
