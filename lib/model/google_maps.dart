@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:merchandising/Constants.dart';
 import 'Location_service.dart';
+import 'package:google_map_polyline/google_map_polyline.dart';
 
 class GoogleMapsWidget extends StatefulWidget {
   @override
@@ -8,13 +10,35 @@ class GoogleMapsWidget extends StatefulWidget {
 }
 
 class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
+  final Set<Polyline> polyline = {};
+
+  GoogleMapController _controller;
+  List<LatLng> routeCoords;
+  GoogleMapPolyline googleMapPolyline =
+      new GoogleMapPolyline(apiKey: "AIzaSyDKEaHXFJX0ZZ0zlCII7lG4vL9F0NlTqQE");
+
+  getsomePoints() async {
+    routeCoords = await googleMapPolyline.getCoordinatesWithLocation(
+        origin: LatLng(lat, long),
+        destination: LatLng(12.951767, 79.146734),
+        mode: RouteMode.driving);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getsomePoints();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-      initialCameraPosition: CameraPosition(
-          target: LatLng(lat, long),
-          zoom: 15
-      ),
+      initialCameraPosition:
+          CameraPosition(target: LatLng(lat, long), zoom: 15),
+      onMapCreated: onMapCreated,
+      polylines: polyline,
       zoomControlsEnabled: false,
       mapType: MapType.normal,
       myLocationEnabled: true,
@@ -22,90 +46,20 @@ class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
       myLocationButtonEnabled: true,
     );
   }
-}
-/*
-import 'Location_service.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class GoogleMapsWidget extends StatefulWidget {
-  @override
-  _GoogleMapsWidgetState createState() => _GoogleMapsWidgetState();
-}
-
-class _GoogleMapsWidgetState extends State<GoogleMapsWidget> {
-  final Set<Marker> _markers = {};
-  final Set<Polyline> _polyline = {};
-
-  GoogleMapController controller;
-
-  List<LatLng> latlngSegment1 = List();
-  List<LatLng> latlngSegment2 = List();
-  static LatLng _lat1 = LatLng(lat, long);
-  static LatLng _lat2 = LatLng(13.070632, 77.693071);
-  LatLng _lastMapPosition = _lat1;
-
-  @override
-  void initState() {
-    super.initState();
-    //line segment 1
-    latlngSegment1.add(_lat1);
-    latlngSegment1.add(_lat2);
-
-    //line segment 2
-    latlngSegment2.add(_lat1);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        //that needs a list<Polyline>
-        polylines: _polyline,
-        markers: _markers,
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _lastMapPosition,
-          zoom: 8.0,
-        ),
-        mapType: MapType.normal,
-      ),
-    );
-  }
-
-  void _onMapCreated(GoogleMapController controllerParam) {
+  void onMapCreated(GoogleMapController controller) {
     setState(() {
-      controller = controllerParam;
-      _markers.add(Marker(
-        // This marker id can be anything that uniquely identifies each marker.
-        markerId: MarkerId(_lastMapPosition.toString()),
-        //_lastMapPosition is any coordinate which should be your default
-        //position when map opens up
-        position: _lastMapPosition,
-        infoWindow: InfoWindow(
-          title: 'Awesome Polyline tutorial',
-          snippet: 'This is a snippet',
-        ),
-      ));
+      print(routeCoords);
+      _controller = controller;
 
-      _polyline.add(Polyline(
-        polylineId: PolylineId('line1'),
-        visible: true,
-        //latlng is List<LatLng>
-        points: latlngSegment1,
-        width: 2,
-        color: Colors.blue,
-      ));
-
-      //different sections of polyline can have different colors
-      _polyline.add(Polyline(
-        polylineId: PolylineId('line2'),
-        visible: true,
-        //latlng is List<LatLng>
-        points: latlngSegment2,
-        width: 2,
-        color: Colors.red,
-      ));
+      polyline.add(Polyline(
+          polylineId: PolylineId('route to work'),
+          visible: true,
+          points: routeCoords,
+          width: 4,
+          color: orange,
+          startCap: Cap.roundCap,
+          endCap: Cap.buttCap));
     });
   }
-} */
+}

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
-import 'Journeyplan.dart';
+import 'checkin.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/google_maps.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class OutLet extends StatefulWidget {
   @override
@@ -30,54 +31,52 @@ class _OutLetState extends State<OutLet> {
       body: Stack(
         children: [
           BackGround(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              OutLetContainer(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      height: 170,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: GoogleMapsWidget(),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                OutLetContainer(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 170,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: GoogleMap(
+                            zoomControlsEnabled: false,
+                            zoomGesturesEnabled: true,
+                            initialCameraPosition: CameraPosition(target: LatLng(25.137463723902574, 55.20732665696656), zoom: 15),
+                          ),
+                        ),
                       ),
-                    ),
 
-                    SizedBox(height: 10,),
-                    OutLetContent(
-                      omarketname: "[8045] Umm Al Sheif Market",
-                      oaddress: "10-7/207, Al Meydan Street,Dubai",
-                      onumber: "+91 9775411055",
-                      odistance: "4.5kms",
-                      olastvisit: "today",
-                      oproductivity: "50%",
-                      oprogramname: "Tang 2019",
-                    ),
-                  ],
+                      SizedBox(height: 10,),
+                      OutLetContent(
+                        omarketname: "[8045] Waitrose",
+                        oaddress: "10-7/207, Al Meydan Street,Dubai",
+                        onumber: "+91 9775411055",
+                        odistance: "4.5kms",
+                        olastvisit: "today",
+                        oproductivity: "50%",
+                        oprogramname: "Tang 2019",
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              OutLetContainer(
-                child: BarChatData(),
-              ),
-              SizedBox(height: 30,),
-              Container(
-                padding: EdgeInsets.all(15.0),
-                margin: EdgeInsets.only(right: 10.0) ,
-                decoration: BoxDecoration(
-                  color: pink,
-                  borderRadius: BorderRadius.circular(10),
+                SizedBox(
+                  height: 10,
                 ),
-                child: Text("Check In",style: TextStyle(fontSize: 16,color: orange,fontWeight: FontWeight.bold),),
-              ),
-            ],
+                OutLetContainer(
+                  child: BarChatData(),
+                ),
+                SizedBox(height: 30,),
+                CheckIn(),
+              ],
+            ),
           ),
         ],
       ),

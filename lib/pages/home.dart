@@ -9,12 +9,12 @@ import 'Startday.dart';
 import 'package:merchandising/Constants.dart';
 
 
-class HomePage extends StatefulWidget {
+class DashBoard extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _DashBoardState createState() => _DashBoardState();
 }
 @override
-class _HomePageState extends State<HomePage> {
+class _DashBoardState extends State<DashBoard> {
   bool pressAttentionMTB = false;
   bool pressAttentionTODAY = true;
   @override
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Image(
                   image: AssetImage('images/ttflogo.png'),
-                  height: 50,
+                  height: 30,
                 ),
                 StartDay(),
               ],

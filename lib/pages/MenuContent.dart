@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
-
+import 'home.dart';
 final menuitemscolor = Colors.black54;
 
 
@@ -69,6 +69,19 @@ class Menu extends StatelessWidget {
         ),
         ListTile(
           title: MenuElements(
+            title: 'My Dashboard',
+            icon: Icons.dashboard_rounded,
+          ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        DashBoard()));
+          },
+        ),
+        ListTile(
+          title: MenuElements(
             title: 'My Profile',
             icon: Icons.person,
           ),
@@ -123,7 +136,7 @@ class Menu extends StatelessWidget {
         ),
         Image(
           image: AssetImage('images/ttflogo.png'),
-          height: 100,
+          height:40,
         ),
       ],
     );

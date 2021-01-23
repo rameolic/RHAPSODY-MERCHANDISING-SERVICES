@@ -59,7 +59,7 @@ class BarChatData extends StatelessWidget {
             ),
             ChartData(
               month: "SEP",
-              visits: 9,
+              visits: 18,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
@@ -119,9 +119,9 @@ class SurveyChart extends StatelessWidget {
           child: charts.BarChart(series, animate: true),
           shaderCallback: (Rect bounds){
             return LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Color(0xFFF58426),Color(0xFFB4B5B9)]).createShader(bounds);
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFB4B5B9),Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
           },
         )
 

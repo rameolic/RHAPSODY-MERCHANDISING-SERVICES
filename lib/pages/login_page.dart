@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                                               MaterialPageRoute(
                                                   builder:
                                                       (BuildContext context) =>
-                                                          HomePage()));
+                                                          DashBoard()));
                                         } else {
                                           final snackBar = SnackBar(
                                             elevation: 20.00,

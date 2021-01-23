@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'pages/login_page.dart';
 import 'package:merchandising/model/Location_service.dart';
+import 'package:merchandising/model/google_maps.dart';
 import 'dart:async';
 
 void main() {
   const seconds = const Duration(seconds: 900);
   Timer.periodic(seconds, (Timer t) => getLocation());
+  const maploadsin = const Duration(seconds: 2);
+  Timer.periodic(maploadsin, (Timer t) => GoogleMapsWidget());
+
   runApp(MyApp());
 }
 

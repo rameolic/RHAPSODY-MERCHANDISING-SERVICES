@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'Maps_Veiw.dart';
 import 'outletdetailes.dart';
 class JourneyPlan extends StatefulWidget {
   @override
@@ -151,16 +152,21 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                             ),
                                           ),
                                         ),
-                                        Divider(
-                                          height: 40,
-                                          color: Colors.black,
-                                          thickness: 2.00,
+                                        GestureDetector(
+                                          onTap: (){
+
+                                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MapVeiw()));
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                CupertinoIcons.location_solid,
+                                                size: 15,
+                                              ),
+                                              Text("MAP VIEW"),
+                                            ],
+                                          ),
                                         ),
-                                        Icon(
-                                          CupertinoIcons.location_solid,
-                                          size: 15,
-                                        ),
-                                        Text("MAP VIEW"),
                                       ],
                                     ),
                                   ),
@@ -173,7 +179,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                         distance: "1.1kms",
                                         setindex: (){
                                           setState(() {
-                                            index =1;
+                                            index =5478;
                                             print(index);
                                           });
                                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
@@ -186,7 +192,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                         distance: "2.1kms",
                                         setindex: (){
                                           setState(() {
-                                            index =2;
+                                            index =7085;
                                             print(index);
                                           });
                                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
@@ -199,7 +205,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                         distance: "3.8Kms",
                                         setindex: (){
                                           setState(() {
-                                            index =3;
+                                            index =1045;
                                             print(index);
                                           });
                                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
@@ -213,10 +219,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                         distance: "4.5kms",
                                         setindex: (){
                                           setState(() {
-                                            index =4;
+                                            index =8045;
                                             print(index);
                                           });
-                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
                                         },
                                       ),
                                     ],

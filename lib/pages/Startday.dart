@@ -11,6 +11,7 @@ class StartDay extends StatelessWidget {
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
+              backgroundColor: alertboxcolor,
               shape: RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.all(
@@ -80,7 +81,7 @@ class StartDay extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));},
+                              onTap: (){Navigator.pop(context, MaterialPageRoute(builder: (BuildContext context) => DashBoard()));},
                               child: Container(
                                 height: 30,
                                 width: 70,
