@@ -23,61 +23,113 @@ class CustomerActivities extends StatelessWidget {
       body: Stack(
         children: [
           BackGround(),
-          Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height/15,
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                    color: pink,
-                    borderRadius: BorderRadiusDirectional.circular(10)),
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Icon(
-                          Icons.house_sharp,
-                          color: iconscolor,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height/15,
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      color: pink,
+                      borderRadius: BorderRadiusDirectional.circular(10)),
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Icon(
+                            Icons.house_sharp,
+                            color: iconscolor,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 20.0),
-                      FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "[5478] CARREFOUR MOE",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                          ],
+                        SizedBox(width: 20.0),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "[5478] CARREFOUR MOE",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 20.0),
-                    ],
+                        SizedBox(width: 20.0),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: GridView.count(
-                    childAspectRatio: 3/1.8,
-                    crossAxisCount: 2,
-                    children: List.generate(choices.length, (index) {
-                      return Center(
-                        child: SelectCard(choice: choices[index]),
-                      );
-                    })),
-              ),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Activities(
+                      icon: CupertinoIcons.chart_bar_alt_fill,
+                      chartext: 'Availability',
+                      tap: Availability(),
+                    ),
+                    Activities(
+                      icon: CupertinoIcons.eye_solid,
+                      chartext: 'Visibility',
+                      tap: Availability(),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Activities(
+                      icon: Icons.table_chart_sharp,
+                      chartext: 'Share of Shelf',
+                      tap: Availability(),
+                    ),
+                    Activities(
+                      icon: Icons.table_rows,
+                      chartext: 'Share of Assortment',
+                      tap: Availability(),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Activities(
+                      icon: CupertinoIcons.checkmark_seal_fill,
+                      chartext: 'Promotion Check',
+                      tap: Availability(),
+                    ),
+                    Activities(
+                      icon: CupertinoIcons.doc_checkmark_fill,
+                      chartext: 'Planogram Check',
+                      tap: Availability(),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Activities(
+                      icon: CupertinoIcons.info_circle_fill,
+                      chartext: 'Compitetor info Capture',
+                      tap: Availability(),
+                    ),
+                    Activities(
+                      icon: Icons.center_focus_strong_rounded,
+                      chartext: 'Focus/NPD Check',
+                      tap: Availability(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -85,26 +137,12 @@ class CustomerActivities extends StatelessWidget {
   }
 }
 
-class Choice {
-  const Choice({this.title, this.icon,});
-  final String title;
-  final IconData icon;
-}
 
-const List<Choice> choices = const <Choice>[
-  const Choice(title: 'Availability', icon: CupertinoIcons.chart_bar_alt_fill,),
-  const Choice(title: 'Visibility', icon: CupertinoIcons.eye_solid),
-  const Choice(title: 'Share of Shelf', icon: Icons.table_chart_sharp),
-  const Choice(title: 'Share of Assortment', icon: Icons.table_rows),
-  const Choice(title: 'Promotion Check', icon: CupertinoIcons.checkmark_seal_fill),
-  const Choice(title: 'Planogram Check', icon: CupertinoIcons.doc_checkmark_fill),
-  const Choice(title: 'Compitetor info Capture', icon: CupertinoIcons.info_circle_fill),
-  const Choice(title: 'Focus/NPD Check', icon: Icons.center_focus_strong_rounded),
-];
-
-class SelectCard extends StatelessWidget {
-  const SelectCard({Key key, this.choice}) : super(key: key);
-  final Choice choice;
+class Activities extends StatelessWidget {
+  Activities({this.icon,this.chartext,this.tap});
+  final icon;
+  final chartext;
+  final tap;
 
   @override
   Widget build(BuildContext context) {
@@ -114,16 +152,18 @@ class SelectCard extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
-                  Availability()));},
+                  tap));},
       child: Container(
+        height: MediaQuery.of(context).size.height/7.5,
+        width: MediaQuery.of(context).size.width/2.15,
         margin: EdgeInsets.only(left: 5,bottom: 10,right: 5),
         decoration: BoxDecoration(color: pink,borderRadius:BorderRadius.circular(10)),
         child: Center(child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
             children: <Widget>[
-              Icon(choice.icon, size:50.0, color: Color(0xff424B4D)),
-              Text(choice.title,style: TextStyle(fontSize: 15),),
+              Icon(icon, size:50.0, color: Color(0xff424B4D)),
+              Text(chartext,style: TextStyle(fontSize: 13),),
             ]
         ),
         ),
