@@ -124,7 +124,7 @@ class Menu extends StatelessWidget {
         ),
         ListTile(
           title: MenuElements(
-              title: 'EOD Summary/Beat Summary', icon: Icons.dynamic_form),
+              title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
         ),
         ListTile(

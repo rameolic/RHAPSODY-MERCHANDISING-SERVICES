@@ -43,7 +43,7 @@ class _OutLetState extends State<OutLet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
-                        height: 170,
+                        height: MediaQuery.of(context).size.height/6,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: GoogleMap(
@@ -75,6 +75,7 @@ class _OutLetState extends State<OutLet> {
                 ),
                 SizedBox(height: 30,),
                 CheckIn(),
+                SizedBox(height: 10,),
               ],
             ),
           ),
@@ -109,12 +110,9 @@ class OutLetContent extends StatelessWidget {
       children: [
         Text(
           omarketname,
-          style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+          style: TextStyle( fontWeight: FontWeight.bold),
         ),
-        Text(oaddress,
-            style: TextStyle(
-              fontSize: 15.0,
-            )),
+        Text(oaddress),
         Table(
           columnWidths: {
             0: FlexColumnWidth(2.5),
@@ -124,41 +122,29 @@ class OutLetContent extends StatelessWidget {
           children: [
             TableRow(children: [
               Text('Contact Number',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  )),
+                  ),
               Text(":"),
               Text(onumber, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Programme Name',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  )),
+                  ),
               Text(":"),
               Text(oprogramname, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
               Text('Distance',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  )),
+                  ),
               Text(":"),
               Text(odistance, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
-              Text('Coverage Productivity %',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  )),
+              Text('Coverage Productivity %',),
               Text(":"),
               Text(oproductivity, style: TextStyle(color: orange)),
             ]),
             TableRow(children: [
-              Text('Last Visit',
-                  style: TextStyle(
-                    fontSize: 13.0,
-                  )),
+              Text('Last Visit',),
               Text(":"),
               Text(olastvisit, style: TextStyle(color: orange)),
             ]),

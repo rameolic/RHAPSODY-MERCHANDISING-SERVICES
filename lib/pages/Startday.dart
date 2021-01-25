@@ -20,12 +20,11 @@ class StartDay extends StatelessWidget {
                 builder: (context) {
                   // Get available height and width of the build area of this widget. Make a choice depending on the size.
                   return Container(
-                    height: 220,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text('Roll Call',style: TextStyle(color: orange,fontSize: 20),),
                         Divider(color: Colors.black,thickness: 0.8,),
-                        Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -35,7 +34,6 @@ class StartDay extends StatelessWidget {
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey,),
                           ],
                         ),
-                        Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -45,7 +43,6 @@ class StartDay extends StatelessWidget {
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),
-                        Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -55,7 +52,6 @@ class StartDay extends StatelessWidget {
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),
-                        Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -65,7 +61,7 @@ class StartDay extends StatelessWidget {
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),
-                        Spacer(),
+                        SizedBox(height: 10,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [

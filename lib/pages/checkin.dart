@@ -11,17 +11,16 @@ class CheckIn extends StatelessWidget {
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
-                  backgroundColor: Color(0xffE1E3E2),
+                  backgroundColor: alertboxcolor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   content: Builder(
                     builder: (context) {
                       // Get available height and width of the build area of this widget. Make a choice depending on the size.
                       return Container(
-                        height: 101,
-                        width: MediaQuery.of(context).size.width / 0.6,
                         child: SizedBox(
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -30,7 +29,7 @@ class CheckIn extends StatelessWidget {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                  "It seems that you are not at the customer location. Do you want to do force check-in?",
+                                  "It seems that you are not at the customer location.\nDo you want to do force check-in?",
                                   style: TextStyle(fontSize: 13.6)),
                               SizedBox(
                                 height: 10.00,
@@ -98,17 +97,17 @@ class _ForceCheckinState extends State<ForceCheckin> {
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
-                  backgroundColor: Color(0xffE1E3E2),
+                  backgroundColor: alertboxcolor,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
                   content: Builder(
                     builder: (context) {
                       // Get available height and width of the build area of this widget. Make a choice depending on the size.
                       return Container(
-                        height: 179,
-                        width: MediaQuery.of(context).size.width / 0.6,
                         child: SizedBox(
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -256,6 +255,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
             ],
           ),
         ),
+        SizedBox(height: 10,),
         Center(
           child: GestureDetector(
             onTap: (){
@@ -286,7 +286,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
                                 CustomerActivities()));
                   }
                   else{
-                    null;
+                    null ;
                   }
                 }
               }

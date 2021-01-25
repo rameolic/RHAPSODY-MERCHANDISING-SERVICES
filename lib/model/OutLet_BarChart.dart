@@ -15,7 +15,7 @@ class BarChatData extends StatelessWidget {
           style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
         ),
         Container(
-          height: 230,
+          height: MediaQuery.of(context).size.height/4,
           child: SurveyChart(data: [
             ChartData(
               month: "JAN",

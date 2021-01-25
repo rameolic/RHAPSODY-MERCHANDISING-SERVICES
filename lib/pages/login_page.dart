@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                   Stack(
                     children: <Widget>[
                       Container(
-                        width: double.infinity,
+                        width: MediaQuery.of(context).size.width/1.2,
                         padding:
                             EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                         margin:

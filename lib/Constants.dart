@@ -3,7 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
 
 final containerscolor = Color(0xffFAECE3);
-final alertboxcolor = Color(0xffE1E3E2);
+final alertboxcolor = Colors.white;
 final transparentwhite = Colors.white.withOpacity(0.18);
 final iconscolor = Color(0xff424B4D);
 const grey = Color(0xFFB4B5B9);

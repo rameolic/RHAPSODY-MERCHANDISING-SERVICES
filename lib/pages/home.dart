@@ -144,25 +144,25 @@ class _DashBoardState extends State<DashBoard> {
                       children: [
                         Containerblock(
                           numbertext: pressAttentionMTB == true ? '240' : '25',
-                          chartext: 'Total Scheduled \nCalls',
+                          chartext: 'Scheduled Visits',
                           icon: CupertinoIcons.phone_circle_fill,
                           color: Colors.green,
                         ),
                         Containerblock(
                           numbertext: pressAttentionMTB == true ? '10' : '5',
-                          chartext: 'Total unScheduled \nCalls Touched',
+                          chartext: 'unScheduled\nVisits Touched',
                           icon: CupertinoIcons.exclamationmark_circle_fill,
                           color: Colors.red,
                         ),
                         Containerblock(
                           numbertext: pressAttentionMTB == true ? '124' : '10',
-                          chartext: 'Total Scheduled \nCalls Done',
+                          chartext: 'Scheduled\nVisits Done',
                           icon:CupertinoIcons.check_mark_circled_solid,
                           color: Colors.green,
                         ),
                         Containerblock(
                           numbertext: pressAttentionMTB == true ? '83' : '60',
-                          chartext: 'Total Scheduled Calls Completed',
+                          chartext: 'Scheduled Visits Completed',
                           icon: CupertinoIcons.checkmark_seal_fill,
                           color: Colors.green,
                         ),
@@ -242,8 +242,8 @@ class _DashBoardState extends State<DashBoard> {
                             ),
                             SizedBox(height: 5,),
                             Container(
-                              height:130,
                               width: MediaQuery.of(context).size.width/1.75,
+                              padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: containerscolor,
@@ -286,7 +286,6 @@ class _DashBoardState extends State<DashBoard> {
                             'Welcome to the new merchendiser\ninterface of Alseer.'
                                 'Hope to have a\ngreat day ahead!',
                             style: new TextStyle(
-                              fontSize: 15.0,
                             ),
                           ),
                           Spacer(
@@ -317,14 +316,14 @@ class Containerblock extends StatelessWidget {
     return Container(
       height: 140,
       width: MediaQuery.of(context).size.width / 4.3,
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: containerscolor,
       ),
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(
@@ -333,15 +332,19 @@ class Containerblock extends StatelessWidget {
               color: color,
             ),
             SizedBox(height: 10),
-            Text(
-              numbertext,
-              style: TextStyle(fontSize: 20),
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                numbertext,
+              ),
             ),
             SizedBox(height: 10),
-            Text(
-              chartext,
-              style: TextStyle(fontSize: 8),
-              textAlign: TextAlign.center,
+            FittedBox(
+              fit: BoxFit.contain,
+              child: Text(
+                chartext,
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
@@ -366,7 +369,6 @@ class WorkingRow extends StatelessWidget {
           children: [
             Text(
               chartext,
-              style: TextStyle(fontSize: 10),
             ),
             Container(
               height: 1,
@@ -375,7 +377,6 @@ class WorkingRow extends StatelessWidget {
             ),
             Text(
               numtext,
-              style: TextStyle(fontSize: 10),
             ),
           ],
         )
@@ -407,7 +408,6 @@ class JourneryPlan extends StatelessWidget {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10),
           ),
         ],
       ),
@@ -432,70 +432,75 @@ class ActivityPerformance extends StatelessWidget {
         Text(
             "Activity Performance"
         ),
-        Center(
+        SizedBox(height: 10,),
+        SizedBox(
+          height: 80,
           child: Table(
             border: TableBorder.symmetric(
               inside: BorderSide(color: Colors.grey),
             ),
             columnWidths: {
-              0: FractionColumnWidth(.25),
-              1: FractionColumnWidth(.22),
-              2: FractionColumnWidth(.22),
+              0: FractionColumnWidth(.2),
+              1: FractionColumnWidth(.2),
+              2: FractionColumnWidth(.25),
             },
             children: [
               TableRow(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
                     child: Text(
-                      "Planned Access Points",
-                      style: TextStyle(fontSize: 10),
+                      "Planned\nAccess\nPoints",
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.only(left: 8,right: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          ptotal,
-                          style: TextStyle(fontSize: 15),
+                        FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            ptotal,
+                          ),
                         ),
-                        Text(
-                          "Total",
-                          style: TextStyle(fontSize: 10),
+                        FittedBox(
+                          child: Text(
+                            "Total",
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  Padding(padding: const EdgeInsets.only(left: 8,right: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          pprimary,
-                          style: TextStyle(fontSize: 15),
+                        FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            pprimary,
+                          ),
                         ),
-                        Text(
-                          "Primary",
-                          style: TextStyle(fontSize: 10),
+                        FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Primary",
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  Padding(padding: const EdgeInsets.only(left: 8,right: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          psecondary,
-                          style: TextStyle(fontSize: 15),
+                        FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            psecondary,
+                          ),
                         ),
-                        Text(
-                          "Secondary",
-                          style: TextStyle(fontSize: 10),
+                        FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Secondary",
+                          ),
                         ),
                       ],
                     ),
@@ -504,60 +509,72 @@ class ActivityPerformance extends StatelessWidget {
               ),
               TableRow(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
                     child: Text(
-                      "Actual Access Points",
-                      style: TextStyle(fontSize: 10),
+                      "Actual\nAccess\nPoints",
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          atotal,
-                          style: TextStyle(fontSize: 15),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            atotal,
+                          ),
                         ),
-                        Text(
-                          "Total",
-                          style: TextStyle(fontSize: 10),
+                      ),
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Total",
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          aprimary,
-                          style: TextStyle(fontSize: 15),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            aprimary,
+                          ),
                         ),
-                        Text(
-                          "Primary",
-                          style: TextStyle(fontSize: 10),
+                      ),
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Primary",
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          asecondary,
-                          style: TextStyle(fontSize: 15),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            asecondary,
+                          ),
                         ),
-                        Text(
-                          "Secondary",
-                          style: TextStyle(fontSize: 10),
+                      ),
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: FittedBox(fit: BoxFit.fitWidth,
+                          child: Text(
+                            "Secondary",
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

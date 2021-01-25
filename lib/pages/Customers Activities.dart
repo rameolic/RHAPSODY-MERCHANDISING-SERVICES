@@ -26,33 +26,45 @@ class CustomerActivities extends StatelessWidget {
           Column(
             children: [
               Container(
-                margin: EdgeInsets.all(10.00),
+                height: MediaQuery.of(context).size.height/15,
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     color: pink,
                     borderRadius: BorderRadiusDirectional.circular(10)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.house_sharp,
-                      size: 40,
-                      color: iconscolor,
-                    ),
-                    SizedBox(width: 20.0),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "[5478] CARREFOUR MOE",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold),
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Icon(
+                          Icons.house_sharp,
+                          color: iconscolor,
                         ),
-                        Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                      ],
-                    ),
-                  ],
+                      ),
+                      SizedBox(width: 20.0),
+                      FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "[5478] CARREFOUR MOE",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 20.0),
+                    ],
+                  ),
                 ),
               ),
               Expanded(
