@@ -3,6 +3,8 @@ import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'availabitiy.dart';
+import 'shareofshelf.dart';
+import 'PlanogramcheckPhase1.dart';
 
 
 class CustomerActivities extends StatelessWidget {
@@ -89,12 +91,12 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: Icons.table_chart_sharp,
                       chartext: 'Share of Shelf',
-                      tap: Availability(),
+                      tap: ShareShelf(),
                     ),
                     Activities(
                       icon: Icons.table_rows,
                       chartext: 'Share of Assortment',
-                      tap: Availability(),
+                      tap: ShareShelf(),
                     ),
                   ],
                 ),
@@ -109,7 +111,7 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.doc_checkmark_fill,
                       chartext: 'Planogram Check',
-                      tap: Availability(),
+                      tap: PlanogramCheckPhase1(),
                     ),
                   ],
                 ),

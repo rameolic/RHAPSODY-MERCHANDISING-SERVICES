@@ -134,10 +134,10 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        Image(
+        /*Image(
           image: AssetImage('images/ttflogo.png'),
           height:40,
-        ),
+        ),*/
       ],
     );
   }

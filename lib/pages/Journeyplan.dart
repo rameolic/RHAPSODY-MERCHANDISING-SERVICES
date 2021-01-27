@@ -100,15 +100,22 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       backgroundColor: Colors.transparent,
                       appBar: PreferredSize(
                         preferredSize: Size.fromHeight(kToolbarHeight),
-                        child: TabBar(
-                          labelColor: pink,
-                          unselectedLabelColor: Colors.black,
-                          indicatorColor: orange,
-                          tabs: [
-                            Tab(text: 'PLANNED'),
-                            Tab(text: 'VISITED'),
-                            Tab(text: 'SKIPPED'),
-                          ],
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                            color: Colors.white,),
+                          child: TabBar(
+                            labelColor: orange,
+                            unselectedLabelColor: Colors.black,
+                            indicatorColor: orange,
+                            tabs: [
+                              Tab(text: 'PLANNED'),
+                              Tab(text: 'VISITED'),
+                              Tab(text: 'SKIPPED'),
+                            ],
+                          ),
                         ),
                       ),
                       body: TabBarView(
