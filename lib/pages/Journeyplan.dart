@@ -180,7 +180,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                   Column(
                                     children: [
                                       JurnyplanContent(
-                                        marketname: "[5478] Sheba Super Market",
+                                        marketname: "[5478] Waitrose",
                                         address: "9-5/65,Nad Al Sheba,Dubai",
                                         number: "+918974581263",
                                         distance: "1.1kms",

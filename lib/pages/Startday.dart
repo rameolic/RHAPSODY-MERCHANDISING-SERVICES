@@ -30,7 +30,7 @@ class StartDay extends StatelessWidget {
                           children: [
                             Text('Uniform and Hygiene'),
                             Spacer(),
-                            Icon(CupertinoIcons.check_mark_circled_solid),
+                            Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey,),
                           ],
                         ),
@@ -39,7 +39,7 @@ class StartDay extends StatelessWidget {
                           children: [
                             Text('Hand Held Unit Charge'),
                             Spacer(),
-                            Icon(CupertinoIcons.check_mark_circled_solid),
+                            Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),
@@ -48,7 +48,7 @@ class StartDay extends StatelessWidget {
                           children: [
                             Text('Transportation'),
                             Spacer(),
-                            Icon(CupertinoIcons.check_mark_circled_solid),
+                            Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),
@@ -57,7 +57,7 @@ class StartDay extends StatelessWidget {
                           children: [
                             Text('POSM'),
                             Spacer(),
-                            Icon(CupertinoIcons.check_mark_circled_solid),
+                            Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
                             Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
                           ],
                         ),

@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/Location_service.dart';
-import 'package:merchandising/model/login_model.dart';
+import 'package:merchandising/model/requestandresponsemodel.dart';
 import 'package:merchandising/Constants.dart';
 import '../ProgressHUD.dart';
 import 'home.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -24,16 +25,17 @@ class _LoginPageState extends State<LoginPage> {
           // TODO: Forget the user
         }
       });
-
   bool hidePassword = true;
   bool isApiCallProcess = false;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   LoginRequestModel loginRequestModel;
+  DashBoardRequestModel dashBoardRequestModel;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {
     super.initState();
     loginRequestModel = new LoginRequestModel();
+    dashBoardRequestModel = new DashBoardRequestModel();
   }
 
   @override
@@ -59,9 +61,9 @@ class _LoginPageState extends State<LoginPage> {
                   Stack(
                     children: <Widget>[
                       Container(
-                        width: MediaQuery.of(context).size.width/1.2,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 20),
                         margin:
                             EdgeInsets.symmetric(vertical: 85, horizontal: 20),
                         decoration: BoxDecoration(
@@ -180,18 +182,57 @@ class _LoginPageState extends State<LoginPage> {
                                         });
 
                                         if (value.token.isNotEmpty) {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
+                                          print(value.token);
+                                            if (value.Empid.isNotEmpty) {
+                                              print(value.Empid);
+                                              if (this.mounted) {
+                                                setState(() {
+                                                  dashBoardRequestModel
+                                                      .empiddata = value.Empid;
+                                                  APIDashBoard().tokendata = value.token;
+                                                });
+                                                print(APIDashBoard().tokendata);
+                                              }
+                                              print(dashBoardRequestModel
+                                                  .toJson());
+                                              APIDashBoard apidashboard =
+                                              new APIDashBoard();
+                                              apidashboard
+                                                  .dashboard(
+                                                  dashBoardRequestModel)
+                                                  .then((value) {
+                                                if (value != null) {
+                                                  if (value.shedulevisits
+                                                      .isNotEmpty) {
+                                                    print(value.shedulevisits);
+                                                    print(
+                                                        value.unshedulevisits);
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (
+                                                                BuildContext
+                                                                context) =>
+                                                                DashBoard()));
+                                                  }
+                                                }
+                                              });
+
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                      context) =>
                                                           DashBoard()));
+                                            }
+
                                         } else {
                                           final snackBar = SnackBar(
-                                            elevation: 20.00,
+                                              elevation: 20.00,
                                               duration: Duration(seconds: 1),
                                               content: Text(
-                                                  "Username/password was wrong",));
+                                                "Username/password was wrong",
+                                              ));
                                           scaffoldKey.currentState
                                               .showSnackBar(snackBar);
                                         }
@@ -281,4 +322,3 @@ class _LoginPageState extends State<LoginPage> {
     return false;
   }
 }
-

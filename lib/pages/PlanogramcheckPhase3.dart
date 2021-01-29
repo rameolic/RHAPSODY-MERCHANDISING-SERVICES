@@ -45,49 +45,7 @@ class _PlanogramCheckPhase3State extends State<PlanogramCheckPhase3> {
           SingleChildScrollView(
             child:Column(
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 15,
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.all(10.00),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadiusDirectional.circular(10)),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Icon(
-                            Icons.house_sharp,
-                            color: iconscolor,
-                          ),
-                        ),
-                        SizedBox(width: 20.0),
-                        FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "[5478] CARREFOUR MOE",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                  "Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                OutletDetails(),
                 Container(
                   margin: EdgeInsets.only(left: 10.0,right: 10.0),
                   height: 40,
@@ -156,14 +114,77 @@ class _PlanogramCheckPhase3State extends State<PlanogramCheckPhase3> {
                     ],
                   ),
                 ),
-              ],
+                CustomPlanogramThree(
+                  containercolor: Color(0xFFFFF3E0),
+                  text1: "[534725]",
+                  text2: "Tang Orange Instant Drink Mix 500Gm",
+                ),
+                CustomPlanogramThree(
+                    containercolor: Colors.white,
+                    text1: "[534578]",
+                    text2: " Tang Orange Instant Drink Mix 750Gm"),
+                CustomPlanogramThree(
+                  containercolor: Color(0xFFFFF3E0),
+                  text1: "  [534714]",
+                  text2: "Tang Orange Instant Drink Mix  1 Kg",
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0)),
+                  ),
+                  child: CustomPlanogramThree(
+                    containercolor: Colors.white,
+                    text1: " [534757]",
+                    text2: " Tang Lemon Instant Drink Mix 500Gm",
+                  ),
+                ), ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 }
+
+class CustomPlanogramThree extends StatelessWidget {
+  CustomPlanogramThree({this.text1,this.text2,this.containercolor});
+  final text1;
+  final text2;
+  final containercolor;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      color: containercolor,
+      padding: EdgeInsets.all(8.0),
+      margin: EdgeInsets.fromLTRB(10, 0, 10,0),
+      height: 70,
+
+      child: Row(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 175.0),
+                child: Text(text1,style: TextStyle(fontWeight: FontWeight.bold),),
+              ),
+              Text(text2,style: TextStyle(fontWeight: FontWeight.bold),),
+            ],
+          ),
+          Spacer(flex: 2),
+          Text("5",style: TextStyle(fontWeight: FontWeight.bold),),
+          Spacer(flex: 1),
+          Text("26-12-2020",style: TextStyle(fontWeight: FontWeight.bold),),
+        ],
+      ),);
+
+  }
+}
+
 
 class SubmitButton extends StatelessWidget {
   SubmitButton({@required this.onpress});

@@ -9,6 +9,7 @@ import 'Startday.dart';
 import 'package:merchandising/Constants.dart';
 
 
+
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
@@ -23,15 +24,16 @@ class _DashBoardState extends State<DashBoard> {
       onWillPop: () async => false,
       child: MaterialApp(
         home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: containerscolor,
+          appBar:
+          AppBar(
+            backgroundColor: Colors.white70,
             iconTheme: IconThemeData(color: orange),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image(
-                  image: AssetImage('images/ttflogo.png'),
                   height: 30,
+                  image: AssetImage('images/rmsLogo.png'),
                 ),
                 StartDay(),
               ],
@@ -328,23 +330,17 @@ class Containerblock extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 30,
+              size: 35,
               color: color,
             ),
             SizedBox(height: 10),
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                numbertext,
-              ),
+            Text(
+              numbertext,style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 10),
-            FittedBox(
-              fit: BoxFit.contain,
-              child: Text(
-                chartext,
-                textAlign: TextAlign.center,
-              ),
+            Text(
+              chartext,
+              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
             ),
           ],
         ),
@@ -407,7 +403,7 @@ class JourneryPlan extends StatelessWidget {
           ),
           Text(
             title,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
           ),
         ],
       ),
@@ -440,33 +436,26 @@ class ActivityPerformance extends StatelessWidget {
               inside: BorderSide(color: Colors.grey),
             ),
             columnWidths: {
-              0: FractionColumnWidth(.2),
-              1: FractionColumnWidth(.2),
-              2: FractionColumnWidth(.25),
+              0: FractionColumnWidth(.28),
+              1: FractionColumnWidth(.22),
+              2: FractionColumnWidth(.245),
             },
             children: [
               TableRow(
                 children: [
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      "Planned\nAccess\nPoints",
-                    ),
+                  Text(
+                    "Planned\nAccess\nPoints",style: TextStyle(fontSize: 12),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8,right: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            ptotal,
-                          ),
+                        Text(
+                          ptotal,style: TextStyle(fontSize: 12),
                         ),
-                        FittedBox(
-                          child: Text(
-                            "Total",
-                          ),
+                        Text(
+                          "Total",style: TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
@@ -475,15 +464,11 @@ class ActivityPerformance extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            pprimary,
-                          ),
+                        Text(
+                          pprimary,style: TextStyle(fontSize: 12),
                         ),
-                        FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Primary",
-                          ),
+                        Text(
+                          "Primary",style: TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
@@ -492,15 +477,11 @@ class ActivityPerformance extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            psecondary,
-                          ),
+                        Text(
+                          psecondary,style: TextStyle(fontSize: 12),
                         ),
-                        FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Secondary",
-                          ),
+                        Text(
+                          "Secondary",style: TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
@@ -509,28 +490,37 @@ class ActivityPerformance extends StatelessWidget {
               ),
               TableRow(
                 children: [
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      "Actual\nAccess\nPoints",
-                    ),
+                  Text(
+                    "Actual\nAccess\nPoints",style: TextStyle(fontSize: 12),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            atotal,
-                          ),
+                        child: Text(
+                          atotal,style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: Text(
+                          "Total",style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                        child: Text(
+                          aprimary,style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(padding: const EdgeInsets.only(left: 8,right: 8),
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            "Total",
+                            "Primary",style: TextStyle(fontSize: 12),
                           ),
                         ),
                       ),
@@ -540,37 +530,15 @@ class ActivityPerformance extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            aprimary,
-                          ),
+                        child: Text(
+                          asecondary,style: TextStyle(fontSize: 12),
                         ),
                       ),
                       Padding(padding: const EdgeInsets.only(left: 8,right: 8),
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            "Primary",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            asecondary,
-                          ),
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Secondary",
+                            "Secondary",style: TextStyle(fontSize: 12),
                           ),
                         ),
                       ),

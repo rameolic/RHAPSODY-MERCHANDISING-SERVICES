@@ -5,6 +5,10 @@ import 'MenuContent.dart';
 import 'availabitiy.dart';
 import 'shareofshelf.dart';
 import 'PlanogramcheckPhase1.dart';
+import 'NPD Check.dart';
+import 'CompetitionCheckOne.dart';
+import 'Visibility.dart';
+
 
 
 class CustomerActivities extends StatelessWidget {
@@ -28,48 +32,7 @@ class CustomerActivities extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height/15,
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadiusDirectional.circular(10)),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Icon(
-                            Icons.house_sharp,
-                            color: iconscolor,
-                          ),
-                        ),
-                        SizedBox(width: 20.0),
-                        FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "[5478] CARREFOUR MOE",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 20.0),
-                      ],
-                    ),
-                  ),
-                ),
+                OutletDetails(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -81,7 +44,7 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.eye_solid,
                       chartext: 'Visibility',
-                      tap: Availability(),
+                      tap: VisibilityOne(),
                     ),
                   ],
                 ),
@@ -121,12 +84,12 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.info_circle_fill,
                       chartext: 'Compitetor info Capture',
-                      tap: Availability(),
+                      tap: CompetitionCheckOne(),
                     ),
                     Activities(
                       icon: Icons.center_focus_strong_rounded,
                       chartext: 'Focus/NPD Check',
-                      tap: Availability(),
+                      tap: FocusNPDCheck(),
                     ),
                   ],
                 ),
@@ -154,7 +117,7 @@ class Activities extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
-                  tap));},
+              tap));},
       child: Container(
         height: MediaQuery.of(context).size.height/7.5,
         width: MediaQuery.of(context).size.width/2.15,
