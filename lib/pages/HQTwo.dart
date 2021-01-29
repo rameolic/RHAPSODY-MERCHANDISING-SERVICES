@@ -104,7 +104,8 @@ class _HQTwoState extends State<HQTwo> {
                           child: TextField(
                             maxLines: 3,
                             decoration: InputDecoration(
-                              hintText: "Type your text here"
+                              hintText: "Type your text here",
+                              border: InputBorder.none,
                             ),
                           ),
                         ),

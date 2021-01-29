@@ -25,11 +25,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
             Spacer(),
             SubmitButton(
               onpress: (){
-                {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ShareShelf()));}
+
               },
             ),
           ],
@@ -53,11 +49,18 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     borderRadius: BorderRadius.circular(10)),
                 child: Row(
                   children: [
+
                     Column(
                       children: [
                         Container(
-                          height: 100,
+                          margin: EdgeInsets.all(10),
+                          height: 180,
                           width: 100,
+                          child:
+                          Image(
+                            image: AssetImage('images/tangjug.png'),
+                          ),
+
                         ),
                       ],
                     ),
@@ -72,7 +75,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
-                            SizedBox(width: 30),
+
                           ],
                         ),
                         SizedBox(height: 10),
@@ -80,26 +83,34 @@ class _VisibilityOneState extends State<VisibilityOne> {
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Is Available"),
                                 VisibilitySwitchOne(),
 
-
                               ],
                             ),
-                            SizedBox(width: 30),
+                            SizedBox(width: 20),
+
                             Column(
                               children: [
+                                SizedBox(height: 20),
                                 Text("Capture Image"),
-                                SizedBox(height: 50),
-
+                                Container(
+                                  margin: EdgeInsets.all(10),
+                                  child: Image(
+                                    width: 80,
+                                    height: 80,
+                                    image: AssetImage('images/capture.png'),
+                                  ),
+                                ),
                               ],
                             ),
                           ],
                         ),
                       ],
                     ),
-                    SizedBox(width: 30),
+
                     Column(
                       children: [
                         SizedBox(height: 30),
@@ -129,8 +140,13 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     Column(
                       children: [
                         Container(
-                          height: 100,
+                          margin: EdgeInsets.only(left: 10,right: 10),
+                          height: 180,
                           width: 100,
+                          child:
+                          Image(
+                            image: AssetImage('images/tangjug.png'),
+                          ),
                         ),
                       ],
                     ),
@@ -151,6 +167,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Is Available"),
                                 VisibilitySwitchOne(),
@@ -168,7 +185,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 30),
+
                     Column(
                       children: [
                         SizedBox(height: 20),

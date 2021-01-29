@@ -5,6 +5,7 @@ import 'pages/login_page.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/model/google_maps.dart';
 import 'dart:async';
+import 'package:merchandising/pages/home.dart';
 
 void main() {
   const seconds = const Duration(seconds: 900);
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: LoginPage(),
+      home: //DashBoard(),
+      LoginPage(),
     );
   }
 }

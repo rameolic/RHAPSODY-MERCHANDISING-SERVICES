@@ -45,49 +45,62 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
           SingleChildScrollView(
             child:Column(
               children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 15,
-                  width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.all(10.00),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadiusDirectional.circular(10)),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Icon(
-                            Icons.house_sharp,
-                            color: iconscolor,
-                          ),
-                        ),
-                        SizedBox(width: 20.0),
-                        FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "[5478] CARREFOUR MOE",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                  "Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                            ],
-                          ),
-                        ),
-                      ],
+                OutletDetails(),
+                Center(
+                  child: Container(
+                      decoration: BoxDecoration(color: Color(0xffFFDBC1),borderRadius: BorderRadius.circular(10)),
+                    height: MediaQuery.of(context).size.height/3.5,
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    padding: EdgeInsets.only(left: 20),
+                    child:
+                    Image(
+                      width: double.infinity,
+                      image: AssetImage('images/planogram1.png'),
                     ),
                   ),
                 ),
+                Container(
+                  decoration: BoxDecoration(color: Color(0xffFFDBC1),borderRadius: BorderRadius.circular(10)),
+                  height: MediaQuery.of(context).size.height/3.5,
+                  margin: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("Before Image",style: TextStyle(fontWeight: FontWeight.bold),),
+                          SizedBox(width: 35),
+                          IconButton(icon:Icon(CupertinoIcons.camera,), onPressed: (){}),
+
+                          Text("After Image",style: TextStyle(fontWeight: FontWeight.bold),),
+                          SizedBox(width: 90),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+
+                            width: 180,
+                            child: Image(
+                              image: AssetImage('images/before.png'),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.all(10),
+
+                            width: 160,
+                            child: Image(
+                              image: AssetImage('images/after.png'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+
               ],
             ),
           )

@@ -31,11 +31,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                 Spacer(),
                 SubmitButton(
                   onpress: (){
-                    {Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                CompetitionCheckOne()));}
+
                   },
                 ),
               ],
@@ -71,13 +67,11 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(60, 8, 8, 8),
-                            child: IconButton(
-                              icon: Icon(CupertinoIcons.search,
-                                  size: 25, color: Colors.grey[700]),
-                              onPressed: () {},
-                            ),
+                          SizedBox(width: 70),
+                          IconButton(
+                            icon: Icon(CupertinoIcons.search,
+                                size: 25, color: Colors.grey[700]),
+                            onPressed: () {},
                           )
                         ],
                       ),
@@ -91,6 +85,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                       decoration: BoxDecoration(color: Color(0xFFFFF3E0),
                           borderRadius: BorderRadius.circular(10)),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
                             children: [
@@ -103,7 +98,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                                 "Tang Orange Instant Drink Mix",
                                 style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Colors.green[800],
+                                    color: orange,
                                     fontWeight: FontWeight.bold),
                               ),
                               Spacer(flex: 1),
@@ -127,7 +122,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14.0,
-                                        color: Colors.green[800]),
+                                        color: orange),
                                   ),
                                 ],
                               ),
@@ -141,11 +136,12 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14.0,
-                                          color: Colors.green[800])),
+                                          color: orange)),
                                 ],
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("\nReason for Deviation",
                                       style: TextStyle(
@@ -156,6 +152,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                                 children: [
                                   Text("Selling Price",
                                       style: TextStyle(
@@ -165,7 +162,7 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14.0,
-                                          color: Colors.green[800])),
+                                          color: orange)),
                                 ],
                               ),
                             ],
@@ -175,19 +172,35 @@ class _FocusNPDCheckState extends State<FocusNPDCheck> {
                             children: [
 
                               Spacer(flex: 1),
-                              Text(
-                                "Photograph",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14.0),
+                              Column(
+                                children: [
+                                  Text(
+                                    "Photograph",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 14.0),
+                                  ),
+                                  Container(
+                                    child: Image(
+                                      height: 90,
+                                      width: 100,
+                                      image: AssetImage('images/photograph.png'),
+                                    ),
+                                  ),
+                                ],
                               ),
                               Spacer(flex: 15),
-                              Icon(
-                                CupertinoIcons.camera,
-                                color: Colors.green[800],
+                              Column(
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.camera,
+
+                                  ),
+                                ],
                               ),
                               Spacer(flex: 1),
                             ],
                           ),
+
                         ],
                       ),
                     ),
@@ -273,7 +286,7 @@ class FocusNPDCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 10.0),
+        margin: EdgeInsets.only(top: 10.0,left: 10,right: 10),
         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         height: 70,
         width: 410,
@@ -286,7 +299,7 @@ class FocusNPDCustom extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16.0,
-                  color: Colors.green[800]),
+                  color: orange),
             ),
             Spacer(),
             FocusNPDSwitch(),

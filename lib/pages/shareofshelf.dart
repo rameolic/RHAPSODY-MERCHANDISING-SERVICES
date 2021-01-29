@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'PlanogramcheckPhase2.dart';
 
 class ShareShelf extends StatefulWidget {
   @override
@@ -12,18 +13,28 @@ class _ShareShelfState extends State<ShareShelf> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Text(
-            'Share of Shelf',
-            style: TextStyle(color: orange),
-          ),
+      appBar: AppBar(
+        backgroundColor: containerscolor,
+        iconTheme: IconThemeData(color: orange),
+        title: Row(
+          children: [
+            Text(
+              'Share of Shelf',
+              style: TextStyle(color: orange),
+            ),
+            Spacer(),
+            SubmitButton(
+              onpress: (){
+
+              },
+            ),
+          ],
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
+      ),
+      drawer: Drawer(
+        child: Menu(),
+      ),
+      body: Stack(
         children: [
           BackGround(),
           SingleChildScrollView(
@@ -104,129 +115,197 @@ class _ShareShelfState extends State<ShareShelf> {
                 ),
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Table(
-                    border: TableBorder.symmetric(
-                      inside: BorderSide(color: Colors.grey),),
-
-                    columnWidths: {
-                      0: FractionColumnWidth(0.7),
-                      1: FractionColumnWidth(0.3),
-                    },
+                  child: Column(
                     children: [
-                      TableRow(
-                        decoration: BoxDecoration(color: orange,
-                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                              topRight:Radius.circular(10.0) ),),
+                      Table(
+                        border: TableBorder.symmetric(
+                          inside: BorderSide(color: Colors.grey),),
+
+                        columnWidths: {
+                          0: FractionColumnWidth(0.7),
+                          1: FractionColumnWidth(0.3),
+                        },
                         children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.00),
-                            child: Text(
-                              "Colgate",
-                              style: TextStyle(color: Colors.white, fontSize: 18.0),
+                          TableRow(
+                            decoration: BoxDecoration(color: orange,
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
+                                  topRight:Radius.circular(10.0) ),),
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "Colgate",
+                                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  "15 Inches",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,),
+                                ),
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Pepsodent",
+                              ),
+                              CustomTwo(
+                                text: "15 Inches",
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Oral -B",
+                              ),
+                              CustomTwo(
+                                text: "11 Inches",
+                              ),
+                            ],
+                          ),
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Others",
+                              ),
+                              CustomTwo(
+                                text: "9  Inches",
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 60,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: pink,
+                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0),
+                              bottomRight:Radius.circular(10.0) ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Total",
+                                  style: TextStyle(
+                                      color: Colors.black, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "50 Inches",
+                                  style:
+                                  TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10.00),
-                            child: Text(
-                              "15 Inches",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Target",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "40%",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Pepsodent",
-                          ),
-                          CustomTwo(
-                            text: "15 Inches",
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Oral -B",
-                          ),
-                          CustomTwo(
-                            text: "11 Inches",
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Others",
-                          ),
-                          CustomTwo(
-                            text: "9  Inches",
-                          ),
-                        ],
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "Actual",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "40%",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, color: Colors.red[700]),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(8, 4, 8, 0),
-                  child: Table(
-                    border: TableBorder.all(color: Color(0xFFBDBDBD)),
-                    columnWidths: {
-                      0: FractionColumnWidth(0.7),
-                      1: FractionColumnWidth(0.3),
-                    },
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                  child: Column(
                     children: [
-                      TableRow(
-                        decoration: BoxDecoration(color: Color(0XFFF57C00)),
+                      Table(
+                        border: TableBorder.symmetric(
+                          inside: BorderSide(color: Colors.grey),),
+
+                        columnWidths: {
+                          0: FractionColumnWidth(0.7),
+                          1: FractionColumnWidth(0.3),
+                        },
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "Tang",
-                              style: TextStyle(color: Colors.white, fontSize: 18.0),
-                            ),
+                          TableRow(
+                            decoration: BoxDecoration(color: orange,
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
+                                  topRight:Radius.circular(10.0) ),),
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  "Tang",
+                                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  "20 Inches",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "20 Inches",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                 ),
-                            ),
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Rasna",
+                              ),
+                              CustomTwo(
+                                text: "9 Inches",
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Rasna",
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Energile",
+                              ),
+                              CustomTwo(
+                                text: "12 Inches",
+                              ),
+                            ],
                           ),
-                          CustomTwo(
-                            text: "9 Inches",
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Energile",
-                          ),
-                          CustomTwo(
-                            text: "12 Inches",
-                          ),
-                        ],
-                      ),
-                      TableRow(
-                        children: [
-                          Custom(
-                            text: "Others",
-                          ),
-                          CustomTwo(
-                            text: "9  Inches",
+                          TableRow(
+                            children: [
+                              Custom(
+                                text: "Others",
+                              ),
+                              CustomTwo(
+                                text: "9  Inches",
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -236,10 +315,12 @@ class _ShareShelfState extends State<ShareShelf> {
                 Container(
                   height: 60,
                   width: double.infinity,
-                  margin: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.only(left: 10,right: 10),
+
                   decoration: BoxDecoration(
                     color: pink,
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0),
+                        bottomRight:Radius.circular(10.0) ),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -259,6 +340,7 @@ class _ShareShelfState extends State<ShareShelf> {
                           ),
                         ],
                       ),
+
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -292,8 +374,8 @@ class _ShareShelfState extends State<ShareShelf> {
               ],
             ),
           ),
-      ],
-    ),
+        ],
+      ),
     );
   }
 }
@@ -327,6 +409,29 @@ class CustomTwo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(text,style: TextStyle(fontSize: 15),),
+      ),
+    );
+  }
+}
+
+class SubmitButton extends StatelessWidget {
+  SubmitButton({@required this.onpress});
+  final onpress;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onpress,
+      child: Container(
+        margin: EdgeInsets.only(right: 10.00),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Color(0xffFFDBC1),
+          borderRadius: BorderRadius.circular(10.00),
+        ),
+        child: Text(
+          'Submit',
+          style: TextStyle(color: Colors.black, fontSize: 15),
+        ),
       ),
     );
   }

@@ -58,51 +58,45 @@ class _SurveyTwoState extends State<SurveyTwo> {
 
                 ),
                 Container(
-                  padding: EdgeInsets.all(4.0),
+                  padding: EdgeInsets.only(left: 10,top: 10),
                   margin: EdgeInsets.only(top: 8.0,left: 10,right: 10),
                   height: 120,
                   width: 420,
                   decoration: BoxDecoration(color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left:8.0),
-                              child: Text(
-                                "4.Multiline Survey",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "4.Multiline Survey",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
 
-                          ],
-                        ),
+                        ],
+                      ),
 
-                        Card(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 2,
+                      Card(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            maxLines: 2,
 
-                            ),
                           ),
                         ),
+                      ),
 
 
-                      ],
-                    ),
+                    ],
                   ),
 
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 8.0,left: 10,right: 10),
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left: 10,top: 10),
                   height: 90,
-                  width: 420,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)
@@ -129,7 +123,7 @@ class _SurveyTwoState extends State<SurveyTwo> {
                   margin: EdgeInsets.only(top: 8.0,left: 10,right: 10),
                   padding: EdgeInsets.all(8.0),
                   height: 90,
-                  width: 420,
+                  width: double.infinity,
                   decoration: BoxDecoration(color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
@@ -166,9 +160,9 @@ class _SurveyTwoState extends State<SurveyTwo> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 8.0,left: 10,right: 10),
-                  padding: EdgeInsets.all(8.0),
-                  height: 90,
-                  width: 420,
+                  padding: EdgeInsets.only(left: 10,top: 10),
+                  height: 80,
+                  width: double.infinity,
                   decoration: BoxDecoration(color: Color(0xFFFFF3E0),borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
 
@@ -195,8 +189,8 @@ class _SurveyTwoState extends State<SurveyTwo> {
                 Container(
                   margin: EdgeInsets.only(top: 8.0,left: 10,right: 10),
                   padding: EdgeInsets.all(8.0),
-                  height: 120,
-                  width: 420,
+                  height: 90,
+                  width: double.infinity,
                   decoration: BoxDecoration(color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
@@ -259,11 +253,9 @@ class _SurveyTwoCheckBoxState extends State<SurveyTwoCheckBox> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(8),
           child: Text("3.Yes or No Survey",
               style: TextStyle(fontWeight: FontWeight.bold)),
         ),
-
 
         Container(
           child: Column(

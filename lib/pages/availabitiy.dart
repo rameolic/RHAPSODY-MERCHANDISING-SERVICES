@@ -29,49 +29,7 @@ class _AvailabilityState extends State<Availability> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height / 15,
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.all(10.00),
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        color: pink,
-                        borderRadius: BorderRadiusDirectional.circular(10)),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Icon(
-                              Icons.house_sharp,
-                              color: iconscolor,
-                            ),
-                          ),
-                          SizedBox(width: 20.0),
-                          FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "[5478] CARREFOUR MOE",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                    "Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  OutletDetails(),
                   Container(
                     margin: EdgeInsets.all(10.0),
                     height: 40,
@@ -102,7 +60,7 @@ class _AvailabilityState extends State<Availability> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 20, right: 35),
+
                     margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     decoration: BoxDecoration(
                       color: orange,
@@ -115,15 +73,16 @@ class _AvailabilityState extends State<Availability> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        SizedBox(width: 20),
                         Text(
                           "Item/Description",
                           style:
-                              TextStyle(color: Colors.white, fontSize: 16),
+                          TextStyle(color: Colors.white, fontSize: 16),
                         ),
                         Text(
                           " Avl",
                           style:
-                              TextStyle(color: Colors.white, fontSize: 16),
+                          TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
                     ),
@@ -140,7 +99,7 @@ class _AvailabilityState extends State<Availability> {
                     margin: EdgeInsets.only(left: 10, right: 10),
                     child: Table(
                       border: TableBorder.symmetric(
-                          inside: BorderSide(color: Colors.grey),),
+                        inside: BorderSide(color: Colors.grey),),
                       columnWidths: {
                         0: FractionColumnWidth(0.65),
                         1: FractionColumnWidth(0.35),
@@ -161,7 +120,7 @@ class _AvailabilityState extends State<Availability> {
                         ),
                         TableRow(
                           decoration:
-                              BoxDecoration(color: Color(0xFFFFF3E0)),
+                          BoxDecoration(color: Color(0xFFFFF3E0)),
                           children: [
                             Productdetailes(
                               productid: "58754",
@@ -173,7 +132,7 @@ class _AvailabilityState extends State<Availability> {
                         ),
                         TableRow(
                           decoration:
-                              BoxDecoration(color: Color(0xFFFFF3E0)),
+                          BoxDecoration(color: Color(0xFFFFF3E0)),
                           children: [
                             Productdetailes(
                               productid: "58887",
@@ -185,7 +144,7 @@ class _AvailabilityState extends State<Availability> {
                         ),
                         TableRow(
                           decoration:
-                              BoxDecoration(color: Color(0xFFFFF3E0)),
+                          BoxDecoration(color: Color(0xFFFFF3E0)),
                           children: [
                             Productdetailes(
                               productid: "58745",
@@ -197,7 +156,7 @@ class _AvailabilityState extends State<Availability> {
                         ),
                         TableRow(
                           decoration:
-                              BoxDecoration(color: Color(0xFFFFF3E0)),
+                          BoxDecoration(color: Color(0xFFFFF3E0)),
                           children: [
                             Productdetailes(
                               productid: "58897",
@@ -227,6 +186,7 @@ class _AvailabilityState extends State<Availability> {
                       ],
                     ),
                   ),
+                  SizedBox(height:30),
                 ],
               ),
             ),

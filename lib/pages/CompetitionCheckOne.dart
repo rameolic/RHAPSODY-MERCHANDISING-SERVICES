@@ -214,7 +214,7 @@ class _CompetionCheckOneTabState extends State<CompetionCheckOneTab> {
                         color: Colors.grey[700],
                       ),
                       onPressed: () {}),
-                  SizedBox(width: 20),
+
                 ],
               ),
             ],

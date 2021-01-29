@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'PlanogramcheckPhase3.dart';
 
-
 class PlanogramCheckPhase2 extends StatefulWidget {
   @override
   _PlanogramCheckPhase2State createState() => _PlanogramCheckPhase2State();
@@ -25,12 +24,14 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
             ),
             Spacer(),
             SubmitButton(
-              onpress: (){
-                {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PlanogramCheckPhase3()));}
+              onpress: () {
+                {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              PlanogramCheckPhase3()));
+                }
               },
             ),
           ],
@@ -43,7 +44,7 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
         children: [
           BackGround(),
           SingleChildScrollView(
-            child:Column(
+            child: Column(
               children: [
                 Container(
                   height: MediaQuery.of(context).size.height / 15,
@@ -69,18 +70,15 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                         FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Column(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "[5478] CARREFOUR MOE",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                  "Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
+                              Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
                             ],
                           ),
                         ),
@@ -93,8 +91,7 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                   height: 40,
                   padding: EdgeInsets.all(10.00),
                   decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadius.circular(10.0)),
+                      color: pink, borderRadius: BorderRadius.circular(10.0)),
                   child: Expanded(
                     child: Theme(
                       data: ThemeData(primaryColor: orange),
@@ -118,95 +115,125 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 12.0),
-                  padding: EdgeInsets.fromLTRB(10,10, 10, 10),
-                  height: 250,
-                  width: 415,
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+                  padding: EdgeInsets.all(8),
+                  height: MediaQuery.of(context).size.height/3,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)),
-                  child:
-                  Column(
+                  child: Column(
                     children: [
                       Row(
                         children: [
-                          Text("Tang Super Special Promo",
-                            style: TextStyle(fontWeight: FontWeight.bold,
-                                color: Color(0XFFF57C00),fontSize: 15),),
+                          Text(
+                            "Tang Super Special Promo",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0XFFF57C00),
+                                fontSize: 15),
+                          ),
                         ],
                       ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           Text(" 55245"),
                         ],
                       ),
+                      SizedBox(height: 5),
+
                       Row(
                         children: [
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("\n  Promotion Active",style: TextStyle(fontWeight: FontWeight.bold),),
-                              PlanogramSwitch(),
-                            ],
-                          ),
-                          Spacer(flex: 1),
-                          Column(
-                            children: [
-                              Text("\n  Announcer Available",style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text(
+                                " Promotion Active",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               PlanogramSwitch(),
                             ],
                           ),
                           Spacer(flex: 2),
-
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Announcer Available",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              PlanogramSwitch(),
+                            ],
+                          ),
+                          Spacer(flex: 2),
                         ],
                       ),
-                      Row(
+                      Row(children: [
+                        Column(
                           children: [
-                            Column(
-                              children: [
-                                Text("  Photograph",style: TextStyle(fontWeight: FontWeight.bold),),
-                                Image.asset("assets/image/tang.jpg")
-                              ],
+                            Text(
+                              "Photograph",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            Spacer(),
+                            Image(
+                              height: 100,
+                              width: 130,
+                              image: AssetImage('images/photograph.png'),
 
-                            Icon(CupertinoIcons.camera,size: 30.0,color: Color(0xFF388E3C),),
-                          ]
-                      ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 160),
+                        Icon(
+                          CupertinoIcons.camera,
+                          size: 30.0,
 
+                        ),
+                      ]),
                     ],
                   ),
-
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(8, 20, 8, 0),
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 10),
                   padding: EdgeInsets.all(8),
-                  height: 170,
-                  width: 415,
+                  height: MediaQuery.of(context).size.height/4,
+                  width: double.infinity,
                   decoration: BoxDecoration(
                       color: Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Text(" Dettol April Promo",
-                            style: TextStyle(fontWeight: FontWeight.bold,color: Color(0XFFF57C00)),),
+                          Text(
+                            "Dettol April Promo",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,fontSize: 15,
+                                color: Color(0XFFF57C00)),
+                          ),
                         ],
                       ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
-                          Text(" 55665"),
+                          Text("55665"),
                         ],
                       ),
+                      SizedBox(height: 5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Spacer(flex: 1)
-                          ,                    Column(
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Promotion Active",style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text(
+                                "Promotional Active",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               PlanogramSwitch(),
                             ],
                           ),
@@ -215,8 +242,10 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right:50.0),
-                                child: Text("Reason",style: TextStyle(fontWeight: FontWeight.bold)),
+                                padding: const EdgeInsets.only(right: 50.0),
+                                child: Text("Reason",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               PlanogramDropDown(),
                             ],
@@ -224,7 +253,6 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                           Spacer(flex: 1),
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -247,7 +275,6 @@ class _PlanogramSwitchState extends State<PlanogramSwitch> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       color: Colors.transparent,
       child: Column(
         children: [
@@ -334,7 +361,7 @@ class SubmitButton extends StatelessWidget {
     return GestureDetector(
       onTap: onpress,
       child: Container(
-        margin:EdgeInsets.only(right:10.00),
+        margin: EdgeInsets.only(right: 10.00),
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Color(0xffFFDBC1),

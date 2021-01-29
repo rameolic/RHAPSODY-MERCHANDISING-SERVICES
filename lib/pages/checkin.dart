@@ -217,7 +217,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
                 width: 10,
               ),
               Text(
-                "Geo Location",
+                "Geo Location was wrong",
                 style: TextStyle(fontSize: 16),
               ),
             ],

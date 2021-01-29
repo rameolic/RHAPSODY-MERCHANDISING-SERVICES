@@ -29,7 +29,7 @@ class BarChatData extends StatelessWidget {
             ),
             ChartData(
               month: "MAR",
-              visits: 12,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
@@ -53,18 +53,23 @@ class BarChatData extends StatelessWidget {
               barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
+              month: "JUL",
+              visits: 7,
+              barColor: charts.ColorUtil.fromDartColor(barcolor ),
+            ),
+            ChartData(
               month: "AUG",
-              visits: 11,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "SEP",
-              visits: 18,
+              visits: 4,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "OCT",
-              visits: 12,
+              visits: 6,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(

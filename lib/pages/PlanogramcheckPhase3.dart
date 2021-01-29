@@ -26,11 +26,7 @@ class _PlanogramCheckPhase3State extends State<PlanogramCheckPhase3> {
             Spacer(),
             SubmitButton(
               onpress: (){
-                {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PlanogramCheckPhase2()));}
+
               },
             ),
           ],
