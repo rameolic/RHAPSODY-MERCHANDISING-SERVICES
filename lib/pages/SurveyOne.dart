@@ -45,9 +45,8 @@ class _SurveyOneState extends State<SurveyOne> {
               children: [
                 OutletDetails(),
                 Container(
-                  padding: EdgeInsets.only(left: 10,top: 6),
+                  padding: EdgeInsets.all(10.00),
                   margin: EdgeInsets.all(10),
-                  height: 300,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Color(0xFFFFF3E0),
@@ -192,8 +191,8 @@ class _SurveyOneCheckBoxState extends State<SurveyOneCheckBox> {
                   Transform.scale(
                     scale: 0.7,
                     child: Checkbox(
-                      checkColor: Colors.greenAccent,
-                      activeColor: Colors.grey,
+                      checkColor: Colors.white,
+                      activeColor: orange,
                       value: this.valuefirst,
                       onChanged: (bool value) {
                         setState(() {

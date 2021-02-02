@@ -126,7 +126,7 @@ class SurveyChart extends StatelessWidget {
             return LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFB4B5B9),Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
+                colors: [Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
           },
         )
 

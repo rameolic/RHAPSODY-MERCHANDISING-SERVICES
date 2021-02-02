@@ -309,7 +309,7 @@ class JurnyplanContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: setindex,
+      onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));},
       child: Container(
         margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
         padding: EdgeInsets.all(10.0),

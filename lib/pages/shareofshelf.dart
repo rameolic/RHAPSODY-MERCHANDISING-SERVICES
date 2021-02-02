@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'Customers Activities.dart';
 import 'MenuContent.dart';
 import 'PlanogramcheckPhase2.dart';
 
@@ -23,11 +24,7 @@ class _ShareShelfState extends State<ShareShelf> {
               style: TextStyle(color: orange),
             ),
             Spacer(),
-            SubmitButton(
-              onpress: (){
-
-              },
-            ),
+            SubmitButton(),
           ],
         ),
       ),
@@ -415,12 +412,16 @@ class CustomTwo extends StatelessWidget {
 }
 
 class SubmitButton extends StatelessWidget {
-  SubmitButton({@required this.onpress});
-  final onpress;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onpress,
+      onTap:(){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    CustomerActivities()));
+      },
       child: Container(
         margin: EdgeInsets.only(right: 10.00),
         padding: EdgeInsets.all(10.0),

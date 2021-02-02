@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'Customers Activities.dart';
 
 class Availability extends StatefulWidget {
   @override
@@ -15,9 +16,15 @@ class _AvailabilityState extends State<Availability> {
         appBar: AppBar(
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
-          title: Text(
-            'Availability',
-            style: TextStyle(color: orange),
+          title: Row(
+            children: [
+              Text(
+                'Availability',
+                style: TextStyle(color: orange),
+              ),
+              Spacer(),
+              SubmitButton(),
+            ],
           ),
         ),
         drawer: Drawer(
@@ -71,14 +78,14 @@ class _AvailabilityState extends State<Availability> {
                     height: 40.0,
                     width: MediaQuery.of(context).size.width,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        SizedBox(width: 20),
                         Text(
                           "Item/Description",
                           style:
                           TextStyle(color: Colors.white, fontSize: 16),
                         ),
+                        SizedBox(width: 10,),
                         Text(
                           " Avl",
                           style:
@@ -322,6 +329,34 @@ class Productdetailes extends StatelessWidget {
                 fontSize: 16.0),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+class SubmitButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap:(){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    CustomerActivities()));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 10.00),
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: Color(0xffFFDBC1),
+          borderRadius: BorderRadius.circular(10.00),
+        ),
+        child: Text(
+          'Submit',
+          style: TextStyle(color: Colors.black, fontSize: 15),
+        ),
       ),
     );
   }

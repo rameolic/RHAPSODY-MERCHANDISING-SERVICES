@@ -101,12 +101,12 @@ class StartDay extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-          color: Color(0xffFFDBC1),
+          color: orange,
           borderRadius: BorderRadius.circular(10.00),
         ),
         child: Text(
           'Start Day',
-          style: TextStyle(color: Colors.black,fontSize: 15),
+          style: TextStyle(color: Colors.white,fontSize: 15),
         ),
       ),
     );

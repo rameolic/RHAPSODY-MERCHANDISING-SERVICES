@@ -91,7 +91,7 @@ class HQOneCustom extends StatelessWidget {
       margin: EdgeInsets.only(top: 10, left: 10, right: 10),
       padding: EdgeInsets.all(10),
       height: 70,
-      width: 420,
+      width: double.infinity,
       decoration: BoxDecoration(
           color: Color(0xFFFFF3E0), borderRadius: BorderRadius.circular(10.0)),
       child: Row(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/pages/HQOne.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'MenuContent.dart';
 import '../Constants.dart';
+import 'Customers Activities.dart';
 
 class SurveyTwo extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class _SurveyTwoState extends State<SurveyTwo> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            HQOne()));}
+                            CustomerActivities()));}
               },
             ),
           ],
@@ -86,8 +88,6 @@ class _SurveyTwoState extends State<SurveyTwo> {
                           ),
                         ),
                       ),
-
-
                     ],
                   ),
 
@@ -143,7 +143,7 @@ class _SurveyTwoState extends State<SurveyTwo> {
                           Spacer(flex: 1,),
                           IconButton(onPressed: (){},
                             icon: Icon(
-                              CupertinoIcons.camera,
+                              CupertinoIcons.photo_camera_solid,
                               size: 50,
 
                             ),),
@@ -357,22 +357,32 @@ class _SurveyTwoDropDownState extends State<SurveyTwoDropDown> {
 
 }
 
-class StarDisplay extends StatelessWidget {
-  final int value;
-  const StarDisplay({Key key, this.value = 3})
-      : assert(value != null),
-        super(key: key);
+class StarDisplay extends StatefulWidget {
+  @override
+  _StarDisplayState createState() => _StarDisplayState();
+}
+
+class _StarDisplayState extends State<StarDisplay> {
+  double rating = 3;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(5, (index) {
-        return Icon(
-          index < value ? Icons.star : Icons.star_border,
-          color: Colors.yellow[700],
-
-        );
-      }),
+    return Column(
+      children: [
+        SmoothStarRating(
+          allowHalfRating:false,
+          onRatingChanged:(value){
+            setState(() {
+              rating= value;
+            });
+          },
+          starCount:5,
+          rating: rating,
+            size: 25.0,
+            color: Color(0xfffdd835),
+          borderColor:Color(0xfffdd835),
+          spacing: 0.0,
+        )
+      ],
     );
   }
 }

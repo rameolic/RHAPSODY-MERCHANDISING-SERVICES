@@ -78,9 +78,8 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                               ),
                             ),
                             Container(
-                              height: MediaQuery.of(context).size.height/1,
                               width: double.infinity,
-
+                              height: MediaQuery.of(context).size.height,
                               child: TabBarView(
                                 children: <Widget>[
                                   Container(
@@ -163,54 +162,54 @@ class _CompetionCheckOneTabState extends State<CompetionCheckOneTab> {
               CompetionCheckOneDropDown(),
               Text("Item Name",style: TextStyle(fontSize: 15)),
               SizedBox(
-                width: 335,
+                height: 30,
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: "Enter Here",
+                    border: InputBorder.none,
+                    hintText: "Type Here",
                   ),
                   style: TextStyle(color: Colors.black,fontSize: 15.0),
                 ),
               ),
-              Text("Company name",style: TextStyle(fontSize: 15)),
+              Text("Promotion Type",style: TextStyle(fontSize: 15)),
               CompetionCheckOneDropDown(),
               Text("Promotion Description",style: TextStyle(fontSize: 15)),
               SizedBox(
-                width: 335,
+                height: 30,
                 child: TextField(
                   decoration: InputDecoration(
+                    border: InputBorder.none,
                     hintText: "Enter Here",
                   ),
                   style: TextStyle(color: Colors.black,fontSize: 15.0),
                 ),
               ),
               Text("MRP",style: TextStyle(fontSize: 15)),
-              SizedBox(
-                width: 335,
+              SizedBox( height: 30,
                 child: TextField(
                   decoration: InputDecoration(
+                    border: InputBorder.none,
                     hintText: "Enter Here",
                   ),
                   style: TextStyle(color: Colors.black,fontSize: 15.0),
                 ),
               ),
               Text("Selling Price",style: TextStyle(fontSize: 15)),
-              SizedBox(
-
-                width: 335,
+              SizedBox( height: 30,
                 child: TextField(
                   decoration: InputDecoration(
+                    border: InputBorder.none,
                     hintText: "Enter Here",),
                   style: TextStyle(color: Colors.black,fontSize: 15.0),
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text("Capture Image"),
-                  SizedBox(width: 200),
+                  Spacer(),
                   IconButton(
                       icon: Icon(
-                        CupertinoIcons.camera,
+                        CupertinoIcons.photo_camera_solid,
                         color: Colors.grey[700],
                       ),
                       onPressed: () {}),
@@ -250,16 +249,27 @@ class _CompetionCheckOneDropDownState extends State<CompetionCheckOneDropDown> {
             value: 0,
             child: Padding(
               padding: const EdgeInsets.only(right: 200),
-              child: Text('Select Company'),
+              child: Text('Select Here'),
             ),
           ),
           DropdownMenuItem(
             value: 1,
-            child: Text('Select Brand'),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 200),
+              child: Text('Select Company'),
+            ),
           ),
           DropdownMenuItem(
             value: 2,
+            child: Text('Select Brand'),
+          ),
+          DropdownMenuItem(
+            value: 3,
             child: Text('Select Promotion Type'),
+          ),
+          DropdownMenuItem(
+            value: 4,
+            child: Text('Select Visibility Type'),
           ),
 
         ],

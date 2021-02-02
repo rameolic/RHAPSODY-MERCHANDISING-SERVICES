@@ -63,18 +63,24 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                 Container(
                   decoration: BoxDecoration(color: Color(0xffFFDBC1),borderRadius: BorderRadius.circular(10)),
                   height: MediaQuery.of(context).size.height/3.5,
-                  margin: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.all(10.0),
                   child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text("Before Image",style: TextStyle(fontWeight: FontWeight.bold),),
-                          SizedBox(width: 35),
-                          IconButton(icon:Icon(CupertinoIcons.camera,), onPressed: (){}),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: Text("Before Image",style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),
+                          SizedBox(width: 40,),
+                          IconButton(icon:Icon(CupertinoIcons.photo_camera_solid,), onPressed: (){}),
+                          SizedBox(width: 40,),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Text("After Image",style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),
 
-                          Text("After Image",style: TextStyle(fontWeight: FontWeight.bold),),
-                          SizedBox(width: 90),
                         ],
                       ),
                       Row(

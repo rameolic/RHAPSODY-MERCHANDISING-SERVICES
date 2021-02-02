@@ -1,13 +1,14 @@
-
-
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/pages/MenuContent.dart';
+import 'package:merchandising/pages/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'Startday.dart';
+import 'package:merchandising/pages/HQOne.dart';
 import 'package:merchandising/Constants.dart';
-
+import 'package:merchandising/api/api_service.dart';
+import 'dart:math';
 
 
 class DashBoard extends StatefulWidget {
@@ -16,6 +17,16 @@ class DashBoard extends StatefulWidget {
 }
 @override
 class _DashBoardState extends State<DashBoard> {
+  int shedulecalls = DBResponsedata.shedulevisits;
+  int unshedulecalls = DBResponsedata.unshedulevisits;
+  int shedulecallsdone = DBResponsedata.ShedulevisitssDone;
+  int unshedulecallsdone = DBResponsedata.UnShedulevisitsDone;
+  var workingtime = DBResponsedata.WorkingTime;
+  var Attendance =DBResponsedata.Attendance;
+  var EffectiveTime = DBResponsedata.EffectiveTime;
+  var TravelTime = DBResponsedata.TravelTime;
+  var monthpercentage =  DBResponsedata.monthPlanpercentage;
+
   bool pressAttentionMTB = false;
   bool pressAttentionTODAY = true;
   @override
@@ -26,7 +37,7 @@ class _DashBoardState extends State<DashBoard> {
         home: Scaffold(
           appBar:
           AppBar(
-            backgroundColor: Colors.white70,
+            backgroundColor: pink,
             iconTheme: IconThemeData(color: orange),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,28 +156,29 @@ class _DashBoardState extends State<DashBoard> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Containerblock(
-                          numbertext: pressAttentionMTB == true ? '240' : '25',
+                          numbertext: pressAttentionMTB == true ? '240' : '$shedulecalls',
                           chartext: 'Scheduled Visits',
                           icon: CupertinoIcons.phone_circle_fill,
                           color: Colors.green,
                         ),
                         Containerblock(
-                          numbertext: pressAttentionMTB == true ? '10' : '5',
-                          chartext: 'unScheduled\nVisits Touched',
+                          numbertext: pressAttentionMTB == true ? '10' : '$unshedulecalls',
+                          chartext: 'UnScheduled\nVisits',
                           icon: CupertinoIcons.exclamationmark_circle_fill,
                           color: Colors.red,
+                          space: 10.0,
                         ),
                         Containerblock(
-                          numbertext: pressAttentionMTB == true ? '124' : '10',
+                          numbertext: pressAttentionMTB == true ? '124' :  '$shedulecallsdone',
                           chartext: 'Scheduled\nVisits Done',
                           icon:CupertinoIcons.check_mark_circled_solid,
                           color: Colors.green,
                         ),
                         Containerblock(
-                          numbertext: pressAttentionMTB == true ? '83' : '60',
-                          chartext: 'Scheduled Visits Completed',
+                          numbertext: pressAttentionMTB == true ? '83' :  '$unshedulecallsdone',
+                          chartext: 'unScheduled Visits Done',
                           icon: CupertinoIcons.checkmark_seal_fill,
-                          color: Colors.green,
+                          color: Colors.red,
                         ),
                       ],
                     ),
@@ -189,30 +201,33 @@ class _DashBoardState extends State<DashBoard> {
                                 Text('Working Time'),
                                 WorkingRow(
                                   icon: CupertinoIcons.calendar,
+
                                   chartext: "Attendence",
-                                  numtext: pressAttentionMTB == true ? '15' : '00',
+                                  numtext: pressAttentionMTB == true ? '15' :  '$Attendance',
                                 ),
                                 WorkingRow(
                                   icon: CupertinoIcons.clock,
+
                                   chartext: "Effective Time",
-                                  numtext: pressAttentionMTB == true ? '103.5 Hrs' : '4.2 Hrs',
+                                  numtext: pressAttentionMTB == true ? '103.5 Hrs' :  '$EffectiveTime',
                                 ),
                                 WorkingRow(
                                   icon: CupertinoIcons.clock_fill,
-                                  chartext: "Total Working Time",
-                                  numtext: pressAttentionMTB == true ? '8.5 Hrs' : '0.3Hrs',
+                                  chartext: "Working Time",
+                                  numtext: pressAttentionMTB == true ? '8.5 Hrs' :  '$workingtime',
                                 ),
                                 WorkingRow(
                                   icon: CupertinoIcons.time,
-                                  chartext: "Wasted Time",
-                                  numtext: pressAttentionMTB == true ? '0.59 Hrs' : '0.048 Hrs',
+
+                                  chartext: "Travel Time",
+                                  numtext: pressAttentionMTB == true ? '0.59 Hrs' :  '$TravelTime',
                                 ),
                               ]),
                         ),
                         Column(
                           children: [
                             Container(
-                              height: 130,
+                              height: 140,
                               width: MediaQuery.of(context).size.width/1.75,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -227,9 +242,9 @@ class _DashBoardState extends State<DashBoard> {
                                     children: [
                                       JourneryPlan(
                                         color: Colors.orange,
-                                        percent: pressAttentionMTB == true ? 0.78 : 0.33,
+                                        percent: pressAttentionMTB == true ?  '$monthpercentage' : 0.33,
                                         textpercent: pressAttentionMTB == true ? '78' : '33',
-                                        title: "Journey Plan\nCompletion Percentage",
+                                        title: "Journey Plan\nCompletion",
                                       ),
                                       JourneryPlan(
                                         color: Colors.grey[600],
@@ -244,22 +259,69 @@ class _DashBoardState extends State<DashBoard> {
                             ),
                             SizedBox(height: 5,),
                             Container(
+                              height: 120,
                               width: MediaQuery.of(context).size.width/1.75,
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 color: containerscolor,
                               ),
-                              child: ActivityPerformance(
-                                pprimary:pressAttentionMTB == true ? '37' : '14',
-                                psecondary: pressAttentionMTB == true ? '38' : '18',
-                                ptotal: pressAttentionMTB == true ? '26' : '08',
-                                aprimary: pressAttentionMTB == true ? '48' : '34',
-                                asecondary: pressAttentionMTB == true ? '37' : '22',
-                                atotal: pressAttentionMTB == true ? '28' : '19',
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("Leave Request"),
+
+                                ],
                               ),
                             ),
                           ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 120,
+                          width: MediaQuery.of(context).size.width/1.55,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: containerscolor,
+                          ),
+                          child: ActivityPerformance(
+                            pprimary:pressAttentionMTB == true ? '37' : '14',
+                            psecondary: pressAttentionMTB == true ? '38' : '18',
+                            ptotal: pressAttentionMTB == true ? '26' : '08',
+                            aprimary: pressAttentionMTB == true ? '48' : '34',
+                            asecondary: pressAttentionMTB == true ? '37' : '22',
+                            atotal: pressAttentionMTB == true ? '28' : '19',
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: (){Navigator.push(context,
+                              MaterialPageRoute(builder: (BuildContext context) => HQOne()));},
+                          child: Container(
+                            height: 120,
+                            width: MediaQuery.of(context).size.width/3.25,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: containerscolor,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
+                                Text("HQ Communication",textAlign: TextAlign.center,),
+
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -283,11 +345,11 @@ class _DashBoardState extends State<DashBoard> {
                             color: Colors.black,
                             size: 50,
                           ),
-                          Spacer(),
+                          Spacer(flex: 2),
                           Text(
                             'Welcome to the new merchendiser\ninterface of Alseer.'
                                 'Hope to have a\ngreat day ahead!',
-                            style: new TextStyle(
+                            style: new TextStyle(fontSize: 15
                             ),
                           ),
                           Spacer(
@@ -295,6 +357,9 @@ class _DashBoardState extends State<DashBoard> {
                           ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                   ],
                 ),
@@ -308,11 +373,13 @@ class _DashBoardState extends State<DashBoard> {
 }
 
 class Containerblock extends StatelessWidget {
-  Containerblock({this.numbertext, this.chartext, this.color, this.icon});
+  Containerblock({this.numbertext, this.chartext,
+    this.color, this.icon,this.space});
   final icon;
   final color;
   final numbertext;
   final chartext;
+  final space;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -333,7 +400,7 @@ class Containerblock extends StatelessWidget {
               size: 35,
               color: color,
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             Text(
               numbertext,style: TextStyle(fontSize: 20),
             ),
@@ -394,13 +461,14 @@ class JourneryPlan extends StatelessWidget {
       child: Column(
         children: [
           CircularPercentIndicator(
-            radius: 40,
+            radius: 50,
             percent: percent,
             lineWidth: 2.0,
             backgroundColor: Colors.grey[350],
             progressColor: color,
             center: Text(textpercent),
           ),
+          SizedBox(height: 10,),
           Text(
             title,
             textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
@@ -430,58 +498,62 @@ class ActivityPerformance extends StatelessWidget {
         ),
         SizedBox(height: 10,),
         SizedBox(
-          height: 80,
           child: Table(
             border: TableBorder.symmetric(
               inside: BorderSide(color: Colors.grey),
             ),
             columnWidths: {
-              0: FractionColumnWidth(.28),
-              1: FractionColumnWidth(.22),
-              2: FractionColumnWidth(.245),
+              0: FractionColumnWidth(.23),
+              1: FractionColumnWidth(.235),
+              2: FractionColumnWidth(.242),
             },
             children: [
               TableRow(
                 children: [
-                  Text(
-                    "Planned\nAccess\nPoints",style: TextStyle(fontSize: 12),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0,top: 8.0,),
+                    child: Text(
+                      "Planned",style: TextStyle(fontSize: 12),
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 8,right: 8),
+                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          ptotal,style: TextStyle(fontSize: 12),
+                          ptotal,style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          "Total",style: TextStyle(fontSize: 12),
+                          "Total",style: TextStyle(fontSize: 10),
                         ),
                       ],
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          pprimary,style: TextStyle(fontSize: 12),
+                          pprimary,style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          "Primary",style: TextStyle(fontSize: 12),
+                          "Primary",style: TextStyle(fontSize: 10),
                         ),
                       ],
                     ),
                   ),
-                  Padding(padding: const EdgeInsets.only(left: 8,right: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(
-                          psecondary,style: TextStyle(fontSize: 12),
+                          psecondary,style: TextStyle(fontSize: 14),
                         ),
                         Text(
-                          "Secondary",style: TextStyle(fontSize: 12),
+                          "Secondary",style: TextStyle(fontSize: 10),
                         ),
                       ],
                     ),
@@ -490,59 +562,49 @@ class ActivityPerformance extends StatelessWidget {
               ),
               TableRow(
                 children: [
-                  Text(
-                    "Actual\nAccess\nPoints",style: TextStyle(fontSize: 12),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 14.0,right: 8.0,),
+                      child: Text(
+                        "Actual",style: TextStyle(fontSize: 12),
+                      ),
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: Text(
-                          atotal,style: TextStyle(fontSize: 12),
+                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          atotal,style: TextStyle(fontSize: 14),
                         ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: Text(
-                          "Total",style: TextStyle(fontSize: 12),
+                        Text(
+                          "Total",style: TextStyle(fontSize: 10),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: Text(
-                          aprimary,style: TextStyle(fontSize: 12),
+                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          aprimary,style: TextStyle(fontSize: 14),
                         ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Primary",style: TextStyle(fontSize: 12),
+                        Text(
+                          "Primary",style: TextStyle(fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                    child: Column(
+                      children: [
+                          Text(
+                            asecondary,style: TextStyle(fontSize: 14),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: Text(
-                          asecondary,style: TextStyle(fontSize: 12),
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(left: 8,right: 8),
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            "Secondary",style: TextStyle(fontSize: 12),
+                         Text(
+                            "Secondary",style: TextStyle(fontSize: 10),
                           ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

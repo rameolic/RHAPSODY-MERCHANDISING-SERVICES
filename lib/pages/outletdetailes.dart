@@ -6,6 +6,7 @@ import 'checkin.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/google_maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:merchandising/model/Location_service.dart';
 
 class OutLet extends StatefulWidget {
   @override
@@ -13,7 +14,11 @@ class OutLet extends StatefulWidget {
 }
 
 class _OutLetState extends State<OutLet> {
-
+  @override
+  void initState() {
+    super.initState();
+    getDist();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +64,7 @@ class _OutLetState extends State<OutLet> {
                         omarketname: "[8045] Waitrose",
                         oaddress: "10-7/207, Al Meydan Street,Dubai",
                         onumber: "+91 9775411055",
-                        odistance: "4.5kms",
+                        odistance: "",
                         olastvisit: "today",
                         oproductivity: "50%",
                         oprogramname: "Tang 2019",
@@ -113,6 +118,7 @@ class OutLetContent extends StatelessWidget {
           style: TextStyle( fontWeight: FontWeight.bold),
         ),
         Text(oaddress),
+        SizedBox(height: 5,),
         Table(
           columnWidths: {
             0: FlexColumnWidth(2.5),
@@ -176,4 +182,15 @@ class OutLetContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+var distInMeters;
+
+getDist({var trgtlat,var trgtlong}) async{
+
+
+ double distanceInMeters = await getLocation().distanceBetween(12.9608, 79.1442,lat,long);//
+  print(distInMeters);// lat2 and long2 are global variables with current user's location
+
+
 }

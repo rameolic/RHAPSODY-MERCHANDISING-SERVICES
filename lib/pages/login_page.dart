@@ -31,6 +31,12 @@ class _LoginPageState extends State<LoginPage> {
   LoginRequestModel loginRequestModel;
   DashBoardRequestModel dashBoardRequestModel;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+   TextEditingController emailinputcontroller = TextEditingController();
+   TextEditingController passwordinputcontroller = TextEditingController();
+  static String inputemail;
+  static String inputpassword;
+
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   Stack(
                     children: <Widget>[
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.of(context).size.width/1.15,
                         padding: EdgeInsets.only(
                             left: 20, right: 20, top: 10, bottom: 20),
                         margin:
@@ -74,35 +80,23 @@ class _LoginPageState extends State<LoginPage> {
                           key: globalFormKey,
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: 10),
-                              Column(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 35,
-                                    backgroundColor: orange.withOpacity(0.74),
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 45,
-                                      color: Colors.white54,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Sign In',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
-                                  ),
-                                ],
-                              ),
                               SizedBox(height: 20),
+                              Hero(
+                                tag: 'logo',
+                                child: Image(
+                                  height: 40,
+                                  image: AssetImage('images/rmsLogo.png'),
+                                ),
+                              ),
+                              SizedBox(height: 40),
                               Container(
                                 color: Colors.white,
                                 width: MediaQuery.of(context).size.width / 1.5,
                                 child: Theme(
                                   data: ThemeData(primaryColor: orange),
                                   child: TextFormField(
+                                    controller: emailinputcontroller,
                                     keyboardType: TextInputType.emailAddress,
-                                    onSaved: (input) =>
-                                        loginRequestModel.email = input,
                                     validator: (input) => !input.contains('@')
                                         ? "Email Id should be valid"
                                         : null,
@@ -129,8 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                   data: ThemeData(primaryColor: orange),
                                   child: TextFormField(
                                     keyboardType: TextInputType.text,
-                                    onSaved: (input) =>
-                                        loginRequestModel.password = input,
+                                    controller: passwordinputcontroller,
                                     validator: (input) => input.length < 6
                                         ? "Password should be more than 6 characters"
                                         : null,
@@ -165,7 +158,53 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(height: 30),
                               GestureDetector(
                                 onTap: () {
-                                  if (validateAndSave()) {
+                                  setState(()  {
+                                    loginrequestdata.inputemail =emailinputcontroller.text;
+                                    loginrequestdata.inputpassword=passwordinputcontroller.text;
+                                  });
+                                  if (validateAndSave())  {
+                                    if(loginrequestdata.inputemail != null && loginrequestdata.inputpassword != null )  {
+                                      getDashBoardData();
+                                      setState(() {
+                                        isApiCallProcess = true;
+                                      });
+                                      new Future.delayed(const Duration(seconds: 5), () {
+                                        if(
+                                        DBResponsedata.Attendance !=null
+                                        ){
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => DashBoard()));
+                                        }
+                                        else {
+                                          new Future.delayed(const Duration(seconds: 5), () {
+                                            if(
+                                            DBResponsedata.Attendance !=null
+                                            ){
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => DashBoard()));
+                                            }
+                                            else {
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => SplashScreen()));
+                                              final snackBar = SnackBar(
+                                                  elevation: 20.00,
+                                                  duration: Duration(seconds: 1),
+                                                  content: Text(
+                                                    "Username/password was wrong please restart the app",
+                                                  ));
+                                              scaffoldKey.currentState
+                                                  .showSnackBar(snackBar);
+                                            }
+                                          });
+                                        }
+                                      });
+
+
+                                    }
+                                  }
+
+                                },
+                                 /* if (validateAndSave()) {
                                     print(loginRequestModel.toJson());
 
                                     setState(() {
@@ -240,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                                     });
                                   }
                                   getLocation();
-                                },
+                                },*/
                                 child: Container(
                                   padding: EdgeInsets.all(15.0),
                                   width:
@@ -311,6 +350,7 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+
   }
 
   bool validateAndSave() {
@@ -321,4 +361,6 @@ class _LoginPageState extends State<LoginPage> {
     }
     return false;
   }
+
 }
+

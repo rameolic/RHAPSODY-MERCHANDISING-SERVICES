@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
-final menuitemscolor = Colors.black54;
+import 'HQOne.dart';
 
+final menuitemscolor = Colors.black54;
 
 class DrawerHeaderinfo extends StatelessWidget {
   @override
@@ -21,9 +22,9 @@ class DrawerHeaderinfo extends StatelessWidget {
           width: 20,
         ),
         Text(
-          'Ramkumar',
+          'Merchandiser\n [53264]',
           style: TextStyle(
-              color: Colors.white, fontSize: 25, fontWeight: FontWeight.w300),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
         )
       ],
     );
@@ -76,8 +77,17 @@ class Menu extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        DashBoard()));
+                    builder: (BuildContext context) => DashBoard()));
+          },
+        ),
+        ListTile(
+          title: MenuElements(
+            title: 'HQ Communication',
+            icon: Icons.connect_without_contact_sharp,
+          ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) => HQOne()));
           },
         ),
         ListTile(
@@ -99,7 +109,12 @@ class Menu extends StatelessWidget {
             title: 'Journey Plan',
             icon: CupertinoIcons.map_fill,
           ),
-          onTap: () {Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));},
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => JourneyPlan()));
+          },
         ),
         ListTile(
           title: MenuElements(
@@ -123,8 +138,7 @@ class Menu extends StatelessWidget {
           onTap: () {},
         ),
         ListTile(
-          title: MenuElements(
-              title: 'EOD Summary', icon: Icons.dynamic_form),
+          title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
         ),
         ListTile(

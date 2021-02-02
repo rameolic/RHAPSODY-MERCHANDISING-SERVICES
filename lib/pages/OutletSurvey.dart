@@ -18,24 +18,9 @@ class _OutletSurveySubmitState extends State<OutletSurveySubmit> {
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
-        title: Row(
-          children: [
-            Text(
-              'Outlet Survey',
-              style: TextStyle(color: orange),
-            ),
-            Spacer(),
-            SubmitButton(
-              onpress: () {
-                {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => SurveyOne()));
-                }
-              },
-            ),
-          ],
+        title: Text(
+          'Outlet Survey',
+          style: TextStyle(color: orange),
         ),
       ),
       drawer: Drawer(

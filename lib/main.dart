@@ -10,8 +10,6 @@ import 'package:merchandising/pages/home.dart';
 void main() {
   const seconds = const Duration(seconds: 900);
   Timer.periodic(seconds, (Timer t) => getLocation());
-  const maploadsin = const Duration(seconds: 2);
-  Timer.periodic(maploadsin, (Timer t) => GoogleMapsWidget());
 
   runApp(MyApp());
 }
@@ -45,8 +43,58 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: //DashBoard(),
-      LoginPage(),
+      home: SplashScreen()
+        //DashBoard(),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          BackGround(),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 80,),
+                Hero(
+                  tag: 'logo',
+                  child: Image(
+                    width: MediaQuery.of(context).size.width/1.3,
+                    image: AssetImage('images/rmsLogo.png'),
+                  ),
+                ),
+                SizedBox(height: 40,),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContextcontext) => LoginPage()));
+                  },
+                  child: Container(
+                    width: 120,
+                    padding: EdgeInsets.all(15.0),
+                    margin: EdgeInsets.only(right: 10.0),
+                    decoration: BoxDecoration(
+                      color: pink,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                            fontSize: 16, color: orange),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

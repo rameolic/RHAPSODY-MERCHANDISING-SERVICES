@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'OutletSurvey.dart';
 import 'MenuContent.dart';
 import '../Constants.dart';
+import 'Customers Activities.dart';
 class CompetitionCheckTwo extends StatefulWidget {
   @override
   _CompetitionCheckTwoState createState() => _CompetitionCheckTwoState();
@@ -28,7 +29,7 @@ class _CompetitionCheckTwoState extends State<CompetitionCheckTwo> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            OutletSurveySubmit()));}
+                            CustomerActivities()));}
               },
             ),
           ],
@@ -175,7 +176,7 @@ class _CompetionCheckOneTabState extends State<CompetionCheckOneTab> {
                   SizedBox(width: 200),
                   IconButton(
                       icon: Icon(
-                        CupertinoIcons.camera,
+                        CupertinoIcons.photo_camera_solid,
                         color: Colors.grey[700],
                       ),
                       onPressed: () {}),
@@ -215,15 +216,22 @@ class _CompetionCheckOneDropDownState extends State<CompetionCheckOneDropDown> {
             value: 0,
             child: Padding(
               padding: const EdgeInsets.only(right: 200),
-              child: Text('Select Company'),
+              child: Text('Select Here'),
             ),
           ),
           DropdownMenuItem(
             value: 1,
-            child: Text('Select Brand'),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 200),
+              child: Text('Select Company'),
+            ),
           ),
           DropdownMenuItem(
             value: 2,
+            child: Text('Select Brand'),
+          ),
+          DropdownMenuItem(
+            value: 3,
             child: Text('Select Visibility Type'),
           ),
 

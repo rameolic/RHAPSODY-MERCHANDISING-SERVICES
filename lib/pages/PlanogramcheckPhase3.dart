@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
-import 'PlanogramcheckPhase2.dart';
+import 'Customers Activities.dart';
 
 
 class PlanogramCheckPhase3 extends StatefulWidget {
@@ -24,11 +24,7 @@ class _PlanogramCheckPhase3State extends State<PlanogramCheckPhase3> {
               style: TextStyle(color: orange),
             ),
             Spacer(),
-            SubmitButton(
-              onpress: (){
-
-              },
-            ),
+            SubmitButton(),
           ],
         ),
       ),
@@ -180,17 +176,19 @@ class CustomPlanogramThree extends StatelessWidget {
 
   }
 }
-
-
 class SubmitButton extends StatelessWidget {
-  SubmitButton({@required this.onpress});
-  final onpress;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onpress,
+      onTap:(){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    CustomerActivities()));
+      },
       child: Container(
-        margin:EdgeInsets.only(right:10.00),
+        margin: EdgeInsets.only(right: 10.00),
         padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           color: Color(0xffFFDBC1),
@@ -204,3 +202,4 @@ class SubmitButton extends StatelessWidget {
     );
   }
 }
+

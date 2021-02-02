@@ -1,13 +1,17 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'outletdetailes.dart';
 import 'Customers Activities.dart';
+import 'package:merchandising/model/Location_service.dart';
 
 class CheckIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        getLocation();
         showDialog(
             context: context,
             builder: (_) => AlertDialog(

@@ -186,7 +186,7 @@ class _PlanogramCheckPhase2State extends State<PlanogramCheckPhase2> {
                         ),
                         SizedBox(width: 160),
                         Icon(
-                          CupertinoIcons.camera,
+                          CupertinoIcons.photo_camera_solid,
                           size: 30.0,
 
                         ),

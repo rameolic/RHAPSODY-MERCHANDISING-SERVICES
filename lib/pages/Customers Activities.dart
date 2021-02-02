@@ -8,6 +8,7 @@ import 'PlanogramcheckPhase1.dart';
 import 'NPD Check.dart';
 import 'CompetitionCheckOne.dart';
 import 'Visibility.dart';
+import 'OutletSurvey.dart';
 
 
 
@@ -39,12 +40,21 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.chart_bar_alt_fill,
                       chartext: 'Availability',
-                      tap: Availability(),
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Availability(),));},
+
                     ),
                     Activities(
                       icon: CupertinoIcons.eye_solid,
                       chartext: 'Visibility',
-                      tap: VisibilityOne(),
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                VisibilityOne(),));},
                     ),
                   ],
                 ),
@@ -54,12 +64,17 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: Icons.table_chart_sharp,
                       chartext: 'Share of Shelf',
-                      tap: ShareShelf(),
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ShareShelf(),));},
+
                     ),
                     Activities(
                       icon: Icons.table_rows,
                       chartext: 'Share of Assortment',
-                      tap: ShareShelf(),
+                      tap: (){},
                     ),
                   ],
                 ),
@@ -69,12 +84,16 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.checkmark_seal_fill,
                       chartext: 'Promotion Check',
-                      tap: Availability(),
+                      tap: (){},
                     ),
                     Activities(
                       icon: CupertinoIcons.doc_checkmark_fill,
                       chartext: 'Planogram Check',
-                      tap: PlanogramCheckPhase1(),
+                      tap:(){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PlanogramCheckPhase1(),));},
                     ),
                   ],
                 ),
@@ -84,12 +103,41 @@ class CustomerActivities extends StatelessWidget {
                     Activities(
                       icon: CupertinoIcons.info_circle_fill,
                       chartext: 'Compitetor info Capture',
-                      tap: CompetitionCheckOne(),
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CompetitionCheckOne(),));},
                     ),
                     Activities(
                       icon: Icons.center_focus_strong_rounded,
                       chartext: 'Focus/NPD Check',
-                      tap: FocusNPDCheck(),
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                FocusNPDCheck(),));},
+
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Activities(
+                      icon: Icons.delivery_dining,
+                      chartext: 'Delivery',
+                      tap: (){},
+                    ),
+                    Activities(
+                      icon: CupertinoIcons.list_bullet_below_rectangle,
+                      chartext: 'Outlet Survey',
+                      tap: (){Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                OutletSurveySubmit(),));},
+
                     ),
                   ],
                 ),
@@ -113,11 +161,7 @@ class Activities extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: (){Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-              tap));},
+      onTap: tap,
       child: Container(
         height: MediaQuery.of(context).size.height/7.5,
         width: MediaQuery.of(context).size.width/2.15,
