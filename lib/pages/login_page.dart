@@ -31,18 +31,10 @@ class _LoginPageState extends State<LoginPage> {
   LoginRequestModel loginRequestModel;
   DashBoardRequestModel dashBoardRequestModel;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-   TextEditingController emailinputcontroller = TextEditingController();
-   TextEditingController passwordinputcontroller = TextEditingController();
+  TextEditingController emailinputcontroller = TextEditingController();
+  TextEditingController passwordinputcontroller = TextEditingController();
   static String inputemail;
   static String inputpassword;
-
-
-  @override
-  void initState() {
-    super.initState();
-    loginRequestModel = new LoginRequestModel();
-    dashBoardRequestModel = new DashBoardRequestModel();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                   Stack(
                     children: <Widget>[
                       Container(
-                        width: MediaQuery.of(context).size.width/1.15,
+                        width: MediaQuery.of(context).size.width / 1.15,
                         padding: EdgeInsets.only(
                             left: 20, right: 20, top: 10, bottom: 20),
                         margin:
@@ -158,53 +150,72 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(height: 30),
                               GestureDetector(
                                 onTap: () {
-                                  setState(()  {
-                                    loginrequestdata.inputemail =emailinputcontroller.text;
-                                    loginrequestdata.inputpassword=passwordinputcontroller.text;
+                                  getLocation();
+                                  setState(() {
+                                    loginrequestdata.inputemail =
+                                        emailinputcontroller.text;
+                                    loginrequestdata.inputpassword =
+                                        passwordinputcontroller.text;
                                   });
-                                  if (validateAndSave())  {
-                                    if(loginrequestdata.inputemail != null && loginrequestdata.inputpassword != null )  {
+                                  if (validateAndSave()) {
+                                    if (loginrequestdata.inputemail != null &&
+                                        loginrequestdata.inputpassword !=
+                                            null) {
                                       getDashBoardData();
                                       setState(() {
                                         isApiCallProcess = true;
                                       });
-                                      new Future.delayed(const Duration(seconds: 5), () {
-                                        if(
-                                        DBResponsedata.Attendance !=null
-                                        ){
-                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => DashBoard()));
-                                        }
-                                        else {
-                                          new Future.delayed(const Duration(seconds: 5), () {
-                                            if(
-                                            DBResponsedata.Attendance !=null
-                                            ){
-                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => DashBoard()));
-                                            }
-                                            else {
+                                      new Future.delayed(
+                                          const Duration(seconds: 5), () {
+                                        if (DBResponsedata.Attendance != null) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContextcontext) =>
+                                                          DashBoard()));
+                                        } else {
+                                          new Future.delayed(
+                                              const Duration(seconds: 5), () {
+                                            if (DBResponsedata.Attendance !=
+                                                null) {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                              DashBoard()));
+                                            } else {
                                               setState(() {
                                                 isApiCallProcess = false;
                                               });
-                                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContextcontext) => SplashScreen()));
                                               final snackBar = SnackBar(
                                                   elevation: 20.00,
-                                                  duration: Duration(seconds: 1),
+                                                  duration:
+                                                      Duration(seconds: 2),
                                                   content: Text(
-                                                    "Username/password was wrong please restart the app",
+                                                    "Username/password was wrong",
                                                   ));
                                               scaffoldKey.currentState
                                                   .showSnackBar(snackBar);
+                                              new Future.delayed(
+                                                  const Duration(seconds: 2),
+                                                  () {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder:
+                                                            (BuildContextcontext) =>
+                                                                SplashScreen()));
+                                              });
                                             }
                                           });
                                         }
                                       });
-
-
                                     }
                                   }
-
                                 },
-                                 /* if (validateAndSave()) {
+                                /* if (validateAndSave()) {
                                     print(loginRequestModel.toJson());
 
                                     setState(() {
@@ -350,7 +361,6 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
-
   }
 
   bool validateAndSave() {
@@ -361,6 +371,4 @@ class _LoginPageState extends State<LoginPage> {
     }
     return false;
   }
-
 }
-

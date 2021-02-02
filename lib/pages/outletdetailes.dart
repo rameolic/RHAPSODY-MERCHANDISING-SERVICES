@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merchandising/api/api_service.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -54,7 +55,7 @@ class _OutLetState extends State<OutLet> {
                           child: GoogleMap(
                             zoomControlsEnabled: false,
                             zoomGesturesEnabled: true,
-                            initialCameraPosition: CameraPosition(target: LatLng(25.137463723902574, 55.20732665696656), zoom: 15),
+                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(JPResponsedata.latitudedata),double.tryParse(JPResponsedata.longitudedata)), zoom: 15),
                           ),
                         ),
                       ),

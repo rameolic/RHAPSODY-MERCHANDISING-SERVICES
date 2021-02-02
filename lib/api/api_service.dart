@@ -3,13 +3,16 @@ import 'package:merchandising/pages/home.dart';
 import 'dart:convert';
 import 'package:merchandising/pages/login_page.dart';
 import '../model/requestandresponsemodel.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:merchandising/model/Location_service.dart';
 
 var emailid = loginrequestdata.inputemail;
 var password = loginrequestdata.inputpassword;
 
 String DBurl = "https://rms.rhapsody.ae/api/dashboard";
+String JPurl = "https://rms.rhapsody.ae/api/today_planned_journey";
 
-void getDashBoardData() async {
+Future<void> getDashBoardData() async {
   String url = "https://rms.rhapsody.ae/api/login";
   Map loginData = {
     'email': '$emailid',
@@ -22,8 +25,10 @@ void getDashBoardData() async {
     var decodeData = jsonDecode(data);
     DBrequestdata.receivedtoken =decodeData['token'];
     DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
+    DBrequestdata.empname = decodeData['user'] ['name'];
      if(DBrequestdata.receivedtoken != null && DBrequestdata.receivedempid !=null ) {
        DBRequest();
+       getJourneyPlan();
 
      }
   }
@@ -40,10 +45,14 @@ class loginrequestdata {
 class DBrequestdata {
   static var receivedtoken;
   static var receivedempid;
+  static var empname;
 }
 var token = DBrequestdata.receivedtoken;
 var Empid = DBrequestdata.receivedempid;
 Map DBrequestData = {
+  'emp_id': '$Empid',
+};
+Map ODrequestData = {
   'emp_id': '$Empid',
 };
 void DBRequest() async{
@@ -84,6 +93,66 @@ class DBResponsedata {
   static var EffectiveTime;
   static var TravelTime;
   static var monthPlanpercentage;
+}
+
+void getJourneyPlan() async {
+  http.Response JPresponse = await http.post(JPurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(DBrequestData),
+  );
+  if (JPresponse.statusCode == 200){
+    String JPdata = JPresponse.body;
+    var decodeJPData = jsonDecode(JPdata);
+    JPResponsedata.outletiddata = decodeJPData['data'][0]['outlet']['outlet_id'];
+    JPResponsedata.outletnamedata = decodeJPData['data'][0]['outlet']['outlet_name'];
+    JPResponsedata.latitudedata = decodeJPData['data'][0]['outlet']['outlet_lat'];
+    JPResponsedata.longitudedata = decodeJPData['data'][0]['outlet']['outlet_long'];
+    JPResponsedata.outletareadata = decodeJPData['data'][0]['outlet']['outlet_area'];
+    JPResponsedata.outletcountrydata = decodeJPData['data'][0]['outlet']['outlet_country'];
+    JPResponsedata.outletcitydata = decodeJPData['data'][0]['outlet']['outlet_city'];
+
+
+
+    print(JPResponsedata.outletiddata);
+  }
+  if(JPresponse.statusCode != 200){
+    print(JPresponse.statusCode);
+
+  }
+}
+class JPResponsedata {
+  static var outletiddata;
+  static var outletnamedata;
+  static var contactnumberdata;
+  static var latitudedata;
+  static var longitudedata;
+  static var outletareadata;
+  static var outletcountrydata;
+  static var outletcitydata;
+  static var outlet1distance;
+}
+void getOutletData() async {
+  http.Response ODresponse = await http.post(JPurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(ODrequestData),
+  );
+  if (ODresponse.statusCode == 200){
+    String ODdata = ODresponse.body;
+    var decodeODData = jsonDecode(ODdata);
+    print(decodeODData);
+  }
+  if(ODresponse.statusCode != 200){
+    print(ODresponse.statusCode);
+
+  }
 }
 
 /*

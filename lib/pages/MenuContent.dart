@@ -4,6 +4,8 @@ import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
 import 'HQOne.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 final menuitemscolor = Colors.black54;
 
@@ -21,10 +23,20 @@ class DrawerHeaderinfo extends StatelessWidget {
         SizedBox(
           width: 20,
         ),
-        Text(
-          'Merchandiser\n [53264]',
-          style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              DBrequestdata.empname,
+              style: TextStyle(
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+            Text(
+              DBrequestdata.receivedempid,
+              style: TextStyle(
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+            ),
+          ],
         )
       ],
     );
@@ -78,16 +90,6 @@ class Menu extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => DashBoard()));
-          },
-        ),
-        ListTile(
-          title: MenuElements(
-            title: 'HQ Communication',
-            icon: Icons.connect_without_contact_sharp,
-          ),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (BuildContext context) => HQOne()));
           },
         ),
         ListTile(

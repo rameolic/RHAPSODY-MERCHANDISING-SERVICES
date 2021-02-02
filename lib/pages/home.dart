@@ -9,11 +9,18 @@ import 'package:merchandising/pages/HQOne.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'dart:math';
+import 'package:merchandising/pages/Time Sheet.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:merchandising/model/Location_service.dart';
 
 
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
+}
+void initState() {
+  print( Geolocator.distanceBetween(getLocation().lat, getLocation().long, JPResponsedata.latitudedata, JPResponsedata.longitudedata));
 }
 @override
 class _DashBoardState extends State<DashBoard> {
@@ -188,41 +195,46 @@ class _DashBoardState extends State<DashBoard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
-                          height: 265,
-                          width: MediaQuery.of(context).size.width/2.6,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: containerscolor,
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TimeSheet()));
+                          },
+                          child: Container(
+                            height: 265,
+                            width: MediaQuery.of(context).size.width/2.6,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: containerscolor,
+                            ),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text('Working Time'),
+                                  WorkingRow(
+                                    icon: CupertinoIcons.calendar,
+
+                                    chartext: "Attendence",
+                                    numtext: pressAttentionMTB == true ? '15' :  '$Attendance',
+                                  ),
+                                  WorkingRow(
+                                    icon: CupertinoIcons.clock,
+
+                                    chartext: "Effective Time",
+                                    numtext: pressAttentionMTB == true ? '103.5 Hrs' :  '$EffectiveTime',
+                                  ),
+                                  WorkingRow(
+                                    icon: CupertinoIcons.clock_fill,
+                                    chartext: "Working Time",
+                                    numtext: pressAttentionMTB == true ? '8.5 Hrs' :  '$workingtime',
+                                  ),
+                                  WorkingRow(
+                                    icon: CupertinoIcons.time,
+
+                                    chartext: "Travel Time",
+                                    numtext: pressAttentionMTB == true ? '0.59 Hrs' :  '$TravelTime',
+                                  ),
+                                ]),
                           ),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text('Working Time'),
-                                WorkingRow(
-                                  icon: CupertinoIcons.calendar,
-
-                                  chartext: "Attendence",
-                                  numtext: pressAttentionMTB == true ? '15' :  '$Attendance',
-                                ),
-                                WorkingRow(
-                                  icon: CupertinoIcons.clock,
-
-                                  chartext: "Effective Time",
-                                  numtext: pressAttentionMTB == true ? '103.5 Hrs' :  '$EffectiveTime',
-                                ),
-                                WorkingRow(
-                                  icon: CupertinoIcons.clock_fill,
-                                  chartext: "Working Time",
-                                  numtext: pressAttentionMTB == true ? '8.5 Hrs' :  '$workingtime',
-                                ),
-                                WorkingRow(
-                                  icon: CupertinoIcons.time,
-
-                                  chartext: "Travel Time",
-                                  numtext: pressAttentionMTB == true ? '0.59 Hrs' :  '$TravelTime',
-                                ),
-                              ]),
                         ),
                         Column(
                           children: [

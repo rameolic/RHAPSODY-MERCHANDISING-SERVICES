@@ -1,8 +1,11 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 double lat;
 double long;
-DateTime now = DateTime.now();
+final  timenow =DateFormat("h:mma").format(
+  DateTime.now()
+);
 
 class Location {
   double latitude;
@@ -25,18 +28,8 @@ class Location {
   await location.getCurrentLocation();
   print(location.longitude,);
   print(location.latitude);
-  lat = location.latitude;
-  long = location.longitude;
-  print(now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString());
-}
-
-var distInMeters;
-
-Future getDist({var trgtlat,var trgtlong}) async{
-
-
-  double distanceInMeters = await getLocation().distanceBetween(12.9608, 79.1442,lat,long);//
-  print(distInMeters);// lat2 and long2 are global variables with current user's location
-
-
+   lat = location.latitude;
+   long = location.longitude;
+   print(timenow);
+ // print(now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString());
 }
