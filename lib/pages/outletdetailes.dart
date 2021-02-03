@@ -3,7 +3,9 @@ import 'package:merchandising/api/api_service.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'package:merchandising/api/jpapi.dart';
 import 'checkin.dart';
+import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/google_maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -55,7 +57,7 @@ class _OutLetState extends State<OutLet> {
                           child: GoogleMap(
                             zoomControlsEnabled: false,
                             zoomGesturesEnabled: true,
-                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(JPResponsedata.latitudedata),double.tryParse(JPResponsedata.longitudedata)), zoom: 15),
+                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(JPResponsedata.latitudedata1),double.tryParse(JPResponsedata.longitudedata1)), zoom: 15),
                           ),
                         ),
                       ),

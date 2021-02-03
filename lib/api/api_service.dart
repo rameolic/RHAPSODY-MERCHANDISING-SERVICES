@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:merchandising/pages/home.dart';
 import 'dart:convert';
+import 'jpapi.dart';
+import 'jprequest.dart';
 import 'package:merchandising/pages/login_page.dart';
 import '../model/requestandresponsemodel.dart';
 import 'package:geolocator/geolocator.dart';
@@ -95,46 +97,6 @@ class DBResponsedata {
   static var monthPlanpercentage;
 }
 
-void getJourneyPlan() async {
-  http.Response JPresponse = await http.post(JPurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    },
-    body: jsonEncode(DBrequestData),
-  );
-  if (JPresponse.statusCode == 200){
-    String JPdata = JPresponse.body;
-    var decodeJPData = jsonDecode(JPdata);
-    JPResponsedata.outletiddata = decodeJPData['data'][0]['outlet']['outlet_id'];
-    JPResponsedata.outletnamedata = decodeJPData['data'][0]['outlet']['outlet_name'];
-    JPResponsedata.latitudedata = decodeJPData['data'][0]['outlet']['outlet_lat'];
-    JPResponsedata.longitudedata = decodeJPData['data'][0]['outlet']['outlet_long'];
-    JPResponsedata.outletareadata = decodeJPData['data'][0]['outlet']['outlet_area'];
-    JPResponsedata.outletcountrydata = decodeJPData['data'][0]['outlet']['outlet_country'];
-    JPResponsedata.outletcitydata = decodeJPData['data'][0]['outlet']['outlet_city'];
-
-
-
-    print(JPResponsedata.outletiddata);
-  }
-  if(JPresponse.statusCode != 200){
-    print(JPresponse.statusCode);
-
-  }
-}
-class JPResponsedata {
-  static var outletiddata;
-  static var outletnamedata;
-  static var contactnumberdata;
-  static var latitudedata;
-  static var longitudedata;
-  static var outletareadata;
-  static var outletcountrydata;
-  static var outletcitydata;
-  static var outlet1distance;
-}
 void getOutletData() async {
   http.Response ODresponse = await http.post(JPurl,
     headers: {

@@ -3,11 +3,13 @@ import 'package:flutter/cupertino.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
+
 class StartDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
         showDialog(
             context: context,
             builder: (_) => AlertDialog(

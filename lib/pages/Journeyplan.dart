@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:merchandising/model/Location_service.dart';
 import '../Constants.dart';
@@ -7,6 +9,8 @@ import 'Maps_Veiw.dart';
 import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:merchandising/api/jpapi.dart';
+import 'package:merchandising/api/jprequest.dart';
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -183,7 +187,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                             ),
                           ),
                           SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
                           Expanded(child : JourneyListBuilder()),
                         ],
@@ -258,28 +262,229 @@ class JourneyListBuilder extends StatefulWidget {
 }
 
 class _State extends State<JourneyListBuilder> {
-  final List<int> outletid = <int>[
-    JPResponsedata.outletiddata,
+  static final List<int> outletids = <int>[
+    JPResponsedata.outletiddata1,
+    JPResponsedata.outletiddata2,
+    JPResponsedata.outletiddata3,
+    JPResponsedata.outletiddata4,
+    JPResponsedata.outletiddata5,
+    JPResponsedata.outletiddata6,
+    JPResponsedata.outletiddata7,
+    JPResponsedata.outletiddata8,
+    JPResponsedata.outletiddata9,
+    JPResponsedata.outletiddata10,
+    JPResponsedata.outletiddata11,
+    JPResponsedata.outletiddata12,
+    JPResponsedata.outletiddata13,
+    JPResponsedata.outletiddata14,
+    JPResponsedata.outletiddata15,
+    JPResponsedata.outletiddata16,
+    JPResponsedata.outletiddata17,
+    JPResponsedata.outletiddata18,
+    JPResponsedata.outletiddata19,
+    JPResponsedata.outletiddata20,
   ];
   final List<String> names = <String>[
-    JPResponsedata.outletnamedata,
+    JPResponsedata.outletnamedata1,
+    JPResponsedata.outletnamedata2,
+    JPResponsedata.outletnamedata3,
+    JPResponsedata.outletnamedata4,
+    JPResponsedata.outletnamedata5,
+    JPResponsedata.outletnamedata6,
+    JPResponsedata.outletnamedata7,
+    JPResponsedata.outletnamedata8,
+    JPResponsedata.outletnamedata9,
+    JPResponsedata.outletnamedata10,
+    JPResponsedata.outletnamedata11,
+    JPResponsedata.outletnamedata12,
+    JPResponsedata.outletnamedata13,
+    JPResponsedata.outletnamedata14,
+    JPResponsedata.outletnamedata15,
+    JPResponsedata.outletnamedata16,
+    JPResponsedata.outletnamedata17,
+    JPResponsedata.outletnamedata18,
+    JPResponsedata.outletnamedata19,
+    JPResponsedata.outletnamedata20,
+
+
   ];
   final List<String> area = <String>[
-    JPResponsedata.outletareadata,
+    JPResponsedata.outletareadata1,
+    JPResponsedata.outletareadata2,
+    JPResponsedata.outletareadata3,
+    JPResponsedata.outletareadata4,
+    JPResponsedata.outletareadata5,
+    JPResponsedata.outletareadata6,
+    JPResponsedata.outletareadata7,
+    JPResponsedata.outletareadata8,
+    JPResponsedata.outletareadata9,
+    JPResponsedata.outletareadata10,
+    JPResponsedata.outletareadata11,
+    JPResponsedata.outletareadata12,
+    JPResponsedata.outletareadata13,
+    JPResponsedata.outletareadata14,
+    JPResponsedata.outletareadata15,
+    JPResponsedata.outletareadata16,
+    JPResponsedata.outletareadata17,
+    JPResponsedata.outletareadata18,
+    JPResponsedata.outletareadata19,
+    JPResponsedata.outletareadata20,
+
   ];
   final List<String> city = <String>[
-    JPResponsedata.outletcitydata,
+    JPResponsedata.outletcitydata1,
+    JPResponsedata.outletcitydata2,
+    JPResponsedata.outletcitydata3,
+    JPResponsedata.outletcitydata4,
+    JPResponsedata.outletcitydata5,
+    JPResponsedata.outletcitydata6,
+    JPResponsedata.outletcitydata7,
+    JPResponsedata.outletcitydata8,
+    JPResponsedata.outletcitydata9,
+    JPResponsedata.outletcitydata10,
+    JPResponsedata.outletcitydata11,
+    JPResponsedata.outletcitydata12,
+    JPResponsedata.outletcitydata13,
+    JPResponsedata.outletcitydata14,
+    JPResponsedata.outletcitydata15,
+    JPResponsedata.outletcitydata16,
+    JPResponsedata.outletcitydata17,
+    JPResponsedata.outletcitydata18,
+    JPResponsedata.outletcitydata19,
+    JPResponsedata.outletcitydata20,
+
   ];
   final List<String> country = <String>[
-    JPResponsedata.outletcountrydata,
+    JPResponsedata.outletcountrydata1,
+    JPResponsedata.outletcountrydata2,
+    JPResponsedata.outletcountrydata3,
+    JPResponsedata.outletcountrydata4,
+    JPResponsedata.outletcountrydata5,
+    JPResponsedata.outletcountrydata6,
+    JPResponsedata.outletcountrydata7,
+    JPResponsedata.outletcountrydata8,
+    JPResponsedata.outletcountrydata9,
+    JPResponsedata.outletcountrydata10,
+    JPResponsedata.outletcountrydata11,
+    JPResponsedata.outletcountrydata12,
+    JPResponsedata.outletcountrydata13,
+    JPResponsedata.outletcountrydata14,
+    JPResponsedata.outletcountrydata15,
+    JPResponsedata.outletcountrydata16,
+    JPResponsedata.outletcountrydata17,
+    JPResponsedata.outletcountrydata18,
+    JPResponsedata.outletcountrydata19,
+    JPResponsedata.outletcountrydata20,
+
   ];
-  final List<int> contactnumber = <int>[1];
-  final List<String> distancenum = <String>[
-    '5.33',
-  ];
+  final List<int> contactnumber = <int>[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+  final List<String> distancenum = <String>['5.33','5','32','2','5.26','2.4','3.8','1.9',
+  '4.2','5.4','3.9','2.7','3.1','1.8','2.4','2.1','3.8','2.6','4.5','4.9'];
+  int itemsno(){
+    outletids.forEach((elements) => (null));
+    int countOutlet=0;
+    for (final outletid in outletids){if(outletid != null){countOutlet++;}}
+    print('outlet.id.json: $countOutlet');
+    return countOutlet;
+  }
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        itemCount: itemsno(),
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+            },
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              height: 120,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        '[${outletids[index]}]',
+                        style: TextStyle(
+                            fontSize: 15.0, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                        '${names[index]}',
+                        style: TextStyle(
+                            fontSize: 15.0, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text('${area[index]}',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(width: 5,),
+                      Text('${city[index]}',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(width: 5,),
+                      Text('${country[index]}',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                    ],
+                  ),
+                  Spacer(),
+                  Table(
+                    children: [
+                      TableRow(children: [
+                        Text('Contact Number',
+                            style: TextStyle(
+                              fontSize: 13.0,
+                            )),
+                        Text(":"),
+                        Text('${contactnumber[index]}',
+                            style: TextStyle(color: orange)),
+                      ]),
+                      TableRow(children: [
+                        Text('Distance',
+                            style: TextStyle(
+                              fontSize: 13.0,
+                            )),
+                        Text(":"),
+                        Text('${distancenum[index]}',
+                            style: TextStyle(color: orange)),
+                      ]),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+}
+
+/*
+itemsno(){
+    for(int i =20; i>=1; i--)
+    {
+      int index =i;
+      if(JPResponsedata.outletiddata$index != null)
+      {
+        return i;
+      }
+    }
+  }
+ListView.builder(
         itemCount: names.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -358,7 +563,4 @@ class _State extends State<JourneyListBuilder> {
               ),
             ),
           );
-        });
-  }
-}
-
+        }); */

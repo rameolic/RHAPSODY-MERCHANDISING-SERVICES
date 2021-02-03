@@ -13,6 +13,8 @@ import 'package:merchandising/pages/Time Sheet.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
+import 'package:merchandising/api/jprequest.dart';
+import 'package:merchandising/api/jpapi.dart';
 
 
 class DashBoard extends StatefulWidget {
@@ -20,7 +22,7 @@ class DashBoard extends StatefulWidget {
   _DashBoardState createState() => _DashBoardState();
 }
 void initState() {
-  print( Geolocator.distanceBetween(getLocation().lat, getLocation().long, JPResponsedata.latitudedata, JPResponsedata.longitudedata));
+  print( Geolocator.distanceBetween(getLocation().lat, getLocation().long, JPResponsedata.latitudedata1, JPResponsedata.longitudedata1));
 }
 @override
 class _DashBoardState extends State<DashBoard> {
