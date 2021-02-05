@@ -1,4 +1,6 @@
 import 'package:http/http.dart' as http;
+import 'package:merchandising/model/Location_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/pages/home.dart';
 import 'dart:convert';
 import 'jpapi.dart';
@@ -8,20 +10,20 @@ import '../model/requestandresponsemodel.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
 
-var emailid = loginrequestdata.inputemail;
-var password = loginrequestdata.inputpassword;
 
 String DBurl = "https://rms.rhapsody.ae/api/dashboard";
 String JPurl = "https://rms.rhapsody.ae/api/today_planned_journey";
+String OCurl = "https://rms.rhapsody.ae/api/outlet_details";
 
 Future<void> getDashBoardData() async {
   String url = "https://rms.rhapsody.ae/api/login";
+  var emailid = loginrequestdata.inputemail;
+  var password = loginrequestdata.inputpassword;
   Map loginData = {
     'email': '$emailid',
     'password': '$password',
   };
   http.Response response = await http.post(url, body: loginData);
-  print(loginData);
   if (response.statusCode == 200) {
     String data = response.body;
     var decodeData = jsonDecode(data);
@@ -34,7 +36,8 @@ Future<void> getDashBoardData() async {
 
      }
   }
-  else if (response.statusCode == 422) {
+  else {
+    print(response.statusCode);
     print("error");
   }
 }
@@ -42,6 +45,9 @@ Future<void> getDashBoardData() async {
 class loginrequestdata {
   static var inputemail;
   static var inputpassword;
+}
+class outletrequestdata {
+  static var outletidpressed;
 }
 
 class DBrequestdata {
@@ -52,9 +58,6 @@ class DBrequestdata {
 var token = DBrequestdata.receivedtoken;
 var Empid = DBrequestdata.receivedempid;
 Map DBrequestData = {
-  'emp_id': '$Empid',
-};
-Map ODrequestData = {
   'emp_id': '$Empid',
 };
 void DBRequest() async{
@@ -97,25 +100,53 @@ class DBResponsedata {
   static var monthPlanpercentage;
 }
 
-void getOutletData() async {
-  http.Response ODresponse = await http.post(JPurl,
+class chekinoutlet{
+  static var checkinoutletid;
+  static var checkinoutletname;
+  static var checkinlat;
+  static var checkinlong;
+  static var checkinarea;
+  static var checkincity;
+  static var checkinstate;
+  static var checkincountry;
+  static double currentdistance;
+
+}
+
+
+void outletwhencheckin() async {
+  var outletid = outletrequestdata.outletidpressed;
+  Map ODrequestDataforcheckin = {
+    'outlet_id': '$outletid',
+  };
+  http.Response OCresponse = await http.post(OCurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(ODrequestData),
+    body: jsonEncode(ODrequestDataforcheckin),
   );
-  if (ODresponse.statusCode == 200){
-    String ODdata = ODresponse.body;
-    var decodeODData = jsonDecode(ODdata);
-    print(decodeODData);
+  if (OCresponse.statusCode == 200){
+    String OCdata = OCresponse.body;
+    var decodeODData = jsonDecode(OCdata);
+    chekinoutlet.checkinoutletid = decodeODData['data'][0]['outlet_id'];
+    chekinoutlet.checkinoutletname = decodeODData['data'][0]['outlet_name'];
+    chekinoutlet.checkinarea = decodeODData['data'][0]['outlet_area'];
+    chekinoutlet.checkincity = decodeODData['data'][0]['outlet_city'];
+    chekinoutlet.checkinstate = decodeODData['data'][0]['outlet_state'];
+    chekinoutlet.checkincountry = decodeODData['data'][0]['outlet_country'];
+    chekinoutlet.checkinlat = decodeODData['data'][0]['outlet_lat'];
+    chekinoutlet.checkinlong = decodeODData['data'][0]['outlet_long'];
+    chekinoutlet.currentdistance = Geolocator.distanceBetween(lat, long, double.parse(chekinoutlet.checkinlat), double.parse(chekinoutlet.checkinlong));
   }
-  if(ODresponse.statusCode != 200){
-    print(ODresponse.statusCode);
+  if(OCresponse.statusCode != 200){
+    print(OCresponse.statusCode);
 
   }
 }
+
+
 
 /*
 class APIService {

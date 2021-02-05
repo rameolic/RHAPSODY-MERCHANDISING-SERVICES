@@ -6,6 +6,7 @@ import 'home.dart';
 import 'HQOne.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:merchandising/model/distanceinmeters.dart';
 
 final menuitemscolor = Colors.black54;
 
@@ -112,6 +113,7 @@ class Menu extends StatelessWidget {
             icon: CupertinoIcons.map_fill,
           ),
           onTap: () {
+            distinmeters();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

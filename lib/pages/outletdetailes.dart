@@ -4,24 +4,25 @@ import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'package:merchandising/api/jpapi.dart';
+import 'package:geolocator/geolocator.dart';
 import 'checkin.dart';
 import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
-import 'package:merchandising/model/google_maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:merchandising/model/Location_service.dart';
 
 class OutLet extends StatefulWidget {
+  double currentdist;
   @override
   _OutLetState createState() => _OutLetState();
 }
 
 class _OutLetState extends State<OutLet> {
-  @override
-  void initState() {
-    super.initState();
-    getDist();
-  }
+  List<Marker> _markers = <Marker>[
+    Marker(markerId: MarkerId("outletpoint"),
+        position: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong),
+        ))
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,17 +58,22 @@ class _OutLetState extends State<OutLet> {
                           child: GoogleMap(
                             zoomControlsEnabled: false,
                             zoomGesturesEnabled: true,
-                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(JPResponsedata.latitudedata1),double.tryParse(JPResponsedata.longitudedata1)), zoom: 15),
+                            markers:Set<Marker>.of(_markers),
+                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong)), zoom: 15),
                           ),
                         ),
                       ),
 
                       SizedBox(height: 10,),
                       OutLetContent(
-                        omarketname: "[8045] Waitrose",
-                        oaddress: "10-7/207, Al Meydan Street,Dubai",
+                        ooutletid: chekinoutlet.checkinoutletid,
+                        omarketname: chekinoutlet.checkinoutletname,
+                        oarea: chekinoutlet.checkinarea,
+                        ocity: chekinoutlet.checkincity,
+                        ostate: chekinoutlet.checkinstate,
+                        ocountry: chekinoutlet.checkincountry,
                         onumber: "+91 9775411055",
-                        odistance: "",
+                        odistance: (chekinoutlet.currentdistance/1000).toStringAsFixed(2),
                         olastvisit: "today",
                         oproductivity: "50%",
                         oprogramname: "Tang 2019",
@@ -93,18 +99,27 @@ class _OutLetState extends State<OutLet> {
   }
 }
 
+
 class OutLetContent extends StatelessWidget {
   OutLetContent({
     this.omarketname,
-    this.oaddress,
+    this.oarea,
     this.olastvisit,
     this.onumber,
     this.oproductivity,
     this.oprogramname,
     this.odistance,
+    this.ooutletid,
+    this.ocity,
+    this.ocountry,
+    this.ostate,
   });
+  final ooutletid;
   final omarketname;
-  final oaddress;
+  final oarea;
+  final ocity;
+  final ostate;
+  final ocountry;
   final onumber;
   final odistance;
   final oproductivity;
@@ -116,11 +131,24 @@ class OutLetContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          omarketname,
-          style: TextStyle( fontWeight: FontWeight.bold),
+        Row(
+          children: [
+            Text(
+              '[$ooutletid]',
+              style: TextStyle( fontWeight: FontWeight.bold),
+            ),
+            SizedBox(width: 5,),
+            Text(
+              omarketname,
+              style: TextStyle( fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-        Text(oaddress),
+        Row(
+          children: [
+            Text(oarea),SizedBox(width: 5,),Text(ocity),SizedBox(width: 5,),Text(ostate),SizedBox(width: 5,),Text(ocountry),
+          ],
+        ),
         SizedBox(height: 5,),
         Table(
           columnWidths: {
@@ -145,7 +173,12 @@ class OutLetContent extends StatelessWidget {
               Text('Distance',
                   ),
               Text(":"),
-              Text(odistance, style: TextStyle(color: orange)),
+              Row(
+                children: [
+                  Text(odistance.toString(), style: TextStyle(color: orange)),
+                  Text("KM",style: TextStyle(color: orange))
+                ],
+              ),
             ]),
             TableRow(children: [
               Text('Coverage Productivity %',),
@@ -185,15 +218,4 @@ class OutLetContainer extends StatelessWidget {
       ),
     );
   }
-}
-
-var distInMeters;
-
-getDist({var trgtlat,var trgtlong}) async{
-
-
- double distanceInMeters = await getLocation().distanceBetween(12.9608, 79.1442,lat,long);//
-  print(distInMeters);// lat2 and long2 are global variables with current user's location
-
-
 }

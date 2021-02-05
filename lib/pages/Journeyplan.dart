@@ -5,12 +5,14 @@ import 'package:merchandising/model/Location_service.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'package:merchandising/model/distanceinmeters.dart';
 import 'Maps_Veiw.dart';
 import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/api/jpapi.dart';
 import 'package:merchandising/api/jprequest.dart';
+import 'package:merchandising/ProgressHUD.dart';
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class JourneyPlan extends StatefulWidget {
 }
 
 class _JourneyPlanState extends State<JourneyPlan> {
+  bool isApiCallProcess = false;
   int index;
   bool pressWeek = false;
   bool pressTODAY = true;
@@ -189,7 +192,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child : JourneyListBuilder()),
+                          Expanded(child: JourneyListBuilder()),
                         ],
                       ),
                       Container(
@@ -216,6 +219,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
       ),
     );
   }
+
 }
 
 class JourneyPlanHeader extends StatelessWidget {
@@ -254,7 +258,6 @@ class JourneyPlanHeader extends StatelessWidget {
     );
   }
 }
-
 
 class JourneyListBuilder extends StatefulWidget {
   @override
@@ -305,8 +308,6 @@ class _State extends State<JourneyListBuilder> {
     JPResponsedata.outletnamedata18,
     JPResponsedata.outletnamedata19,
     JPResponsedata.outletnamedata20,
-
-
   ];
   final List<String> area = <String>[
     JPResponsedata.outletareadata1,
@@ -329,7 +330,6 @@ class _State extends State<JourneyListBuilder> {
     JPResponsedata.outletareadata18,
     JPResponsedata.outletareadata19,
     JPResponsedata.outletareadata20,
-
   ];
   final List<String> city = <String>[
     JPResponsedata.outletcitydata1,
@@ -352,7 +352,6 @@ class _State extends State<JourneyListBuilder> {
     JPResponsedata.outletcitydata18,
     JPResponsedata.outletcitydata19,
     JPResponsedata.outletcitydata20,
-
   ];
   final List<String> country = <String>[
     JPResponsedata.outletcountrydata1,
@@ -375,26 +374,148 @@ class _State extends State<JourneyListBuilder> {
     JPResponsedata.outletcountrydata18,
     JPResponsedata.outletcountrydata19,
     JPResponsedata.outletcountrydata20,
-
   ];
-  final List<int> contactnumber = <int>[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
-  final List<String> distancenum = <String>['5.33','5','32','2','5.26','2.4','3.8','1.9',
-  '4.2','5.4','3.9','2.7','3.1','1.8','2.4','2.1','3.8','2.6','4.5','4.9'];
-  int itemsno(){
+  final List<int> contactnumber = <int>[
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ];
+  final List<String> distancenum = <String>[
+    distinkm.distancetooutlet1 != null
+        ? distinkm.distancetooutlet1.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet2 != null
+        ? distinkm.distancetooutlet2.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet3 != null
+        ? distinkm.distancetooutlet3.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet4 != null
+        ? distinkm.distancetooutlet4.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet5 != null
+        ? distinkm.distancetooutlet5.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet6 != null
+        ? distinkm.distancetooutlet6.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet7 != null
+        ? distinkm.distancetooutlet7.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet8 != null
+        ? distinkm.distancetooutlet8.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet9 != null
+        ? distinkm.distancetooutlet9.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet10 != null
+        ? distinkm.distancetooutlet10.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet11 != null
+        ? distinkm.distancetooutlet11.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet12 != null
+        ? distinkm.distancetooutlet12.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet13 != null
+        ? distinkm.distancetooutlet13.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet14 != null
+        ? distinkm.distancetooutlet14.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet15 != null
+        ? distinkm.distancetooutlet15.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet16 != null
+        ? distinkm.distancetooutlet16.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet17 != null
+        ? distinkm.distancetooutlet17.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet18 != null
+        ? distinkm.distancetooutlet18.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet19 != null
+        ? distinkm.distancetooutlet19.toStringAsFixed(2)
+        : null,
+    distinkm.distancetooutlet20 != null
+        ? distinkm.distancetooutlet20.toStringAsFixed(2)
+        : null,
+  ];
+  int itemsno() {
     outletids.forEach((elements) => (null));
-    int countOutlet=0;
-    for (final outletid in outletids){if(outletid != null){countOutlet++;}}
-    print('outlet.id.json: $countOutlet');
+    int countOutlet = 0;
+    for (final outletid in outletids) {
+      if (outletid != null) {
+        countOutlet++;
+      }
+    }
     return countOutlet;
   }
+
+  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
+    return  ProgressHUD(
+      child: _uiSetup(context),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.1,
+    );
+  }
+  Widget _uiSetup(BuildContext context) {
     return ListView.builder(
         itemCount: itemsno(),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+             setState(() {
+               isApiCallProcess = true;
+              });
+             outletrequestdata.outletidpressed = outletids[index];
+             outletwhencheckin();
+              Future.delayed(const Duration(seconds: 3), () {
+                setState(() {
+                  isApiCallProcess = false;
+                });
+                if (chekinoutlet.checkinlat != null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContextcontext) => OutLet()));
+                } else if (chekinoutlet.checkinlat != null) {
+                  Future.delayed(const Duration(seconds: 5), () {
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContextcontext) => OutLet()));
+                  });
+                }
+                else{
+                  setState(() {
+                    isApiCallProcess = false;
+                  });
+                }
+              });
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
@@ -406,7 +527,6 @@ class _State extends State<JourneyListBuilder> {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-
                 children: [
                   Row(
                     children: [
@@ -415,7 +535,9 @@ class _State extends State<JourneyListBuilder> {
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
                         '${names[index]}',
                         style: TextStyle(
@@ -430,12 +552,16 @@ class _State extends State<JourneyListBuilder> {
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text('${city[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text('${country[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
@@ -460,8 +586,13 @@ class _State extends State<JourneyListBuilder> {
                               fontSize: 13.0,
                             )),
                         Text(":"),
-                        Text('${distancenum[index]}',
-                            style: TextStyle(color: orange)),
+                        Row(
+                          children: [
+                            Text('${distancenum[index]}',
+                                style: TextStyle(color: orange)),
+                            Text("KM", style: TextStyle(color: orange))
+                          ],
+                        ),
                       ]),
                     ],
                   ),
@@ -472,95 +603,3 @@ class _State extends State<JourneyListBuilder> {
         });
   }
 }
-
-/*
-itemsno(){
-    for(int i =20; i>=1; i--)
-    {
-      int index =i;
-      if(JPResponsedata.outletiddata$index != null)
-      {
-        return i;
-      }
-    }
-  }
-ListView.builder(
-        itemCount: names.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
-            },
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        '[${outletid[index]}]',
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(width: 5,),
-                      Text(
-                        '${names[index]}',
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text('${area[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(width: 5,),
-                      Text('${city[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(width: 5,),
-                      Text('${country[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                    ],
-                  ),
-                  Spacer(),
-                  Table(
-                    children: [
-                      TableRow(children: [
-                        Text('Contact Number',
-                            style: TextStyle(
-                              fontSize: 13.0,
-                            )),
-                        Text(":"),
-                        Text('${contactnumber[index]}',
-                            style: TextStyle(color: orange)),
-                      ]),
-                      TableRow(children: [
-                        Text('Distance',
-                            style: TextStyle(
-                              fontSize: 13.0,
-                            )),
-                        Text(":"),
-                        Text('${distancenum[index]}',
-                            style: TextStyle(color: orange)),
-                      ]),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        }); */

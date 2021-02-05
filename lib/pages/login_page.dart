@@ -7,6 +7,7 @@ import 'package:merchandising/model/requestandresponsemodel.dart';
 import 'package:merchandising/Constants.dart';
 import '../ProgressHUD.dart';
 import 'home.dart';
+import 'package:merchandising/ProgressHUD.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -33,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailinputcontroller = TextEditingController();
   TextEditingController passwordinputcontroller = TextEditingController();
-  static String inputemail;
-  static String inputpassword;
+  static String userinputemail;
+  static String userinputpassword;
 
   @override
   Widget build(BuildContext context) {
@@ -151,13 +152,11 @@ class _LoginPageState extends State<LoginPage> {
                               GestureDetector(
                                 onTap: () {
                                   getLocation();
-                                  setState(() {
-                                    loginrequestdata.inputemail =
-                                        emailinputcontroller.text;
-                                    loginrequestdata.inputpassword =
-                                        passwordinputcontroller.text;
-                                  });
+                                   userinputemail = emailinputcontroller.text;
+                                    userinputpassword = passwordinputcontroller.text;
                                   if (validateAndSave()) {
+                                    loginrequestdata.inputemail = userinputemail;
+                                    loginrequestdata.inputpassword = userinputpassword;
                                     if (loginrequestdata.inputemail != null &&
                                         loginrequestdata.inputpassword !=
                                             null) {

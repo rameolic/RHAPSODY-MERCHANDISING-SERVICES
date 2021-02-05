@@ -12,7 +12,7 @@ class ProgressHUD extends StatelessWidget {
     Key key,
     @required this.child,
     @required this.inAsyncCall,
-    this.opacity = 0.3,
+    this.opacity,
     this.color = Colors.grey,
     this.valueColor,
   }) : super(key: key);

@@ -26,10 +26,13 @@ class Location {
  getLocation() async {
   Location location = Location();
   await location.getCurrentLocation();
-  print(location.longitude,);
+  print(location.longitude);
   print(location.latitude);
-   lat = location.latitude;
-   long = location.longitude;
+  lat = location.latitude;
+  long =location.longitude;
    print(timenow);
  // print(now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString());
 }
+
+
+//12.95225820522293, 79.1466966699965

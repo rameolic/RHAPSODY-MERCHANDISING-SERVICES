@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/api/api_service.dart';
 
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
@@ -28,48 +29,61 @@ class BackGround extends StatelessWidget {
 
 
 class OutletDetails extends StatelessWidget {
+  int outletid = chekinoutlet.checkinoutletid;
+  String outletname = chekinoutlet.checkinoutletname;
+  String outletarea = chekinoutlet.checkinarea;
+  String outletcity = chekinoutlet.checkincity;
+  String outletstate = chekinoutlet.checkinstate;
+  String outletcountry = chekinoutlet.checkincountry;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height/15,
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.only(left :10.0,right: 10.0),
       decoration: BoxDecoration(
           color: pink,
           borderRadius: BorderRadiusDirectional.circular(10)),
-      child: FittedBox(
-        fit: BoxFit.fitWidth,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.fitHeight,
-              child: Icon(
-                Icons.house_sharp,
-                color: iconscolor,
-              ),
-            ),
-            SizedBox(width: 20.0),
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(width: 10.0),
+          Icon(
+            Icons.house_sharp,
+            color: iconscolor,size: 40,
+          ),
+          SizedBox(width: 5.0),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
                   Text(
-                    "[5478] CARREFOUR MOE",
+                    "[$outletid]",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,fontSize:16 ),
                   ),
-                  Text("Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
+                  Text(
+                    outletname,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,fontSize:16),
+                  ),
                 ],
               ),
-            ),
-            SizedBox(width: 20.0),
-          ],
-        ),
+              Row(
+                children: [
+                  Text('$outletarea,', style: TextStyle(fontSize:15),),
+                  Text('$outletcity,', style: TextStyle(fontSize:15)),
+                  Text('$outletstate,', style: TextStyle(fontSize:15)),
+                  Text('$outletcountry', style: TextStyle(fontSize:15)),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(width: 20.0),
+        ],
       ),
     );
   }

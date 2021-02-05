@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'outletdetailes.dart';
+import 'package:merchandising/api/api_service.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/Location_service.dart';
 
@@ -11,7 +12,7 @@ class CheckIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        getLocation();
+        chekinoutlet.currentdistance > 300 ?
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -69,7 +70,12 @@ class CheckIn extends StatelessWidget {
                       );
                     },
                   ),
-                ));
+                ))
+            :  Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    CustomerActivities()));
       },
       child: Container(
         padding: EdgeInsets.all(15.0),

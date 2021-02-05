@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'pages/login_page.dart';
 import 'package:merchandising/model/Location_service.dart';
-import 'package:merchandising/model/google_maps.dart';
 import 'dart:async';
 import 'package:merchandising/pages/home.dart';
 

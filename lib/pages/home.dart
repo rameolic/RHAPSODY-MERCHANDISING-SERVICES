@@ -8,6 +8,7 @@ import 'Startday.dart';
 import 'package:merchandising/pages/HQOne.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/pages/Leave Request.dart';
 import 'dart:math';
 import 'package:merchandising/pages/Time Sheet.dart';
 import 'package:merchandising/api/api_service.dart';
@@ -20,9 +21,6 @@ import 'package:merchandising/api/jpapi.dart';
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
-}
-void initState() {
-  print( Geolocator.distanceBetween(getLocation().lat, getLocation().long, JPResponsedata.latitudedata1, JPResponsedata.longitudedata1));
 }
 @override
 class _DashBoardState extends State<DashBoard> {
@@ -256,7 +254,7 @@ class _DashBoardState extends State<DashBoard> {
                                     children: [
                                       JourneryPlan(
                                         color: Colors.orange,
-                                        percent: pressAttentionMTB == true ?  '$monthpercentage' : 0.33,
+                                        percent: pressAttentionMTB == true ?  monthpercentage : 0.33,
                                         textpercent: pressAttentionMTB == true ? '78' : '33',
                                         title: "Journey Plan\nCompletion",
                                       ),
@@ -272,20 +270,24 @@ class _DashBoardState extends State<DashBoard> {
                               ),
                             ),
                             SizedBox(height: 5,),
-                            Container(
-                              height: 120,
-                              width: MediaQuery.of(context).size.width/1.75,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text("Leave Request"),
+                            GestureDetector(
+                              onTap: (){Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => LeaveRequest()));},
+                              child: Container(
+                                height: 120,
+                                width: MediaQuery.of(context).size.width/1.75,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: containerscolor,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text("Leave Request"),
 
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
