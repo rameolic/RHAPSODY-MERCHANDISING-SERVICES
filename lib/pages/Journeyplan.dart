@@ -1,16 +1,11 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:merchandising/model/Location_service.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
-import 'Maps_Veiw.dart';
 import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:merchandising/api/jpapi.dart';
 import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/ProgressHUD.dart';
 
@@ -134,7 +129,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 5,
                           ),
-                          Container(
+                         /* Container(
                             padding: EdgeInsets.all(10),
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
                             decoration: BoxDecoration(
@@ -146,7 +141,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                             width: MediaQuery.of(context).size.width,
                             child: Row(
                               children: [
-                                Expanded(
+                                 Expanded(
                                   child: Theme(
                                     data: ThemeData(primaryColor: orange),
                                     child: TextField(
@@ -169,12 +164,12 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () {/*
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                MapVeiw()));
+                                                MapVeiw())); */
                                   },
                                   child: Row(
                                     children: [
@@ -191,8 +186,8 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           ),
                           SizedBox(
                             height: 10,
-                          ),
-                          Expanded(child: JourneyListBuilder()),
+                          ), */
+                          Expanded(child: pressTODAY == true ? JourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                       ),
                       Container(
@@ -467,6 +462,7 @@ class _State extends State<JourneyListBuilder> {
         countOutlet++;
       }
     }
+    print(countOutlet);
     return countOutlet;
   }
 
@@ -480,7 +476,8 @@ class _State extends State<JourneyListBuilder> {
     );
   }
   Widget _uiSetup(BuildContext context) {
-    return ListView.builder(
+    return itemsno() == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
+    ListView.builder(
         itemCount: itemsno(),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -491,14 +488,14 @@ class _State extends State<JourneyListBuilder> {
              outletrequestdata.outletidpressed = outletids[index];
              outletwhencheckin();
               Future.delayed(const Duration(seconds: 3), () {
-                setState(() {
-                  isApiCallProcess = false;
-                });
                 if (chekinoutlet.checkinlat != null) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContextcontext) => OutLet()));
+                  setState(() {
+                    isApiCallProcess = false;
+                  });
                 } else if (chekinoutlet.checkinlat != null) {
                   Future.delayed(const Duration(seconds: 5), () {
                     setState(() {

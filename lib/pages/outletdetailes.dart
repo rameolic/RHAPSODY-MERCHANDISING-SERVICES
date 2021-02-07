@@ -3,13 +3,9 @@ import 'package:merchandising/api/api_service.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
-import 'package:merchandising/api/jpapi.dart';
-import 'package:geolocator/geolocator.dart';
 import 'checkin.dart';
-import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:merchandising/model/Location_service.dart';
 
 class OutLet extends StatefulWidget {
   double currentdist;

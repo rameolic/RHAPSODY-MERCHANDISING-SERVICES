@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'jprequest.dart';
 
 class JPResponsedata {
   static var outletiddata1;

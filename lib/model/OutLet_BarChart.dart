@@ -19,12 +19,12 @@ class BarChatData extends StatelessWidget {
           child: SurveyChart(data: [
             ChartData(
               month: "JAN",
-              visits: 8,
+              visits: 2,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "FEB",
-              visits: 6,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
@@ -34,7 +34,7 @@ class BarChatData extends StatelessWidget {
             ),
             ChartData(
               month: "APR",
-              visits: 7,
+              visits: 2,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
@@ -49,37 +49,37 @@ class BarChatData extends StatelessWidget {
             ),
             ChartData(
               month: "JUN",
-              visits: 7,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
               month: "JUL",
-              visits: 7,
+              visits: 3,
               barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
               month: "AUG",
-              visits: 1,
+              visits: 2,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "SEP",
-              visits: 4,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "OCT",
-              visits: 6,
+              visits: 2,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "NOV",
-              visits: 5,
+              visits: 4,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "DEC",
-              visits: 7,
+              visits: 1,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
 

@@ -3,9 +3,7 @@ import 'package:intl/intl.dart';
 
 double lat;
 double long;
-final  timenow =DateFormat("h:mma").format(
-  DateTime.now()
-);
+final  timenow =DateFormat("h:mma").format(DateTime.now());
 
 class Location {
   double latitude;
@@ -31,8 +29,4 @@ class Location {
   lat = location.latitude;
   long =location.longitude;
    print(timenow);
- // print(now.hour.toString() + ":" + now.minute.toString() + ":" + now.second.toString());
 }
-
-
-//12.95225820522293, 79.1466966699965

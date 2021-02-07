@@ -1,14 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:merchandising/pages/home.dart';
 import 'dart:convert';
 import 'jpapi.dart';
-import 'jprequest.dart';
-import 'package:merchandising/pages/login_page.dart';
-import '../model/requestandresponsemodel.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:merchandising/model/Location_service.dart';
+
 
 
 String DBurl = "https://rms.rhapsody.ae/api/dashboard";
@@ -145,52 +140,3 @@ void outletwhencheckin() async {
 
   }
 }
-
-
-
-/*
-class APIService {
-  Future<LoginResponseModel> login(LoginRequestModel requestModel) async {
-    String url = "https://rms.rhapsody.ae/api/login";
-
-    final response = await http.post(url, body: requestModel.toJson());
-    if (response.statusCode == 200)  {
-      print('Response status code 200');
-      return LoginResponseModel.fromJson(
-        json.decode(response.body),
-      );
-
-    }else if(response.statusCode == 422) {
-      print('Response status code 422');
-      print(response.body);
-    } else {
-      throw Exception('Failed to load data!');
-    }
-  }
-}
-
-class APIDashBoard {
-  APIDashBoard({this.tokendata});
-  String tokendata;
-  Future<DashBoardResponseModel> dashboard(DashBoardRequestModel requestModel) async {
-    String url = "https://rms.rhapsody.ae/api/dashboard";
-    final response = await http.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $tokendata',
-        },
-        body: jsonEncode(requestModel.toJson()),
-    );
-    if (response.statusCode == 200 || response.statusCode == 401) {
-      print(response.body);
-
-     /* return DashBoardResponseModel.fromJson(
-        json.decode(response.body),
-      );*/
-    } else {
-      throw Exception('Failed to load data!');
-    }
-  }
-}
-*/

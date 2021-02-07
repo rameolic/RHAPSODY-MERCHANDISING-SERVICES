@@ -24,6 +24,7 @@ class DashBoard extends StatefulWidget {
 }
 @override
 class _DashBoardState extends State<DashBoard> {
+  int remainingleaves = 0;
   int shedulecalls = DBResponsedata.shedulevisits;
   int unshedulecalls = DBResponsedata.unshedulevisits;
   int shedulecallsdone = DBResponsedata.ShedulevisitssDone;
@@ -271,8 +272,11 @@ class _DashBoardState extends State<DashBoard> {
                             ),
                             SizedBox(height: 5,),
                             GestureDetector(
-                              onTap: (){Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) => LeaveRequest()));},
+                              onTap: (){
+                                remainingleaves > 0 ?
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => LeaveRequest())) : null;
+                                },
                               child: Container(
                                 height: 120,
                                 width: MediaQuery.of(context).size.width/1.75,
@@ -285,6 +289,8 @@ class _DashBoardState extends State<DashBoard> {
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text("Leave Request"),
+                                    Text(remainingleaves.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                    Text("Total Leave's"),
 
                                   ],
                                 ),
