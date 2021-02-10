@@ -1,10 +1,11 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:geocoder/geocoder.dart';
 
 double lat;
 double long;
-final  timenow =DateFormat("h:mma").format(DateTime.now());
-
+String currentlocation;
 class Location {
   double latitude;
   double longitude;
@@ -24,9 +25,42 @@ class Location {
  getLocation() async {
   Location location = Location();
   await location.getCurrentLocation();
-  print(location.longitude);
-  print(location.latitude);
   lat = location.latitude;
   long =location.longitude;
-   print(timenow);
 }
+
+address() async {
+  final coordinates = new Coordinates(lat,long);
+  var addresses = await Geocoder.local.findAddressesFromCoordinates(
+      coordinates);
+  var first = addresses.first;
+  getaddress.currentaddress = '${first.addressLine}';
+}
+
+class getaddress {
+  static var currentaddress;
+}
+
+void SubmitCheckin() {
+  address();
+  var now = DateTime.now();
+  Future.delayed(
+      const Duration(seconds: 5), () {
+        checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
+      checkinoutdata.checkinlocation = getaddress.currentaddress;
+      CheckinCheckout();
+  });
+}
+
+void SubmitCheckout() {
+  address();
+  var now = DateTime.now();
+  Future.delayed(
+      const Duration(seconds: 5), () {
+    checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
+    checkinoutdata.checkoutlocation = getaddress.currentaddress;
+    CheckinCheckout();
+  });
+}
+
+// ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}

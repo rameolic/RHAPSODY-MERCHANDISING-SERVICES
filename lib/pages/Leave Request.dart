@@ -16,17 +16,27 @@ class _LeaveRequestState extends State<LeaveRequest> {
         context: context,
         initialDate: StratDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101),
+        builder: (BuildContext context, Widget child) {
+      return Theme(
+        data: ThemeData.dark().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: orange,
+            onPrimary: Colors.white,
+            surface: orange,
+            onSurface: Colors.black,
+          ),
+          dialogBackgroundColor:Colors.grey[100],
+        ),
+        child: child,
+      );
+    },
+    );
     if (picked != null && picked != StratDate)
       setState(() {
         StratDate = picked;
       });
   }
-  bool valuefirst = false;
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,12 +155,10 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
                   GestureDetector(
                     onTap: () {
-                      if(valuefirst == true){
-                        {
+
                           Navigator.push(context,
                               MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
-                        }
-                      }
+
                     },
                     child: Row(
                       children: [
@@ -200,25 +208,29 @@ class _LeaveReqDropDownState extends State<LeaveReqDropDown> {
             dropDownValue = newVal;
           });
         },
-        items: [
-          DropdownMenuItem(
-            value: 0,
-            child: Row(
-              children: [
-                SizedBox(width: 10),
-                Text('Sick Leave'),
-              ],
-            ),
-          ),
-          DropdownMenuItem(
-            value: 1,
-            child: Text('Loss of Pay'),
-          ),
-          DropdownMenuItem(
-            value: 2,
-            child: Text('Annual Leave'),
-          ),
-        ],
+        items:
+            leaves.remainingleaves == 0 ?
+            [
+              DropdownMenuItem(
+                value: 0,
+                child: Text('Loss of Pay'),
+              ),
+            ]
+            :
+            [
+              DropdownMenuItem(
+                value: 0,
+                child: Text('Loss of Pay'),
+              ),
+              DropdownMenuItem(
+                value: 1,
+                child: Text('Sick Leave'),
+              ),
+              DropdownMenuItem(
+                value: 2,
+                child: Text('Annual Leave'),
+              ),
+            ],
       ),
     );
   }
@@ -235,7 +247,22 @@ class _EndDateState extends State<EndDate> {
         context: context,
         initialDate: EndDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime(2101),
+        builder: (BuildContext context, Widget child) {
+      return Theme(
+        data: ThemeData.dark().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: orange,
+            onPrimary: Colors.white,
+            surface: orange,
+            onSurface: Colors.black,
+          ),
+          dialogBackgroundColor:Colors.grey[100],
+        ),
+        child: child,
+      );
+    },
+    );
     if (picked != null && picked != EndDate)
       setState(() {
         EndDate = picked;
@@ -297,3 +324,6 @@ class _CheckBoxState extends State<CheckBox> {
   }
 }
 
+class checkboxvalue{
+  static bool value;
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/main.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
@@ -134,13 +135,13 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        ListTile(
+      /*  ListTile(
           title: MenuElements(
             title: 'Settings',
             icon: Icons.settings,
           ),
           onTap: () {},
-        ),
+        ), */
         ListTile(
           title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
@@ -150,7 +151,12 @@ class Menu extends StatelessWidget {
             title: 'Log out',
             icon: Icons.logout,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SplashScreen()));
+          },
         ),
         /*Image(
           image: AssetImage('images/ttflogo.png'),

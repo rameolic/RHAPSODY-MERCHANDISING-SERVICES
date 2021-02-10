@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merchandising/pages/outletdetailes.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -11,6 +12,7 @@ import 'Visibility.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'OutletSurvey.dart';
 import 'package:merchandising/pages/Journeyplan.dart';
+import 'package:merchandising/model/Location_service.dart';
 
 
 
@@ -197,6 +199,8 @@ class checkoutbutton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap:(){
+        SubmitCheckout();
+        checkedoutlet.checkoutlet = true;
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

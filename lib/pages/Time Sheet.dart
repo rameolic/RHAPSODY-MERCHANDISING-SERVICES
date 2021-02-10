@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/timesheetapi.dart';
 
-class TimeSheet extends StatefulWidget {
+class TimeSheetList extends StatefulWidget {
   @override
-  _TimeSheetState createState() => _TimeSheetState();
+  _TimeSheetListState createState() => _TimeSheetListState();
 }
 
-class _TimeSheetState extends State<TimeSheet> {
+class _TimeSheetListState extends State<TimeSheetList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +24,6 @@ class _TimeSheetState extends State<TimeSheet> {
               style: TextStyle(color: orange),
             ),
             Spacer(),
-            SubmitButton(
-              onpress: () {},
-            ),
           ],
         ),
       ),
@@ -39,24 +38,53 @@ class _TimeSheetState extends State<TimeSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 10),
-                SizedBox(
-                  child:
-                  Padding(
-                    padding: const EdgeInsets.only(left:10.0),
-                    child: Text("Merchandiser Name:",style: TextStyle(fontSize: 18,color: Colors.white),
-                    ),
-                  )
-                ),
-                SizedBox(
-                    child:
-                    Padding(
-                      padding: const EdgeInsets.only(left:10.0),
-                      child: Text("Merchandiser ID:",style: TextStyle(fontSize: 18,color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Merchandiser Name:",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                    )
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(DBrequestdata.empname,
+                          style: TextStyle(fontSize: 18, color: Colors.white))
+                    ],
+                  ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Merchandiser ID :",
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(DBrequestdata.receivedempid,
+                          style: TextStyle(fontSize: 18, color: Colors.white))
+                    ],
+                  ),
+                ),
+                /*Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    "Feild Manager :",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    "Client :",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),*/
                 Container(
-
                   width: double.infinity,
                   margin: EdgeInsets.all(10),
                   padding: EdgeInsets.all(10),
@@ -64,12 +92,10 @@ class _TimeSheetState extends State<TimeSheet> {
                     color: pink,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
-                    children: [
-                      Timedate(),
-                      timesheetdatetwo(),
-                    ],
-                  ),
+                  child: Container(
+                      height: MediaQuery.of(context).size.height / 1.4,
+                      width: double.infinity,
+                      child: TimeSheetListBuilder()),
                 ),
               ],
             ),
@@ -80,297 +106,197 @@ class _TimeSheetState extends State<TimeSheet> {
   }
 }
 
-class Timedate extends StatefulWidget {
+class TimeSheetListBuilder extends StatefulWidget {
   @override
-  _TimedateState createState() => _TimedateState();
+  _TimeSheetListBuilderState createState() => _TimeSheetListBuilderState();
 }
 
-class _TimedateState extends State<Timedate> {
+class _TimeSheetListBuilderState extends State<TimeSheetListBuilder> {
   @override
-  bool trianglevalue = false;
+  static final List<String> dates = <String>[
+    TimeSheetdata.date,
+  ];
+  bool pressed = false;
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return ListView.builder(
+        itemCount: dates.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                icon: trianglevalue == false
-                    ? Icon(
-                        CupertinoIcons.arrowtriangle_right_fill,
-                        size: 15,
-                      )
-                    : Icon(
-                        CupertinoIcons.arrowtriangle_down_fill,
-                        size: 15,
+              Container(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          pressed == false ? pressed = true : pressed = false;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            pressed == false
+                                ? CupertinoIcons.arrowtriangle_right_fill
+                                : CupertinoIcons.arrowtriangle_down_fill,
+                            size: 15,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            '${dates[index]}',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
-                onPressed: () {
-                  setState(() {
-                    trianglevalue == false
-                        ? trianglevalue = true
-                        : trianglevalue = false;
-                  });
-                },
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    pressed == true
+                        ? Column(
+                            children: [
+                              Table(
+                                columnWidths: {
+                                  0: FractionColumnWidth(0.4),
+                                  1: FractionColumnWidth(0.3),
+                                  2: FractionColumnWidth(0.3),
+                                },
+                                children: [
+                                  TableRow(children: [
+                                    Center(
+                                      child: Text(
+                                        'Outlet Name',
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text('checkin time',
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Center(
+                                      child: Text('checkout time',
+                                          style: TextStyle(
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                  ]),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              daytimesheet(),
+                            ],
+                          )
+                        : SizedBox()
+                  ],
+                ),
               ),
-              Text(
-                "01-JAN-2021",
-                style: TextStyle(fontSize: 16.0),
+              SizedBox(
+                height: 5,
               ),
             ],
-          ),
-          trianglevalue == true ? DropDownOne() : SizedBox(height: 10),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
 
-class timesheetdatetwo extends StatefulWidget {
+class daytimesheet extends StatefulWidget {
   @override
-  _timesheetdatetwoState createState() => _timesheetdatetwoState();
+  _daytimesheetState createState() => _daytimesheetState();
 }
 
-class _timesheetdatetwoState extends State<timesheetdatetwo> {
-  @override
-  bool trianglevalue = false;
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                icon: trianglevalue == false
-                    ? Icon(
-                        CupertinoIcons.arrowtriangle_right_fill,
-                        size: 15,
-                      )
-                    : Icon(
-                        CupertinoIcons.arrowtriangle_down_fill,
-                        size: 15,
-                      ),
-                onPressed: () {
-                  setState(() {
-                    trianglevalue == false
-                        ? trianglevalue = true
-                        : trianglevalue = false;
-                  });
-                },
-              ),
-              Text(
-                "02-JAN-2021",
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-          trianglevalue == true ? DropdownTwo() : SizedBox(height: 10),
-        ],
-      ),
-    );
+class _daytimesheetState extends State<daytimesheet> {
+  static final List<String> outlet = <String>[
+    TimeSheetdata.outletname,
+    TimeSheetdata.outletname2,
+    TimeSheetdata.outletname3,
+    TimeSheetdata.outletname4,
+    TimeSheetdata.outletname5,
+    TimeSheetdata.outletname6,
+    TimeSheetdata.outletname7,
+    TimeSheetdata.outletname8,
+    TimeSheetdata.outletname9,
+    TimeSheetdata.outletname10
+  ];
+  static final List<String> checkin = <String>[
+    TimeSheetdata.checkintime,
+    TimeSheetdata.checkintime2,
+    TimeSheetdata.checkintime3,
+    TimeSheetdata.checkintime4,
+    TimeSheetdata.checkintime5,
+    TimeSheetdata.checkintime6,
+    TimeSheetdata.checkintime7,
+    TimeSheetdata.checkintime8,
+    TimeSheetdata.checkintime9,
+    TimeSheetdata.checkintime10,
+
+  ];
+  static final List<String> checkout = <String>[
+    TimeSheetdata.checkouttime,
+    TimeSheetdata.checkouttime2,
+    TimeSheetdata.checkouttime3,
+    TimeSheetdata.checkouttime4,
+    TimeSheetdata.checkouttime5,
+    TimeSheetdata.checkouttime6,
+    TimeSheetdata.checkouttime7,
+    TimeSheetdata.checkouttime8,
+    TimeSheetdata.checkouttime9,
+    TimeSheetdata.checkouttime10,
+  ];
+  int itemsno() {
+    outlet.forEach((elements) => (null));
+    int countOutlet = 0;
+    for (final outletids in outlet) {
+      if (outletids != null) {
+        countOutlet++;
+      }
+    }
+    return countOutlet;
   }
-}
-
-class SubmitButton extends StatelessWidget {
-  SubmitButton({@required this.onpress});
-  final onpress;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onpress,
-      child: Container(
-        margin: EdgeInsets.only(right: 10.00),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: Color(0xffFFDBC1),
-          borderRadius: BorderRadius.circular(10.00),
-        ),
-        child: Text(
-          'Submit',
-          style: TextStyle(color: Colors.black, fontSize: 15),
-        ),
-      ),
-    );
-  }
-}
-
-class DropDownOne extends StatefulWidget {
-  @override
-  _DropDownOneState createState() => _DropDownOneState();
-}
-
-class _DropDownOneState extends State<DropDownOne> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration:
-          BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.all(10),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Table(
-            columnWidths: {
-              0: FractionColumnWidth(0.50),
-              1: FractionColumnWidth(0.3),
-              2: FractionColumnWidth(0.25),
-            },
-            children: [
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom:8.0),
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+          itemCount: itemsno(),
+          itemBuilder: (BuildContext context, int index) {
+            return Table(
+              columnWidths: {
+                0: FractionColumnWidth(0.4),
+                1: FractionColumnWidth(0.3),
+                2: FractionColumnWidth(0.3),
+              },
+              children: [
+                TableRow(children: [
+                  Center(
                     child: Text(
-                      "OUTLETS",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      '${outlet[index]}',
+                      style: TextStyle(fontSize: 15.0),
                     ),
                   ),
-                  Text(
-                    "START TIME",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Center(
+                    child: Text('${checkin[index]}',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        )),
                   ),
-                  Text(
-                    "END TIME",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Center(
+                    child: Text('${checkout[index]}',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        )),
                   ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Text(
-                    "Sheba Super Market",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "09.25 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "10.10 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Text(
-                    "Fair Mart Super Market",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "10.25 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "11.10 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Text(
-                    "Umm Al Sheif Market",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "11.25 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "11.50 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class DropdownTwo extends StatefulWidget {
-  @override
-  _DropdownTwoState createState() => _DropdownTwoState();
-}
-
-class _DropdownTwoState extends State<DropdownTwo> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration:
-          BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10)),
-      padding: EdgeInsets.all(10),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Table(
-            columnWidths: {
-              0: FractionColumnWidth(0.50),
-              1: FractionColumnWidth(0.3),
-              2: FractionColumnWidth(0.25),
-            },
-            children: [
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom:8.0),
-                    child: Text(
-                      "OUTLETS",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Text(
-                    "START TIME",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "END TIME",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Text(
-                    "Al Quoz Market",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "09.25 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "10.10 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              ),
-              TableRow(
-                children: [
-                  Text(
-                    "Umm Al Sheif Market",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "10.25 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  Text(
-                    "11.10 AM",
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ],
-              )
-            ],
-          )
-        ],
-      ),
+                ]),
+              ],
+            );
+          }),
     );
   }
 }

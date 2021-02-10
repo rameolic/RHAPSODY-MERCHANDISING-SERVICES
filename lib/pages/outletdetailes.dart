@@ -13,6 +13,10 @@ class OutLet extends StatefulWidget {
   _OutLetState createState() => _OutLetState();
 }
 
+class checkedoutlet {
+  static bool checkoutlet = false;
+}
+
 class _OutLetState extends State<OutLet> {
   List<Marker> _markers = <Marker>[
     Marker(markerId: MarkerId("outletpoint"),
@@ -181,11 +185,7 @@ class OutLetContent extends StatelessWidget {
               Text(":"),
               Text(oproductivity, style: TextStyle(color: orange)),
             ]),
-            TableRow(children: [
-              Text('Last Visit',),
-              Text(":"),
-              Text(olastvisit, style: TextStyle(color: orange)),
-            ]),
+            //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
           ],
         ),
       ],

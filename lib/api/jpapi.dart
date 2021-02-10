@@ -16,6 +16,7 @@ Future<void> getJourneyPlan() async {
     body: jsonEncode(DBrequestData),
   );
   if (JPresponse.statusCode == 200){
+    print("journeyplandone");
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
     JPResponsedata.outletiddata1 = decodeJPData['data'][0]['outlet']['outlet_id'];
@@ -25,6 +26,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata1 = decodeJPData['data'][0]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata1 = decodeJPData['data'][0]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata1 = decodeJPData['data'][0]['outlet']['outlet_city'];
+    JPResponsedata.id1 = decodeJPData['data'][0]['id'];
     JPResponsedata.outletiddata2 = decodeJPData['data'][1]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata2 = decodeJPData['data'][1]['outlet']['outlet_name'];
     JPResponsedata.latitudedata2 = decodeJPData['data'][1]['outlet']['outlet_lat'];
@@ -32,6 +34,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata2 = decodeJPData['data'][1]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata2 = decodeJPData['data'][1]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata2 = decodeJPData['data'][1]['outlet']['outlet_city'];
+    JPResponsedata.id2 = decodeJPData['data'][1]['id'];
     JPResponsedata.outletiddata3 = decodeJPData['data'][2]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata3 = decodeJPData['data'][2]['outlet']['outlet_name'];
     JPResponsedata.latitudedata3 = decodeJPData['data'][2]['outlet']['outlet_lat'];
@@ -39,6 +42,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata3 = decodeJPData['data'][2]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata3 = decodeJPData['data'][2]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata3 = decodeJPData['data'][2]['outlet']['outlet_city'];
+    JPResponsedata.id3 = decodeJPData['data'][2]['id'];
     JPResponsedata.outletiddata4 = decodeJPData['data'][3]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata4 = decodeJPData['data'][3]['outlet']['outlet_name'];
     JPResponsedata.latitudedata4 = decodeJPData['data'][3]['outlet']['outlet_lat'];
@@ -46,6 +50,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata4 = decodeJPData['data'][3]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata4 = decodeJPData['data'][3]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata4 = decodeJPData['data'][3]['outlet']['outlet_city'];
+    JPResponsedata.id4 = decodeJPData['data'][3]['id'];
     JPResponsedata.outletiddata5 = decodeJPData['data'][4]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata5 = decodeJPData['data'][4]['outlet']['outlet_name'];
     JPResponsedata.latitudedata5 = decodeJPData['data'][4]['outlet']['outlet_lat'];
@@ -53,6 +58,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata5 = decodeJPData['data'][4]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata5 = decodeJPData['data'][4]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata5 = decodeJPData['data'][4]['outlet']['outlet_city'];
+    JPResponsedata.id5 = decodeJPData['data'][4]['id'];
     JPResponsedata.outletiddata6 = decodeJPData['data'][5]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata6 = decodeJPData['data'][5]['outlet']['outlet_name'];
     JPResponsedata.latitudedata6 = decodeJPData['data'][5]['outlet']['outlet_lat'];
@@ -60,6 +66,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata6 = decodeJPData['data'][5]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata6 = decodeJPData['data'][5]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata6 = decodeJPData['data'][5]['outlet']['outlet_city'];
+    JPResponsedata.id6 = decodeJPData['data'][5]['id'];
     JPResponsedata.outletiddata7 = decodeJPData['data'][6]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata7 = decodeJPData['data'][6]['outlet']['outlet_name'];
     JPResponsedata.latitudedata7 = decodeJPData['data'][6]['outlet']['outlet_lat'];
@@ -67,6 +74,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata7 = decodeJPData['data'][6]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata7 = decodeJPData['data'][6]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata7 = decodeJPData['data'][6]['outlet']['outlet_city'];
+    JPResponsedata.id7 = decodeJPData['data'][6]['id'];
     JPResponsedata.outletiddata8 = decodeJPData['data'][7]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata8 = decodeJPData['data'][7]['outlet']['outlet_name'];
     JPResponsedata.latitudedata8 = decodeJPData['data'][7]['outlet']['outlet_lat'];
@@ -74,6 +82,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata8 = decodeJPData['data'][7]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata8 = decodeJPData['data'][7]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata8 = decodeJPData['data'][7]['outlet']['outlet_city'];
+    JPResponsedata.id8 = decodeJPData['data'][7]['id'];
     JPResponsedata.outletiddata9 = decodeJPData['data'][8]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata9 = decodeJPData['data'][8]['outlet']['outlet_name'];
     JPResponsedata.latitudedata9 = decodeJPData['data'][8]['outlet']['outlet_lat'];
@@ -81,6 +90,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata9 = decodeJPData['data'][8]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata9 = decodeJPData['data'][8]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata9 = decodeJPData['data'][8]['outlet']['outlet_city'];
+    JPResponsedata.id9 = decodeJPData['data'][8]['id'];
     JPResponsedata.outletiddata10 = decodeJPData['data'][9]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata10 = decodeJPData['data'][9]['outlet']['outlet_name'];
     JPResponsedata.latitudedata10 = decodeJPData['data'][9]['outlet']['outlet_lat'];
@@ -88,6 +98,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata10 = decodeJPData['data'][9]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata10 = decodeJPData['data'][9]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata10 = decodeJPData['data'][9]['outlet']['outlet_city'];
+    JPResponsedata.id10 = decodeJPData['data'][9]['id'];
     JPResponsedata.outletiddata11 = decodeJPData['data'][10]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata11 = decodeJPData['data'][10]['outlet']['outlet_name'];
     JPResponsedata.latitudedata11 = decodeJPData['data'][10]['outlet']['outlet_lat'];
@@ -95,6 +106,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata11 = decodeJPData['data'][10]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata11 = decodeJPData['data'][10]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata11 = decodeJPData['data'][10]['outlet']['outlet_city'];
+    JPResponsedata.id11 = decodeJPData['data'][10]['id'];
     JPResponsedata.outletiddata12 = decodeJPData['data'][11]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata12 = decodeJPData['data'][11]['outlet']['outlet_name'];
     JPResponsedata.latitudedata12 = decodeJPData['data'][11]['outlet']['outlet_lat'];
@@ -102,6 +114,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata12 = decodeJPData['data'][11]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata12 = decodeJPData['data'][11]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata12 = decodeJPData['data'][11]['outlet']['outlet_city'];
+    JPResponsedata.id12 = decodeJPData['data'][11]['id'];
     JPResponsedata.outletiddata13 = decodeJPData['data'][12]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata13 = decodeJPData['data'][12]['outlet']['outlet_name'];
     JPResponsedata.latitudedata13 = decodeJPData['data'][12]['outlet']['outlet_lat'];
@@ -109,6 +122,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata13 = decodeJPData['data'][12]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata13 = decodeJPData['data'][12]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata13 = decodeJPData['data'][12]['outlet']['outlet_city'];
+    JPResponsedata.id13 = decodeJPData['data'][12]['id'];
     JPResponsedata.outletiddata14 = decodeJPData['data'][13]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata14 = decodeJPData['data'][13]['outlet']['outlet_name'];
     JPResponsedata.latitudedata14= decodeJPData['data'][13]['outlet']['outlet_lat'];
@@ -116,6 +130,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata14 = decodeJPData['data'][13]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata14 = decodeJPData['data'][13]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata14 = decodeJPData['data'][13]['outlet']['outlet_city'];
+    JPResponsedata.id14 = decodeJPData['data'][13]['id'];
     JPResponsedata.outletiddata15 = decodeJPData['data'][14]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata15 = decodeJPData['data'][14]['outlet']['outlet_name'];
     JPResponsedata.latitudedata15 = decodeJPData['data'][14]['outlet']['outlet_lat'];
@@ -123,6 +138,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata15 = decodeJPData['data'][14]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata15 = decodeJPData['data'][14]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata15 = decodeJPData['data'][14]['outlet']['outlet_city'];
+    JPResponsedata.id15 = decodeJPData['data'][14]['id'];
     JPResponsedata.outletiddata16 = decodeJPData['data'][15]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata16 = decodeJPData['data'][15]['outlet']['outlet_name'];
     JPResponsedata.latitudedata16 = decodeJPData['data'][15]['outlet']['outlet_lat'];
@@ -130,6 +146,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata16 = decodeJPData['data'][15]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata16 = decodeJPData['data'][15]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata16 = decodeJPData['data'][15]['outlet']['outlet_city'];
+    JPResponsedata.id16 = decodeJPData['data'][15]['id'];
     JPResponsedata.outletiddata17 = decodeJPData['data'][16]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata17 = decodeJPData['data'][16]['outlet']['outlet_name'];
     JPResponsedata.latitudedata17 = decodeJPData['data'][16]['outlet']['outlet_lat'];
@@ -137,6 +154,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata17 = decodeJPData['data'][16]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata17 = decodeJPData['data'][16]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata17 = decodeJPData['data'][16]['outlet']['outlet_city'];
+    JPResponsedata.id17 = decodeJPData['data'][16]['id'];
     JPResponsedata.outletiddata18 = decodeJPData['data'][17]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata18 = decodeJPData['data'][17]['outlet']['outlet_name'];
     JPResponsedata.latitudedata18 = decodeJPData['data'][17]['outlet']['outlet_lat'];
@@ -144,6 +162,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata18 = decodeJPData['data'][17]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata18 = decodeJPData['data'][17]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata18 = decodeJPData['data'][17]['outlet']['outlet_city'];
+    JPResponsedata.id18 = decodeJPData['data'][17]['id'];
     JPResponsedata.outletiddata19 = decodeJPData['data'][18]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata19 = decodeJPData['data'][18]['outlet']['outlet_name'];
     JPResponsedata.latitudedata19 = decodeJPData['data'][18]['outlet']['outlet_lat'];
@@ -151,6 +170,7 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata19 = decodeJPData['data'][18]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata19 = decodeJPData['data'][18]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata19 = decodeJPData['data'][18]['outlet']['outlet_city'];
+    JPResponsedata.id19 = decodeJPData['data'][18]['id'];
     JPResponsedata.outletiddata20 = decodeJPData['data'][19]['outlet']['outlet_id'];
     JPResponsedata.outletnamedata20 = decodeJPData['data'][19]['outlet']['outlet_name'];
     JPResponsedata.latitudedata20 = decodeJPData['data'][19]['outlet']['outlet_lat'];
@@ -158,6 +178,8 @@ Future<void> getJourneyPlan() async {
     JPResponsedata.outletareadata20 = decodeJPData['data'][19]['outlet']['outlet_area'];
     JPResponsedata.outletcountrydata20 = decodeJPData['data'][19]['outlet']['outlet_country'];
     JPResponsedata.outletcitydata20 = decodeJPData['data'][19]['outlet']['outlet_city'];
+    JPResponsedata.id20 = decodeJPData['data'][19]['id'];
+    print(JPResponsedata.outletnamedata6);
   }
   if(JPresponse.statusCode != 200){
     print(JPresponse.statusCode);

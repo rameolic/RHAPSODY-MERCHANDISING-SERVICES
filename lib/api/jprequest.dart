@@ -1,5 +1,25 @@
 
 class JPResponsedata {
+  static var id1;
+  static var id2;
+  static var id3;
+  static var id4;
+  static var id5;
+  static var id6;
+  static var id7;
+  static var id8;
+  static var id9;
+  static var id10;
+  static var id11;
+  static var id12;
+  static var id13;
+  static var id14;
+  static var id15;
+  static var id16;
+  static var id17;
+  static var id18;
+  static var id19;
+  static var id20;
   static var outletiddata1;
   static var outletnamedata1;
   static var contactnumberdata1;

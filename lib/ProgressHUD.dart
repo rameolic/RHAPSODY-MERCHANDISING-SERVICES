@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merchandising/Constants.dart';
 
 class ProgressHUD extends StatelessWidget {
 
@@ -29,7 +30,9 @@ class ProgressHUD extends StatelessWidget {
             child: ModalBarrier(dismissible: false, color: color),
           ),
           new Center(
-            child: new CircularProgressIndicator()
+            child: new CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(orange),
+            )
           ),
         ],
       );

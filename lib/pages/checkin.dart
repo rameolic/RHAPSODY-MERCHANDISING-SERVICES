@@ -12,70 +12,74 @@ class CheckIn extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        chekinoutlet.currentdistance > 300 ?
-        showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-                  backgroundColor: alertboxcolor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  content: Builder(
-                    builder: (context) {
-                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                      return Container(
-                        child: SizedBox(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Alert",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                  "It seems that you are not at the customer location.\nDo you want to do force check-in?",
-                                  style: TextStyle(fontSize: 13.6)),
-                              SizedBox(
-                                height: 10.00,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  OutLet()));
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffAEB7B5),
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      margin: EdgeInsets.only(right: 10.00),
-                                      child: Center(child: Text("cancel")),
+        print(chekinoutlet.currentdistance);
+        if(chekinoutlet.currentdistance > 300 ){
+          showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                backgroundColor: alertboxcolor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                content: Builder(
+                  builder: (context) {
+                    // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                    return Container(
+                      child: SizedBox(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Alert",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                                "It seems that you are not at the customer location.\nDo you want to do force check-in?",
+                                style: TextStyle(fontSize: 13.6)),
+                            SizedBox(
+                              height: 10.00,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                OutLet()));
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xffAEB7B5),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
+                                    margin: EdgeInsets.only(right: 10.00),
+                                    child: Center(child: Text("cancel")),
                                   ),
-                                  ForceCheckin(),
-                                ],
-                              ),
-                            ],
-                          ),
+                                ),
+                                ForceCheckin(),
+                              ],
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
-                ))
-            :  Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    CustomerActivities()));
+                      ),
+                    );
+                  },
+                ),
+              ));
+        } else {
+          SubmitCheckin();
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+        builder: (BuildContext context) =>
+        CustomerActivities()));
+        }
       },
       child: Container(
         padding: EdgeInsets.all(15.0),
@@ -271,6 +275,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
             onTap: (){
               if (gpsnotworking == true) {
                 print("gps not working");
+                SubmitCheckin();
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -279,6 +284,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
               }
               else {
                 if(geolocation == true){
+                  SubmitCheckin();
                   print("geo Location was wrong");
                   Navigator.pushReplacement(
                       context,
@@ -288,6 +294,7 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
                 }
                 else {
                   if(others == true){
+                    SubmitCheckin();
                     print("others");
                     Navigator.pushReplacement(
                         context,
@@ -334,3 +341,6 @@ class ForcecheckinContent extends StatelessWidget {
     );
   }
 }
+
+
+

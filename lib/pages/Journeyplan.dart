@@ -260,6 +260,28 @@ class JourneyListBuilder extends StatefulWidget {
 }
 
 class _State extends State<JourneyListBuilder> {
+  static final List<int> ids = <int>[
+    JPResponsedata.id1,
+    JPResponsedata.id2,
+    JPResponsedata.id3,
+    JPResponsedata.id4,
+    JPResponsedata.id5,
+    JPResponsedata.id6,
+    JPResponsedata.id7,
+    JPResponsedata.id8,
+    JPResponsedata.id9,
+    JPResponsedata.id10,
+    JPResponsedata.id11,
+    JPResponsedata.id12,
+    JPResponsedata.id13,
+    JPResponsedata.id14,
+    JPResponsedata.id15,
+    JPResponsedata.id16,
+    JPResponsedata.id17,
+    JPResponsedata.id18,
+    JPResponsedata.id19,
+    JPResponsedata.id20,
+  ];
   static final List<int> outletids = <int>[
     JPResponsedata.outletiddata1,
     JPResponsedata.outletiddata2,
@@ -462,7 +484,6 @@ class _State extends State<JourneyListBuilder> {
         countOutlet++;
       }
     }
-    print(countOutlet);
     return countOutlet;
   }
 
@@ -487,6 +508,8 @@ class _State extends State<JourneyListBuilder> {
               });
              outletrequestdata.outletidpressed = outletids[index];
              outletwhencheckin();
+             checkinoutdata.checkid = ids[index];
+             print(checkinoutdata.checkid);
               Future.delayed(const Duration(seconds: 3), () {
                 if (chekinoutlet.checkinlat != null) {
                   Navigator.push(
