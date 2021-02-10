@@ -3,13 +3,20 @@ import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'jpapi.dart';
+import 'jpskippedapi.dart';
+import 'JPvisitedapi.dart';
 
 Uri Loginurl = Uri.parse("https://rms.rhapsody.ae/api/login");
-Uri DBurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard");
+Uri DBdailyurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard_daily");
+Uri DBmonthlyurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard_monthly");
 Uri JPurl = Uri.parse("https://rms.rhapsody.ae/api/today_planned_journey");
 Uri OCurl = Uri.parse("https://rms.rhapsody.ae/api/outlet_details");
 Uri CICOurl = Uri.parse("https://rms.rhapsody.ae/api/check_in_out");
 Uri TSurl = Uri.parse("https://rms.rhapsody.ae/api/timesheet_daily");
+Uri JPSkippedurl = Uri.parse("https://rms.rhapsody.ae/api/today_skipped_journey");
+Uri JPVisitedurl = Uri.parse("https://rms.rhapsody.ae/api/today_completed_journey");
+
+
 
 Future<void> getDashBoardData() async {
   var emailid = loginrequestdata.inputemail;
@@ -29,8 +36,11 @@ Future<void> getDashBoardData() async {
     DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     DBrequestdata.empname = decodeData['user'] ['name'];
      if(DBrequestdata.receivedtoken != null && DBrequestdata.receivedempid !=null ) {
-       DBRequest();
+       DBRequestdaily();
+       DBRequestmonthly();
        getJourneyPlan();
+       getskippedJourneyPlan();
+       getvisitedJourneyPlan();
 
      }
   }
@@ -59,8 +69,8 @@ Map DBrequestData = {
   'emp_id': '$Empid'
 };
 
-void DBRequest() async{
-  http.Response DBresponse = await http.post(DBurl,
+void DBRequestdaily() async{
+  http.Response DBresponse = await http.post(DBdailyurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -69,18 +79,46 @@ void DBRequest() async{
     body: jsonEncode(DBrequestData),
   );
   if (DBresponse.statusCode == 200){
-    print('dashboard done');
+    print('dashboard daily done');
     String DBdata = DBresponse.body;
     var decodeDBData = jsonDecode(DBdata);
-    DBResponsedata.shedulevisits = decodeDBData['SheduleCalls'];
-    DBResponsedata.unshedulevisits = decodeDBData['UnSheduleCalls'];
-    DBResponsedata.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
-    DBResponsedata.UnShedulevisitsDone = decodeDBData['UnSheduleCallsDone'];
-    DBResponsedata.Attendance =decodeDBData['Attendance'];
-    DBResponsedata.WorkingTime =decodeDBData['WorkingTime'];
-    DBResponsedata.EffectiveTime =decodeDBData['EffectiveTime'];
-    DBResponsedata.TravelTime =decodeDBData['TravelTime'];
-    DBResponsedata.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'][0]['month_percentage'];
+    DBResponsedatadaily.shedulevisits = decodeDBData['SheduleCalls'];
+    DBResponsedatadaily.unshedulevisits = decodeDBData['UnSheduleCalls'];
+    DBResponsedatadaily.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
+    DBResponsedatadaily.UnShedulevisitsDone = decodeDBData['UnSheduleCallsDone'];
+    DBResponsedatadaily.Attendance =decodeDBData['Attendance'];
+    DBResponsedatadaily.WorkingTime =decodeDBData['WorkingTime'];
+    DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
+    DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
+    DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'][0]['month_percentage'];
+  }
+  if(DBresponse.statusCode != 200){
+    print(DBresponse.statusCode);
+
+  }
+}
+void DBRequestmonthly() async{
+  http.Response DBresponse = await http.post(DBmonthlyurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(DBrequestData),
+  );
+  if (DBresponse.statusCode == 200){
+    print('dashboard monthly done');
+    String DBdata = DBresponse.body;
+    var decodeDBData = jsonDecode(DBdata);
+    DBResponsedatamonthly.shedulevisits = decodeDBData['SheduleCalls'];
+    DBResponsedatamonthly.unshedulevisits = decodeDBData['UnSheduleCalls'];
+    DBResponsedatamonthly.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
+    DBResponsedatamonthly.UnShedulevisitsDone = decodeDBData['UnSheduleCallsDone'];
+    DBResponsedatamonthly.Attendance =decodeDBData['Attendance'];
+    DBResponsedatamonthly.WorkingTime =decodeDBData['WorkingTime'];
+    DBResponsedatamonthly.EffectiveTime =decodeDBData['EffectiveTime'];
+    DBResponsedatamonthly.TravelTime =decodeDBData['TravelTime'];
+    DBResponsedatamonthly.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'][0]['month_percentage'];
   }
   if(DBresponse.statusCode != 200){
     print(DBresponse.statusCode);
@@ -88,7 +126,19 @@ void DBRequest() async{
   }
 }
 
-class DBResponsedata {
+class DBResponsedatadaily {
+  static var shedulevisits;
+  static var unshedulevisits;
+  static var ShedulevisitssDone;
+  static var UnShedulevisitsDone;
+  static var Attendance;
+  static var WorkingTime;
+  static var EffectiveTime;
+  static var TravelTime;
+  static int todayPlanpercentage;
+}
+
+class DBResponsedatamonthly{
   static var shedulevisits;
   static var unshedulevisits;
   static var ShedulevisitssDone;
@@ -98,7 +148,6 @@ class DBResponsedata {
   static var EffectiveTime;
   static var TravelTime;
   static int monthPlanpercentage;
-  static int todayPlanpercentage;
 }
 
 class chekinoutlet{

@@ -33,7 +33,7 @@ dependencies:
   dio:
   percent_indicator:
   charts_flutter:
-  google_maps_flutter: ^1.2.0
+  google_maps_flutter: 1.1.1
   geolocator:
   geocoder:
 

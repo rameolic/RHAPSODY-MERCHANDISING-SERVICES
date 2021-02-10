@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                                       });
                                       new Future.delayed(
                                           const Duration(seconds: 5), () {
-                                        if (DBResponsedata.Attendance != null) {
+                                        if (DBResponsedatadaily.Attendance != null) {
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                                         } else {
                                           new Future.delayed(
                                               const Duration(seconds: 5), () {
-                                            if (DBResponsedata.Attendance !=
+                                            if (DBResponsedatadaily.Attendance !=
                                                 null) {
                                               Navigator.pushReplacement(
                                                   context,

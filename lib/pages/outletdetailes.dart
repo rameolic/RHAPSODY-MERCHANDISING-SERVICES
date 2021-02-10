@@ -52,7 +52,7 @@ class _OutLetState extends State<OutLet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height/6,
+                        height: MediaQuery.of(context).size.height/5,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: GoogleMap(
@@ -72,11 +72,8 @@ class _OutLetState extends State<OutLet> {
                         ocity: chekinoutlet.checkincity,
                         ostate: chekinoutlet.checkinstate,
                         ocountry: chekinoutlet.checkincountry,
-                        onumber: "+91 9775411055",
+                        onumber: '+971543086480',
                         odistance: (chekinoutlet.currentdistance/1000).toStringAsFixed(2),
-                        olastvisit: "today",
-                        oproductivity: "50%",
-                        oprogramname: "Tang 2019",
                       ),
                     ],
                   ),
@@ -163,12 +160,7 @@ class OutLetContent extends StatelessWidget {
               Text(":"),
               Text(onumber, style: TextStyle(color: orange)),
             ]),
-            TableRow(children: [
-              Text('Programme Name',
-                  ),
-              Text(":"),
-              Text(oprogramname, style: TextStyle(color: orange)),
-            ]),
+           // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
             TableRow(children: [
               Text('Distance',
                   ),
@@ -180,11 +172,7 @@ class OutLetContent extends StatelessWidget {
                 ],
               ),
             ]),
-            TableRow(children: [
-              Text('Coverage Productivity %',),
-              Text(":"),
-              Text(oproductivity, style: TextStyle(color: orange)),
-            ]),
+            //TableRow(children: [Text('Coverage Productivity %',),Text(":"),Text(oproductivity, style: TextStyle(color: orange)),]),
             //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
           ],
         ),

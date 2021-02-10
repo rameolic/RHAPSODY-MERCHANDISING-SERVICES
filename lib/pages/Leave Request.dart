@@ -37,6 +37,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
         StratDate = picked;
       });
   }
+  bool valuefirst = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,15 +151,37 @@ class _LeaveRequestState extends State<LeaveRequest> {
                     ),
                   ),
                   Container(
-                    child: CheckBox(),
+                    child: Container(
+                      child:  Row(
+                        children: [
+                          Spacer(flex: 1),
+                          Transform.scale(
+                            scale: 0.8,
+                            child: Checkbox(
+                              checkColor: Colors.white,
+                              activeColor: Colors.deepOrange,
+                              value: this.valuefirst,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  this.valuefirst = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Spacer(flex: 1),
+                          Text("I accept the terms and conditions",style: TextStyle(fontSize: 16),),
+                          Spacer(flex: 6),
+                        ],
+                      ),
+                    ),
                   ),
 
                   GestureDetector(
                     onTap: () {
-
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
-
+                      if( valuefirst == true ){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
+                      }
                     },
                     child: Row(
                       children: [
@@ -287,43 +310,4 @@ class _EndDateState extends State<EndDate> {
 
     );
   }
-}
-
-class CheckBox extends StatefulWidget {
-  @override
-  _CheckBoxState createState() => _CheckBoxState();
-}
-
-class _CheckBoxState extends State<CheckBox> {
-  bool valuefirst = false;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child:  Row(
-        children: [
-          Spacer(flex: 1),
-          Transform.scale(
-            scale: 0.8,
-            child: Checkbox(
-              checkColor: Colors.white,
-              activeColor: Colors.deepOrange,
-              value: this.valuefirst,
-              onChanged: (bool value) {
-                setState(() {
-                  this.valuefirst = value;
-                });
-              },
-            ),
-          ),
-          Spacer(flex: 1),
-          Text("I accept the terms and conditions",style: TextStyle(fontSize: 16),),
-          Spacer(flex: 6),
-        ],
-      ),
-    );
-  }
-}
-
-class checkboxvalue{
-  static bool value;
 }

@@ -14,9 +14,9 @@ class MapVeiw extends StatefulWidget {
 
 class _MapVeiwState extends State<MapVeiw> {
   List<Marker> _outlets = <Marker>[
-    Marker(markerId: MarkerId("outletpoint1"), position: LatLng(double.tryParse(JPResponsedata.latitudedata1),double.tryParse(JPResponsedata.latitudedata1),)),
-    Marker(markerId: MarkerId("outletpoint2"), position: LatLng(double.tryParse(JPResponsedata.latitudedata2),double.tryParse(JPResponsedata.latitudedata2),)),
-    Marker(markerId: MarkerId("outletpoint3"), position: LatLng(double.tryParse(JPResponsedata.latitudedata3),double.tryParse(JPResponsedata.latitudedata3),)),
+    Marker(markerId: MarkerId("outletpoint1"), position: LatLng(double.tryParse(JPResponsePlanneddata.latitudedata1),double.tryParse(JPResponsePlanneddata.latitudedata1),)),
+    Marker(markerId: MarkerId("outletpoint2"), position: LatLng(double.tryParse(JPResponsePlanneddata.latitudedata2),double.tryParse(JPResponsePlanneddata.latitudedata2),)),
+    Marker(markerId: MarkerId("outletpoint3"), position: LatLng(double.tryParse(JPResponsePlanneddata.latitudedata3),double.tryParse(JPResponsePlanneddata.latitudedata3),)),
   ];
   @override
   Widget build(BuildContext context) {

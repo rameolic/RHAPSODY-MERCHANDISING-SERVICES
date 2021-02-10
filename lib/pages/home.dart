@@ -2,6 +2,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:merchandising/pages/Journeyplan.dart';
 import 'package:merchandising/pages/MenuContent.dart';
+import 'package:merchandising/api/jpskippedapi.dart';
+import 'package:merchandising/api/JPvisitedapi.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -30,18 +33,28 @@ class DashBoard extends StatefulWidget {
 }
 @override
 class _DashBoardState extends State<DashBoard> {
-  int shedulecalls = DBResponsedata.shedulevisits;
-  int unshedulecalls = DBResponsedata.unshedulevisits;
-  int shedulecallsdone = DBResponsedata.ShedulevisitssDone;
-  int unshedulecallsdone = DBResponsedata.UnShedulevisitsDone;
-  var workingtime = DBResponsedata.WorkingTime;
-  var Attendance =DBResponsedata.Attendance;
-  var EffectiveTime = DBResponsedata.EffectiveTime;
-  var TravelTime = DBResponsedata.TravelTime;
-  int monthpercentage =  DBResponsedata.monthPlanpercentage;
+
+  int shedulecalls = DBResponsedatadaily.shedulevisits;
+  int unshedulecalls = DBResponsedatadaily.unshedulevisits;
+  int shedulecallsdone = DBResponsedatadaily.ShedulevisitssDone;
+  int unshedulecallsdone = DBResponsedatadaily.UnShedulevisitsDone;
+  var workingtime = DBResponsedatadaily.WorkingTime;
+  var Attendance =DBResponsedatadaily.Attendance;
+  var EffectiveTime = DBResponsedatadaily.EffectiveTime;
+  var TravelTime = DBResponsedatadaily.TravelTime;
+  int todaypercentage =  DBResponsedatadaily.todayPlanpercentage;
+  int monthpercentage = DBResponsedatamonthly.monthPlanpercentage;
   bool isApiCallProcess = false;
   bool pressAttentionMTB = true;
   bool pressAttentionTODAY = false;
+  int Mshedulecalls = DBResponsedatamonthly.shedulevisits;
+  int Munshedulecalls = DBResponsedatamonthly.unshedulevisits;
+  int Mshedulecallsdone = DBResponsedatamonthly.ShedulevisitssDone;
+  int Munshedulecallsdone = DBResponsedatamonthly.UnShedulevisitsDone;
+  var Mworkingtime = DBResponsedatamonthly.WorkingTime;
+  var MAttendance =DBResponsedatamonthly.Attendance;
+  var MEffectiveTime = DBResponsedatamonthly.EffectiveTime;
+  var MTravelTime = DBResponsedatamonthly.TravelTime;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -51,7 +64,6 @@ class _DashBoardState extends State<DashBoard> {
           child: _uiSetup(context),
           inAsyncCall: isApiCallProcess,
           opacity: 0.3,
-
         ),
       ),
     );
@@ -74,14 +86,17 @@ class _DashBoardState extends State<DashBoard> {
                 IconButton(icon:Icon(CupertinoIcons.refresh_bold),onPressed: (){
                   setState(() {
                     isApiCallProcess = true;
-                    DBRequest();
+                    DBRequestdaily();
+                    DBRequestmonthly();
                     getJourneyPlan();
+                    getskippedJourneyPlan();
+                    getvisitedJourneyPlan();
                     getLocation();
-                    getTimeSheet();
                   });
 
                   Future.delayed(const Duration(seconds: 5), () {
                     setState(() {
+                      JourneyPlan();
                       isApiCallProcess = false;
                       distinmeters();
                     });
@@ -205,26 +220,26 @@ class _DashBoardState extends State<DashBoard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Containerblock(
-                      numbertext: pressAttentionMTB == true ?'$shedulecalls' : '240' ,
+                      numbertext: pressAttentionMTB == true ?  '$Mshedulecalls' : '$shedulecalls',
                       chartext: 'Scheduled Visits',
                       icon: CupertinoIcons.phone_circle_fill,
                       color: Colors.green,
                     ),
                     Containerblock(
-                      numbertext: pressAttentionMTB == true ?  '$unshedulecalls' : '10' ,
+                      numbertext: pressAttentionMTB == true ?  '$Munshedulecalls' :'$unshedulecalls',
                       chartext: 'UnScheduled\nVisits',
                       icon: CupertinoIcons.exclamationmark_circle_fill,
                       color: Colors.red,
                       space: 10.0,
                     ),
                     Containerblock(
-                      numbertext: pressAttentionMTB == true ? '$shedulecallsdone' : '124',
+                      numbertext: pressAttentionMTB == true ?  '$Mshedulecallsdone' : '$shedulecallsdone',
                       chartext: 'Scheduled\nVisits Done',
                       icon:CupertinoIcons.check_mark_circled_solid,
                       color: Colors.green,
                     ),
                     Containerblock(
-                      numbertext: pressAttentionMTB == true ? '$unshedulecallsdone' :  '83' ,
+                      numbertext: pressAttentionMTB == true ?  '$Munshedulecallsdone': '$unshedulecallsdone',
                       chartext: 'unScheduled Visits Done',
                       icon: CupertinoIcons.checkmark_seal_fill,
                       color: Colors.red,
@@ -268,24 +283,24 @@ class _DashBoardState extends State<DashBoard> {
                                 icon: CupertinoIcons.calendar,
 
                                 chartext: "Attendence",
-                                numtext: pressAttentionMTB == true ?   '$Attendance' : '15',
+                                numtext: pressAttentionMTB == true ? '$MAttendance'  : '$Attendance',
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.clock,
 
                                 chartext: "Effective Time",
-                                numtext: pressAttentionMTB == true ? '$EffectiveTime' : '103.5 Hrs',
+                                numtext: pressAttentionMTB == true ? '$MEffectiveTime' : '$EffectiveTime',
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.clock_fill,
                                 chartext: "Working Time",
-                                numtext: pressAttentionMTB == true ? '$workingtime' : '8.5 Hrs',
+                                numtext: pressAttentionMTB == true ?"$Mworkingtime" :"$workingtime",
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.time,
 
                                 chartext: "Travel Time",
-                                numtext: pressAttentionMTB == true ?  '$TravelTime' : '0.59 Hrs',
+                                numtext: pressAttentionMTB == true ?  "$MTravelTime": "$TravelTime",
                               ),
                             ]),
                       ),
@@ -308,8 +323,8 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ?  (monthpercentage/100) : 0.33,
-                                    textpercent: pressAttentionMTB == true ? monthpercentage.toString(): '33',
+                                    percent: pressAttentionMTB == true ?  (monthpercentage/100): (todaypercentage/100),
+                                    textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
                                     title: "Journey Plan\nCompletion",
                                   ),
                                   JourneryPlan(
@@ -421,7 +436,7 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                       Spacer(flex: 2),
                       Text(
-                        'Welcome to the new merchendiser\ninterface of Alseer.'
+                        'Welcome to the new merchendiser\ninterface of RMS.'
                             'Hope to have a\ngreat day ahead!',
                         style: new TextStyle(fontSize: 15
                         ),

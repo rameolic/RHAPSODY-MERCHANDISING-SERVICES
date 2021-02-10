@@ -8,6 +8,8 @@ import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/pages/jppages/jpskiped.dart';
+import 'package:merchandising/pages/jppages/jpvisited.dart';
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -127,7 +129,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
                          /* Container(
                             padding: EdgeInsets.all(10),
@@ -190,21 +192,25 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           Expanded(child: pressTODAY == true ? JourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                       ),
-                      Container(
-                        child: Center(
-                          child: Text('Display Tab 2',
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold)),
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                        ],
+                         ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                        ],
                       ),
-                      Container(
-                        child: Center(
-                          child: Text('Display Tab 3',
-                              style: TextStyle(
-                                  fontSize: 22, fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                    ]),
+                          ]),
                   ),
                 ),
               ),
@@ -260,161 +266,161 @@ class JourneyListBuilder extends StatefulWidget {
 }
 
 class _State extends State<JourneyListBuilder> {
-  static final List<int> ids = <int>[
-    JPResponsedata.id1,
-    JPResponsedata.id2,
-    JPResponsedata.id3,
-    JPResponsedata.id4,
-    JPResponsedata.id5,
-    JPResponsedata.id6,
-    JPResponsedata.id7,
-    JPResponsedata.id8,
-    JPResponsedata.id9,
-    JPResponsedata.id10,
-    JPResponsedata.id11,
-    JPResponsedata.id12,
-    JPResponsedata.id13,
-    JPResponsedata.id14,
-    JPResponsedata.id15,
-    JPResponsedata.id16,
-    JPResponsedata.id17,
-    JPResponsedata.id18,
-    JPResponsedata.id19,
-    JPResponsedata.id20,
+    List<int> ids = <int>[
+    JPResponsePlanneddata.id1,
+    JPResponsePlanneddata.id2,
+    JPResponsePlanneddata.id3,
+    JPResponsePlanneddata.id4,
+    JPResponsePlanneddata.id5,
+    JPResponsePlanneddata.id6,
+    JPResponsePlanneddata.id7,
+    JPResponsePlanneddata.id8,
+    JPResponsePlanneddata.id9,
+    JPResponsePlanneddata.id10,
+    JPResponsePlanneddata.id11,
+    JPResponsePlanneddata.id12,
+    JPResponsePlanneddata.id13,
+    JPResponsePlanneddata.id14,
+    JPResponsePlanneddata.id15,
+    JPResponsePlanneddata.id16,
+    JPResponsePlanneddata.id17,
+    JPResponsePlanneddata.id18,
+    JPResponsePlanneddata.id19,
+    JPResponsePlanneddata.id20,
   ];
-  static final List<int> outletids = <int>[
-    JPResponsedata.outletiddata1,
-    JPResponsedata.outletiddata2,
-    JPResponsedata.outletiddata3,
-    JPResponsedata.outletiddata4,
-    JPResponsedata.outletiddata5,
-    JPResponsedata.outletiddata6,
-    JPResponsedata.outletiddata7,
-    JPResponsedata.outletiddata8,
-    JPResponsedata.outletiddata9,
-    JPResponsedata.outletiddata10,
-    JPResponsedata.outletiddata11,
-    JPResponsedata.outletiddata12,
-    JPResponsedata.outletiddata13,
-    JPResponsedata.outletiddata14,
-    JPResponsedata.outletiddata15,
-    JPResponsedata.outletiddata16,
-    JPResponsedata.outletiddata17,
-    JPResponsedata.outletiddata18,
-    JPResponsedata.outletiddata19,
-    JPResponsedata.outletiddata20,
+    List<int> outletids = <int>[
+    JPResponsePlanneddata.outletiddata1,
+    JPResponsePlanneddata.outletiddata2,
+    JPResponsePlanneddata.outletiddata3,
+    JPResponsePlanneddata.outletiddata4,
+    JPResponsePlanneddata.outletiddata5,
+    JPResponsePlanneddata.outletiddata6,
+    JPResponsePlanneddata.outletiddata7,
+    JPResponsePlanneddata.outletiddata8,
+    JPResponsePlanneddata.outletiddata9,
+    JPResponsePlanneddata.outletiddata10,
+    JPResponsePlanneddata.outletiddata11,
+    JPResponsePlanneddata.outletiddata12,
+    JPResponsePlanneddata.outletiddata13,
+    JPResponsePlanneddata.outletiddata14,
+    JPResponsePlanneddata.outletiddata15,
+    JPResponsePlanneddata.outletiddata16,
+    JPResponsePlanneddata.outletiddata17,
+    JPResponsePlanneddata.outletiddata18,
+    JPResponsePlanneddata.outletiddata19,
+    JPResponsePlanneddata.outletiddata20,
   ];
-  final List<String> names = <String>[
-    JPResponsedata.outletnamedata1,
-    JPResponsedata.outletnamedata2,
-    JPResponsedata.outletnamedata3,
-    JPResponsedata.outletnamedata4,
-    JPResponsedata.outletnamedata5,
-    JPResponsedata.outletnamedata6,
-    JPResponsedata.outletnamedata7,
-    JPResponsedata.outletnamedata8,
-    JPResponsedata.outletnamedata9,
-    JPResponsedata.outletnamedata10,
-    JPResponsedata.outletnamedata11,
-    JPResponsedata.outletnamedata12,
-    JPResponsedata.outletnamedata13,
-    JPResponsedata.outletnamedata14,
-    JPResponsedata.outletnamedata15,
-    JPResponsedata.outletnamedata16,
-    JPResponsedata.outletnamedata17,
-    JPResponsedata.outletnamedata18,
-    JPResponsedata.outletnamedata19,
-    JPResponsedata.outletnamedata20,
+   List<String> names = <String>[
+    JPResponsePlanneddata.outletnamedata1,
+    JPResponsePlanneddata.outletnamedata2,
+    JPResponsePlanneddata.outletnamedata3,
+    JPResponsePlanneddata.outletnamedata4,
+    JPResponsePlanneddata.outletnamedata5,
+    JPResponsePlanneddata.outletnamedata6,
+    JPResponsePlanneddata.outletnamedata7,
+    JPResponsePlanneddata.outletnamedata8,
+    JPResponsePlanneddata.outletnamedata9,
+    JPResponsePlanneddata.outletnamedata10,
+    JPResponsePlanneddata.outletnamedata11,
+    JPResponsePlanneddata.outletnamedata12,
+    JPResponsePlanneddata.outletnamedata13,
+    JPResponsePlanneddata.outletnamedata14,
+    JPResponsePlanneddata.outletnamedata15,
+    JPResponsePlanneddata.outletnamedata16,
+    JPResponsePlanneddata.outletnamedata17,
+    JPResponsePlanneddata.outletnamedata18,
+    JPResponsePlanneddata.outletnamedata19,
+    JPResponsePlanneddata.outletnamedata20,
   ];
-  final List<String> area = <String>[
-    JPResponsedata.outletareadata1,
-    JPResponsedata.outletareadata2,
-    JPResponsedata.outletareadata3,
-    JPResponsedata.outletareadata4,
-    JPResponsedata.outletareadata5,
-    JPResponsedata.outletareadata6,
-    JPResponsedata.outletareadata7,
-    JPResponsedata.outletareadata8,
-    JPResponsedata.outletareadata9,
-    JPResponsedata.outletareadata10,
-    JPResponsedata.outletareadata11,
-    JPResponsedata.outletareadata12,
-    JPResponsedata.outletareadata13,
-    JPResponsedata.outletareadata14,
-    JPResponsedata.outletareadata15,
-    JPResponsedata.outletareadata16,
-    JPResponsedata.outletareadata17,
-    JPResponsedata.outletareadata18,
-    JPResponsedata.outletareadata19,
-    JPResponsedata.outletareadata20,
+   List<String> area = <String>[
+    JPResponsePlanneddata.outletareadata1,
+    JPResponsePlanneddata.outletareadata2,
+    JPResponsePlanneddata.outletareadata3,
+    JPResponsePlanneddata.outletareadata4,
+    JPResponsePlanneddata.outletareadata5,
+    JPResponsePlanneddata.outletareadata6,
+    JPResponsePlanneddata.outletareadata7,
+    JPResponsePlanneddata.outletareadata8,
+    JPResponsePlanneddata.outletareadata9,
+    JPResponsePlanneddata.outletareadata10,
+    JPResponsePlanneddata.outletareadata11,
+    JPResponsePlanneddata.outletareadata12,
+    JPResponsePlanneddata.outletareadata13,
+    JPResponsePlanneddata.outletareadata14,
+    JPResponsePlanneddata.outletareadata15,
+    JPResponsePlanneddata.outletareadata16,
+    JPResponsePlanneddata.outletareadata17,
+    JPResponsePlanneddata.outletareadata18,
+    JPResponsePlanneddata.outletareadata19,
+    JPResponsePlanneddata.outletareadata20,
   ];
-  final List<String> city = <String>[
-    JPResponsedata.outletcitydata1,
-    JPResponsedata.outletcitydata2,
-    JPResponsedata.outletcitydata3,
-    JPResponsedata.outletcitydata4,
-    JPResponsedata.outletcitydata5,
-    JPResponsedata.outletcitydata6,
-    JPResponsedata.outletcitydata7,
-    JPResponsedata.outletcitydata8,
-    JPResponsedata.outletcitydata9,
-    JPResponsedata.outletcitydata10,
-    JPResponsedata.outletcitydata11,
-    JPResponsedata.outletcitydata12,
-    JPResponsedata.outletcitydata13,
-    JPResponsedata.outletcitydata14,
-    JPResponsedata.outletcitydata15,
-    JPResponsedata.outletcitydata16,
-    JPResponsedata.outletcitydata17,
-    JPResponsedata.outletcitydata18,
-    JPResponsedata.outletcitydata19,
-    JPResponsedata.outletcitydata20,
+   List<String> city = <String>[
+    JPResponsePlanneddata.outletcitydata1,
+    JPResponsePlanneddata.outletcitydata2,
+    JPResponsePlanneddata.outletcitydata3,
+    JPResponsePlanneddata.outletcitydata4,
+    JPResponsePlanneddata.outletcitydata5,
+    JPResponsePlanneddata.outletcitydata6,
+    JPResponsePlanneddata.outletcitydata7,
+    JPResponsePlanneddata.outletcitydata8,
+    JPResponsePlanneddata.outletcitydata9,
+    JPResponsePlanneddata.outletcitydata10,
+    JPResponsePlanneddata.outletcitydata11,
+    JPResponsePlanneddata.outletcitydata12,
+    JPResponsePlanneddata.outletcitydata13,
+    JPResponsePlanneddata.outletcitydata14,
+    JPResponsePlanneddata.outletcitydata15,
+    JPResponsePlanneddata.outletcitydata16,
+    JPResponsePlanneddata.outletcitydata17,
+    JPResponsePlanneddata.outletcitydata18,
+    JPResponsePlanneddata.outletcitydata19,
+    JPResponsePlanneddata.outletcitydata20,
   ];
-  final List<String> country = <String>[
-    JPResponsedata.outletcountrydata1,
-    JPResponsedata.outletcountrydata2,
-    JPResponsedata.outletcountrydata3,
-    JPResponsedata.outletcountrydata4,
-    JPResponsedata.outletcountrydata5,
-    JPResponsedata.outletcountrydata6,
-    JPResponsedata.outletcountrydata7,
-    JPResponsedata.outletcountrydata8,
-    JPResponsedata.outletcountrydata9,
-    JPResponsedata.outletcountrydata10,
-    JPResponsedata.outletcountrydata11,
-    JPResponsedata.outletcountrydata12,
-    JPResponsedata.outletcountrydata13,
-    JPResponsedata.outletcountrydata14,
-    JPResponsedata.outletcountrydata15,
-    JPResponsedata.outletcountrydata16,
-    JPResponsedata.outletcountrydata17,
-    JPResponsedata.outletcountrydata18,
-    JPResponsedata.outletcountrydata19,
-    JPResponsedata.outletcountrydata20,
+   List<String> country = <String>[
+    JPResponsePlanneddata.outletcountrydata1,
+    JPResponsePlanneddata.outletcountrydata2,
+    JPResponsePlanneddata.outletcountrydata3,
+    JPResponsePlanneddata.outletcountrydata4,
+    JPResponsePlanneddata.outletcountrydata5,
+    JPResponsePlanneddata.outletcountrydata6,
+    JPResponsePlanneddata.outletcountrydata7,
+    JPResponsePlanneddata.outletcountrydata8,
+    JPResponsePlanneddata.outletcountrydata9,
+    JPResponsePlanneddata.outletcountrydata10,
+    JPResponsePlanneddata.outletcountrydata11,
+    JPResponsePlanneddata.outletcountrydata12,
+    JPResponsePlanneddata.outletcountrydata13,
+    JPResponsePlanneddata.outletcountrydata14,
+    JPResponsePlanneddata.outletcountrydata15,
+    JPResponsePlanneddata.outletcountrydata16,
+    JPResponsePlanneddata.outletcountrydata17,
+    JPResponsePlanneddata.outletcountrydata18,
+    JPResponsePlanneddata.outletcountrydata19,
+    JPResponsePlanneddata.outletcountrydata20,
   ];
-  final List<int> contactnumber = <int>[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20
+   List<String> contactnumber = <String>[
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480',
+    '+971543086480'
   ];
-  final List<String> distancenum = <String>[
+   List<String> distancenum = <String>[
     distinkm.distancetooutlet1 != null
         ? distinkm.distancetooutlet1.toStringAsFixed(2)
         : null,
@@ -476,15 +482,17 @@ class _State extends State<JourneyListBuilder> {
         ? distinkm.distancetooutlet20.toStringAsFixed(2)
         : null,
   ];
+
   int itemsno() {
     outletids.forEach((elements) => (null));
-    int countOutlet = 0;
-    for (final outletid in outletids) {
+    countoutlets.outletscount = 0;
+    for (final outletid in names) {
       if (outletid != null) {
-        countOutlet++;
+        countoutlets.outletscount++;
       }
     }
-    return countOutlet;
+    print(countoutlets.outletscount);
+    return countoutlets.outletscount;
   }
 
   bool isApiCallProcess = false;
@@ -499,7 +507,7 @@ class _State extends State<JourneyListBuilder> {
   Widget _uiSetup(BuildContext context) {
     return itemsno() == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
     ListView.builder(
-        itemCount: itemsno(),
+        itemCount: countoutlets.outletscount,//itemsno(),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
@@ -622,4 +630,8 @@ class _State extends State<JourneyListBuilder> {
           );
         });
   }
+}
+
+class countoutlets {
+  static int outletscount;
 }

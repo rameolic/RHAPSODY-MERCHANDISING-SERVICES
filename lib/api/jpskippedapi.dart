@@ -1,0 +1,188 @@
+
+
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'api_service.dart';
+import 'jprequest.dart';
+import 'package:merchandising/pages/Journeyplan.dart';
+import 'package:merchandising/model/Location_service.dart';
+
+
+Future<void> getskippedJourneyPlan() async {
+  http.Response JPresponse = await http.post(JPSkippedurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(DBrequestData),
+  );
+  if (JPresponse.statusCode == 200){
+    print("skippedjourneyplandone");
+    String JPdata = JPresponse.body;
+    var decodeJPData = jsonDecode(JPdata);
+    JPResponseskippeddata.outletiddata1 = decodeJPData['data'][0]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata1 = decodeJPData['data'][0]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata1 = decodeJPData['data'][0]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata1 = decodeJPData['data'][0]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata1 = decodeJPData['data'][0]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata1 = decodeJPData['data'][0]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata1 = decodeJPData['data'][0]['outlet']['outlet_city'];
+    JPResponseskippeddata.id1 = decodeJPData['data'][0]['id'];
+    JPResponseskippeddata.outletiddata2 = decodeJPData['data'][1]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata2 = decodeJPData['data'][1]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata2 = decodeJPData['data'][1]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata2 = decodeJPData['data'][1]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata2 = decodeJPData['data'][1]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata2 = decodeJPData['data'][1]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata2 = decodeJPData['data'][1]['outlet']['outlet_city'];
+    JPResponseskippeddata.id2 = decodeJPData['data'][1]['id'];
+    JPResponseskippeddata.outletiddata3 = decodeJPData['data'][2]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata3 = decodeJPData['data'][2]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata3 = decodeJPData['data'][2]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata3 = decodeJPData['data'][2]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata3 = decodeJPData['data'][2]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata3 = decodeJPData['data'][2]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata3 = decodeJPData['data'][2]['outlet']['outlet_city'];
+    JPResponseskippeddata.id3 = decodeJPData['data'][2]['id'];
+    JPResponseskippeddata.outletiddata4 = decodeJPData['data'][3]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata4 = decodeJPData['data'][3]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata4 = decodeJPData['data'][3]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata4 = decodeJPData['data'][3]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata4 = decodeJPData['data'][3]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata4 = decodeJPData['data'][3]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata4 = decodeJPData['data'][3]['outlet']['outlet_city'];
+    JPResponseskippeddata.id4 = decodeJPData['data'][3]['id'];
+    JPResponseskippeddata.outletiddata5 = decodeJPData['data'][4]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata5 = decodeJPData['data'][4]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata5 = decodeJPData['data'][4]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata5 = decodeJPData['data'][4]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata5 = decodeJPData['data'][4]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata5 = decodeJPData['data'][4]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata5 = decodeJPData['data'][4]['outlet']['outlet_city'];
+    JPResponseskippeddata.id5 = decodeJPData['data'][4]['id'];
+    JPResponseskippeddata.outletiddata6 = decodeJPData['data'][5]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata6 = decodeJPData['data'][5]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata6 = decodeJPData['data'][5]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata6 = decodeJPData['data'][5]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata6 = decodeJPData['data'][5]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata6 = decodeJPData['data'][5]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata6 = decodeJPData['data'][5]['outlet']['outlet_city'];
+    JPResponseskippeddata.id6 = decodeJPData['data'][5]['id'];
+    JPResponseskippeddata.outletiddata7 = decodeJPData['data'][6]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata7 = decodeJPData['data'][6]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata7 = decodeJPData['data'][6]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata7 = decodeJPData['data'][6]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata7 = decodeJPData['data'][6]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata7 = decodeJPData['data'][6]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata7 = decodeJPData['data'][6]['outlet']['outlet_city'];
+    JPResponseskippeddata.id7 = decodeJPData['data'][6]['id'];
+    JPResponseskippeddata.outletiddata8 = decodeJPData['data'][7]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata8 = decodeJPData['data'][7]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata8 = decodeJPData['data'][7]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata8 = decodeJPData['data'][7]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata8 = decodeJPData['data'][7]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata8 = decodeJPData['data'][7]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata8 = decodeJPData['data'][7]['outlet']['outlet_city'];
+    JPResponseskippeddata.id8 = decodeJPData['data'][7]['id'];
+    JPResponseskippeddata.outletiddata9 = decodeJPData['data'][8]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata9 = decodeJPData['data'][8]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata9 = decodeJPData['data'][8]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata9 = decodeJPData['data'][8]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata9 = decodeJPData['data'][8]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata9 = decodeJPData['data'][8]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata9 = decodeJPData['data'][8]['outlet']['outlet_city'];
+    JPResponseskippeddata.id9 = decodeJPData['data'][8]['id'];
+    JPResponseskippeddata.outletiddata10 = decodeJPData['data'][9]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata10 = decodeJPData['data'][9]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata10 = decodeJPData['data'][9]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata10 = decodeJPData['data'][9]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata10 = decodeJPData['data'][9]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata10 = decodeJPData['data'][9]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata10 = decodeJPData['data'][9]['outlet']['outlet_city'];
+    JPResponseskippeddata.id10 = decodeJPData['data'][9]['id'];
+    JPResponseskippeddata.outletiddata11 = decodeJPData['data'][10]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata11 = decodeJPData['data'][10]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata11 = decodeJPData['data'][10]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata11 = decodeJPData['data'][10]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata11 = decodeJPData['data'][10]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata11 = decodeJPData['data'][10]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata11 = decodeJPData['data'][10]['outlet']['outlet_city'];
+    JPResponseskippeddata.id11 = decodeJPData['data'][10]['id'];
+    JPResponseskippeddata.outletiddata12 = decodeJPData['data'][11]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata12 = decodeJPData['data'][11]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata12 = decodeJPData['data'][11]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata12 = decodeJPData['data'][11]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata12 = decodeJPData['data'][11]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata12 = decodeJPData['data'][11]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata12 = decodeJPData['data'][11]['outlet']['outlet_city'];
+    JPResponseskippeddata.id12 = decodeJPData['data'][11]['id'];
+    JPResponseskippeddata.outletiddata13 = decodeJPData['data'][12]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata13 = decodeJPData['data'][12]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata13 = decodeJPData['data'][12]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata13 = decodeJPData['data'][12]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata13 = decodeJPData['data'][12]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata13 = decodeJPData['data'][12]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata13 = decodeJPData['data'][12]['outlet']['outlet_city'];
+    JPResponseskippeddata.id13 = decodeJPData['data'][12]['id'];
+    JPResponseskippeddata.outletiddata14 = decodeJPData['data'][13]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata14 = decodeJPData['data'][13]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata14= decodeJPData['data'][13]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata14 = decodeJPData['data'][13]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata14 = decodeJPData['data'][13]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata14 = decodeJPData['data'][13]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata14 = decodeJPData['data'][13]['outlet']['outlet_city'];
+    JPResponseskippeddata.id14 = decodeJPData['data'][13]['id'];
+    JPResponseskippeddata.outletiddata15 = decodeJPData['data'][14]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata15 = decodeJPData['data'][14]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata15 = decodeJPData['data'][14]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata15 = decodeJPData['data'][14]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata15 = decodeJPData['data'][14]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata15 = decodeJPData['data'][14]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata15 = decodeJPData['data'][14]['outlet']['outlet_city'];
+    JPResponseskippeddata.id15 = decodeJPData['data'][14]['id'];
+    JPResponseskippeddata.outletiddata16 = decodeJPData['data'][15]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata16 = decodeJPData['data'][15]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata16 = decodeJPData['data'][15]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata16 = decodeJPData['data'][15]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata16 = decodeJPData['data'][15]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata16 = decodeJPData['data'][15]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata16 = decodeJPData['data'][15]['outlet']['outlet_city'];
+    JPResponseskippeddata.id16 = decodeJPData['data'][15]['id'];
+    JPResponseskippeddata.outletiddata17 = decodeJPData['data'][16]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata17 = decodeJPData['data'][16]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata17 = decodeJPData['data'][16]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata17 = decodeJPData['data'][16]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata17 = decodeJPData['data'][16]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata17 = decodeJPData['data'][16]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata17 = decodeJPData['data'][16]['outlet']['outlet_city'];
+    JPResponseskippeddata.id17 = decodeJPData['data'][16]['id'];
+    JPResponseskippeddata.outletiddata18 = decodeJPData['data'][17]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata18 = decodeJPData['data'][17]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata18 = decodeJPData['data'][17]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata18 = decodeJPData['data'][17]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata18 = decodeJPData['data'][17]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata18 = decodeJPData['data'][17]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata18 = decodeJPData['data'][17]['outlet']['outlet_city'];
+    JPResponseskippeddata.id18 = decodeJPData['data'][17]['id'];
+    JPResponseskippeddata.outletiddata19 = decodeJPData['data'][18]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata19 = decodeJPData['data'][18]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata19 = decodeJPData['data'][18]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata19 = decodeJPData['data'][18]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata19 = decodeJPData['data'][18]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata19 = decodeJPData['data'][18]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata19 = decodeJPData['data'][18]['outlet']['outlet_city'];
+    JPResponseskippeddata.id19 = decodeJPData['data'][18]['id'];
+    JPResponseskippeddata.outletiddata20 = decodeJPData['data'][19]['outlet']['outlet_id'];
+    JPResponseskippeddata.outletnamedata20 = decodeJPData['data'][19]['outlet']['outlet_name'];
+    JPResponseskippeddata.latitudedata20 = decodeJPData['data'][19]['outlet']['outlet_lat'];
+    JPResponseskippeddata.longitudedata20 = decodeJPData['data'][19]['outlet']['outlet_long'];
+    JPResponseskippeddata.outletareadata20 = decodeJPData['data'][19]['outlet']['outlet_area'];
+    JPResponseskippeddata.outletcountrydata20 = decodeJPData['data'][19]['outlet']['outlet_country'];
+    JPResponseskippeddata.outletcitydata20 = decodeJPData['data'][19]['outlet']['outlet_city'];
+    JPResponseskippeddata.id20 = decodeJPData['data'][19]['id'];
+  }
+  if(JPresponse.statusCode != 200){
+    print(JPresponse.statusCode);
+  }
+}

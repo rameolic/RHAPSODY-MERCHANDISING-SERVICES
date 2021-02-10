@@ -191,7 +191,7 @@ class _TimeSheetListBuilderState extends State<TimeSheetListBuilder> {
                               SizedBox(
                                 height: 5,
                               ),
-                              daytimesheet(),
+                              timesheet(),
                             ],
                           )
                         : SizedBox()
@@ -206,14 +206,8 @@ class _TimeSheetListBuilderState extends State<TimeSheetListBuilder> {
         });
   }
 }
-
-class daytimesheet extends StatefulWidget {
-  @override
-  _daytimesheetState createState() => _daytimesheetState();
-}
-
-class _daytimesheetState extends State<daytimesheet> {
-  static final List<String> outlet = <String>[
+class timesheet extends StatelessWidget {
+    List<String> outlet = <String>[
     TimeSheetdata.outletname,
     TimeSheetdata.outletname2,
     TimeSheetdata.outletname3,
@@ -225,7 +219,7 @@ class _daytimesheetState extends State<daytimesheet> {
     TimeSheetdata.outletname9,
     TimeSheetdata.outletname10
   ];
-  static final List<String> checkin = <String>[
+    List<String> checkin = <String>[
     TimeSheetdata.checkintime,
     TimeSheetdata.checkintime2,
     TimeSheetdata.checkintime3,
@@ -238,7 +232,7 @@ class _daytimesheetState extends State<daytimesheet> {
     TimeSheetdata.checkintime10,
 
   ];
-  static final List<String> checkout = <String>[
+    List<String> checkout = <String>[
     TimeSheetdata.checkouttime,
     TimeSheetdata.checkouttime2,
     TimeSheetdata.checkouttime3,
@@ -250,7 +244,7 @@ class _daytimesheetState extends State<daytimesheet> {
     TimeSheetdata.checkouttime9,
     TimeSheetdata.checkouttime10,
   ];
-  int itemsno() {
+  int outletscount() {
     outlet.forEach((elements) => (null));
     int countOutlet = 0;
     for (final outletids in outlet) {
@@ -263,9 +257,9 @@ class _daytimesheetState extends State<daytimesheet> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: MediaQuery.of(context).size.height / 1.4,
       child: ListView.builder(
-          itemCount: itemsno(),
+          itemCount:  outletscount(),
           itemBuilder: (BuildContext context, int index) {
             return Table(
               columnWidths: {
