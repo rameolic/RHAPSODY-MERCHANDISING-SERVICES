@@ -36,6 +36,7 @@ dependencies:
   google_maps_flutter: 1.1.1
   geolocator:
   geocoder:
+  auto_size_text: 2.1.0
 
 
 dev_dependencies:

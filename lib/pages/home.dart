@@ -23,6 +23,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/api/jpapi.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class leaves {
   static int remainingleaves = 1;
@@ -492,8 +493,9 @@ class Containerblock extends StatelessWidget {
               numbertext,style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 10),
-            Text(
+            AutoSizeText(
               chartext,
+              maxLines: 2,
               textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
             ),
           ],
@@ -517,8 +519,9 @@ class WorkingRow extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            AutoSizeText(
               chartext,
+              maxLines: 1,
             ),
             Container(
               height: 1,
@@ -556,8 +559,9 @@ class JourneryPlan extends StatelessWidget {
             center: Text(textpercent),
           ),
           SizedBox(height: 10,),
-          Text(
+          AutoSizeText(
             title,
+            maxLines: 2,
             textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
           ),
         ],
