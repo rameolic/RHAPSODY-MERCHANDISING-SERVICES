@@ -176,9 +176,9 @@ class Activities extends StatelessWidget {
     return GestureDetector(
       onTap: tap,
       child: Container(
-        height: MediaQuery.of(context).size.height/7.5,
         width: MediaQuery.of(context).size.width/2.15,
         margin: EdgeInsets.only(left: 5,bottom: 10,right: 5),
+        padding: EdgeInsets.all(10.0),
         decoration: BoxDecoration(color: pink,borderRadius:BorderRadius.circular(10)),
         child: Center(child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

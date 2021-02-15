@@ -5,6 +5,7 @@ import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
 import 'HQOne.dart';
+import 'package:merchandising/pages/menupages/myprofile.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
@@ -99,7 +100,12 @@ class Menu extends StatelessWidget {
             title: 'My Profile',
             icon: Icons.person,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Myprofile()));
+          },
         ),
         ListTile(
           title: MenuElements(

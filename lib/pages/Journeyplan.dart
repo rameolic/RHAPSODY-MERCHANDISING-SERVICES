@@ -118,8 +118,8 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           indicatorColor: orange,
                           tabs: [
                             Tab(text: 'PLANNED'),
+                            Tab(text: 'YET TO VISIT'),
                             Tab(text: 'VISITED'),
-                            Tab(text: 'SKIPPED'),
                           ],
                         ),
                       ),
@@ -198,7 +198,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                          ),
                       Column(
@@ -207,7 +207,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                       ),
                           ]),
@@ -234,7 +234,7 @@ class JourneyPlanHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      width: 115,
+      width: MediaQuery.of(context).size.width/3.5,
       padding: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -551,7 +551,7 @@ class _State extends State<JourneyListBuilder> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              height: 120,
+              height: 130,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -600,20 +600,18 @@ class _State extends State<JourneyListBuilder> {
                   Table(
                     children: [
                       TableRow(children: [
-                        Text('Contact Number',
+                        Text('Contact Number :',
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text(":"),
                         Text('${contactnumber[index]}',
                             style: TextStyle(color: orange)),
                       ]),
                       TableRow(children: [
-                        Text('Distance',
+                        Text('Distance :',
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text(":"),
                         Row(
                           children: [
                             Text('${distancenum[index]}',

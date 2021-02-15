@@ -25,16 +25,13 @@ import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/api/jpapi.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class leaves {
-  static int remainingleaves = 1;
-}
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
 }
 @override
 class _DashBoardState extends State<DashBoard> {
-
+ double leavebalance = DBResponsedatamonthly.leavebalance;
   int shedulecalls = DBResponsedatadaily.shedulevisits;
   int unshedulecalls = DBResponsedatadaily.unshedulevisits;
   int shedulecallsdone = DBResponsedatadaily.ShedulevisitssDone;
@@ -46,8 +43,8 @@ class _DashBoardState extends State<DashBoard> {
   int todaypercentage =  DBResponsedatadaily.todayPlanpercentage;
   int monthpercentage = DBResponsedatamonthly.monthPlanpercentage;
   bool isApiCallProcess = false;
-  bool pressAttentionMTB = true;
-  bool pressAttentionTODAY = false;
+  bool pressAttentionMTB = false;
+  bool pressAttentionTODAY = true;
   int Mshedulecalls = DBResponsedatamonthly.shedulevisits;
   int Munshedulecalls = DBResponsedatamonthly.unshedulevisits;
   int Mshedulecallsdone = DBResponsedatamonthly.ShedulevisitssDone;
@@ -127,92 +124,94 @@ class _DashBoardState extends State<DashBoard> {
                 SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Key Performance Indicators',
-                      style: TextStyle(fontSize: 17,color: Colors.white),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              pressAttentionMTB = true;
-                              pressAttentionTODAY = false;
-                            });
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'MTB',
-                                    style: TextStyle(
-                                      color: pressAttentionMTB == true
-                                          ? Colors.white
-                                          : Colors.black,
+                SingleChildScrollView(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Key Performance Indicators',
+                        style: TextStyle(fontSize: 17,color: Colors.white),
+                      ),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                pressAttentionMTB = true;
+                                pressAttentionTODAY = false;
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 60,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      'MTB',
+                                      style: TextStyle(
+                                        color: pressAttentionMTB == true
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white,width: 1.0),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10)),
-                              color: pressAttentionMTB == true
-                                  ? Colors.transparent
-                                  : Colors.white,
+                                  Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white,width: 1.0),
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10)),
+                                color: pressAttentionMTB == true
+                                    ? Colors.transparent
+                                    : Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              pressAttentionTODAY = true;
-                              pressAttentionMTB = false;
-                            });
-                          },
-                          child: Container(
-                            height: 40,
-                            width: 60,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'Today',
-                                    style: TextStyle(
-                                      color: pressAttentionTODAY == false
-                                          ? Colors.black
-                                          : Colors.white,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                pressAttentionTODAY = true;
+                                pressAttentionMTB = false;
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 60,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      'Today',
+                                      style: TextStyle(
+                                        color: pressAttentionTODAY == false
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white,width: 1.0),
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  bottomRight: Radius.circular(10)),
-                              color: pressAttentionTODAY == true
-                                  ? Colors.transparent
-                                  : Colors.white,
+                                  Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white,width: 1.0),
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10)),
+                                color: pressAttentionTODAY == true
+                                    ? Colors.transparent
+                                    : Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 20,
@@ -357,7 +356,7 @@ class _DashBoardState extends State<DashBoard> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Text("Leave "),
-                                Text(leaves.remainingleaves.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                Text(leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                                 Text("Total available Leave's"),
                               ],
                             ),
@@ -402,15 +401,15 @@ class _DashBoardState extends State<DashBoard> {
                           borderRadius: BorderRadius.circular(10.0),
                           color: containerscolor,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
-                            Text("HQ Communication",textAlign: TextAlign.center,),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
+                              Text("HQ Communication",textAlign: TextAlign.center,),
 
-                          ],
-                        ),
+                            ],
+                          ),
                       ),
                     ),
                   ],
@@ -437,7 +436,7 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                       Spacer(flex: 2),
                       Text(
-                        'Welcome to the new merchendiser\ninterface of RMS.'
+                        'Welcome to the new merchendiser\ninterface of RMS. '
                             'Hope to have a\ngreat day ahead!',
                         style: new TextStyle(fontSize: 15
                         ),
@@ -479,26 +478,27 @@ class Containerblock extends StatelessWidget {
         color: containerscolor,
       ),
       child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 35,
-              color: color,
-            ),
-            SizedBox(height: 5),
-            Text(
-              numbertext,style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 10),
-            AutoSizeText(
-              chartext,
-              maxLines: 2,
-              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 35,
+                color: color,
+              ),
+              SizedBox(height: 5),
+              Text(
+                numbertext,style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 10),
+              Text(
+                  chartext,
+                  textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -512,28 +512,29 @@ class WorkingRow extends StatelessWidget {
   final numtext;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Icon(icon),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AutoSizeText(
-              chartext,
-              maxLines: 1,
-            ),
-            Container(
-              height: 1,
-              width: 95,
-              color: Colors.black,
-            ),
-            Text(
-              numtext,
-            ),
-          ],
-        )
-      ],
+    return SingleChildScrollView(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(icon),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                chartext,
+              ),
+              Container(
+                height: 1,
+                width: 95,
+                color: Colors.black,
+              ),
+              Text(
+                numtext,
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -581,128 +582,130 @@ class ActivityPerformance extends StatelessWidget {
   final asecondary;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-            "Activity Performance"
-        ),
-        SizedBox(height: 10,),
-        SizedBox(
-          child: Table(
-            border: TableBorder.symmetric(
-              inside: BorderSide(color: Colors.grey),
-            ),
-            columnWidths: {
-              0: FractionColumnWidth(.23),
-              1: FractionColumnWidth(.235),
-              2: FractionColumnWidth(.242),
-            },
-            children: [
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0,top: 8.0,),
-                    child: Text(
-                      "Planned",style: TextStyle(fontSize: 12),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          ptotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Total",style: TextStyle(fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          pprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Primary",style: TextStyle(fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          psecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Secondary",style: TextStyle(fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+              "Activity Performance"
+          ),
+          SizedBox(height: 10,),
+          SizedBox(
+            child: Table(
+              border: TableBorder.symmetric(
+                inside: BorderSide(color: Colors.grey),
               ),
-              TableRow(
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 14.0,right: 8.0,),
+              columnWidths: {
+                0: FractionColumnWidth(.23),
+                1: FractionColumnWidth(.235),
+                2: FractionColumnWidth(.242),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0,top: 8.0,),
                       child: Text(
-                        "Actual",style: TextStyle(fontSize: 12),
+                        "Planned",style: TextStyle(fontSize: 12),
                       ),
                     ),
-                  ),
-                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          atotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Total",style: TextStyle(fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          aprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "Primary",style: TextStyle(fontSize: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
-                    child: Column(
-                      children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
                           Text(
-                            asecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                            ptotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                         Text(
+                          Text(
+                            "Total",style: TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            pprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Primary",style: TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            psecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
                             "Secondary",style: TextStyle(fontSize: 10),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 14.0,right: 8.0,),
+                        child: Text(
+                          "Actual",style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ),
+                    Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            atotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Total",style: TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            aprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Primary",style: TextStyle(fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+                      child: Column(
+                        children: [
+                            Text(
+                              asecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                            ),
+                           Text(
+                              "Secondary",style: TextStyle(fontSize: 10),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

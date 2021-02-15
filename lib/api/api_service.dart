@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'jpapi.dart';
 import 'jpskippedapi.dart';
 import 'JPvisitedapi.dart';
+import 'loginwithuserdetails.dart';
 
 Uri Loginurl = Uri.parse("https://rms.rhapsody.ae/api/login");
 Uri DBdailyurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard_daily");
@@ -15,10 +16,13 @@ Uri CICOurl = Uri.parse("https://rms.rhapsody.ae/api/check_in_out");
 Uri TSurl = Uri.parse("https://rms.rhapsody.ae/api/timesheet_daily");
 Uri JPSkippedurl = Uri.parse("https://rms.rhapsody.ae/api/today_skipped_journey");
 Uri JPVisitedurl = Uri.parse("https://rms.rhapsody.ae/api/today_completed_journey");
+Uri leaveurl = Uri.parse("https://rms.rhapsody.ae/api/leave_request");
+Uri empdataurl = Uri.parse("https://rms.rhapsody.ae/api/employee_details");
 
 
 
-Future<void> getDashBoardData() async {
+
+Future getDashBoardData() async {
   var emailid = loginrequestdata.inputemail;
   var password = loginrequestdata.inputpassword;
   Map loginData = {
@@ -26,6 +30,7 @@ Future<void> getDashBoardData() async {
     'password': '$password',
   };
   print(loginData);
+
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
@@ -35,18 +40,20 @@ Future<void> getDashBoardData() async {
     DBrequestdata.receivedtoken =decodeData['token'];
     DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     DBrequestdata.empname = decodeData['user'] ['name'];
+    DBrequestdata.emailid =decodeData['user']['email'];
      if(DBrequestdata.receivedtoken != null && DBrequestdata.receivedempid !=null ) {
        DBRequestdaily();
        DBRequestmonthly();
        getJourneyPlan();
        getskippedJourneyPlan();
        getvisitedJourneyPlan();
-
+       getempdetails();
      }
   }
   else {
     print(response.statusCode);
     print("error");
+    print(response.body);
   }
 }
 
@@ -62,6 +69,7 @@ class DBrequestdata {
   static var receivedtoken;
   static var receivedempid;
   static var empname;
+  static var emailid;
 }
 var token = DBrequestdata.receivedtoken;
 var Empid = DBrequestdata.receivedempid;
@@ -69,7 +77,7 @@ Map DBrequestData = {
   'emp_id': '$Empid'
 };
 
-void DBRequestdaily() async{
+Future DBRequestdaily() async{
   http.Response DBresponse = await http.post(DBdailyurl,
     headers: {
       'Content-Type': 'application/json',
@@ -90,14 +98,13 @@ void DBRequestdaily() async{
     DBResponsedatadaily.WorkingTime =decodeDBData['WorkingTime'];
     DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
     DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
-    DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'][0]['month_percentage'];
+    DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
   }
   if(DBresponse.statusCode != 200){
     print(DBresponse.statusCode);
-
   }
 }
-void DBRequestmonthly() async{
+Future DBRequestmonthly() async{
   http.Response DBresponse = await http.post(DBmonthlyurl,
     headers: {
       'Content-Type': 'application/json',
@@ -118,11 +125,12 @@ void DBRequestmonthly() async{
     DBResponsedatamonthly.WorkingTime =decodeDBData['WorkingTime'];
     DBResponsedatamonthly.EffectiveTime =decodeDBData['EffectiveTime'];
     DBResponsedatamonthly.TravelTime =decodeDBData['TravelTime'];
-    DBResponsedatamonthly.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'][0]['month_percentage'];
+    DBResponsedatamonthly.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'];
+    DBResponsedatamonthly.leavebalance = decodeDBData['LeaveCount'];
+    return DBResponsedatamonthly.leavebalance;
   }
   if(DBresponse.statusCode != 200){
     print(DBresponse.statusCode);
-
   }
 }
 
@@ -148,6 +156,7 @@ class DBResponsedatamonthly{
   static var EffectiveTime;
   static var TravelTime;
   static int monthPlanpercentage;
+  static var leavebalance;
 }
 
 class chekinoutlet{
@@ -206,6 +215,7 @@ class checkinoutdata{
   static var checkid;
 }
 
+
 void CheckinCheckout() async {
   var checkid = checkinoutdata.checkid;
   var checkintime = checkinoutdata.checkintime;
@@ -230,4 +240,44 @@ void CheckinCheckout() async {
     body: jsonEncode(checkinoutresponse),
   );
   print(cicoresponse.statusCode);
+}
+
+
+void leaverequest() async {
+  var leavetype = leave.type;
+  var startdate = leave.startdate;
+  var enddate = leave.enddate;
+  var reason = leave.reason;
+  Map leaverequestbody =
+  {
+    'emp_id': '$Empid',
+    "leavetype": "$leavetype",
+    "leavestartdate": "$startdate",
+    "leaveenddate": "$enddate",
+    "reason": "$reason",
+  };
+  print(leaverequestbody);
+  http.Response leaveresponse = await http.post(leaveurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(leaverequestbody),
+  );
+  print(leaveresponse.statusCode);
+  if(leaveresponse.statusCode == 200 ){
+    print(jsonDecode(leaveresponse.body));
+  }
+}
+
+class leave {
+static var type;
+static var startdate;
+static var enddate;
+static var reason;
+}
+
+class password{
+  static var userpassword;
 }

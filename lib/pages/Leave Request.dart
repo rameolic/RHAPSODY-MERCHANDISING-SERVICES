@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'MenuContent.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/pages/home.dart';
+import 'package:intl/intl.dart';
+
+class leavelogic {
+  static DateTime StratDate;
+}
+
 
 class LeaveRequest extends StatefulWidget {
   @override
@@ -10,12 +17,13 @@ class LeaveRequest extends StatefulWidget {
 }
 
 class _LeaveRequestState extends State<LeaveRequest> {
-  DateTime StratDate = DateTime.now();
+  DateTime tomoroww = DateTime.now().add(Duration(days: 1));
+  DateTime StratDate = DateTime.now().add(Duration(days: 1));
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: StratDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: tomoroww,
         lastDate: DateTime(2101),
         builder: (BuildContext context, Widget child) {
       return Theme(
@@ -35,9 +43,12 @@ class _LeaveRequestState extends State<LeaveRequest> {
     if (picked != null && picked != StratDate)
       setState(() {
         StratDate = picked;
+        leavelogic.StratDate =picked;
       });
+    leave.startdate = DateFormat('yyyy-MM-dd').format(StratDate);
   }
   bool valuefirst = false;
+  TextEditingController reasoninputcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +61,6 @@ class _LeaveRequestState extends State<LeaveRequest> {
               'Leave Request',
               style: TextStyle(color: orange),
             ),
-
           ],
         ),
       ),
@@ -74,7 +84,6 @@ class _LeaveRequestState extends State<LeaveRequest> {
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height / 6,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -107,7 +116,6 @@ class _LeaveRequestState extends State<LeaveRequest> {
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height / 12,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -115,19 +123,15 @@ class _LeaveRequestState extends State<LeaveRequest> {
                     ),
                     child: Row(
                       children: [
-
                         Text("Leave Type",style: TextStyle(fontSize: 16),),
                         Spacer(),
                         LeaveReqDropDown(),
-
-
                       ],
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
                     margin: EdgeInsets.all(10),
-                    height: MediaQuery.of(context).size.height / 6,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -140,21 +144,26 @@ class _LeaveRequestState extends State<LeaveRequest> {
                           "Reason",
                           style: TextStyle(fontSize: 16),
                         ),
-                        TextField(
+                        TextFormField(
                           maxLines: 3,
-                          decoration: InputDecoration(
-                            hintText: "Type here",
-                            border: InputBorder.none,
-                          ),
+                          controller: reasoninputcontroller,
+                          cursorColor: grey,
+                          decoration: new InputDecoration(
+                            focusColor: grey,
+                            hintText: "Type your Reason here",
+                            hintStyle: TextStyle(
+                              color: grey,
+                              fontSize: 16.0,
+                            ),
                         ),
-                      ],
+                        ),],
                     ),
                   ),
                   Container(
                     child: Container(
                       child:  Row(
                         children: [
-                          Spacer(flex: 1),
+                          SizedBox(width: 5,),
                           Transform.scale(
                             scale: 0.8,
                             child: Checkbox(
@@ -168,9 +177,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                               },
                             ),
                           ),
-                          Spacer(flex: 1),
                           Text("I accept the terms and conditions",style: TextStyle(fontSize: 16),),
-                          Spacer(flex: 6),
                         ],
                       ),
                     ),
@@ -178,16 +185,140 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
                   GestureDetector(
                     onTap: () {
-                      if( valuefirst == true ){
+                      if( valuefirst == true && reasoninputcontroller.text!= "" ){
+                         leave.reason = reasoninputcontroller.text;
+                         leaverequest();
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
                       }
+                      else if(valuefirst == false){
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              backgroundColor: alertboxcolor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                              content: Builder(
+                                builder: (context) {
+                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                  return Container(
+                                    child: SizedBox(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Alert",
+                                            style: TextStyle(
+                                                fontSize: 16, fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 10.00,
+                                          ),
+                                          Text(
+                                              "Please accept the terms and conditions",
+                                              style: TextStyle(fontSize: 13.6)),
+                                          SizedBox(
+                                            height: 10.00,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) =>
+                                                              LeaveRequest()));
+                                                },
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 70,
+                                                  decoration: BoxDecoration(
+                                                    color:orange,
+                                                    borderRadius: BorderRadius.circular(5),
+                                                  ),
+                                                  margin: EdgeInsets.only(right: 10.00),
+                                                  child: Center(child: Text("ok",style: TextStyle(color: Colors.white),)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ));
+                      }
+                        
+                        else {
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              backgroundColor: alertboxcolor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                              content: Builder(
+                                builder: (context) {
+                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                  return Container(
+                                    child: SizedBox(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Alert",
+                                            style: TextStyle(
+                                                fontSize: 16, fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 10.00,
+                                          ),
+                                          Text(
+                                              "Reason can not be empty",
+                                              style: TextStyle(fontSize: 13.6)),
+                                          SizedBox(
+                                            height: 10.00,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) =>
+                                                              LeaveRequest()));
+                                                },
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 70,
+                                                  decoration: BoxDecoration(
+                                                    color:orange,
+                                                    borderRadius: BorderRadius.circular(5),
+                                                  ),
+                                                  margin: EdgeInsets.only(right: 10.00),
+                                                  child: Center(child: Text("ok",style: TextStyle(color: Colors.white),)),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ));
+                      }
                     },
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 100,
-                        ),
+                    child:Center(
+                      child:
                         Container(
                           margin: EdgeInsets.fromLTRB(10, 40, 10, 10),
                           padding: EdgeInsets.all(10.0),
@@ -199,9 +330,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             'Request Leave',
                             style: TextStyle(color: Colors.black, fontSize: 15),
                           ),
-                        ),
-                      ],
-                    ),
+                        ),)
                   )
                 ],
               ),
@@ -229,10 +358,20 @@ class _LeaveReqDropDownState extends State<LeaveReqDropDown> {
         onChanged: (int newVal) {
           setState(() {
             dropDownValue = newVal;
+            print(dropDownValue);
+            if(dropDownValue == 0){
+              leave.type = "Loss_of_Pay";
+            }
+            if(dropDownValue == 1){
+              leave.type = "Sick_leave";
+            }
+            if(dropDownValue == 2){
+              leave.type = "Annual_Leave";
+            }
           });
         },
         items:
-            leaves.remainingleaves == 0 ?
+        DBResponsedatamonthly.leavebalance == 0 ?
             [
               DropdownMenuItem(
                 value: 0,
@@ -264,12 +403,13 @@ class EndDate extends StatefulWidget {
 }
 
 class _EndDateState extends State<EndDate> {
-  DateTime EndDate = DateTime.now();
+  DateTime tomoroww = DateTime.now().add(Duration(days: 1) );
+  DateTime ENDdate = DateTime.now().add(Duration(days: 1));
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: EndDate,
-        firstDate: DateTime(2015, 8),
+        initialDate: leavelogic.StratDate,
+        firstDate: leavelogic.StratDate,
         lastDate: DateTime(2101),
         builder: (BuildContext context, Widget child) {
       return Theme(
@@ -288,8 +428,10 @@ class _EndDateState extends State<EndDate> {
     );
     if (picked != null && picked != EndDate)
       setState(() {
-        EndDate = picked;
+        ENDdate = picked;
       });
+    leave.enddate = DateFormat('yyyy-MM-dd').format(ENDdate);
+    print(leave.enddate);
   }
   @override
 
@@ -299,7 +441,7 @@ class _EndDateState extends State<EndDate> {
         children: [
           Text("End Date",style: TextStyle(fontSize: 16),),
           Spacer(),
-          Text("${EndDate.toLocal()}".split(' ')[0],
+          Text("${ENDdate.toLocal()}".split(' ')[0],
           style: TextStyle(fontSize: 16),),
           IconButton(
             icon: Icon(CupertinoIcons.calendar),

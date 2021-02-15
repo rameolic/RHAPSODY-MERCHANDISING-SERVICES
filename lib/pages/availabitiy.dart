@@ -37,6 +37,7 @@ class _AvailabilityState extends State<Availability> {
               child: Column(
                 children: [
                   OutletDetails(),
+                  /*
                   Container(
                     margin: EdgeInsets.all(10.0),
                     height: 40,
@@ -66,8 +67,8 @@ class _AvailabilityState extends State<Availability> {
                       ),
                     ),
                   ),
+                  */
                   Container(
-
                     margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
                     decoration: BoxDecoration(
                       color: orange,

@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   DashBoardRequestModel dashBoardRequestModel;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailinputcontroller = TextEditingController();
-  TextEditingController passwordinputcontroller = TextEditingController();
+  static TextEditingController passwordinputcontroller = TextEditingController();
   static String userinputemail;
   static String userinputpassword;
 
@@ -151,22 +151,27 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(height: 30),
                               GestureDetector(
                                 onTap: () {
+                                  setState(() {
+                                    isApiCallProcess = true;
+                                  });
                                   getLocation();
-                                   userinputemail = emailinputcontroller.text;
-                                    userinputpassword = passwordinputcontroller.text;
+                                  userinputemail = emailinputcontroller.text;
+                                  userinputpassword =
+                                      passwordinputcontroller.text;
+                                  password.userpassword = passwordinputcontroller.text;
                                   if (validateAndSave()) {
-                                    loginrequestdata.inputemail = userinputemail;
-                                    loginrequestdata.inputpassword = userinputpassword;
+                                    loginrequestdata.inputemail =
+                                        userinputemail;
+                                    loginrequestdata.inputpassword =
+                                        userinputpassword;
                                     if (loginrequestdata.inputemail != null &&
                                         loginrequestdata.inputpassword !=
                                             null) {
                                       getDashBoardData();
-                                      setState(() {
-                                        isApiCallProcess = true;
-                                      });
                                       new Future.delayed(
                                           const Duration(seconds: 5), () {
-                                        if (DBResponsedatadaily.Attendance != null) {
+                                        if (DBResponsedatadaily.Attendance != null)
+                                        {
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
@@ -176,7 +181,8 @@ class _LoginPageState extends State<LoginPage> {
                                         } else {
                                           new Future.delayed(
                                               const Duration(seconds: 5), () {
-                                            if (DBResponsedatadaily.Attendance !=
+                                            if (DBResponsedatadaily
+                                                    .Attendance !=
                                                 null) {
                                               Navigator.pushReplacement(
                                                   context,

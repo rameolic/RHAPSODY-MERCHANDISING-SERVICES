@@ -38,10 +38,9 @@ class OutletDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height/15,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.only(top: 10,bottom: 10,right: 5,left: 5),
-      padding: EdgeInsets.only(left :10.0,right: 10.0),
+      margin: EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(5.00),
       decoration: BoxDecoration(
           color: pink,
           borderRadius: BorderRadiusDirectional.circular(10)),
