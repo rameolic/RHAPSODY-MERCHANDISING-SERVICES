@@ -66,7 +66,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print(globallist.storenames[3]);
+                      print(todayjplists.storenames[3]);
                       setState(() {
                         pressTODAY = false;
                         pressCustomers = false;
@@ -278,18 +278,18 @@ class _State extends State<JourneyListBuilder> {
     );
   }
   Widget _uiSetup(BuildContext context) {
-    return globallist.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
+    return todayjplists.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
     ListView.builder(
-        itemCount:globallist.storenames.length,
+        itemCount:todayjplists.storenames.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
              setState(() {
                isApiCallProcess = true;
               });
-             outletrequestdata.outletidpressed = globallist.outletids[index];
+             outletrequestdata.outletidpressed = todayjplists.outletids[index];
              outletwhencheckin();
-             checkinoutdata.checkid = globallist.id[index];
+             checkinoutdata.checkid = todayjplists.id[index];
              print(checkinoutdata.checkid);
               Future.delayed(const Duration(seconds: 3), () {
                 if (chekinoutlet.checkinlat != null) {
@@ -332,7 +332,7 @@ class _State extends State<JourneyListBuilder> {
                   Row(
                     children: [
                       Text(
-                        '[${globallist.storecodes[index]}]',
+                        '[${todayjplists.storecodes[index]}]',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -340,7 +340,7 @@ class _State extends State<JourneyListBuilder> {
                         width: 5,
                       ),
                       Text(
-                        '${globallist.storenames[index]}',
+                        '${todayjplists.storenames[index]}',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -349,21 +349,21 @@ class _State extends State<JourneyListBuilder> {
                   SizedBox(height: 5),
                   Row(
                     children: [
-                      Text('${globallist.outletarea[index]}',
+                      Text('${todayjplists.outletarea[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${globallist.outletcity[index]}',
+                      Text('${todayjplists.outletcity[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${globallist.outletcountry[index]}',
+                      Text('${todayjplists.outletcountry[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -377,7 +377,7 @@ class _State extends State<JourneyListBuilder> {
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text('${globallist.contactnumbers[index]}',
+                        Text('${todayjplists.contactnumbers[index]}',
                             style: TextStyle(color: orange)),
                       ]),
                       TableRow(children: [
@@ -387,7 +387,7 @@ class _State extends State<JourneyListBuilder> {
                             )),
                         Row(
                           children: [
-                            Text('${globallist.distanceinmeters[index].toStringAsFixed(2)}',
+                            Text('${todayjplists.distanceinmeters[index].toStringAsFixed(2)}',
                                 style: TextStyle(color: orange)),
                             Text("KM", style: TextStyle(color: orange))
                           ],

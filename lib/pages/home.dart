@@ -4,7 +4,7 @@ import 'package:merchandising/pages/Journeyplan.dart';
 import 'package:merchandising/pages/MenuContent.dart';
 import 'package:merchandising/api/jpskippedapi.dart';
 import 'package:merchandising/api/JPvisitedapi.dart';
-
+import 'package:merchandising/api/journeyplanapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -21,8 +21,6 @@ import 'package:merchandising/pages/Time Sheet.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
-import 'package:merchandising/api/jprequest.dart';
-import 'package:merchandising/api/jpapi.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class DashBoard extends StatefulWidget {

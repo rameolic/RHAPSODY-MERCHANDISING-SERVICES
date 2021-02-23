@@ -4,10 +4,6 @@ import 'package:merchandising/Constants.dart';
 import 'pages/login_page.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'dart:async';
-import 'package:merchandising/pages/home.dart';
-import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/jpapi.dart';
-import 'package:merchandising/api/timesheetapi.dart';
 void main() {
   const seconds = const Duration(seconds: 10);
   Timer.periodic(seconds, (Timer t) => getLocation());

@@ -17,27 +17,28 @@ Future<void> getJourneyPlan() async {
     print('journey plan done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
-    for(int u=0;u>0;u++){
+    for(int u=0;u<20;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
-      globallist.storenames.add(storename);
+      print(storename);
+      todayjplists.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];
-      globallist.storecodes.add(storecode);
+      todayjplists.storecodes.add(storecode);
       dynamic outletid = decodeJPData['data'][u]['outlet']['outlet_id'];
-      globallist.outletids.add(outletid);
+      todayjplists.outletids.add(outletid);
       dynamic outletlat = decodeJPData['data'][u]['outlet']['outlet_lat'];
-      globallist.outletlat.add(outletlat);
+      todayjplists.outletlat.add(outletlat);
       dynamic outletlong = decodeJPData['data'][u]['outlet']['outlet_long'];
-      globallist.outletlong.add(outletlong);
+      todayjplists.outletlong.add(outletlong);
       dynamic outletarea = decodeJPData['data'][u]['outlet']['outlet_area'];
-      globallist.outletarea.add(outletarea);
+      todayjplists.outletarea.add(outletarea);
       dynamic outletcity = decodeJPData['data'][u]['outlet']['outlet_city'];
-      globallist.outletcity.add(outletcity);
+      todayjplists.outletcity.add(outletcity);
       dynamic outletcountry = decodeJPData['data'][u]['outlet']['outlet_country'];
-      globallist.outletcountry.add(outletcountry);
+      todayjplists.outletcountry.add(outletcountry);
       dynamic tableid = decodeJPData['data'][u]['id'];
-      globallist.id.add(tableid);
+      todayjplists.id.add(tableid);
       dynamic outletcontact = decodeJPData['data'][u]['contact_number'];
-      globallist.contactnumbers.add(outletcontact);
+      todayjplists.contactnumbers.add(outletcontact);
     }
   }
   else{
@@ -46,7 +47,7 @@ Future<void> getJourneyPlan() async {
 }
 
 
-class globallist{
+class todayjplists{
   static List<dynamic> storecodes=[];
   static List<dynamic> storenames=[];
   static List<dynamic> outletids=[];
@@ -58,5 +59,4 @@ class globallist{
   static List<dynamic> id=[];
   static List<dynamic> contactnumbers=[];
   static List<dynamic> distanceinmeters=[];
-
 }

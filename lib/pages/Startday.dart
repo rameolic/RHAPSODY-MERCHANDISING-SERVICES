@@ -11,7 +11,7 @@ class StartDay extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        globallist.distanceinmeters=[];
+        todayjplists.distanceinmeters=[];
         distinmeters();
         showDialog(
             context: context,
