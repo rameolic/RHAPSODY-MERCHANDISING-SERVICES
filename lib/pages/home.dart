@@ -31,7 +31,7 @@ class DashBoard extends StatefulWidget {
 }
 @override
 class _DashBoardState extends State<DashBoard> {
- double leavebalance = DBResponsedatamonthly.leavebalance;
+ var leavebalance = DBResponsedatamonthly.leavebalance;
   int shedulecalls = DBResponsedatadaily.shedulevisits;
   int unshedulecalls = DBResponsedatadaily.unshedulevisits;
   int shedulecallsdone = DBResponsedatadaily.ShedulevisitssDone;
@@ -323,7 +323,7 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ?  (monthpercentage/100): (todaypercentage/100),
+                                    percent: pressAttentionMTB == true ? (monthpercentage/100): (todaypercentage/100),
                                     textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
                                     title: "Journey Plan\nCompletion",
                                   ),
@@ -342,7 +342,7 @@ class _DashBoardState extends State<DashBoard> {
                         GestureDetector(
                           onTap: (){
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (BuildContext context) => LeaveRequest()));
+                                MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
                           },
                           child: Container(
                             height: 120,

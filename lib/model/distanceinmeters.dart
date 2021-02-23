@@ -1,113 +1,17 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/jprequest.dart';
+import 'package:merchandising/api/journeyplanapi.dart';
+
+
+
+
 
 distinmeters() {
-  double dist1 = Geolocator.distanceBetween(lat, long, double.parse(outletlat1), double.parse(outletlong1));
-  double dist2 = Geolocator.distanceBetween(lat, long, double.parse(outletlat2), double.parse(outletlong2));
-  double dist3 = Geolocator.distanceBetween(lat, long, double.parse(outletlat3), double.parse(outletlong3));
-  double dist4 = Geolocator.distanceBetween(lat, long, double.parse(outletlat4), double.parse(outletlong4));
-  double dist5 = Geolocator.distanceBetween(lat, long, double.parse(outletlat5), double.parse(outletlong5));
-  double dist6 = Geolocator.distanceBetween(lat, long, double.parse(outletlat6), double.parse(outletlong6));
-  double dist7 = Geolocator.distanceBetween(lat, long, double.parse(outletlat7), double.parse(outletlong7));
-  double dist8 = Geolocator.distanceBetween(lat, long, double.parse(outletlat8), double.parse(outletlong8));
-  double dist9 = Geolocator.distanceBetween(lat, long, double.parse(outletlat9), double.parse(outletlong9));
-  double dist10 = Geolocator.distanceBetween(lat, long, double.parse(outletlat10), double.parse(outletlong10));
-  double dist11 = Geolocator.distanceBetween(lat, long, double.parse(outletlat11), double.parse(outletlong11));
-  double dist12 = Geolocator.distanceBetween(lat, long, double.parse(outletlat12), double.parse(outletlong12));
-  double dist13 = Geolocator.distanceBetween(lat, long, double.parse(outletlat13), double.parse(outletlong13));
-  double dist14 = Geolocator.distanceBetween(lat, long, double.parse(outletlat14), double.parse(outletlong14));
-  double dist15 = Geolocator.distanceBetween(lat, long, double.parse(outletlat15), double.parse(outletlong15));
-  double dist16 = Geolocator.distanceBetween(lat, long, double.parse(outletlat16), double.parse(outletlong16));
-  double dist17 = Geolocator.distanceBetween(lat, long, double.parse(outletlat17), double.parse(outletlong17));
-  double dist18 = Geolocator.distanceBetween(lat, long, double.parse(outletlat18), double.parse(outletlong18));
-  double dist19 = Geolocator.distanceBetween(lat, long, double.parse(outletlat19), double.parse(outletlong19));
-  double dist20 = Geolocator.distanceBetween(lat, long, double.parse(outletlat20), double.parse(outletlong20));
-  distinkm.distancetooutlet1 = dist1 / 1000;
-  distinkm.distancetooutlet2 = dist2 / 1000;
-  distinkm.distancetooutlet3 = dist3 / 1000;
-  distinkm.distancetooutlet4 = dist4 / 1000;
-  distinkm.distancetooutlet5 = dist5 / 1000;
-  distinkm.distancetooutlet6 = dist6 / 1000;
-  distinkm.distancetooutlet7 = dist7 / 1000;
-  distinkm.distancetooutlet8 = dist8 / 1000;
-  distinkm.distancetooutlet9 = dist9 / 1000;
-  distinkm.distancetooutlet10 = dist10 / 1000;
-  distinkm.distancetooutlet11 = dist11 / 1000;
-  distinkm.distancetooutlet12 = dist12 / 1000;
-  distinkm.distancetooutlet13 = dist13 / 1000;
-  distinkm.distancetooutlet14 = dist14 / 1000;
-  distinkm.distancetooutlet15 = dist15 / 1000;
-  distinkm.distancetooutlet16 = dist16 / 1000;
-  distinkm.distancetooutlet17 = dist17 / 1000;
-  distinkm.distancetooutlet18 = dist18 / 1000;
-  distinkm.distancetooutlet19 = dist19 / 1000;
-  distinkm.distancetooutlet20 = dist20 / 1000;
-}
+  print(globallist.storenames);
+  for(int u=0;u>0;u++){
+    double dist = Geolocator.distanceBetween(lat, long, double.parse(globallist.outletlat[u]), double.parse(globallist.outletlong[u]));
+    globallist.distanceinmeters.add((dist/1000).toStringAsFixed(2));
 
-class distinkm {
-  static var distancetooutlet1;
-  static var distancetooutlet2;
-  static var distancetooutlet3;
-  static var distancetooutlet4;
-  static var distancetooutlet5;
-  static var distancetooutlet6;
-  static var distancetooutlet7;
-  static var distancetooutlet8;
-  static var distancetooutlet9;
-  static var distancetooutlet10;
-  static var distancetooutlet11;
-  static var distancetooutlet12;
-  static var distancetooutlet13;
-  static var distancetooutlet14;
-  static var distancetooutlet15;
-  static var distancetooutlet16;
-  static var distancetooutlet17;
-  static var distancetooutlet18;
-  static var distancetooutlet19;
-  static var distancetooutlet20;
-}
-
-String outletlat1 = JPResponsePlanneddata.latitudedata1 != null ? JPResponsePlanneddata.latitudedata1 : 25.06919944453919.toString();
-String outletlat2 = JPResponsePlanneddata.latitudedata2 != null ? JPResponsePlanneddata.latitudedata2 : 25.06919944453919.toString();
-String outletlat3 = JPResponsePlanneddata.latitudedata3 != null ? JPResponsePlanneddata.latitudedata3 : 25.06919944453919.toString();
-String outletlat4 = JPResponsePlanneddata.latitudedata4 != null ? JPResponsePlanneddata.latitudedata4 : 25.06919944453919.toString();
-String outletlat5 = JPResponsePlanneddata.latitudedata5 != null ? JPResponsePlanneddata.latitudedata5 : 25.06919944453919.toString();
-String outletlat6 = JPResponsePlanneddata.latitudedata6 != null ? JPResponsePlanneddata.latitudedata6 : 25.06919944453919.toString();
-String outletlat7 = JPResponsePlanneddata.latitudedata7 != null ? JPResponsePlanneddata.latitudedata7 : 25.06919944453919.toString();
-String outletlat8 = JPResponsePlanneddata.latitudedata8 != null ? JPResponsePlanneddata.latitudedata8 : 25.06919944453919.toString();
-String outletlat9 = JPResponsePlanneddata.latitudedata9 != null ? JPResponsePlanneddata.latitudedata9 : 25.06919944453919.toString();
-String outletlat10 = JPResponsePlanneddata.latitudedata10 != null ? JPResponsePlanneddata.latitudedata10 : 25.06919944453919.toString();
-String outletlat11 = JPResponsePlanneddata.latitudedata11 != null ? JPResponsePlanneddata.latitudedata11 : 25.06919944453919.toString();
-String outletlat12 = JPResponsePlanneddata.latitudedata12 != null ? JPResponsePlanneddata.latitudedata12 : 25.06919944453919.toString();
-String outletlat13 = JPResponsePlanneddata.latitudedata13 != null ? JPResponsePlanneddata.latitudedata13 : 25.06919944453919.toString();
-String outletlat14 = JPResponsePlanneddata.latitudedata14 != null ? JPResponsePlanneddata.latitudedata14 : 25.06919944453919.toString();
-String outletlat15 = JPResponsePlanneddata.latitudedata15 != null ? JPResponsePlanneddata.latitudedata15 : 25.06919944453919.toString();
-String outletlat16 = JPResponsePlanneddata.latitudedata16 != null ? JPResponsePlanneddata.latitudedata16 : 25.06919944453919.toString();
-String outletlat17 = JPResponsePlanneddata.latitudedata17 != null ? JPResponsePlanneddata.latitudedata17 : 25.06919944453919.toString();
-String outletlat18 = JPResponsePlanneddata.latitudedata18 != null ? JPResponsePlanneddata.latitudedata18 : 25.06919944453919.toString();
-String outletlat19 = JPResponsePlanneddata.latitudedata19 != null ? JPResponsePlanneddata.latitudedata19 : 25.06919944453919.toString();
-String outletlat20 = JPResponsePlanneddata.latitudedata20 != null ? JPResponsePlanneddata.latitudedata20 : 25.06919944453919.toString();
-
-
-
-String outletlong1 = JPResponsePlanneddata.longitudedata1 != null ? JPResponsePlanneddata.longitudedata1 : 55.142446553972654.toString();
-String outletlong2 = JPResponsePlanneddata.longitudedata2 != null ? JPResponsePlanneddata.longitudedata2 : 55.142446553972654.toString();
-String outletlong3 = JPResponsePlanneddata.longitudedata3 != null ? JPResponsePlanneddata.longitudedata3 : 55.142446553972654.toString();
-String outletlong4 = JPResponsePlanneddata.longitudedata4 != null ? JPResponsePlanneddata.longitudedata4 : 55.142446553972654.toString();
-String outletlong5 = JPResponsePlanneddata.longitudedata5 != null ? JPResponsePlanneddata.longitudedata5 : 55.142446553972654.toString();
-String outletlong6 = JPResponsePlanneddata.longitudedata6 != null ? JPResponsePlanneddata.longitudedata6 : 55.142446553972654.toString();
-String outletlong7 = JPResponsePlanneddata.longitudedata7 != null ? JPResponsePlanneddata.longitudedata7 : 55.142446553972654.toString();
-String outletlong8 = JPResponsePlanneddata.longitudedata8 != null ? JPResponsePlanneddata.longitudedata8 : 55.142446553972654.toString();
-String outletlong9 = JPResponsePlanneddata.longitudedata9 != null ? JPResponsePlanneddata.longitudedata9 : 55.142446553972654.toString();
-String outletlong10 = JPResponsePlanneddata.longitudedata10 != null ? JPResponsePlanneddata.longitudedata10 : 55.142446553972654.toString();
-String outletlong11 = JPResponsePlanneddata.longitudedata11 != null ? JPResponsePlanneddata.longitudedata11 : 55.142446553972654.toString();
-String outletlong12 = JPResponsePlanneddata.longitudedata12 != null ? JPResponsePlanneddata.longitudedata12 : 55.142446553972654.toString();
-String outletlong13 = JPResponsePlanneddata.longitudedata13 != null ? JPResponsePlanneddata.longitudedata13 : 55.142446553972654.toString();
-String outletlong14 = JPResponsePlanneddata.longitudedata14 != null ? JPResponsePlanneddata.longitudedata14 : 55.142446553972654.toString();
-String outletlong15 = JPResponsePlanneddata.longitudedata15 != null ? JPResponsePlanneddata.longitudedata15 : 55.142446553972654.toString();
-String outletlong16 = JPResponsePlanneddata.longitudedata16 != null ? JPResponsePlanneddata.longitudedata16 : 55.142446553972654.toString();
-String outletlong17 = JPResponsePlanneddata.longitudedata17 != null ? JPResponsePlanneddata.longitudedata17 : 55.142446553972654.toString();
-String outletlong18 = JPResponsePlanneddata.longitudedata18 != null ? JPResponsePlanneddata.longitudedata18 : 55.142446553972654.toString();
-String outletlong19 = JPResponsePlanneddata.longitudedata19 != null ? JPResponsePlanneddata.longitudedata19 : 55.142446553972654.toString();
-String outletlong20 = JPResponsePlanneddata.longitudedata20 != null ? JPResponsePlanneddata.longitudedata20 : 55.142446553972654.toString();
+  }
+  }

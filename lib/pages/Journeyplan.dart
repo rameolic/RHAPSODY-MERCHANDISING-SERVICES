@@ -10,6 +10,7 @@ import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/pages/jppages/jpskiped.dart';
 import 'package:merchandising/pages/jppages/jpvisited.dart';
+import 'package:merchandising/api/journeyplanapi.dart';
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -65,6 +66,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      print(globallist.storenames[3]);
                       setState(() {
                         pressTODAY = false;
                         pressCustomers = false;
@@ -266,235 +268,6 @@ class JourneyListBuilder extends StatefulWidget {
 }
 
 class _State extends State<JourneyListBuilder> {
-    List<int> ids = <int>[
-    JPResponsePlanneddata.id1,
-    JPResponsePlanneddata.id2,
-    JPResponsePlanneddata.id3,
-    JPResponsePlanneddata.id4,
-    JPResponsePlanneddata.id5,
-    JPResponsePlanneddata.id6,
-    JPResponsePlanneddata.id7,
-    JPResponsePlanneddata.id8,
-    JPResponsePlanneddata.id9,
-    JPResponsePlanneddata.id10,
-    JPResponsePlanneddata.id11,
-    JPResponsePlanneddata.id12,
-    JPResponsePlanneddata.id13,
-    JPResponsePlanneddata.id14,
-    JPResponsePlanneddata.id15,
-    JPResponsePlanneddata.id16,
-    JPResponsePlanneddata.id17,
-    JPResponsePlanneddata.id18,
-    JPResponsePlanneddata.id19,
-    JPResponsePlanneddata.id20,
-  ];
-    List<int> outletids = <int>[
-    JPResponsePlanneddata.outletiddata1,
-    JPResponsePlanneddata.outletiddata2,
-    JPResponsePlanneddata.outletiddata3,
-    JPResponsePlanneddata.outletiddata4,
-    JPResponsePlanneddata.outletiddata5,
-    JPResponsePlanneddata.outletiddata6,
-    JPResponsePlanneddata.outletiddata7,
-    JPResponsePlanneddata.outletiddata8,
-    JPResponsePlanneddata.outletiddata9,
-    JPResponsePlanneddata.outletiddata10,
-    JPResponsePlanneddata.outletiddata11,
-    JPResponsePlanneddata.outletiddata12,
-    JPResponsePlanneddata.outletiddata13,
-    JPResponsePlanneddata.outletiddata14,
-    JPResponsePlanneddata.outletiddata15,
-    JPResponsePlanneddata.outletiddata16,
-    JPResponsePlanneddata.outletiddata17,
-    JPResponsePlanneddata.outletiddata18,
-    JPResponsePlanneddata.outletiddata19,
-    JPResponsePlanneddata.outletiddata20,
-  ];
-   List<String> names = <String>[
-    JPResponsePlanneddata.outletnamedata1,
-    JPResponsePlanneddata.outletnamedata2,
-    JPResponsePlanneddata.outletnamedata3,
-    JPResponsePlanneddata.outletnamedata4,
-    JPResponsePlanneddata.outletnamedata5,
-    JPResponsePlanneddata.outletnamedata6,
-    JPResponsePlanneddata.outletnamedata7,
-    JPResponsePlanneddata.outletnamedata8,
-    JPResponsePlanneddata.outletnamedata9,
-    JPResponsePlanneddata.outletnamedata10,
-    JPResponsePlanneddata.outletnamedata11,
-    JPResponsePlanneddata.outletnamedata12,
-    JPResponsePlanneddata.outletnamedata13,
-    JPResponsePlanneddata.outletnamedata14,
-    JPResponsePlanneddata.outletnamedata15,
-    JPResponsePlanneddata.outletnamedata16,
-    JPResponsePlanneddata.outletnamedata17,
-    JPResponsePlanneddata.outletnamedata18,
-    JPResponsePlanneddata.outletnamedata19,
-    JPResponsePlanneddata.outletnamedata20,
-  ];
-   List<String> area = <String>[
-    JPResponsePlanneddata.outletareadata1,
-    JPResponsePlanneddata.outletareadata2,
-    JPResponsePlanneddata.outletareadata3,
-    JPResponsePlanneddata.outletareadata4,
-    JPResponsePlanneddata.outletareadata5,
-    JPResponsePlanneddata.outletareadata6,
-    JPResponsePlanneddata.outletareadata7,
-    JPResponsePlanneddata.outletareadata8,
-    JPResponsePlanneddata.outletareadata9,
-    JPResponsePlanneddata.outletareadata10,
-    JPResponsePlanneddata.outletareadata11,
-    JPResponsePlanneddata.outletareadata12,
-    JPResponsePlanneddata.outletareadata13,
-    JPResponsePlanneddata.outletareadata14,
-    JPResponsePlanneddata.outletareadata15,
-    JPResponsePlanneddata.outletareadata16,
-    JPResponsePlanneddata.outletareadata17,
-    JPResponsePlanneddata.outletareadata18,
-    JPResponsePlanneddata.outletareadata19,
-    JPResponsePlanneddata.outletareadata20,
-  ];
-   List<String> city = <String>[
-    JPResponsePlanneddata.outletcitydata1,
-    JPResponsePlanneddata.outletcitydata2,
-    JPResponsePlanneddata.outletcitydata3,
-    JPResponsePlanneddata.outletcitydata4,
-    JPResponsePlanneddata.outletcitydata5,
-    JPResponsePlanneddata.outletcitydata6,
-    JPResponsePlanneddata.outletcitydata7,
-    JPResponsePlanneddata.outletcitydata8,
-    JPResponsePlanneddata.outletcitydata9,
-    JPResponsePlanneddata.outletcitydata10,
-    JPResponsePlanneddata.outletcitydata11,
-    JPResponsePlanneddata.outletcitydata12,
-    JPResponsePlanneddata.outletcitydata13,
-    JPResponsePlanneddata.outletcitydata14,
-    JPResponsePlanneddata.outletcitydata15,
-    JPResponsePlanneddata.outletcitydata16,
-    JPResponsePlanneddata.outletcitydata17,
-    JPResponsePlanneddata.outletcitydata18,
-    JPResponsePlanneddata.outletcitydata19,
-    JPResponsePlanneddata.outletcitydata20,
-  ];
-   List<String> country = <String>[
-    JPResponsePlanneddata.outletcountrydata1,
-    JPResponsePlanneddata.outletcountrydata2,
-    JPResponsePlanneddata.outletcountrydata3,
-    JPResponsePlanneddata.outletcountrydata4,
-    JPResponsePlanneddata.outletcountrydata5,
-    JPResponsePlanneddata.outletcountrydata6,
-    JPResponsePlanneddata.outletcountrydata7,
-    JPResponsePlanneddata.outletcountrydata8,
-    JPResponsePlanneddata.outletcountrydata9,
-    JPResponsePlanneddata.outletcountrydata10,
-    JPResponsePlanneddata.outletcountrydata11,
-    JPResponsePlanneddata.outletcountrydata12,
-    JPResponsePlanneddata.outletcountrydata13,
-    JPResponsePlanneddata.outletcountrydata14,
-    JPResponsePlanneddata.outletcountrydata15,
-    JPResponsePlanneddata.outletcountrydata16,
-    JPResponsePlanneddata.outletcountrydata17,
-    JPResponsePlanneddata.outletcountrydata18,
-    JPResponsePlanneddata.outletcountrydata19,
-    JPResponsePlanneddata.outletcountrydata20,
-  ];
-   List<String> contactnumber = <String>[
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480',
-    '+971543086480'
-  ];
-   List<String> distancenum = <String>[
-    distinkm.distancetooutlet1 != null
-        ? distinkm.distancetooutlet1.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet2 != null
-        ? distinkm.distancetooutlet2.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet3 != null
-        ? distinkm.distancetooutlet3.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet4 != null
-        ? distinkm.distancetooutlet4.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet5 != null
-        ? distinkm.distancetooutlet5.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet6 != null
-        ? distinkm.distancetooutlet6.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet7 != null
-        ? distinkm.distancetooutlet7.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet8 != null
-        ? distinkm.distancetooutlet8.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet9 != null
-        ? distinkm.distancetooutlet9.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet10 != null
-        ? distinkm.distancetooutlet10.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet11 != null
-        ? distinkm.distancetooutlet11.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet12 != null
-        ? distinkm.distancetooutlet12.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet13 != null
-        ? distinkm.distancetooutlet13.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet14 != null
-        ? distinkm.distancetooutlet14.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet15 != null
-        ? distinkm.distancetooutlet15.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet16 != null
-        ? distinkm.distancetooutlet16.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet17 != null
-        ? distinkm.distancetooutlet17.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet18 != null
-        ? distinkm.distancetooutlet18.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet19 != null
-        ? distinkm.distancetooutlet19.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet20 != null
-        ? distinkm.distancetooutlet20.toStringAsFixed(2)
-        : null,
-  ];
-
-  int itemsno() {
-    outletids.forEach((elements) => (null));
-    countoutlets.outletscount = 0;
-    for (final outletid in names) {
-      if (outletid != null) {
-        countoutlets.outletscount++;
-      }
-    }
-    print(countoutlets.outletscount);
-    return countoutlets.outletscount;
-  }
-
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
@@ -505,18 +278,18 @@ class _State extends State<JourneyListBuilder> {
     );
   }
   Widget _uiSetup(BuildContext context) {
-    return itemsno() == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
+    return globallist.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
     ListView.builder(
-        itemCount: countoutlets.outletscount,//itemsno(),
+        itemCount:globallist.storenames.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
              setState(() {
                isApiCallProcess = true;
               });
-             outletrequestdata.outletidpressed = outletids[index];
+             outletrequestdata.outletidpressed = globallist.outletids[index];
              outletwhencheckin();
-             checkinoutdata.checkid = ids[index];
+             checkinoutdata.checkid = globallist.id[index];
              print(checkinoutdata.checkid);
               Future.delayed(const Duration(seconds: 3), () {
                 if (chekinoutlet.checkinlat != null) {
@@ -559,7 +332,7 @@ class _State extends State<JourneyListBuilder> {
                   Row(
                     children: [
                       Text(
-                        '[${outletids[index]}]',
+                        '[${globallist.storecodes[index]}]',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -567,7 +340,7 @@ class _State extends State<JourneyListBuilder> {
                         width: 5,
                       ),
                       Text(
-                        '${names[index]}',
+                        '${globallist.storenames[index]}',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -576,21 +349,21 @@ class _State extends State<JourneyListBuilder> {
                   SizedBox(height: 5),
                   Row(
                     children: [
-                      Text('${area[index]}',
+                      Text('${globallist.outletarea[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${city[index]}',
+                      Text('${globallist.outletcity[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${country[index]}',
+                      Text('${globallist.outletcountry[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -604,7 +377,7 @@ class _State extends State<JourneyListBuilder> {
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text('${contactnumber[index]}',
+                        Text('${globallist.contactnumbers[index]}',
                             style: TextStyle(color: orange)),
                       ]),
                       TableRow(children: [
@@ -614,7 +387,7 @@ class _State extends State<JourneyListBuilder> {
                             )),
                         Row(
                           children: [
-                            Text('${distancenum[index]}',
+                            Text('${globallist.distanceinmeters[index].toStringAsFixed(2)}',
                                 style: TextStyle(color: orange)),
                             Text("KM", style: TextStyle(color: orange))
                           ],

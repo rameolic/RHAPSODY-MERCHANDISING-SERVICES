@@ -4,12 +4,14 @@ import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
+import 'package:merchandising/api/journeyplanapi.dart';
 
 class StartDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        globallist.distanceinmeters=[];
         distinmeters();
         showDialog(
             context: context,

@@ -168,68 +168,7 @@ class _State extends State<SkipedJourneyListBuilder> {
     '+971543086480',
     '+971543086480'
   ];
-  List<String> distancenum = <String>[
-    distinkm.distancetooutlet1 != null
-        ? distinkm.distancetooutlet1.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet2 != null
-        ? distinkm.distancetooutlet2.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet3 != null
-        ? distinkm.distancetooutlet3.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet4 != null
-        ? distinkm.distancetooutlet4.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet5 != null
-        ? distinkm.distancetooutlet5.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet6 != null
-        ? distinkm.distancetooutlet6.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet7 != null
-        ? distinkm.distancetooutlet7.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet8 != null
-        ? distinkm.distancetooutlet8.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet9 != null
-        ? distinkm.distancetooutlet9.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet10 != null
-        ? distinkm.distancetooutlet10.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet11 != null
-        ? distinkm.distancetooutlet11.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet12 != null
-        ? distinkm.distancetooutlet12.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet13 != null
-        ? distinkm.distancetooutlet13.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet14 != null
-        ? distinkm.distancetooutlet14.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet15 != null
-        ? distinkm.distancetooutlet15.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet16 != null
-        ? distinkm.distancetooutlet16.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet17 != null
-        ? distinkm.distancetooutlet17.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet18 != null
-        ? distinkm.distancetooutlet18.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet19 != null
-        ? distinkm.distancetooutlet19.toStringAsFixed(2)
-        : null,
-    distinkm.distancetooutlet20 != null
-        ? distinkm.distancetooutlet20.toStringAsFixed(2)
-        : null,
-  ];
+
 
   int itemsno() {
     outletids.forEach((elements) => (null));
@@ -362,7 +301,7 @@ class _State extends State<SkipedJourneyListBuilder> {
                         Text(":"),
                         Row(
                           children: [
-                            Text('${distancenum[index]}',
+                            Text('100',//${distancenum[index]}
                                 style: TextStyle(color: orange)),
                             Text("KM", style: TextStyle(color: orange))
                           ],

@@ -383,15 +383,18 @@ class _MyprofileState extends State<Myprofile> {
                                                                    if(newpasswordcontroller.text == newpasswordv2controller.text){
                                                                      print("send password to api");
                                                                      print(newpasswordv2controller.text);
-                                                                     Flushbar(
-                                                                       duration:  Duration(seconds: 3),
-                                                                     )..show(context);
+                                                                     change.password = newpasswordcontroller.text;
                                                                      Navigator.pop(
                                                                          context,
                                                                          MaterialPageRoute(
                                                                              builder:
                                                                                  (BuildContextcontext) =>
                                                                                  Myprofile()));
+                                                                     Flushbar(
+                                                                       message: "password Updated",
+                                                                       duration:  Duration(seconds: 3),
+                                                                     )..show(context);
+                                                                     changepassword();
                                                                      password.userpassword = newpasswordcontroller.text;
                                                                      currentpasswordcontroller.clear();
                                                                      newpasswordcontroller.clear();
@@ -407,7 +410,7 @@ class _MyprofileState extends State<Myprofile> {
                                                                    }
                                                                   }else{
                                                                     Flushbar(
-                                                                      message:  "currentpsswrd is wrong",
+                                                                      message:  "current password was wrong",
                                                                       duration:  Duration(seconds: 3),
                                                                     )..show(context);
                                                                   }

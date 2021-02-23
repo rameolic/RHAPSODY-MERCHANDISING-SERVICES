@@ -2,22 +2,24 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'jpapi.dart';
+import 'package:merchandising/api/journeyplanapi.dart';
 import 'jpskippedapi.dart';
 import 'JPvisitedapi.dart';
 import 'loginwithuserdetails.dart';
 
-Uri Loginurl = Uri.parse("https://rms.rhapsody.ae/api/login");
-Uri DBdailyurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard_daily");
-Uri DBmonthlyurl = Uri.parse("https://rms.rhapsody.ae/api/dashboard_monthly");
-Uri JPurl = Uri.parse("https://rms.rhapsody.ae/api/today_planned_journey");
-Uri OCurl = Uri.parse("https://rms.rhapsody.ae/api/outlet_details");
-Uri CICOurl = Uri.parse("https://rms.rhapsody.ae/api/check_in_out");
-Uri TSurl = Uri.parse("https://rms.rhapsody.ae/api/timesheet_daily");
+Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
+Uri DBdailyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_daily");
+Uri DBmonthlyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_monthly");
+Uri OCurl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_details");
+Uri CICOurl = Uri.parse("https://rms2.rhapsody.ae/api/check_in_out");
+Uri TSurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_daily");
+Uri leaveurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_request");
+Uri empdataurl = Uri.parse("https://rms2.rhapsody.ae/api/employee_details");
+Uri passwordchangeurl = Uri.parse("https://rms2.rhapsody.ae/api/change_password");
+
 Uri JPSkippedurl = Uri.parse("https://rms.rhapsody.ae/api/today_skipped_journey");
 Uri JPVisitedurl = Uri.parse("https://rms.rhapsody.ae/api/today_completed_journey");
-Uri leaveurl = Uri.parse("https://rms.rhapsody.ae/api/leave_request");
-Uri empdataurl = Uri.parse("https://rms.rhapsody.ae/api/employee_details");
+Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
 
 
 
@@ -45,8 +47,8 @@ Future getDashBoardData() async {
        DBRequestdaily();
        DBRequestmonthly();
        getJourneyPlan();
-       getskippedJourneyPlan();
-       getvisitedJourneyPlan();
+      // getskippedJourneyPlan();
+       //getvisitedJourneyPlan();
        getempdetails();
      }
   }
@@ -78,6 +80,7 @@ Map DBrequestData = {
 };
 
 Future DBRequestdaily() async{
+  print(DBrequestData);
   http.Response DBresponse = await http.post(DBdailyurl,
     headers: {
       'Content-Type': 'application/json',
@@ -280,4 +283,30 @@ static var reason;
 
 class password{
   static var userpassword;
+}
+
+Future changepassword() async{
+  var newpassword = change.password;
+  Map requestchangepassword =
+  {
+    'emp_id': '$Empid',
+    "password": "$newpassword"
+  };
+  http.Response changedpasswordresponse = await http.post(passwordchangeurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(requestchangepassword),
+  );
+  print(requestchangepassword);
+  print(changedpasswordresponse.statusCode);
+  if(changedpasswordresponse.statusCode == 200 ){
+    print(jsonDecode(changedpasswordresponse.body));
+  }
+}
+
+class change{
+  static var password;
 }
