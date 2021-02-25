@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import '../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
-import 'package:merchandising/model/distanceinmeters.dart';
+import 'package:merchandising/pages/Maps_Veiw.dart';
 import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/jprequest.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/pages/jppages/jpskiped.dart';
 import 'package:merchandising/pages/jppages/jpvisited.dart';
@@ -66,7 +65,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print(todayjplists.storenames[3]);
+                      print(gettodayjp.storenames[3]);
                       setState(() {
                         pressTODAY = false;
                         pressCustomers = false;
@@ -133,7 +132,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                         /* Container(
+                         Container(
                             padding: EdgeInsets.all(10),
                             margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
                             decoration: BoxDecoration(
@@ -154,26 +153,22 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                         border: InputBorder.none,
                                         focusColor: Colors.black,
                                         hintText:
-                                        'Search by Customer Code/Name',
+                                        'Search by Store Code/Name',
                                         hintStyle: TextStyle(
                                           color: Colors.black,
                                           fontSize: 13.0,
-                                        ),
-                                        suffixIcon: Icon(
-                                          CupertinoIcons.search,
-                                          color: Colors.black,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {/*
+                                  onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                MapVeiw())); */
+                                                MapVeiw()));
                                   },
                                   child: Row(
                                     children: [
@@ -190,7 +185,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           ),
                           SizedBox(
                             height: 10,
-                          ), */
+                          ),
                           Expanded(child: pressTODAY == true ? JourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                       ),
@@ -278,18 +273,18 @@ class _State extends State<JourneyListBuilder> {
     );
   }
   Widget _uiSetup(BuildContext context) {
-    return todayjplists.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
+    return gettodayjp.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
     ListView.builder(
-        itemCount:todayjplists.storenames.length,
+        itemCount:gettodayjp.storenames.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
              setState(() {
                isApiCallProcess = true;
               });
-             outletrequestdata.outletidpressed = todayjplists.outletids[index];
+             outletrequestdata.outletidpressed = gettodayjp.outletids[index];
              outletwhencheckin();
-             checkinoutdata.checkid = todayjplists.id[index];
+             checkinoutdata.checkid = gettodayjp.id[index];
              print(checkinoutdata.checkid);
               Future.delayed(const Duration(seconds: 3), () {
                 if (chekinoutlet.checkinlat != null) {
@@ -332,7 +327,7 @@ class _State extends State<JourneyListBuilder> {
                   Row(
                     children: [
                       Text(
-                        '[${todayjplists.storecodes[index]}]',
+                        '[${gettodayjp.storecodes[index]}]',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -340,7 +335,7 @@ class _State extends State<JourneyListBuilder> {
                         width: 5,
                       ),
                       Text(
-                        '${todayjplists.storenames[index]}',
+                        '${gettodayjp.storenames[index]}',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -349,21 +344,21 @@ class _State extends State<JourneyListBuilder> {
                   SizedBox(height: 5),
                   Row(
                     children: [
-                      Text('${todayjplists.outletarea[index]}',
+                      Text('${gettodayjp.outletarea[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${todayjplists.outletcity[index]}',
+                      Text('${gettodayjp.outletcity[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${todayjplists.outletcountry[index]}',
+                      Text('${gettodayjp.outletcountry[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -377,7 +372,7 @@ class _State extends State<JourneyListBuilder> {
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text('${todayjplists.contactnumbers[index]}',
+                        Text('${gettodayjp.contactnumbers[index]}',
                             style: TextStyle(color: orange)),
                       ]),
                       TableRow(children: [
@@ -387,7 +382,7 @@ class _State extends State<JourneyListBuilder> {
                             )),
                         Row(
                           children: [
-                            Text('${todayjplists.distanceinmeters[index].toStringAsFixed(2)}',
+                            Text('${gettodayjp.distanceinmeters[index].toStringAsFixed(2)}',
                                 style: TextStyle(color: orange)),
                             Text("KM", style: TextStyle(color: orange))
                           ],

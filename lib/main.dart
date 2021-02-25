@@ -2,14 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'pages/login_page.dart';
-import 'package:merchandising/model/Location_service.dart';
 import 'dart:async';
+import 'package:merchandising/api/jpskippedapi.dart';
+import 'package:merchandising/api/journeyplanapi.dart';
+import 'package:merchandising/api/JPvisitedapi.dart';
+
 void main() {
-  const seconds = const Duration(seconds: 10);
-  Timer.periodic(seconds, (Timer t) => getLocation());
+  const seconds = const Duration(seconds: 900);
+  Timer.periodic(seconds, (Timer t) => recallapi());
   runApp(MyApp());
 }
-
+recallapi(){
+  getJourneyPlan();
+  getskippedJourneyPlan();
+  getvisitedJourneyPlan();
+}
 class MyApp extends StatelessWidget {
 
   @override

@@ -194,6 +194,8 @@ class _LoginPageState extends State<LoginPage> {
                                               setState(() {
                                                 isApiCallProcess = false;
                                               });
+                                              passwordinputcontroller = null;
+                                              emailinputcontroller = null;
                                               final snackBar = SnackBar(
                                                   elevation: 20.00,
                                                   duration:

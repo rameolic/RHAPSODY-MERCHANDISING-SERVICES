@@ -72,7 +72,8 @@ class _OutLetState extends State<OutLet> {
                         ocity: chekinoutlet.checkincity,
                         ostate: chekinoutlet.checkinstate,
                         ocountry: chekinoutlet.checkincountry,
-                        onumber: '+971543086480',
+                        address: chekinoutlet.checkinaddress,
+                        onumber: chekinoutlet.contactnumber,
                         odistance: (chekinoutlet.currentdistance/1000).toStringAsFixed(2),
                       ),
                     ],
@@ -110,6 +111,7 @@ class OutLetContent extends StatelessWidget {
     this.ocity,
     this.ocountry,
     this.ostate,
+    this.address
   });
   final ooutletid;
   final omarketname;
@@ -122,6 +124,7 @@ class OutLetContent extends StatelessWidget {
   final oproductivity;
   final oprogramname;
   final olastvisit;
+  final address;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -141,6 +144,7 @@ class OutLetContent extends StatelessWidget {
             ),
           ],
         ),
+        Text(address),
         Row(
           children: [
             Text(oarea),SizedBox(width: 5,),Text(ocity),SizedBox(width: 5,),Text(ostate),SizedBox(width: 5,),Text(ocountry),
@@ -158,7 +162,7 @@ class OutLetContent extends StatelessWidget {
               Text('Contact Number',
                   ),
               Text(":"),
-              Text(onumber, style: TextStyle(color: orange)),
+              SelectableText(onumber.toString(), style: TextStyle(color: orange)),
             ]),
            // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
             TableRow(children: [

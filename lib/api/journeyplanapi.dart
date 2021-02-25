@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'api_service.dart';
-import 'jprequest.dart';
-import 'package:merchandising/pages/Journeyplan.dart';
+import'package:merchandising/model/distanceinmeters.dart';
 
 Future<void> getJourneyPlan() async {
   http.Response JPresponse = await http.post(JPurl,
@@ -17,37 +16,47 @@ Future<void> getJourneyPlan() async {
     print('journey plan done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
+    gettodayjp.storenames=[];
+    gettodayjp.distanceinmeters=[];
+    gettodayjp.contactnumbers=[];
+    gettodayjp.outletcountry=[];
+    gettodayjp.outletcity=[];
+    gettodayjp.outletarea=[];
+    gettodayjp.storecodes=[];
+    gettodayjp.id=[];
+    gettodayjp.outletlong=[];
+    gettodayjp.outletlat=[];
+    gettodayjp.outletids=[];
     for(int u=0;u<20;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
-      print(storename);
-      todayjplists.storenames.add(storename);
+      gettodayjp.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];
-      todayjplists.storecodes.add(storecode);
+      gettodayjp.storecodes.add(storecode);
       dynamic outletid = decodeJPData['data'][u]['outlet']['outlet_id'];
-      todayjplists.outletids.add(outletid);
+      gettodayjp.outletids.add(outletid);
       dynamic outletlat = decodeJPData['data'][u]['outlet']['outlet_lat'];
-      todayjplists.outletlat.add(outletlat);
+      gettodayjp.outletlat.add(outletlat);
       dynamic outletlong = decodeJPData['data'][u]['outlet']['outlet_long'];
-      todayjplists.outletlong.add(outletlong);
+      gettodayjp.outletlong.add(outletlong);
       dynamic outletarea = decodeJPData['data'][u]['outlet']['outlet_area'];
-      todayjplists.outletarea.add(outletarea);
+      gettodayjp.outletarea.add(outletarea);
       dynamic outletcity = decodeJPData['data'][u]['outlet']['outlet_city'];
-      todayjplists.outletcity.add(outletcity);
+      gettodayjp.outletcity.add(outletcity);
       dynamic outletcountry = decodeJPData['data'][u]['outlet']['outlet_country'];
-      todayjplists.outletcountry.add(outletcountry);
+      gettodayjp.outletcountry.add(outletcountry);
       dynamic tableid = decodeJPData['data'][u]['id'];
-      todayjplists.id.add(tableid);
+      gettodayjp.id.add(tableid);
       dynamic outletcontact = decodeJPData['data'][u]['contact_number'];
-      todayjplists.contactnumbers.add(outletcontact);
+      gettodayjp.contactnumbers.add(outletcontact);
     }
+    distinmeters();
   }
   else{
     print(JPresponse.statusCode);
   }
 }
 
-
-class todayjplists{
+class gettodayjp{
   static List<dynamic> storecodes=[];
   static List<dynamic> storenames=[];
   static List<dynamic> outletids=[];

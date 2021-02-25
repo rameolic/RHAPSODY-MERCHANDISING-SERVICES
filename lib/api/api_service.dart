@@ -5,7 +5,10 @@ import 'dart:convert';
 import 'package:merchandising/api/journeyplanapi.dart';
 import 'jpskippedapi.dart';
 import 'JPvisitedapi.dart';
-import 'loginwithuserdetails.dart';
+import 'empdetailsapi.dart';
+import 'package:merchandising/api/leavestakenapi.dart';
+import'package:merchandising/api/timesheetapi.dart';
+
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
 Uri DBdailyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_daily");
@@ -16,9 +19,9 @@ Uri TSurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_daily");
 Uri leaveurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_request");
 Uri empdataurl = Uri.parse("https://rms2.rhapsody.ae/api/employee_details");
 Uri passwordchangeurl = Uri.parse("https://rms2.rhapsody.ae/api/change_password");
-
-Uri JPSkippedurl = Uri.parse("https://rms.rhapsody.ae/api/today_skipped_journey");
-Uri JPVisitedurl = Uri.parse("https://rms.rhapsody.ae/api/today_completed_journey");
+Uri LDurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_details");
+Uri JPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
+Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
 Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
 
 
@@ -47,9 +50,11 @@ Future getDashBoardData() async {
        DBRequestdaily();
        DBRequestmonthly();
        getJourneyPlan();
-      // getskippedJourneyPlan();
-       //getvisitedJourneyPlan();
+       getskippedJourneyPlan();
+       getvisitedJourneyPlan();
        getempdetails();
+       leaveData();
+       getTimeSheet();
      }
   }
   else {
@@ -171,6 +176,8 @@ class chekinoutlet{
   static var checkincity;
   static var checkinstate;
   static var checkincountry;
+  static var checkinaddress;
+  static var contactnumber;
   static double currentdistance;
 
 }
@@ -193,8 +200,10 @@ void outletwhencheckin() async {
   if (OCresponse.statusCode == 200){
     String OCdata = OCresponse.body;
     var decodeODData = jsonDecode(OCdata);
-    chekinoutlet.checkinoutletid = decodeODData['data'][0]['outlet_id'];
-    chekinoutlet.checkinoutletname = decodeODData['data'][0]['outlet_name'];
+    chekinoutlet.checkinoutletid = decodeODData['data'][0]['store'][0]["store_code"];
+    chekinoutlet.checkinoutletname = decodeODData['data'][0]['store'][0]["store_name"];
+    chekinoutlet.checkinaddress = decodeODData['data'][0]['store'][0]["address"];
+    chekinoutlet.contactnumber = decodeODData['data'][0]['store'][0]["contact_number"];
     chekinoutlet.checkinarea = decodeODData['data'][0]['outlet_area'];
     chekinoutlet.checkincity = decodeODData['data'][0]['outlet_city'];
     chekinoutlet.checkinstate = decodeODData['data'][0]['outlet_state'];
@@ -242,7 +251,13 @@ void CheckinCheckout() async {
     },
     body: jsonEncode(checkinoutresponse),
   );
-  print(cicoresponse.statusCode);
+  if(cicoresponse.statusCode == 200){
+    getTimeSheet();
+    DBRequestdaily();
+    DBRequestmonthly();
+  }else{
+    print(cicoresponse.body);
+  }
 }
 
 
@@ -310,3 +325,4 @@ Future changepassword() async{
 class change{
   static var password;
 }
+

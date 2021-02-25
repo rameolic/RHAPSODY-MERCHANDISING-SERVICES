@@ -9,11 +9,9 @@ import 'PlanogramcheckPhase1.dart';
 import 'NPD Check.dart';
 import 'CompetitionCheckOne.dart';
 import 'Visibility.dart';
-import 'package:merchandising/api/api_service.dart';
 import 'OutletSurvey.dart';
 import 'package:merchandising/pages/Journeyplan.dart';
 import 'package:merchandising/model/Location_service.dart';
-
 
 
 class CustomerActivities extends StatelessWidget {

@@ -145,7 +145,7 @@ class _TimeSheetListBuilderState extends State<TimeSheetListBuilder> {
                             width: 5,
                           ),
                           Text(
-                            '${dates[index]}',
+                            '${TimeSheetdata.days[index]}',
                             style: TextStyle(fontSize: 15),
                           ),
                         ],
@@ -207,59 +207,12 @@ class _TimeSheetListBuilderState extends State<TimeSheetListBuilder> {
   }
 }
 class timesheet extends StatelessWidget {
-    List<String> outlet = <String>[
-    TimeSheetdata.outletname,
-    TimeSheetdata.outletname2,
-    TimeSheetdata.outletname3,
-    TimeSheetdata.outletname4,
-    TimeSheetdata.outletname5,
-    TimeSheetdata.outletname6,
-    TimeSheetdata.outletname7,
-    TimeSheetdata.outletname8,
-    TimeSheetdata.outletname9,
-    TimeSheetdata.outletname10
-  ];
-    List<String> checkin = <String>[
-    TimeSheetdata.checkintime,
-    TimeSheetdata.checkintime2,
-    TimeSheetdata.checkintime3,
-    TimeSheetdata.checkintime4,
-    TimeSheetdata.checkintime5,
-    TimeSheetdata.checkintime6,
-    TimeSheetdata.checkintime7,
-    TimeSheetdata.checkintime8,
-    TimeSheetdata.checkintime9,
-    TimeSheetdata.checkintime10,
-
-  ];
-    List<String> checkout = <String>[
-    TimeSheetdata.checkouttime,
-    TimeSheetdata.checkouttime2,
-    TimeSheetdata.checkouttime3,
-    TimeSheetdata.checkouttime4,
-    TimeSheetdata.checkouttime5,
-    TimeSheetdata.checkouttime6,
-    TimeSheetdata.checkouttime7,
-    TimeSheetdata.checkouttime8,
-    TimeSheetdata.checkouttime9,
-    TimeSheetdata.checkouttime10,
-  ];
-  int outletscount() {
-    outlet.forEach((elements) => (null));
-    int countOutlet = 0;
-    for (final outletids in outlet) {
-      if (outletids != null) {
-        countOutlet++;
-      }
-    }
-    return countOutlet;
-  }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height / 1.4,
       child: ListView.builder(
-          itemCount:  outletscount(),
+          itemCount:  TimeSheetdata.outletname.length,
           itemBuilder: (BuildContext context, int index) {
             return Table(
               columnWidths: {
@@ -271,18 +224,18 @@ class timesheet extends StatelessWidget {
                 TableRow(children: [
                   Center(
                     child: Text(
-                      '${outlet[index]}',
+                      '${TimeSheetdata.outletname[index]}',
                       style: TextStyle(fontSize: 15.0),
                     ),
                   ),
                   Center(
-                    child: Text('${checkin[index]}',
+                    child: Text('${TimeSheetdata.checkintime[index]}',
                         style: TextStyle(
                           fontSize: 15.0,
                         )),
                   ),
                   Center(
-                    child: Text('${checkout[index]}',
+                    child: Text('${TimeSheetdata.checkouttime[index]}',
                         style: TextStyle(
                           fontSize: 15.0,
                         )),

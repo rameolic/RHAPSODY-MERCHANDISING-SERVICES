@@ -4,10 +4,8 @@ import 'package:merchandising/main.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
-import 'HQOne.dart';
 import 'package:merchandising/pages/menupages/myprofile.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 
 final menuitemscolor = Colors.black54;
@@ -158,6 +156,7 @@ class Menu extends StatelessWidget {
             icon: Icons.logout,
           ),
           onTap: () {
+            DBResponsedatadaily.Attendance = null;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

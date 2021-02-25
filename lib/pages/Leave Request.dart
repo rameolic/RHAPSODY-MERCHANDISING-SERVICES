@@ -7,6 +7,11 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/pages/home.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:merchandising/api/leavestakenapi.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
 class leavelogic {
   static DateTime StratDate;
@@ -18,12 +23,8 @@ class leavestatusPage extends StatefulWidget {
 }
 
 class _leavestatusPageState extends State<leavestatusPage> {
-  List<String> Reasons = <String>['Fever','fever','going of tour','fever','Fever','fever',];
-  List<String> type = <String>['sick','sick','sick','sick','sick','sick',];
-  List<String> Startdate = <String>['1-12-20','12-20-31','1-12-20','12-20-31','1-12-20','12-20-31',];
-  List<String> enddate = <String>['2-12-20','2-12-20','2-12-20','2-12-20','2-12-20','2-12-20',];
-  List<int> isleaverejected = <int>[0,0,1,0,0,0,];
-  List<int> isleaveaccepted = <int>[0,1,0,2,1,0,];
+  String accepted = "2";
+  String rejected = "1";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
           BackGround(),
             ListView.builder(
               reverse: false,
-            itemCount: Reasons.length,
+            itemCount: leavedataResponse.reasons.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                   height: 150,
@@ -74,7 +75,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
                           ),
                           Flexible(
                             child: AutoSizeText(
-                              '${Reasons[index]}',
+                              '${leavedataResponse.reasons[index]}',
                               maxLines: 2,
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -93,7 +94,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${type[index]}',
+                          Text('${leavedataResponse.leavetypes[index]}',
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -109,7 +110,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${Startdate[index]}',
+                          Text('${leavedataResponse.Startdates[index]}',
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -125,7 +126,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${enddate[index]}',
+                          Text('${leavedataResponse.enddates[index]}',
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -142,9 +143,9 @@ class _leavestatusPageState extends State<leavestatusPage> {
                             width: 5,
                           ),
                           Text(
-                           isleaveaccepted[index] == 2
+                              leavedataResponse.isleaveaccepted[index] == accepted
                                   ? 'Accepted'
-                                  : isleaverejected[index] == 1
+                                  : leavedataResponse.isleaverejected[index] == rejected
                                   ? 'Rejected'
                                   : 'Pending',
                               style: TextStyle(
@@ -152,14 +153,14 @@ class _leavestatusPageState extends State<leavestatusPage> {
                               )),
                           Spacer(),
                           Icon(
-                            isleaveaccepted[index] == 2
+                            leavedataResponse.isleaveaccepted[index] == accepted
                                 ? CupertinoIcons.check_mark_circled_solid
-                                : isleaverejected[index] == 1 ? CupertinoIcons
+                                : leavedataResponse.isleaverejected[index] == rejected ? CupertinoIcons
                                 .clear_circled_solid : CupertinoIcons
                                 .arrow_up_arrow_down_circle_fill,
-                            color: isleaveaccepted[index] == 2
+                            color: leavedataResponse.isleaveaccepted[index] == accepted
                                 ? Colors.green
-                                : isleaverejected[index] == 1 ? Colors.red : Colors.grey,
+                                : leavedataResponse.isleaverejected[index] == rejected ? Colors.red : Colors.grey,
                           )
                         ],
                       ),
@@ -232,6 +233,35 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
   bool valuefirst = false;
   TextEditingController reasoninputcontroller = TextEditingController();
+  List<File> filepicked=[];
+  Future getFile()async{
+    List<File> file= await FilePicker.getMultiFile();
+    setState(() {
+      filepicked = file;
+
+    });
+    if(pickedfile.name != null){
+      pickedfile.name = [];
+    }
+    for(int u=0;u<20;u++){
+      pickedfile.name.add(basename(filepicked[u].path));
+    }
+  }
+  void _uploadFile(filePath) async {
+    String fileName = basename(filePath.path);
+    print("file base name:$fileName");
+    try {
+      FormData formData = new FormData.fromMap({
+        "file": await MultipartFile.fromFile(filePath.path, filename: fileName),
+      });
+
+      Response response = await Dio().post("https://sldevzone.000webhostapp.com/uploads.php",data: formData);
+      print("File upload response: $response");
+
+    } catch (e) {
+      print("expectation Caugch: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -361,21 +391,33 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
                         istypesick.issick == 1 ?
-                        Row(
+                        Column(
                           children: [
-                            Text(
-                              "Upload the Required Documents",
-                              style: TextStyle(fontSize: 16),
+                            SizedBox(height: 10,),
+                            Row(
+                              children: [
+                                Text(
+                                  "Upload the Required Documents",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Spacer(),
+                                GestureDetector(
+                                  onTap: (){
+                                    getFile();
+                                  },
+                                    child: Icon(CupertinoIcons.folder_badge_plus),
+                                )
+                              ],
                             ),
-                            Spacer(),
-                            GestureDetector(
-                              onTap: (){
-
-                              },
-                                child: Icon(CupertinoIcons.folder_badge_plus),
-                            )
+                            filepicked.length != null ?
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: filepicked.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Text( pickedfile.name[index]);
+                                })
+                                :SizedBox()
                           ],
                         )
                             : SizedBox(),
@@ -444,92 +486,21 @@ class _LeaveRequestState extends State<LeaveRequest> {
                   GestureDetector(
                       onTap: () {
                         if (valuefirst == true &&
-                            reasoninputcontroller.text != "") {
+                            reasoninputcontroller.text != "" && leave.startdate != null && leave.enddate !=null && leave.type !=null ) {
                           leave.reason = reasoninputcontroller.text;
                           leaverequest();
+                          leavedataResponse.isleaverejected=[];
+                          leavedataResponse.isleaveaccepted=[];
+                          leavedataResponse.enddates=[];
+                          leavedataResponse.Startdates=[];
+                          leavedataResponse.leavetypes=[];
+                          leavedataResponse.reasons=[];
+                          leaveData();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       DashBoard()));
-                        } else if (valuefirst == false) {
-                          showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                    backgroundColor: alertboxcolor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0))),
-                                    content: Builder(
-                                      builder: (context) {
-                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                        return Container(
-                                          child: SizedBox(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Alert",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  height: 10.00,
-                                                ),
-                                                Text(
-                                                    "Please accept the terms and conditions",
-                                                    style: TextStyle(
-                                                        fontSize: 13.6)),
-                                                SizedBox(
-                                                  height: 10.00,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.pop(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    LeaveRequest()));
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 70,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: orange,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        margin: EdgeInsets.only(
-                                                            right: 10.00),
-                                                        child: Center(
-                                                            child: Text(
-                                                          "ok",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white),
-                                                        )),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ));
                         } else {
                           showDialog(
                               context: context,
@@ -558,7 +529,17 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                                 SizedBox(
                                                   height: 10.00,
                                                 ),
-                                                Text("Reason can not be empty",
+                                                Text(
+                                                    valuefirst == false?
+                                                    "Please accept the terms and conditions":
+                                                    reasoninputcontroller.text == ""?
+                                                    "Reason can not be empty":
+                                                    leave.startdate == null ?
+                                                    "Please select Start date":
+                                                    leave.enddate ==null?
+                                                    "please select Enddate":
+                                                    leave.type == null ?
+                                                    "Please select the leave type":null,
                                                     style: TextStyle(
                                                         fontSize: 13.6)),
                                                 SizedBox(
@@ -696,4 +677,8 @@ class _EndDateState extends State<EndDate> {
       ),
     );
   }
+}
+
+class pickedfile{
+  static List<dynamic> name=[];
 }

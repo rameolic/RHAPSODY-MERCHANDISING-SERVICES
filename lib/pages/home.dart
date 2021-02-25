@@ -1,27 +1,18 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:merchandising/pages/Journeyplan.dart';
 import 'package:merchandising/pages/MenuContent.dart';
-import 'package:merchandising/api/jpskippedapi.dart';
-import 'package:merchandising/api/JPvisitedapi.dart';
-import 'package:merchandising/api/journeyplanapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'Startday.dart';
 import 'package:merchandising/api/timesheetapi.dart';
-import 'package:merchandising/pages/HQOne.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/pages/Leave Request.dart';
 import 'package:merchandising/ProgressHUD.dart';
-import 'package:merchandising/model/distanceinmeters.dart';
-import 'dart:math';
 import 'package:merchandising/pages/Time Sheet.dart';
-import 'package:merchandising/api/api_service.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:merchandising/model/Location_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import'package:merchandising/api/leavestakenapi.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -77,36 +68,7 @@ class _DashBoardState extends State<DashBoard> {
               height: 30,
               image: AssetImage('images/rmsLogo.png'),
             ),
-            Row(
-              children: [
-                IconButton(icon:Icon(CupertinoIcons.refresh_bold),onPressed: (){
-                  setState(() {
-                    isApiCallProcess = true;
-                    DBRequestdaily();
-                    DBRequestmonthly();
-                    getJourneyPlan();
-                    getskippedJourneyPlan();
-                    getvisitedJourneyPlan();
-                    getLocation();
-                  });
-
-                  Future.delayed(const Duration(seconds: 5), () {
-                    setState(() {
-                      JourneyPlan();
-                      isApiCallProcess = false;
-                      distinmeters();
-                    });
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContextcontext) => DashBoard()));
-                  });
-
-                },),
-                SizedBox(width: 10,),
-                StartDay(),
-              ],
-            ),
+            StartDay(),
           ],
         ),
       ),
@@ -252,19 +214,11 @@ class _DashBoardState extends State<DashBoard> {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        setState(() {
-                          isApiCallProcess = true;
-                        });
                         getTimeSheet();
-                        Future.delayed(const Duration(seconds: 5), () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContextcontext) => TimeSheetList()));
-                          setState(() {
-                            isApiCallProcess = false;
-                          });
-                        });
                       },
                       child: Container(
                         height: 265,
@@ -339,6 +293,7 @@ class _DashBoardState extends State<DashBoard> {
                         SizedBox(height: 5,),
                         GestureDetector(
                           onTap: (){
+                            leaveData();
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
                           },

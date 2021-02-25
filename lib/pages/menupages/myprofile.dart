@@ -5,7 +5,7 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/pages/MenuContent.dart';
-import 'package:merchandising/api/loginwithuserdetails.dart';
+import 'package:merchandising/api/empdetailsapi.dart';
 import 'package:flushbar/flushbar.dart';
 
 class Myprofile extends StatefulWidget {
@@ -97,7 +97,7 @@ class _MyprofileState extends State<Myprofile> {
                         width: double.infinity,
                         height: 300,
                         decoration: BoxDecoration(
-                          color: pink,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
@@ -228,7 +228,7 @@ class _MyprofileState extends State<Myprofile> {
                         margin: EdgeInsets.all(10.0),
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: pink,
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
