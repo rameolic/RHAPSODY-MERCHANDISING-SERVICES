@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:merchandising/main.dart';
+import 'package:merchandising/pages/login_page.dart';
 import '../Constants.dart';
 import 'Journeyplan.dart';
 import 'home.dart';
 import 'package:merchandising/pages/menupages/myprofile.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
+import'package:merchandising/model/rememberme.dart';
 
 final menuitemscolor = Colors.black54;
 
@@ -156,11 +157,11 @@ class Menu extends StatelessWidget {
             icon: Icons.logout,
           ),
           onTap: () {
-            DBResponsedatadaily.Attendance = null;
+            removeValues();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => SplashScreen()));
+                    builder: (BuildContext context) => LoginPage()));
           },
         ),
         /*Image(

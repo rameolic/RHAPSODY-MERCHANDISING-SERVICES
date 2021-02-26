@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/main.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/model/requestandresponsemodel.dart';
 import 'package:merchandising/Constants.dart';
 import '../ProgressHUD.dart';
 import 'home.dart';
 import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/model/rememberme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -22,8 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
         if (rememberMe) {
           // TODO: Here goes your functionality that remembers the user.
-        } else {
-          // TODO: Forget the user
+
         }
       });
   bool hidePassword = true;
@@ -33,9 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   DashBoardRequestModel dashBoardRequestModel;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailinputcontroller = TextEditingController();
-  static TextEditingController passwordinputcontroller = TextEditingController();
-  static String userinputemail;
-  static String userinputpassword;
+  static TextEditingController passwordinputcontroller =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -150,154 +148,47 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               SizedBox(height: 30),
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   setState(() {
                                     isApiCallProcess = true;
                                   });
-                                  getLocation();
-                                  userinputemail = emailinputcontroller.text;
-                                  userinputpassword =
-                                      passwordinputcontroller.text;
-                                  password.userpassword = passwordinputcontroller.text;
                                   if (validateAndSave()) {
-                                    loginrequestdata.inputemail =
-                                        userinputemail;
-                                    loginrequestdata.inputpassword =
-                                        userinputpassword;
+                                    loginrequestdata.inputemail = emailinputcontroller.text;
+                                    loginrequestdata.inputpassword =passwordinputcontroller.text;
                                     if (loginrequestdata.inputemail != null &&
-                                        loginrequestdata.inputpassword !=
-                                            null) {
-                                      getDashBoardData();
-                                      new Future.delayed(
-                                          const Duration(seconds: 5), () {
-                                        if (DBResponsedatadaily.Attendance != null)
-                                        {
+                                        loginrequestdata.inputpassword != null) {
+                                      if(rememberMe == true){
+                                        addLogindetails();
+                                      }
+                                      int status = await getDashBoardData();
+                                      getLocation();
+                                      if (status == 200) {
+                                        int DBMresult = await DBRequestmonthly();
+                                        int DBDresult = await DBRequestdaily();
+                                        if (DBMresult != null && DBDresult != null) {
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder:
                                                       (BuildContextcontext) =>
                                                           DashBoard()));
-                                        } else {
-                                          new Future.delayed(
-                                              const Duration(seconds: 5), () {
-                                            if (DBResponsedatadaily
-                                                    .Attendance !=
-                                                null) {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (BuildContextcontext) =>
-                                                              DashBoard()));
-                                            } else {
-                                              setState(() {
-                                                isApiCallProcess = false;
-                                              });
-                                              passwordinputcontroller = null;
-                                              emailinputcontroller = null;
-                                              final snackBar = SnackBar(
-                                                  elevation: 20.00,
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                  content: Text(
-                                                    "Username/password was wrong",
-                                                  ));
-                                              scaffoldKey.currentState
-                                                  .showSnackBar(snackBar);
-                                              new Future.delayed(
-                                                  const Duration(seconds: 2),
-                                                  () {
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder:
-                                                            (BuildContextcontext) =>
-                                                                SplashScreen()));
-                                              });
-                                            }
-                                          });
                                         }
-                                      });
-                                    }
-                                  }
-                                },
-                                /* if (validateAndSave()) {
-                                    print(loginRequestModel.toJson());
-
-                                    setState(() {
-                                      isApiCallProcess = true;
-                                    });
-
-                                    APIService apiService = new APIService();
-                                    apiService
-                                        .login(loginRequestModel)
-                                        .then((value) {
-                                      if (value != null) {
+                                      } else {
                                         setState(() {
                                           isApiCallProcess = false;
                                         });
-
-                                        if (value.token.isNotEmpty) {
-                                          print(value.token);
-                                            if (value.Empid.isNotEmpty) {
-                                              print(value.Empid);
-                                              if (this.mounted) {
-                                                setState(() {
-                                                  dashBoardRequestModel
-                                                      .empiddata = value.Empid;
-                                                  APIDashBoard().tokendata = value.token;
-                                                });
-                                                print(APIDashBoard().tokendata);
-                                              }
-                                              print(dashBoardRequestModel
-                                                  .toJson());
-                                              APIDashBoard apidashboard =
-                                              new APIDashBoard();
-                                              apidashboard
-                                                  .dashboard(
-                                                  dashBoardRequestModel)
-                                                  .then((value) {
-                                                if (value != null) {
-                                                  if (value.shedulevisits
-                                                      .isNotEmpty) {
-                                                    print(value.shedulevisits);
-                                                    print(
-                                                        value.unshedulevisits);
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (
-                                                                BuildContext
-                                                                context) =>
-                                                                DashBoard()));
-                                                  }
-                                                }
-                                              });
-
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                      context) =>
-                                                          DashBoard()));
-                                            }
-
-                                        } else {
-                                          final snackBar = SnackBar(
-                                              elevation: 20.00,
-                                              duration: Duration(seconds: 1),
-                                              content: Text(
-                                                "Username/password was wrong",
-                                              ));
-                                          scaffoldKey.currentState
-                                              .showSnackBar(snackBar);
-                                        }
+                                        final snackBar = SnackBar(
+                                            elevation: 20.00,
+                                            duration: Duration(seconds: 2),
+                                            content: Text(
+                                              "Username/password was wrong",
+                                            ));
+                                        scaffoldKey.currentState
+                                            .showSnackBar(snackBar);
                                       }
-                                    });
+                                    }
                                   }
-                                  getLocation();
-                                },*/
+                                },
                                 child: Container(
                                   padding: EdgeInsets.all(15.0),
                                   width:
@@ -314,27 +205,23 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 15),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width / 1.5,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Container(
-                                      height: 10.0,
-                                      width: 10.0,
+                                    SizedBox(
+                                      height: 65.0,
+                                      width: 30.0,
                                       child: Theme(
                                         data: ThemeData(
                                             unselectedWidgetColor:
                                                 Colors.white),
-                                        child: Transform.scale(
-                                          scale: 0.7,
-                                          child: Checkbox(
-                                            value: rememberMe,
-                                            onChanged: _onRememberMeChanged,
-                                            activeColor: orange,
-                                          ),
+                                        child: Checkbox(
+                                          value: rememberMe,
+                                          onChanged:_onRememberMeChanged,
+                                          activeColor: orange,
                                         ),
                                       ),
                                     ),
@@ -342,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Text(
                                       'Remember me',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
+                                          color: Colors.white, fontSize: 14),
                                     ),
                                     Spacer(
                                       flex: 7,
@@ -350,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Text(
                                       'Forgot Password?',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
+                                          color: Colors.white, fontSize: 14),
                                     ),
                                   ],
                                 ),

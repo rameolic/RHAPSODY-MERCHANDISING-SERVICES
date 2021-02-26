@@ -8,6 +8,7 @@ import 'JPvisitedapi.dart';
 import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import'package:merchandising/api/timesheetapi.dart';
+import 'package:merchandising/model/rememberme.dart';
 
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
@@ -28,8 +29,8 @@ Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
 
 
 Future getDashBoardData() async {
-  var emailid = loginrequestdata.inputemail;
-  var password = loginrequestdata.inputpassword;
+  var emailid = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
+  var password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
   Map loginData = {
     'email': '$emailid',
     'password': '$password',
@@ -39,6 +40,7 @@ Future getDashBoardData() async {
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
+    userpassword.password = password;
     print("LoginDone");
     String data = response.body;
     var decodeData = jsonDecode(data);
@@ -47,8 +49,6 @@ Future getDashBoardData() async {
     DBrequestdata.empname = decodeData['user'] ['name'];
     DBrequestdata.emailid =decodeData['user']['email'];
      if(DBrequestdata.receivedtoken != null && DBrequestdata.receivedempid !=null ) {
-       DBRequestdaily();
-       DBRequestmonthly();
        getJourneyPlan();
        getskippedJourneyPlan();
        getvisitedJourneyPlan();
@@ -62,6 +62,7 @@ Future getDashBoardData() async {
     print("error");
     print(response.body);
   }
+  return response.statusCode;
 }
 
 class loginrequestdata {
@@ -107,6 +108,7 @@ Future DBRequestdaily() async{
     DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
     DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
     DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
+    return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
     print(DBresponse.statusCode);
@@ -186,6 +188,7 @@ class chekinoutlet{
 void outletwhencheckin() async {
   var outletid = outletrequestdata.outletidpressed;
   Map ODrequestDataforcheckin = {
+    "emp_id": "$Empid",
     'outlet_id': '$outletid',
   };
   print(ODrequestDataforcheckin);
@@ -236,7 +239,7 @@ void CheckinCheckout() async {
   var checkoutlocation = checkinoutdata.checkoutlocation;
   Map checkinoutresponse =
   {
-    "id": "$checkid",
+    "timesheet_id": "$checkid",
     "checkin_time": "$checkintime",
     "checkout_time": "$checkouttime",
     "checkin_location": "$checkinlocation",
@@ -252,6 +255,7 @@ void CheckinCheckout() async {
     body: jsonEncode(checkinoutresponse),
   );
   if(cicoresponse.statusCode == 200){
+    print(cicoresponse.body);
     getTimeSheet();
     DBRequestdaily();
     DBRequestmonthly();
@@ -296,8 +300,8 @@ static var enddate;
 static var reason;
 }
 
-class password{
-  static var userpassword;
+class userpassword{
+  static var password;
 }
 
 Future changepassword() async{

@@ -275,7 +275,7 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? (monthpercentage/100): (todaypercentage/100),
+                                    percent: pressAttentionMTB == true ? 0.3:0.5,//(monthpercentage/100): (todaypercentage/100),
                                     textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
                                     title: "Journey Plan\nCompletion",
                                   ),
@@ -343,7 +343,7 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HQOne()));
                         },
                       child: Container(

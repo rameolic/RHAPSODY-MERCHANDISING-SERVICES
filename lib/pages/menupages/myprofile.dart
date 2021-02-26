@@ -7,6 +7,7 @@ import 'package:merchandising/Constants.dart';
 import 'package:merchandising/pages/MenuContent.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:merchandising/model/rememberme.dart';
 
 class Myprofile extends StatefulWidget {
   @override
@@ -378,28 +379,22 @@ class _MyprofileState extends State<Myprofile> {
                                                             GestureDetector(
                                                               onTap: () {
                                                                 if (validateAndSave()) {
-                                                                  if(password.userpassword == currentpasswordcontroller.text)
-                                                                  {
+                                                                  if(userpassword.password == currentpasswordcontroller.text) {
                                                                    if(newpasswordcontroller.text == newpasswordv2controller.text){
                                                                      print("send password to api");
-                                                                     print(newpasswordv2controller.text);
                                                                      change.password = newpasswordcontroller.text;
-                                                                     Navigator.pop(
-                                                                         context,
-                                                                         MaterialPageRoute(
-                                                                             builder:
-                                                                                 (BuildContextcontext) =>
-                                                                                 Myprofile()));
+                                                                     Navigator.pop(context, MaterialPageRoute(builder: (BuildContextcontext) => Myprofile()));
                                                                      Flushbar(
                                                                        message: "password Updated",
                                                                        duration:  Duration(seconds: 3),
                                                                      )..show(context);
                                                                      changepassword();
-                                                                     password.userpassword = newpasswordcontroller.text;
+                                                                     userpassword.password = newpasswordcontroller.text;
                                                                      currentpasswordcontroller.clear();
                                                                      newpasswordcontroller.clear();
                                                                      newpasswordv2controller.clear();
-                                                                     print( password.userpassword);
+                                                                     removeValues();
+                                                                     print(userpassword.password);
                                                                    }
                                                                    else{
                                                                      Flushbar(

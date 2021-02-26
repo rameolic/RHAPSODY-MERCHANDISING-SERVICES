@@ -47,7 +47,7 @@ class _MapVeiwState extends State<MapVeiw> {
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
             title: Text(
-              'Map Veiw',
+              'Journey Plan Map Veiw',
               style: TextStyle(color: orange),
             ),
           ),

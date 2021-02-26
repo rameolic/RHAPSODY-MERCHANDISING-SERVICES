@@ -28,9 +28,41 @@ class _JourneyPlanState extends State<JourneyPlan> {
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
-        title: Text(
-          'Journey Plan',
-          style: TextStyle(color: orange),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Journey Plan',
+              style: TextStyle(color: orange),
+            ),
+            GestureDetector(
+                onTap:(){
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              MapVeiw()));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10.00),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: orange,
+                    borderRadius: BorderRadius.circular(10.00),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.location_solid,
+                        size: 15,color: Colors.white,
+                      ),
+                      SizedBox(width: 5,),
+                      Text("Map",style: TextStyle(fontSize: 15,color: Colors.white),),
+                    ],
+                  ),
+                ),
+              )
+          ],
         ),
       ),
       drawer: Drawer(
@@ -129,6 +161,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          /*
                           SizedBox(
                             height: 10,
                           ),
@@ -182,7 +215,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                                 ),
                               ],
                             ),
-                          ),
+                          ), */
                           SizedBox(
                             height: 10,
                           ),
