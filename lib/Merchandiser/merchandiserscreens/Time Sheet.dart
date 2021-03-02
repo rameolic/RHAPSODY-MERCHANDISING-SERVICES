@@ -185,68 +185,66 @@ class Timesheetmonthly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height/1.43,
-      width: double.infinity,
-      child: ListView.builder(
-          itemCount: outletname.length,//TimeSheetdata.checkintime.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
-                height: 100,
-                padding: EdgeInsets.all(10.0),
-                margin: EdgeInsets.fromLTRB(10.0,0,10.0,10.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.00)),
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    index == 0 ?Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):
-                    days[index]!= days[index-1]?
-                    Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):SizedBox(),
-                   // Text('${TimeSheetdata.days[index]}',style: TextStyle(color: orange,fontSize: 16.0)),
-                    Row(children: [
-                      Text('Outlet name : ',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          )),
-                      Text('${outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
-                     // Text('${TimeSheetdata.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
-                    ]),
-                    Row(
-                        children: [
-                          Text('Checkin time : ',style: TextStyle(fontSize: 16.0,)),
-                          Text('${checkintime[index]}',style: TextStyle(fontSize: 16.0,))
-                         // Text('${TimeSheetdata.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
-                        ]),
-                    /*Row(children: [
-                      Text('Check In Location:',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                          )),
-                      SizedBox(width: 10),
-                      Text(${TimeSheetdata.[index]}),
-                    ]),*/
-                    Row(children: [
-                      Text('Checkout time : ',style: TextStyle(fontSize: 16.0,)),
-                      Text('${checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
-                      //Text('${TimeSheetdata.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
-                    ]),
-                    /* Row(children: [
-                      Text('Check Out Location:',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                          )),
-                      SizedBox(width: 10),
-                      Text('${checkoutlocation[index]}',
-                      ),
-                    ]),*/
-                  ],
-                ));
-          }),
-    );
+    return ListView.builder(
+        itemCount: outletname.length,//TimeSheetdata.checkintime.length,
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+              height: 100,
+              padding: EdgeInsets.all(10.0),
+              margin: EdgeInsets.fromLTRB(10.0,0,10.0,10.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.00)),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  index == 0 ?Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):
+                  days[index]!= days[index-1]?
+                  Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):SizedBox(),
+                 // Text('${TimeSheetdata.days[index]}',style: TextStyle(color: orange,fontSize: 16.0)),
+                  Row(children: [
+                    Text('Outlet name : ',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        )),
+                    Text('${outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
+                   // Text('${TimeSheetdata.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
+                  ]),
+                  Row(
+                      children: [
+                        Text('Checkin time : ',style: TextStyle(fontSize: 16.0,)),
+                        Text('${checkintime[index]}',style: TextStyle(fontSize: 16.0,))
+                       // Text('${TimeSheetdata.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
+                      ]),
+                  /*Row(children: [
+                    Text('Check In Location:',
+                        style: TextStyle(
+                          fontSize: 13.0,
+                        )),
+                    SizedBox(width: 10),
+                    Text(${TimeSheetdata.[index]}),
+                  ]),*/
+                  Row(children: [
+                    Text('Checkout time : ',style: TextStyle(fontSize: 16.0,)),
+                    Text('${checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
+                    //Text('${TimeSheetdata.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
+                  ]),
+                  /* Row(children: [
+                    Text('Check Out Location:',
+                        style: TextStyle(
+                          fontSize: 13.0,
+                        )),
+                    SizedBox(width: 10),
+                    Text('${checkoutlocation[index]}',
+                    ),
+                  ]),*/
+                ],
+              ));
+        });
   }
 }
 

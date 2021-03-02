@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api/api_service.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'model/Location_service.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 
 recallapi(){
   getJourneyPlan();
@@ -32,6 +33,7 @@ Future<void> main() async {
   remembereddata.password = password;
   if(email != null && password != null) {
     int userroleid = await getDashBoardData();
+    print(userroleid);
     if(userroleid == 6){
       await DBRequestmonthly();
       await DBRequestdaily();
@@ -62,7 +64,7 @@ Future<void> main() async {
             fontFamily: 'Poppins',
             primaryColor: Colors.white,
             accentColor: orange,),
-          home: LoginPage()
+          home: FieldManagerDashBoard()
       ));
     }else{
       runApp(MaterialApp(

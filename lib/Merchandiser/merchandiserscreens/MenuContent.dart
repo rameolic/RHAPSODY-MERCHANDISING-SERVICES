@@ -10,7 +10,7 @@ import 'package:merchandising/model/distanceinmeters.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-
+import 'package:merchandising/api/api_service.dart';
 final menuitemscolor = Colors.black54;
 
 class DrawerHeaderinfo extends StatelessWidget {
@@ -173,6 +173,9 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {
             removeValues();
+            loggedin.email = null;
+            loggedin.password = null;
+            currentuser.roleid = null;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

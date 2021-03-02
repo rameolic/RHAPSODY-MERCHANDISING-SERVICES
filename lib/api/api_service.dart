@@ -27,23 +27,26 @@ Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journ
 Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
 
 
-
+class loggedin{
+  static var email;
+  static var password;
+}
 
 Future getDashBoardData() async {
-  var emailid = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
-  var password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
+  loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
+  loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
   Map loginData = {
-    'email': '$emailid',
-    'password': '$password',
+    'email': '${loggedin.email}',
+    'password': '${loggedin.password}',
   };
   print(loginData);
 
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
-    emailid =null;
-    password=null;
-    userpassword.password = password;
+    loggedin.email =null;
+    loggedin.password=null;
+    userpassword.password = loggedin.password;
     print("LoginDone");
     getLocation();
     String data = response.body;

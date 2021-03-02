@@ -39,6 +39,7 @@ dependencies:
   flushbar: ^1.10.4
   shared_preferences: ^0.5.12+4
   dropdown_search: ^0.4.9
+  dropdownfield: ^1.0.3
 
 
 dev_dependencies:

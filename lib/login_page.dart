@@ -6,6 +6,7 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -145,10 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(height: 30),
                               GestureDetector(
                                 onTap: () async {
-                                  setState(() {
-                                    isApiCallProcess = true;
-                                  });
                                   if (validateAndSave()) {
+                                    setState(() {
+                                      isApiCallProcess = true;
+                                    });
                                     loginrequestdata.inputemail = emailinputcontroller.text;
                                     loginrequestdata.inputpassword =passwordinputcontroller.text;
                                     if (loginrequestdata.inputemail != null &&
@@ -181,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContextcontext) =>
-                                                    DashBoard()));
+                                                        FieldManagerDashBoard()));
                                       }
                                       else {
                                         setState(() {

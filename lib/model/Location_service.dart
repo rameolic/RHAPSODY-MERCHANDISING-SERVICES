@@ -44,9 +44,11 @@ class getaddress {
 void SubmitCheckin() {
   address();
   var now = DateTime.now();
+  print(now);
   Future.delayed(
       const Duration(seconds: 5), () {
         checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
+        print(checkinoutdata.checkintime);
       checkinoutdata.checkinlocation = getaddress.currentaddress;
       checkin();
   });
