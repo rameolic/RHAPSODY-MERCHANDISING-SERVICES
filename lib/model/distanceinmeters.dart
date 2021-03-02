@@ -3,7 +3,7 @@ import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/journeyplanapi.dart';
 import 'package:merchandising/api/jpskippedapi.dart';
 import 'package:merchandising/api/JPvisitedapi.dart';
-import 'package:merchandising/pages/Maps_Veiw.dart';
+import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
 
 
 

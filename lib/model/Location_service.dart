@@ -48,7 +48,7 @@ void SubmitCheckin() {
       const Duration(seconds: 5), () {
         checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
       checkinoutdata.checkinlocation = getaddress.currentaddress;
-      CheckinCheckout();
+      checkin();
   });
 }
 
@@ -59,7 +59,7 @@ void SubmitCheckout() {
       const Duration(seconds: 5), () {
     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
     checkinoutdata.checkoutlocation = getaddress.currentaddress;
-    CheckinCheckout();
+    checkout();
   });
 }
 

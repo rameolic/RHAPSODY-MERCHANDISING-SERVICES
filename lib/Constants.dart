@@ -88,3 +88,49 @@ class OutletDetails extends StatelessWidget {
   }
 }
 
+class Containerblock extends StatelessWidget {
+  Containerblock({this.numbertext, this.chartext,
+    this.color, this.icon,this.width});
+  final icon;
+  final color;
+  final numbertext;
+  final chartext;
+  final width;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 140,
+      width: width,
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: containerscolor,
+      ),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 35,
+                color: color,
+              ),
+              SizedBox(height: 5),
+              Text(
+                numbertext,style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 10),
+              Text(
+                chartext,
+                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+

@@ -8,6 +8,7 @@ import 'JPvisitedapi.dart';
 import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import'package:merchandising/api/timesheetapi.dart';
+import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
 
 
@@ -40,29 +41,27 @@ Future getDashBoardData() async {
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
+    emailid =null;
+    password=null;
     userpassword.password = password;
     print("LoginDone");
+    getLocation();
     String data = response.body;
     var decodeData = jsonDecode(data);
     DBrequestdata.receivedtoken =decodeData['token'];
     DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     DBrequestdata.empname = decodeData['user'] ['name'];
     DBrequestdata.emailid =decodeData['user']['email'];
-     if(DBrequestdata.receivedtoken != null && DBrequestdata.receivedempid !=null ) {
-       getJourneyPlan();
-       getskippedJourneyPlan();
-       getvisitedJourneyPlan();
-       getempdetails();
-       leaveData();
-       getTimeSheet();
-     }
+    currentuser.roleid = decodeData['user']['role_id'];
+    getempdetails();
+    return currentuser.roleid;
   }
   else {
     print(response.statusCode);
     print("error");
     print(response.body);
+    return currentuser.roleid;
   }
-  return response.statusCode;
 }
 
 class loginrequestdata {
@@ -108,6 +107,11 @@ Future DBRequestdaily() async{
     DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
     DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
     DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
+    getJourneyPlan();
+    getskippedJourneyPlan();
+    getvisitedJourneyPlan();
+    leaveData();
+    getTimeSheetdaily();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
@@ -185,7 +189,7 @@ class chekinoutlet{
 }
 
 
-void outletwhencheckin() async {
+Future outletwhencheckin() async {
   var outletid = outletrequestdata.outletidpressed;
   Map ODrequestDataforcheckin = {
     "emp_id": "$Empid",
@@ -214,7 +218,9 @@ void outletwhencheckin() async {
     chekinoutlet.checkinlat = decodeODData['data'][0]['outlet_lat'];
     chekinoutlet.checkinlong = decodeODData['data'][0]['outlet_long'];
     chekinoutlet.currentdistance = Geolocator.distanceBetween(lat, long, double.parse(chekinoutlet.checkinlat), double.parse(chekinoutlet.checkinlong));
+    return chekinoutlet.currentdistance;
   }
+
   if(OCresponse.statusCode != 200){
     print(OCresponse.statusCode);
 
@@ -231,19 +237,15 @@ class checkinoutdata{
 }
 
 
-void CheckinCheckout() async {
+void checkin() async {
   var checkid = checkinoutdata.checkid;
   var checkintime = checkinoutdata.checkintime;
-  var checkouttime = checkinoutdata.checkouttime;
   var checkinlocation = checkinoutdata.checkinlocation;
-  var checkoutlocation = checkinoutdata.checkoutlocation;
   Map checkinoutresponse =
   {
     "timesheet_id": "$checkid",
     "checkin_time": "$checkintime",
-    "checkout_time": "$checkouttime",
     "checkin_location": "$checkinlocation",
-    "checkout_location": "$checkoutlocation"
   };
   print(checkinoutresponse);
   http.Response cicoresponse = await http.post(CICOurl,
@@ -256,7 +258,35 @@ void CheckinCheckout() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
-    getTimeSheet();
+    getTimeSheetdaily();
+    DBRequestdaily();
+    DBRequestmonthly();
+  }else{
+    print(cicoresponse.body);
+  }
+}
+void checkout() async {
+  var checkid = checkinoutdata.checkid;
+  var checkouttime = checkinoutdata.checkouttime;
+  var checkoutlocation = checkinoutdata.checkoutlocation;
+  Map checkinoutresponse =
+  {
+    "timesheet_id": "$checkid",
+    "checkout_time": "$checkouttime",
+    "checkout_location": "$checkoutlocation",
+  };
+  print(checkinoutresponse);
+  http.Response cicoresponse = await http.post(CICOurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(checkinoutresponse),
+  );
+  if(cicoresponse.statusCode == 200){
+    print(cicoresponse.body);
+    getTimeSheetdaily();
     DBRequestdaily();
     DBRequestmonthly();
   }else{
@@ -290,6 +320,7 @@ void leaverequest() async {
   print(leaveresponse.statusCode);
   if(leaveresponse.statusCode == 200 ){
     print(jsonDecode(leaveresponse.body));
+    leaveData();
   }
 }
 

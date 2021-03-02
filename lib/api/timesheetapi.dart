@@ -4,7 +4,7 @@ import 'api_service.dart';
 import 'package:intl/intl.dart';
 
 
-void getTimeSheet() async {
+void getTimeSheetdaily() async {
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   final String todaydate = formatter.format(now);
@@ -22,23 +22,18 @@ void getTimeSheet() async {
     body: jsonEncode(Timesheetrequest),
   );
   if (tsresponse.statusCode == 200) {
-    TimeSheetdata.days = [];
-    TimeSheetdata.outletname = [];
-    TimeSheetdata.checkouttime = [];
-    TimeSheetdata.checkintime = [];
-    print("called timesheet");
+    TimeSheetdatadaily.outletname = [];
+    TimeSheetdatadaily.checkouttime = [];
+    TimeSheetdatadaily.checkintime = [];
     String data = tsresponse.body;
     var decodeData = jsonDecode(data);
-    TimeSheetdata.date = decodeData['data'][0]['date'];
     for(int u=0;u<20;u++){
       dynamic outletname = decodeData['data'][u]['store_name'];
-      TimeSheetdata.outletname.add(outletname);
+      TimeSheetdatadaily.outletname.add(outletname);
       dynamic checkintime = decodeData['data'][u]['checkin_time'];
-      TimeSheetdata.checkintime.add(checkintime);
+      TimeSheetdatadaily.checkintime.add(checkintime);
       dynamic checkouttime = decodeData['data'][u]['checkout_time'];
-      TimeSheetdata.checkouttime.add(checkouttime);
-      dynamic days = decodeData['data'][u]['day'];
-      TimeSheetdata.days.add(days);
+      TimeSheetdatadaily.checkouttime.add(checkouttime);
     }
 
   }
@@ -48,10 +43,8 @@ void getTimeSheet() async {
   }
 }
 
-class TimeSheetdata{
+class TimeSheetdatadaily{
   static List<dynamic> outletname=[];
   static List<dynamic> checkintime=[];
   static List<dynamic> checkouttime=[];
-  static List<dynamic> days=[];
-  static var date;
 }

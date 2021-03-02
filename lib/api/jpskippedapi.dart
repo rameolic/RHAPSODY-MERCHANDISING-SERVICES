@@ -29,21 +29,21 @@ Future<void> getskippedJourneyPlan() async {
     todayskipjplist.outletids=[];
     for(int u=0;u<20;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
-      print(storename);
       todayskipjplist.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];
       todayskipjplist.storecodes.add(storecode);
-      dynamic outletid = decodeJPData['data'][u]['outlet']['outlet_id'];
+      dynamic outletid = decodeJPData['data'][u]['outlet_id'];
+      print(outletid);
       todayskipjplist.outletids.add(outletid);
-      dynamic outletlat = decodeJPData['data'][u]['outlet']['outlet_lat'];
+      dynamic outletlat = decodeJPData['data'][u]['outlet_lat'];
       todayskipjplist.outletlat.add(outletlat);
-      dynamic outletlong = decodeJPData['data'][u]['outlet']['outlet_long'];
+      dynamic outletlong = decodeJPData['data'][u]['outlet_long'];
       todayskipjplist.outletlong.add(outletlong);
-      dynamic outletarea = decodeJPData['data'][u]['outlet']['outlet_area'];
+      dynamic outletarea = decodeJPData['data'][u]['outlet_area'];
       todayskipjplist.outletarea.add(outletarea);
-      dynamic outletcity = decodeJPData['data'][u]['outlet']['outlet_city'];
+      dynamic outletcity = decodeJPData['data'][u]['outlet_city'];
       todayskipjplist.outletcity.add(outletcity);
-      dynamic outletcountry = decodeJPData['data'][u]['outlet']['outlet_country'];
+      dynamic outletcountry = decodeJPData['data'][u]['outlet_country'];
       todayskipjplist.outletcountry.add(outletcountry);
       dynamic tableid = decodeJPData['data'][u]['id'];
       todayskipjplist.id.add(tableid);

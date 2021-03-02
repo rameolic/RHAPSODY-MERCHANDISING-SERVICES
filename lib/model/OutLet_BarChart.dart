@@ -118,6 +118,7 @@ class SurveyChart extends StatelessWidget {
           colorFn: (ChartData series, _) => series.barColor),
     ];
     return Card(
+      elevation: 0,
       color: pink,
       child: Expanded(
         child: ShaderMask(
