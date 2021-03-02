@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/HQOne.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';

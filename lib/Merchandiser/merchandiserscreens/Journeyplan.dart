@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
 import 'outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/ProgressHUD.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/jpskiped.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/jpvisited.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/jpskiped.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/jpvisited.dart';
 import 'package:merchandising/api/journeyplanapi.dart';
 
 class JourneyPlan extends StatefulWidget {

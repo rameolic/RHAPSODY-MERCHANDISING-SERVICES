@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/HQThree.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
-import 'HQThree.dart';
 
 class HQTwo extends StatefulWidget {
   @override

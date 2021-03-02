@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/MenuContent.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:merchandising/model/rememberme.dart';

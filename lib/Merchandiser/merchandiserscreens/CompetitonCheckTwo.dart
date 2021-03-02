@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'OutletSurvey.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
 import 'Customers Activities.dart';

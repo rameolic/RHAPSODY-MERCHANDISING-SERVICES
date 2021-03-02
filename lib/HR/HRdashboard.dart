@@ -113,31 +113,36 @@ Widget _uiSetup(BuildContext context) {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 120,
-                    width: MediaQuery.of(context).size.width/3.2,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: containerscolor,
-                    ),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.link_rounded,
-                              size: 35,
-                              color: iconscolor,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Reporting',
-                              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+                  GestureDetector(
+                    onTap: (){
+
+                    },
+                    child: Container(
+                      height: 120,
+                      width: MediaQuery.of(context).size.width/3.2,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: containerscolor,
+                      ),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.link_rounded,
+                                size: 35,
+                                color: iconscolor,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Reporting',
+                                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

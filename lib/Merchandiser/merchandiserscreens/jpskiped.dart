@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/outletdetailes.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/jpskippedapi.dart';
 import 'package:merchandising/ProgressHUD.dart';

@@ -128,7 +128,7 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        ListTile(
+        currentuser.roleid == 6 ? ListTile(
           title: MenuElements(
             title: 'Journey Plan',
             icon: CupertinoIcons.map_fill,
@@ -140,7 +140,7 @@ class Menu extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (BuildContext context) => JourneyPlan()));
           },
-        ),
+        ):SizedBox(),
         ListTile(
           title: MenuElements(
             title: 'Notifications',

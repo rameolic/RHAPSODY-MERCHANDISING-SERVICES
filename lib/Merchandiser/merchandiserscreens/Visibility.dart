@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/Merchandiser/merchandiserscreens/shareofshelf.dart';
 import '../../Constants.dart';
 import 'Customers Activities.dart';
 import 'MenuContent.dart';
