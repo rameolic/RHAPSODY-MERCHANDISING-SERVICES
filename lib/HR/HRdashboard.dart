@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/model/leaveresponse.dart';
+import 'package:merchandising/HR/empreporting.dart';
 
 class HRdashboard extends StatefulWidget {
   @override
@@ -115,7 +116,11 @@ Widget _uiSetup(BuildContext context) {
                   ),
                   GestureDetector(
                     onTap: (){
-
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  Reportingemp()));
                     },
                     child: Container(
                       height: 120,
