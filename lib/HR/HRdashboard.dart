@@ -6,6 +6,9 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/model/leaveresponse.dart';
 import 'package:merchandising/HR/empreporting.dart';
+import 'package:merchandising/HR/holidays.dart';
+import 'package:merchandising/HR/workingday.dart';
+import 'package:merchandising/HR/employees.dart';
 
 class HRdashboard extends StatefulWidget {
   @override
@@ -85,31 +88,37 @@ Widget _uiSetup(BuildContext context) {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 120,
-                    width: MediaQuery.of(context).size.width/3.2,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: containerscolor,
-                    ),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.people_alt,
-                              size: 35,
-                              color: iconscolor,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Employees',
-                              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) => EmployeeDetailes()));
+                    },
+                    child: Container(
+                      height: 120,
+                      width: MediaQuery.of(context).size.width/3.2,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: containerscolor,
+                      ),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.people_alt,
+                                size: 35,
+                                color: iconscolor,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Employees',
+                                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -384,60 +393,72 @@ Widget _uiSetup(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 120,
-                    width: MediaQuery.of(context).size.width/3.2,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: containerscolor,
-                    ),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.leave_bags_at_home,
-                              size: 35,
-                              color: iconscolor,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Holidays',
-                              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) => HoliDays()));
+                    },
+                    child: Container(
+                      height: 120,
+                      width: MediaQuery.of(context).size.width/3.2,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: containerscolor,
+                      ),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.leave_bags_at_home,
+                                size: 35,
+                                color: iconscolor,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Holidays',
+                                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Container(
-                    height: 120,
-                    width: MediaQuery.of(context).size.width/3.2,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: containerscolor,
-                    ),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              CupertinoIcons.building_2_fill,
-                              size: 35,
-                              color: iconscolor,
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Working days',
-                              textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) => WorkDay()));
+                    },
+                    child: Container(
+                      height: 120,
+                      width: MediaQuery.of(context).size.width/3.2,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: containerscolor,
+                      ),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                CupertinoIcons.building_2_fill,
+                                size: 35,
+                                color: iconscolor,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Working days',
+                                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:merchandising/main.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,8 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 
 class leavelogic {
   static DateTime StratDate;
@@ -494,11 +497,18 @@ class _LeaveRequestState extends State<LeaveRequest> {
                           leavedataResponse.Startdates=[];
                           leavedataResponse.leavetypes=[];
                           leavedataResponse.reasons=[];
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      DashBoard()));
+                          if(currentuser.roleid == 6){
+
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
+                          }
+                          if(currentuser.roleid == 3){
+
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HRdashboard()));
+                          }
+                          if(currentuser.roleid == 5){
+
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FieldManagerDashBoard()));
+                          }
                         } else {
                           showDialog(
                               context: context,

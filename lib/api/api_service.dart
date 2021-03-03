@@ -35,6 +35,7 @@ class loggedin{
 Future getDashBoardData() async {
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
+  print(loggedin.email);
   Map loginData = {
     'email': '${loggedin.email}',
     'password': '${loggedin.password}',
@@ -57,6 +58,7 @@ Future getDashBoardData() async {
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
     getempdetails();
+    leaveData();
     return currentuser.roleid;
   }
   else {
@@ -113,7 +115,6 @@ Future DBRequestdaily() async{
     getJourneyPlan();
     getskippedJourneyPlan();
     getvisitedJourneyPlan();
-    leaveData();
     getTimeSheetdaily();
     return  DBResponsedatadaily.todayPlanpercentage;
   }

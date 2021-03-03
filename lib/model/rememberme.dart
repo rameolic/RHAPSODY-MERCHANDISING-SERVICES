@@ -12,9 +12,16 @@ removeValues() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove("useremail");
   prefs.remove("userpassword");
-  print("data removed");
 }
 class remembereddata {
   static String email;
   static String password;
+}
+
+
+chackdata() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  bool CheckValue = prefs.containsKey('useremail');
+  print(CheckValue);
 }

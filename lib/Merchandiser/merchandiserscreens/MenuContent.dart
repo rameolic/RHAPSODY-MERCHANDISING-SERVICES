@@ -173,9 +173,12 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {
             removeValues();
+            chackdata();
             loggedin.email = null;
             loggedin.password = null;
             currentuser.roleid = null;
+            remembereddata.email= null;
+            remembereddata.password =null;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

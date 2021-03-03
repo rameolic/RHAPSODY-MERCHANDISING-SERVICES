@@ -8,12 +8,14 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 
 
 class addreporting extends StatelessWidget {
-  String outlet_id;
-  List<String> outlet = [
+  String feildmanager;
+  String merchandiser;
+  List<String> outlet =[
     "Sheba Super Market",
     "Fair Mart Super Market",
     "Al Quoz Market",
@@ -57,17 +59,14 @@ class addreporting extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Expanded(
-                      child: DropDownField(
-                        onValueChanged: (dynamic value) {
-                          outlet_id = value;
-                        },
-                        value: outlet_id,
-                        required: false,
-                        hintText: 'Select Outlet',
-                        labelText: 'Outlet Name',
-                        items: outlet,
-                      ),
+                    child: DropDownField(
+                      onValueChanged: (dynamic value) {
+                        merchandiser = value;
+                      },
+                      value: merchandiser,
+                      required: false,
+                      hintText: 'Select Merchandiser',
+                      items: outlet,
                     ),
                   ),
                   Container(
@@ -78,15 +77,14 @@ class addreporting extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Expanded(
-                      child: DropdownSearch<String>(
-                          mode: Mode.MENU,
-                          showSelectedItem: false,
-                          items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
-                          label: "Select Feild Manager",
-                          hint: "country in menu mode",
-                          onChanged: print,
-                          selectedItem: "Brazil"),
+                    child: DropDownField(
+                      onValueChanged: (dynamic value) {
+                        feildmanager = value;
+                      },
+                      value: feildmanager,
+                      required: false,
+                      hintText: 'Select FeildManager',
+                      items: outlet,
                     ),
                   ),
                   Container(
@@ -109,6 +107,26 @@ class addreporting extends StatelessWidget {
                     ),
                     child:EndDate(),
                   ),
+                  GestureDetector(
+                    onTap: (){
+                      print(merchandiser);
+                      print(feildmanager);
+                      },
+                    child: Center(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(10, 40, 10, 10),
+                        padding: EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: orange,
+                          borderRadius: BorderRadius.circular(10.00),
+                        ),
+                        child: Text(
+                          'Submit Report',
+                          style: TextStyle(color: Colors.black, fontSize: 15),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
