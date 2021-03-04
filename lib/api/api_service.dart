@@ -10,6 +10,7 @@ import 'package:merchandising/api/leavestakenapi.dart';
 import'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
@@ -25,6 +26,9 @@ Uri LDurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_details");
 Uri JPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
 Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
 Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
+Uri WJPPlannedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_planned_journey");
+Uri WJPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
+Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
 
 
 class loggedin{
@@ -116,6 +120,7 @@ Future DBRequestdaily() async{
     getskippedJourneyPlan();
     getvisitedJourneyPlan();
     getTimeSheetdaily();
+    getJourneyPlanweekly();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
