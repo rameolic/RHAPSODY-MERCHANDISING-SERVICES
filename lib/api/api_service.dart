@@ -2,9 +2,9 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'package:merchandising/api/journeyplanapi.dart';
-import 'jpskippedapi.dart';
-import 'JPvisitedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'Journeyplansapi/todayplan/jpskippedapi.dart';
+import 'Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import'package:merchandising/api/timesheetapi.dart';
@@ -304,6 +304,7 @@ void leaverequest() async {
   var startdate = leave.startdate;
   var enddate = leave.enddate;
   var reason = leave.reason;
+  var image = leave.image;
   Map leaverequestbody =
   {
     'emp_id': '$Empid',
@@ -311,6 +312,7 @@ void leaverequest() async {
     "leavestartdate": "$startdate",
     "leaveenddate": "$enddate",
     "reason": "$reason",
+    "image":"data:image/jpg;base64,$image",
   };
   print(leaverequestbody);
   http.Response leaveresponse = await http.post(leaveurl,
@@ -333,6 +335,7 @@ static var type;
 static var startdate;
 static var enddate;
 static var reason;
+static var image;
 }
 
 class userpassword{

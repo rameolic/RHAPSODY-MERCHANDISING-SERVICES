@@ -1,8 +1,8 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
-import 'package:merchandising/api/journeyplanapi.dart';
-import 'package:merchandising/api/jpskippedapi.dart';
-import 'package:merchandising/api/JPvisitedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
 
 

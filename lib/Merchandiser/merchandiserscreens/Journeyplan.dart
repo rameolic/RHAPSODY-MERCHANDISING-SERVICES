@@ -9,7 +9,8 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/jpskiped.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/jpvisited.dart';
-import 'package:merchandising/api/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyjp.dart';
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -218,7 +219,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? JourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(child: pressTODAY == true ? JourneyListBuilder() : pressWeek == true ? WeeklyJourneyListBuilder() : Center(child: Text("we have journey plan only for today and monthly only",)))
                         ],
                       ),
                       Column(

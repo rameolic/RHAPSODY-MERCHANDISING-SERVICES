@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:merchandising/api/JPvisitedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'package:merchandising/ProgressHUD.dart';
 
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'api_service.dart';
+import '../../api_service.dart';
 
 Future<void> getvisitedJourneyPlan() async {
   http.Response jPresponse = await http.post(JPVisitedurl,

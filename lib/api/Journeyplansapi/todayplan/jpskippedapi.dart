@@ -1,7 +1,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'api_service.dart';
+import '../../api_service.dart';
 
 Future<void> getskippedJourneyPlan() async {
   http.Response JPresponse = await http.post(JPSkippedurl,

@@ -4,7 +4,7 @@ import 'package:merchandising/model/Location_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
-import 'package:merchandising/api/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 class markers{
   static Set<Marker> outlets={};
 }

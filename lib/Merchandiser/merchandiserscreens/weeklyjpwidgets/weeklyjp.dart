@@ -1,18 +1,21 @@
-
 import 'package:flutter/material.dart';
-import 'package:merchandising/Constants.dart';
+import '../../../Constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/outletdetailes.dart';
+import '../MenuContent.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
+import '../outletdetailes.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 
-class SkipedJourneyListBuilder extends StatefulWidget {
+
+
+class WeeklyJourneyListBuilder extends StatefulWidget {
   @override
   _State createState() => _State();
 }
 
-class _State extends State<SkipedJourneyListBuilder> {
+class _State extends State<WeeklyJourneyListBuilder> {
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
@@ -23,17 +26,17 @@ class _State extends State<SkipedJourneyListBuilder> {
     );
   }
   Widget _uiSetup(BuildContext context) {
-    return todayskipjplist.outletids.length == 0 ? Center(child: Text("you finished visiting every outlet\nthat was assigned to you",textAlign: TextAlign.center,)) :
+    return getweeklyjp.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
     ListView.builder(
-        itemCount: todayskipjplist.outletids.length,
+        itemCount:getweeklyjp.storenames.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () async{
               setState(() {
                 isApiCallProcess = true;
               });
-              outletrequestdata.outletidpressed = todayskipjplist.outletids[index];
-              checkinoutdata.checkid = todayskipjplist.id[index];
+              outletrequestdata.outletidpressed = getweeklyjp.outletids[index];
+              checkinoutdata.checkid = getweeklyjp.id[index];
               var data = await outletwhencheckin();
               if(data != null ){
                 Navigator.push(
@@ -48,6 +51,7 @@ class _State extends State<SkipedJourneyListBuilder> {
                   isApiCallProcess = false;
                 });
               }
+              print(checkinoutdata.checkid);
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
@@ -55,7 +59,7 @@ class _State extends State<SkipedJourneyListBuilder> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              height: 120,
+              height: 130,
               width: MediaQuery.of(context).size.width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +67,7 @@ class _State extends State<SkipedJourneyListBuilder> {
                   Row(
                     children: [
                       Text(
-                        '[${todayskipjplist.storecodes[index]}]',
+                        '[${getweeklyjp.storecodes[index]}]',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -71,7 +75,7 @@ class _State extends State<SkipedJourneyListBuilder> {
                         width: 5,
                       ),
                       Text(
-                        '${todayskipjplist.storenames[index]}',
+                        '${getweeklyjp.storenames[index]}',
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
@@ -80,21 +84,21 @@ class _State extends State<SkipedJourneyListBuilder> {
                   SizedBox(height: 5),
                   Row(
                     children: [
-                      Text('${todayskipjplist.outletarea[index]}',
+                      Text('${getweeklyjp.outletarea[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${todayskipjplist.outletcity[index]}',
+                      Text('${getweeklyjp.outletcity[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${todayskipjplist.outletcountry[index]}',
+                      Text('${getweeklyjp.outletcountry[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -104,23 +108,21 @@ class _State extends State<SkipedJourneyListBuilder> {
                   Table(
                     children: [
                       TableRow(children: [
-                        Text('Contact Number',
+                        Text('Contact Number :',
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text(":"),
-                        Text('${todayskipjplist.contactnumbers[index]}',
+                        Text('${getweeklyjp.contactnumbers[index]}',
                             style: TextStyle(color: orange)),
                       ]),
                       TableRow(children: [
-                        Text('Distance',
+                        Text('Distance :',
                             style: TextStyle(
                               fontSize: 13.0,
                             )),
-                        Text(":"),
                         Row(
                           children: [
-                            Text('${todayskipjplist.distanceinmeters[index].toStringAsFixed(2)}',
+                            Text('${getweeklyjp.distanceinmeters[index].toStringAsFixed(2)}',
                                 style: TextStyle(color: orange)),
                             Text("KM", style: TextStyle(color: orange))
                           ],

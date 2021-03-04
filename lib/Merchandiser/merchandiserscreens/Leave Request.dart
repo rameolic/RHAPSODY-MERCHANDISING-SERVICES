@@ -15,7 +15,8 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
-
+import 'dart:convert';
+import 'dart:io' as Io;
 class leavelogic {
   static DateTime StratDate;
 }
@@ -235,34 +236,14 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
   bool valuefirst = false;
   TextEditingController reasoninputcontroller = TextEditingController();
-  List<File> filepicked=[];
+  File _file;
   Future getFile()async{
-    List<File> file= await FilePicker.getMultiFile();
+    File file = await FilePicker.getFile();
     setState(() {
-      filepicked = file;
-
+      _file = file;
+      pickedfile.name = _file.path;
     });
-    if(pickedfile.name != null){
-      pickedfile.name = [];
-    }
-    for(int u=0;u<20;u++){
-      pickedfile.name.add(basename(filepicked[u].path));
-    }
-  }
-  void _uploadFile(filePath) async {
-    String fileName = basename(filePath.path);
-    print("file base name:$fileName");
-    try {
-      FormData formData = new FormData.fromMap({
-        "file": await MultipartFile.fromFile(filePath.path, filename: fileName),
-      });
-
-      Response response = await Dio().post("https://sldevzone.000webhostapp.com/uploads.php",data: formData);
-      print("File upload response: $response");
-
-    } catch (e) {
-      print("expectation Caugch: $e");
-    }
+    return _file;
   }
   @override
   Widget build(BuildContext context) {
@@ -405,20 +386,20 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                 ),
                                 Spacer(),
                                 GestureDetector(
-                                  onTap: (){
-                                    getFile();
+                                  onTap: () async{
+                                    File picked = await getFile();
+                                    if(picked != null){
+                                      var imagebytes = picked.readAsBytesSync();
+                                      leave.image = base64Encode(imagebytes);
+                                       print(leave.image);
+                                    }
                                   },
                                     child: Icon(CupertinoIcons.folder_badge_plus),
                                 )
                               ],
                             ),
-                            filepicked.length != null ?
-                            ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: filepicked.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Text( pickedfile.name[index]);
-                                })
+                            _file != null ?
+                            Text( pickedfile.name)
                                 :SizedBox()
                           ],
                         )
@@ -688,5 +669,6 @@ class _EndDateState extends State<EndDate> {
 }
 
 class pickedfile{
-  static List<dynamic> name=[];
+  static var name;
+  static var bytes;
 }
