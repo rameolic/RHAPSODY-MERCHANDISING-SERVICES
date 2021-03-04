@@ -14,12 +14,12 @@ Future<void> getJourneyPlanweekly() async {
     body: jsonEncode(DBrequestData),
   );
   if (JPresponse.statusCode == 200) {
-    print('journey plan done');
+    print('journey plan weekly done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
     for (int u = 0; u < 100; u++) {
       dynamic storename = decodeJPData['data'][u]['store_name'];
-      print(storename);
+
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
                   .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
@@ -63,7 +63,6 @@ Future<void> getJourneyPlanweekly() async {
         getweeklyjp.saturdaystorenames.add(storename);
       }
 
-      print("weekly");
       dynamic storecode = decodeJPData['data'][u]['store_code'];
 
 
@@ -109,7 +108,6 @@ Future<void> getJourneyPlanweekly() async {
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaystorecodes.add(storecode);
       }
-      print("weekly");
       dynamic address = decodeJPData['data'][u]['address'];
 
 
@@ -158,7 +156,6 @@ Future<void> getJourneyPlanweekly() async {
 
 
       dynamic numbers = decodeJPData['data'][u]['contact_number'];
-      print("weekly");
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
