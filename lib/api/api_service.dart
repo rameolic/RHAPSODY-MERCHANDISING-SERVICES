@@ -16,7 +16,7 @@ import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
-
+import 'package:merchandising/api/timesheetmonthly.dart';
 
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
@@ -40,6 +40,7 @@ Uri addholidayurl = Uri.parse("https://rms2.rhapsody.ae/api/add_holidays");
 Uri WJPPlannedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_planned_journey");
 Uri WJPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_skipped_journey");
 Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_completed_journey");
+Uri TSMurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_monthly");
 
 
 
@@ -138,6 +139,7 @@ Future DBRequestdaily() async{
     getJourneyPlanweekly();
     getSkipJourneyPlanweekly();
     getVisitJourneyPlanweekly();
+    gettimesheetmonthly();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
