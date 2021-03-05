@@ -6,26 +6,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:intl/intl.dart';
+import 'package:merchandising/api/HRapi/addingreportapi.dart';
 
-
+class pickeddate{
+  static String startdate;
+  static String enddate;
+}
 class addreporting extends StatelessWidget {
   String feildmanager;
   String merchandiser;
-  List<String> outlet =[
-    "Sheba Super Market",
-    "Fair Mart Super Market",
-    "Al Quoz Market",
-    "Umm Al Sheif Super Marker",
-    "Anuragha Super Market",
-    "Harish Food Zone",
-    "Reliance Smart",
-    "More Super Market",
-    "Big Bazzar"
-  ];
+  String startdate;
+  String enddate;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +63,7 @@ class addreporting extends StatelessWidget {
                       value: merchandiser,
                       required: false,
                       hintText: 'Select Merchandiser',
-                      items: outlet,
+                      items: employees.merchandisers,
                     ),
                   ),
                   Container(
@@ -84,7 +81,7 @@ class addreporting extends StatelessWidget {
                       value: feildmanager,
                       required: false,
                       hintText: 'Select FeildManager',
-                      items: outlet,
+                      items: employees.feildmanagers,
                     ),
                   ),
                   Container(
@@ -109,8 +106,11 @@ class addreporting extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-                      print(merchandiser);
-                      print(feildmanager);
+                      report.feildmanagerid = 'Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'),'')}';
+                      report.merchandiserid = 'Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'),'')}';
+                      report.startdate = pickeddate.startdate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.startdate ;
+                      report.enddate = pickeddate.enddate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.enddate ;
+                      addreport();
                       },
                     child: Center(
                       child: Container(
@@ -168,6 +168,7 @@ class _StartDateState extends State<StartDate> {
     if (picked != null && picked != StartDate)
       setState(() {
         StartDate = picked;
+        pickeddate.startdate = DateFormat("yyyy-MM-dd").format(StartDate);
       });
   }
   @override
@@ -222,6 +223,7 @@ class _EndDateState extends State<EndDate> {
     if (picked != null && picked != EndDate)
       setState(() {
         EndDate = picked;
+        pickeddate.enddate = DateFormat("yyyy-MM-dd").format(EndDate);
       });
   }
   @override

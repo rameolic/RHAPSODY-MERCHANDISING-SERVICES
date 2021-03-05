@@ -1,20 +1,13 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
-import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
-import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/HR/addreport.dart';
+import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 
 
 class Reportingemp extends StatelessWidget {
-  static final List<String> empname = <String>["Outletname","Outletname",];
-  static final List<String> reportingto = <String>["checkintime","Outletname",];
-  static final List<String> startdate = <String>["Outletname","Outletname",];
-  static final List<String> enddate = <String>["Outletname","Outletname",];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +23,7 @@ class Reportingemp extends StatelessWidget {
         children: [
           BackGround(),
           ListView.builder(
-              itemCount: empname.length,
+              itemCount: reporting.merchandisers.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: 120,
@@ -48,17 +41,8 @@ class Reportingemp extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'merchandiser name :',
-                            style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
                           Flexible(
-                            child: AutoSizeText(
-                              '${empname[empname.length - 1 -index]}',
+                            child: AutoSizeText(reporting.merchandisers[index],
                               maxLines: 2,
                               textAlign: TextAlign.left,
                               style: TextStyle(
@@ -77,7 +61,7 @@ class Reportingemp extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${reportingto[reportingto.length - 1 -index]}',
+                          Text(reporting.feildmanager[index],
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -93,7 +77,7 @@ class Reportingemp extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${startdate[reportingto.length - 1 -index]}',
+                          Text(reporting.startdate[index],
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -109,7 +93,7 @@ class Reportingemp extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${enddate[reportingto.length - 1 -index]}',
+                          Text('${reporting.enddate[index]}',
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),

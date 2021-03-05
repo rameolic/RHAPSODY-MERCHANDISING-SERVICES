@@ -27,7 +27,7 @@ Future<void> getskippedJourneyPlan() async {
     todayskipjplist.outletlong=[];
     todayskipjplist.outletlat=[];
     todayskipjplist.outletids=[];
-    for(int u=0;u<20;u++){
+    for(int u=0;u<decodeJPData['data'].length;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
       todayskipjplist.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];

@@ -11,12 +11,12 @@ import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:merchandising/api/holidays.dart';
+import 'package:merchandising/api/HRapi/addholiday.dart';
+import 'package:intl/intl.dart';
 
 
 class HoliDays extends StatelessWidget {
-  static final List<String> date = <String>["01-02-20","01-02-20",];
-  static final List<String> Description = <String>["Description here","Description here",];
-  static final List<String> createdon = <String>["Outletname","Outletname",];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class HoliDays extends StatelessWidget {
         children: [
           BackGround(),
           ListView.builder(
-              itemCount: date.length,
+              itemCount: holidays.dates.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
@@ -57,14 +57,11 @@ class HoliDays extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Flexible(
-                            child: AutoSizeText(
-                              '${date[index]}',
-                              maxLines: 2,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 15.0, fontWeight: FontWeight.bold),
-                            ),
+                          Text(
+                            '${holidays.dates[index]}',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -78,23 +75,7 @@ class HoliDays extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('${Description[index]}',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text('Added Date :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('${createdon[index]}',
+                          Text('${holidays.description[index]}',
                               style: TextStyle(
                                 fontSize: 15.0,
                               )),
@@ -132,7 +113,7 @@ class HoliDays extends StatelessWidget {
 
 class AddHoliday extends StatelessWidget {
 
-  TextEditingController reasoninputcontroller = TextEditingController();
+  TextEditingController descriptioncontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +165,7 @@ class AddHoliday extends StatelessWidget {
                           ),
                           TextFormField(
                             maxLines: 2,
-                            controller: reasoninputcontroller,
+                            controller: descriptioncontroller,
                             cursorColor: grey,
                             decoration: new InputDecoration(
                               focusColor: grey,
@@ -200,6 +181,8 @@ class AddHoliday extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: (){
+                        addholidays.description = descriptioncontroller.text;
+                        addholiday();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -259,6 +242,7 @@ class _StartDateState extends State<StartDate> {
     if (picked != null && picked != StartDate)
       setState(() {
         StartDate = picked;
+        addholidays.date = DateFormat("yyyy-MM-dd").format(StartDate);
       });
   }
   @override

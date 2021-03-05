@@ -11,6 +11,9 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/jpskiped.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/jpvisited.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyjp.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyskipjp.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyvisitjp.dart';
+
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -228,7 +231,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : pressWeek == true ? WeeklySkipJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                          ),
                       Column(
@@ -237,7 +240,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : pressWeek == true ? WeeklyVisitJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
                         ],
                       ),
                           ]),

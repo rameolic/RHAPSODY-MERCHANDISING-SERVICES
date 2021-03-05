@@ -27,7 +27,7 @@ void getTimeSheetdaily() async {
     TimeSheetdatadaily.checkintime = [];
     String data = tsresponse.body;
     var decodeData = jsonDecode(data);
-    for(int u=0;u<20;u++){
+    for(int u=0;u<decodeData['data'].length;u++){
       dynamic outletname = decodeData['data'][u]['store_name'];
       TimeSheetdatadaily.outletname.add(outletname);
       dynamic checkintime = decodeData['data'][u]['checkin_time'];

@@ -17,7 +17,7 @@ Future<void> getJourneyPlanweekly() async {
     print('journey plan weekly done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
-    for (int u = 0; u < 100; u++) {
+    for (int u = 0; u < decodeJPData['data'].length; u++) {
       dynamic storename = decodeJPData['data'][u]['store_name'];
 
       if (decodeJPData['data'][u]['day'] == null

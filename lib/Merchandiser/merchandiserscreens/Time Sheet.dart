@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/timesheetapi.dart';
+import 'timesheetmonthly.dart';
 
 class TimeSheetList extends StatefulWidget {
   @override
@@ -175,76 +176,6 @@ class _TimeSheetListState extends State<TimeSheetList> {
         ],
       ),
     );
-  }
-}
-class Timesheetmonthly extends StatelessWidget {
-  List<String> outletname = <String>["Outletname","Outletname","Outletname","Outletname","Outletname","Outletname"];
-  List<String> checkintime = <String>["checkintime","Outletname","Outletname","Outletname","Outletname","Outletname"];
-  List<String> days = <String>["today","today","today","today","tomorrow","tomorrow"];
-  List<String> checkouttime = <String>["Outletname","Outletname","Outletname","Outletname","Outletname","Outletname"];
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: outletname.length,//TimeSheetdata.checkintime.length,
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-              height: 100,
-              padding: EdgeInsets.all(10.0),
-              margin: EdgeInsets.fromLTRB(10.0,0,10.0,10.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.00)),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  index == 0 ?Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):
-                  days[index]!= days[index-1]?
-                  Text('${days[index]}',style: TextStyle(color: orange,fontSize: 17.0,fontWeight: FontWeight.bold)):SizedBox(),
-                 // Text('${TimeSheetdata.days[index]}',style: TextStyle(color: orange,fontSize: 16.0)),
-                  Row(children: [
-                    Text('Outlet name : ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                        )),
-                    Text('${outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
-                   // Text('${TimeSheetdata.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
-                  ]),
-                  Row(
-                      children: [
-                        Text('Checkin time : ',style: TextStyle(fontSize: 16.0,)),
-                        Text('${checkintime[index]}',style: TextStyle(fontSize: 16.0,))
-                       // Text('${TimeSheetdata.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
-                      ]),
-                  /*Row(children: [
-                    Text('Check In Location:',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                        )),
-                    SizedBox(width: 10),
-                    Text(${TimeSheetdata.[index]}),
-                  ]),*/
-                  Row(children: [
-                    Text('Checkout time : ',style: TextStyle(fontSize: 16.0,)),
-                    Text('${checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
-                    //Text('${TimeSheetdata.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
-                  ]),
-                  /* Row(children: [
-                    Text('Check Out Location:',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                        )),
-                    SizedBox(width: 10),
-                    Text('${checkoutlocation[index]}',
-                    ),
-                  ]),*/
-                ],
-              ));
-        });
   }
 }
 

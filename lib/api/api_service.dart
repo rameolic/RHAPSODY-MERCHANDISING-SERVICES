@@ -11,6 +11,12 @@ import'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'package:merchandising/api/holidays.dart';
+import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
+
 
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
@@ -26,9 +32,15 @@ Uri LDurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_details");
 Uri JPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
 Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
 Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
+Uri empdetailsurl = Uri.parse("https://rms2.rhapsody.ae/api/employee_details_for_report");
+Uri reportingdataurl = Uri.parse("https://rms2.rhapsody.ae/api/reporting_to_details");
+Uri addreportaurl = Uri.parse("https://rms2.rhapsody.ae/api/reporting_to_details");
+Uri holidaysdataurl = Uri.parse("https://rms2.rhapsody.ae/api/holidays_details");
+Uri addholidayurl = Uri.parse("https://rms2.rhapsody.ae/api/add_holidays");
 Uri WJPPlannedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_planned_journey");
-Uri WJPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
-Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
+Uri WJPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_skipped_journey");
+Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_completed_journey");
+
 
 
 class loggedin{
@@ -63,6 +75,9 @@ Future getDashBoardData() async {
     currentuser.roleid = decodeData['user']['role_id'];
     getempdetails();
     leaveData();
+    getallempdetails();//hr o
+    getempdetailsforreport();// nly
+    holidaysdata();
     return currentuser.roleid;
   }
   else {
@@ -121,6 +136,8 @@ Future DBRequestdaily() async{
     getvisitedJourneyPlan();
     getTimeSheetdaily();
     getJourneyPlanweekly();
+    getSkipJourneyPlanweekly();
+    getVisitJourneyPlanweekly();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){

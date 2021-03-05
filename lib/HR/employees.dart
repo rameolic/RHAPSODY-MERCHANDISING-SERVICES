@@ -10,7 +10,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/HR/addreport.dart';
 import 'package:country_picker/country_picker.dart';
 import 'Addempdetailsphase2.dart';
-
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 class EmployeeDetailes extends StatefulWidget {
   @override
   _EmployeeDetailesState createState() => _EmployeeDetailesState();
@@ -51,105 +51,48 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
         children: [
           BackGround(),
           ListView.builder(
-              itemCount: leavereason.length,
+              itemCount: employees.fullname.length,
               itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      isApiCallProcess = true;
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                leaveresult()));
-                    setState(() {
-                      isApiCallProcess = false;
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Reason :',
+                return Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: AutoSizeText(
+                              '${employees.fullname[index]}',
+                              maxLines: 2,
+                              textAlign: TextAlign.left,
                               style: TextStyle(
                                   fontSize: 15.0, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Flexible(
-                              child: AutoSizeText(
-                                '${leavereason[leavereason.length - 1 -index]}',
-                                maxLines: 2,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 15.0, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text('Leave Type:',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text('${type[type.length - 1 -index]}',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text('total number of days',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text('2',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                )),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Text('Employee name :',
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("ram"),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text('Designation :',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(employees.rolename[index]),
+                        ],
+                      ),
+                    ],
                   ),
                 );
               }

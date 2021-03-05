@@ -26,7 +26,7 @@ Future<void> getvisitedJourneyPlan() async {
     todayvisjplist.outletlong=[];
     todayvisjplist.outletlat=[];
     todayvisjplist.outletids=[];
-    for(int u=0;u<20;u++){
+    for(int u=0;u<decodeJPData['data'].length;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
       todayvisjplist.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];

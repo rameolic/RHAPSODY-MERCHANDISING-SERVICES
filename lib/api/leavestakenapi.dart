@@ -21,7 +21,7 @@ Future<void> leaveData() async {
     print('leave data done');
     String LDdata = LDresponse.body;
     var decodeLDData = jsonDecode(LDdata);
-    for (int u = 0; u< 20; u++) {
+    for (int u = 0; u< decodeLDData['data'].length; u++) {
       dynamic reason = decodeLDData['data'][u]['reason'];
       leavedataResponse.reasons.add(reason);
       dynamic type = decodeLDData['data'][u]['leavetype'];
