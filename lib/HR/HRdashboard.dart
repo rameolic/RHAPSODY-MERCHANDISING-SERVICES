@@ -9,6 +9,7 @@ import 'package:merchandising/HR/empreporting.dart';
 import 'package:merchandising/HR/holidays.dart';
 import 'package:merchandising/HR/workingday.dart';
 import 'package:merchandising/HR/employees.dart';
+import 'package:merchandising/api/HRapi/hrdashboardapi.dart';
 
 class HRdashboard extends StatefulWidget {
   @override
@@ -202,10 +203,10 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.emptotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "Total",style: TextStyle(fontSize: 10),
+                                       'Total',style: TextStyle(fontSize: 10),
                                       ),
                                     ],
                                   ),
@@ -216,7 +217,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.emppresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Present",style: TextStyle(fontSize: 10),
@@ -230,7 +231,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.empabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Absent",style: TextStyle(fontSize: 10),
@@ -256,7 +257,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.fmtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Total",style: TextStyle(fontSize: 10),
@@ -270,7 +271,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.fmpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Present",style: TextStyle(fontSize: 10),
@@ -284,7 +285,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.fmabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Absent",style: TextStyle(fontSize: 10),
@@ -310,7 +311,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.merchtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Total",style: TextStyle(fontSize: 10),
@@ -324,7 +325,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.merchpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Present",style: TextStyle(fontSize: 10),
@@ -338,7 +339,7 @@ Widget _uiSetup(BuildContext context) {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text(
-                                        '50',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                        '${HRdashboarddata.merchabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         "Absent",style: TextStyle(fontSize: 10),
@@ -371,7 +372,7 @@ Widget _uiSetup(BuildContext context) {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text("20",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                              Text('${HRdashboarddata.leaveresponsetotal}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                               Text("Total Leave request's",textAlign: TextAlign.center,),
                             ],
                           ),
@@ -502,8 +503,7 @@ Widget _uiSetup(BuildContext context) {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
+
                     },
                     child: Container(
                       height: 120,
@@ -517,7 +517,7 @@ Widget _uiSetup(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text("My Attendance"),
-                          Text("14",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                          Text('${HRdashboarddata.attendance}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                         ],
                       ),
                     ),
@@ -539,7 +539,7 @@ Widget _uiSetup(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text("Apply Leave"),
-                          Text("34",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                          Text('${HRdashboarddata.leavebalance}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
                           Text("Total available Leave's"),
                         ],
                       ),

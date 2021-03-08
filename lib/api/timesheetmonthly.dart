@@ -28,9 +28,42 @@ Future<void> gettimesheetmonthly() async {
     body: jsonEncode(request),
   );
   if (dataresponse.statusCode == 200) {
+    TMmonthly.day1=[];
+    TMmonthly.day2=[];
+    TMmonthly.day3=[];
+    TMmonthly.day4=[];
+    TMmonthly.day5=[];
+    TMmonthly.day6=[];
+    TMmonthly.day7=[];
+    TMmonthly.day8=[];
+    TMmonthly.day9=[];
+    TMmonthly.day10=[];
+    TMmonthly.day11=[];
+    TMmonthly.day12=[];
+    TMmonthly.day13=[];
+    TMmonthly.day14=[];
+    TMmonthly.day15=[];
+    TMmonthly.day16=[];
+    TMmonthly.day17=[];
+    TMmonthly.day18=[];
+    TMmonthly.day19=[];
+    TMmonthly.day20=[];
+    TMmonthly.day21=[];
+    TMmonthly.day22=[];
+    TMmonthly.day23=[];
+    TMmonthly.day24=[];
+    TMmonthly.day25=[];
+    TMmonthly.day26=[];
+    TMmonthly.day27=[];
+    TMmonthly.day28=[];
+    TMmonthly.day29=[];
+    TMmonthly.day30=[];
+    TMmonthly.day31=[];
     String data = dataresponse.body;
     var decodeData = jsonDecode(data);
-    for (int u = 0; u < decodeData['data'].length; u++){
+    print(decodeData['data'].length);
+    for (int u=0;u<decodeData['data'].length;u++){
+      print(u);
       print('timesheetmonthly done');
       String date = decodeData['data'][u]['date'];
       if(date == listOfDates[1-1]){TMmonthly.day1.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}

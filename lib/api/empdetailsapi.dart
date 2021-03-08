@@ -45,6 +45,7 @@ Future getempdetails() async{
     myprofile.employeescore = decodedempdata["data"][0]['employee_score'];
   }
   if(DBresponse.statusCode != 200){
+    print("empdeatils");
     print(DBresponse.statusCode);
 
   }

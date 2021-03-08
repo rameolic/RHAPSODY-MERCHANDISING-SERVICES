@@ -7,6 +7,9 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashb
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'api/HRapi/hrdashboardapi.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -157,7 +160,8 @@ class _LoginPageState extends State<LoginPage> {
                                       if(rememberMe == true){
                                         addLogindetails();
                                       }
-                                      int userroleid = await getDashBoardData();
+                                      int userroleid = await loginapi();
+                                      currentuser.roleid = userroleid;
                                       if (userroleid == 6) {
                                         int DBMresult = await DBRequestmonthly();
                                         int DBDresult = await DBRequestdaily();
@@ -170,12 +174,15 @@ class _LoginPageState extends State<LoginPage> {
                                                           DashBoard()));
                                         }
                                       } else if(userroleid == 3){
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContextcontext) =>
-                                                        HRdashboard()));
+                                        int result = await HRdb();
+                                        if(result != null){
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContextcontext) =>
+                                                      HRdashboard()));
+                                        }
                                       } else if (userroleid == 5){
                                         Navigator.pushReplacement(
                                             context,

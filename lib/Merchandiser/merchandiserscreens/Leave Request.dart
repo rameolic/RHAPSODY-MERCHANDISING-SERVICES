@@ -1,4 +1,4 @@
-
+import 'package:merchandising/api/HRapi/hrdashboardapi.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/main.dart';
 import 'MenuContent.dart';
@@ -17,6 +17,7 @@ import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'dart:convert';
 import 'dart:io' as Io;
+import 'package:merchandising/main.dart';
 class leavelogic {
   static DateTime StratDate;
 }
@@ -179,6 +180,7 @@ class _leavestatusPageState extends State<leavestatusPage> {
               margin: EdgeInsets.all(15.0),
               child: FloatingActionButton(
                 onPressed: (){
+                  print("remaining leaves: ${remaining.leaves}");
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -350,7 +352,8 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                   }
                                 });
                               },
-                              items: DBResponsedatamonthly.leavebalance == 0
+                              items:
+                              remaining.leaves == 0
                                   ? [
                                 DropdownMenuItem(
                                   value: 0,

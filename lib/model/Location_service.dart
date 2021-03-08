@@ -27,6 +27,7 @@ class Location {
   await location.getCurrentLocation();
   lat = location.latitude;
   long =location.longitude;
+
 }
 
 address() async {

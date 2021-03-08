@@ -84,7 +84,7 @@ class _MapVeiwState extends State<MapVeiw> {
               initialCameraPosition: CameraPosition(target: LatLng(lat, long), zoom: 13,),
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              zoomControlsEnabled: false,
+              zoomControlsEnabled: true,
               markers:Set<Marker>.of(markers.outlets),
               polylines:polyline.route,
             ),

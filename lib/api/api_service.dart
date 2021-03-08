@@ -16,7 +16,7 @@ import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
-import 'package:merchandising/api/timesheetmonthly.dart';
+import 'package:merchandising/api/HRapi/hrdashboardapi.dart';
 
 
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
@@ -41,6 +41,8 @@ Uri WJPPlannedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_planned_journey
 Uri WJPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_skipped_journey");
 Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_completed_journey");
 Uri TSMurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_monthly");
+Uri HRdburl = Uri.parse("https://rms2.rhapsody.ae/api/hr_dashboard");
+Uri visitsurl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
 
 
 
@@ -49,7 +51,7 @@ class loggedin{
   static var password;
 }
 
-Future getDashBoardData() async {
+Future loginapi() async {
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
   print(loggedin.email);
@@ -74,10 +76,12 @@ Future getDashBoardData() async {
     DBrequestdata.empname = decodeData['user'] ['name'];
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
+    if(currentuser.roleid == 3){
+      getallempdetails();//hr o
+      getempdetailsforreport();// nly
+    }
     getempdetails();
     leaveData();
-    getallempdetails();//hr o
-    getempdetailsforreport();// nly
     holidaysdata();
     return currentuser.roleid;
   }
@@ -135,11 +139,9 @@ Future DBRequestdaily() async{
     getJourneyPlan();
     getskippedJourneyPlan();
     getvisitedJourneyPlan();
-    getTimeSheetdaily();
     getJourneyPlanweekly();
     getSkipJourneyPlanweekly();
     getVisitJourneyPlanweekly();
-    gettimesheetmonthly();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
@@ -169,6 +171,7 @@ Future DBRequestmonthly() async{
     DBResponsedatamonthly.TravelTime =decodeDBData['TravelTime'];
     DBResponsedatamonthly.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'];
     DBResponsedatamonthly.leavebalance = decodeDBData['LeaveCount'];
+    remaining.leaves = DBResponsedatamonthly.leavebalance;
     return DBResponsedatamonthly.leavebalance;
   }
   if(DBresponse.statusCode != 200){
@@ -217,7 +220,7 @@ class chekinoutlet{
 }
 
 
-Future outletwhencheckin() async {
+Future outletwhencheckin() async { 
   var outletid = outletrequestdata.outletidpressed;
   Map ODrequestDataforcheckin = {
     "emp_id": "$Empid",
@@ -286,7 +289,6 @@ void checkin() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
-    getTimeSheetdaily();
     DBRequestdaily();
     DBRequestmonthly();
   }else{
@@ -314,7 +316,6 @@ void checkout() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
-    getTimeSheetdaily();
     DBRequestdaily();
     DBRequestmonthly();
   }else{

@@ -12,6 +12,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dar
 import 'package:merchandising/Merchandiser/merchandiserscreens/Time Sheet.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:merchandising/api/timesheetmonthly.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -214,12 +215,20 @@ class _DashBoardState extends State<DashBoard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        getTimeSheetdaily();
+                      onTap: ()async{
+                        setState(() {
+                          isApiCallProcess = true;
+                        });
+                        await getTimeSheetdaily();
+                         await gettimesheetmonthly();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContextcontext) => TimeSheetList()));
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+
                       },
                       child: Container(
                         height: 265,

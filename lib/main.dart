@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'api/api_service.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'model/Location_service.dart';
+import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 
 recallapi(){
@@ -32,7 +33,8 @@ Future<void> main() async {
   remembereddata.email = email;
   remembereddata.password = password;
   if(email != null && password != null) {
-    int userroleid = await getDashBoardData();
+    int userroleid = await loginapi();
+    currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
       await DBRequestmonthly();
@@ -47,6 +49,7 @@ Future<void> main() async {
           home:  DashBoard()
       ));
     }else if(userroleid == 3){
+      await HRdb();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -92,4 +95,8 @@ Future<void> main() async {
 
 class currentuser{
   static int roleid;
+}
+
+class remaining{
+  static int leaves;
 }
