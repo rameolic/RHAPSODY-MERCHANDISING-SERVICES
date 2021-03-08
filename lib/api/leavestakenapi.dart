@@ -47,3 +47,4 @@ class leavedataResponse{
   static List<dynamic> isleaverejected=[];
   static List<dynamic> isleaveaccepted=[];
 }
+

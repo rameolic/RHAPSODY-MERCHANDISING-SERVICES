@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import '../Constants.dart';
+import 'package:merchandising/api/monthlyvisitschart.dart';
 
 class BarChatData extends StatelessWidget {
   final barcolor = Colors.white;
@@ -19,67 +20,62 @@ class BarChatData extends StatelessWidget {
           child: SurveyChart(data: [
             ChartData(
               month: "JAN",
-              visits: 2,
+              visits: visits.jan,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "FEB",
-              visits: 1,
+              visits: visits.feb,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "MAR",
-              visits: 1,
+              visits: visits.mar,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "APR",
-              visits: 2,
+              visits: visits.apr,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "MAY",
-              visits: 3,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "MAR",
-              visits: 2,
+              visits: visits.may,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "JUN",
-              visits: 1,
+              visits: visits.jun,
               barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
               month: "JUL",
-              visits: 3,
+              visits: visits.jul,
               barColor: charts.ColorUtil.fromDartColor(barcolor ),
             ),
             ChartData(
               month: "AUG",
-              visits: 2,
+              visits: visits.aug,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "SEP",
-              visits: 1,
+              visits: visits.sep,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "OCT",
-              visits: 2,
+              visits: visits.oct,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "NOV",
-              visits: 4,
+              visits: visits.nov,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
             ChartData(
               month: "DEC",
-              visits: 1,
+              visits: visits.dec,
               barColor: charts.ColorUtil.fromDartColor(barcolor),
             ),
 

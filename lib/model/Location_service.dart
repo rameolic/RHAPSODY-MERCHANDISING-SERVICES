@@ -2,6 +2,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geocoder/geocoder.dart';
+import 'distanceinmeters.dart';
 
 double lat;
 double long;
@@ -27,7 +28,9 @@ class Location {
   await location.getCurrentLocation();
   lat = location.latitude;
   long =location.longitude;
-
+  distinmeters();
+  distinmetersforskipjp();
+  distinmetersforvisited();
 }
 
 address() async {

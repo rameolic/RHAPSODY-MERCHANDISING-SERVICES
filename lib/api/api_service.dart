@@ -7,7 +7,6 @@ import 'Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
-import'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
@@ -16,9 +15,9 @@ import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
-import 'package:merchandising/api/HRapi/hrdashboardapi.dart';
+import 'package:merchandising/api/monthlyvisitschart.dart';
 
-
+Uri ChartUrl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
 Uri DBdailyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_daily");
 Uri DBmonthlyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_monthly");
@@ -222,6 +221,7 @@ class chekinoutlet{
 
 Future outletwhencheckin() async { 
   var outletid = outletrequestdata.outletidpressed;
+  chartoutletid.outlet = outletrequestdata.outletidpressed;
   Map ODrequestDataforcheckin = {
     "emp_id": "$Empid",
     'outlet_id': '$outletid',
@@ -249,7 +249,7 @@ Future outletwhencheckin() async {
     chekinoutlet.checkinlat = decodeODData['data'][0]['outlet_lat'];
     chekinoutlet.checkinlong = decodeODData['data'][0]['outlet_long'];
     chekinoutlet.currentdistance = Geolocator.distanceBetween(lat, long, double.parse(chekinoutlet.checkinlat), double.parse(chekinoutlet.checkinlong));
-    return chekinoutlet.currentdistance;
+    return getchartdetails();
   }
 
   if(OCresponse.statusCode != 200){

@@ -6,7 +6,10 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/timesheetmonthly.dart';
 
-String today = DateFormat('yyyy-MM-DD').format(DateTime.now());
+
+final DateTime now = DateTime.now();
+final DateFormat formatter = DateFormat('yyyy-MM-dd');
+final String todaydate = formatter.format(now);
 
 
 Future<void> gettimesheetmonthly() async {
@@ -16,7 +19,7 @@ Future<void> gettimesheetmonthly() async {
           (i) => "${int.parse(DateFormat('yyyy').format(DateTime.now()))}-${DateFormat('MM').format(DateTime.now())}-${'${i + 1}'.toString().padLeft(2,"0")}");
   Map request = {
     "emp_id": "$Empid",
-    "month" : "2021-03-05"
+    "month" : "$todaydate"
   };
   print(request);
   http.Response dataresponse = await http.post(TSMurl,
@@ -62,9 +65,8 @@ Future<void> gettimesheetmonthly() async {
     String data = dataresponse.body;
     var decodeData = jsonDecode(data);
     print(decodeData['data'].length);
+    print('length : ${listOfDates.length}');
     for (int u=0;u<decodeData['data'].length;u++){
-      print(u);
-      print('timesheetmonthly done');
       String date = decodeData['data'][u]['date'];
       if(date == listOfDates[1-1]){TMmonthly.day1.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
       if(date == listOfDates[2-1]){TMmonthly.day2.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
@@ -94,9 +96,24 @@ Future<void> gettimesheetmonthly() async {
       if(date == listOfDates[26-1]){TMmonthly.day26.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
       if(date == listOfDates[27-1]){TMmonthly.day27.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
       if(date == listOfDates[28-1]){TMmonthly.day28.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[29-1]){TMmonthly.day29.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[30-1]){TMmonthly.day30.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[31-1]){TMmonthly.day31.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
+      if(listOfDates.length > 28){
+        if (date == listOfDates[28]) {
+          TMmonthly.day29.add(
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+        }
+      }
+      if(listOfDates.length > 29){
+        if (date == listOfDates[29]) {
+          TMmonthly.day30.add(
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+        }
+      }
+      if(listOfDates.length > 30){
+        if (date == listOfDates[30]) {
+          TMmonthly.day31.add(
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+        }
+      }
     }
 
 

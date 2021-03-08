@@ -285,7 +285,7 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? 0.3:0.5,//(monthpercentage/100): (todaypercentage/100),
+                                    percent: pressAttentionMTB == true ? (monthpercentage/100): (todaypercentage/100),
                                     textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
                                     title: "Journey Plan\nCompletion",
                                   ),

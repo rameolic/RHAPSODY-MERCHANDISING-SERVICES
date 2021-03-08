@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/login_page.dart';
 import '../../Constants.dart';
 import 'Journeyplan.dart';
@@ -10,7 +11,6 @@ import 'package:merchandising/model/distanceinmeters.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'package:merchandising/api/api_service.dart';
 final menuitemscolor = Colors.black54;
 
 class DrawerHeaderinfo extends StatelessWidget {
@@ -104,7 +104,7 @@ class Menu extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => DashBoard()));
+                      builder: (BuildContext context) => FieldManagerDashBoard()));
             }
 
           },

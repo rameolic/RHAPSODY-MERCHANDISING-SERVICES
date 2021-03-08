@@ -13,8 +13,6 @@ class ResponsetoLeave extends StatefulWidget {
 class _ResponsetoLeaveState extends State<ResponsetoLeave> {
 
  static final List<String> leavereason = <String>["Outletname","Outletname",];
- static final List<String> startdate = <String>["checkintime","Outletname",];
- static final List<String> enddate = <String>["Outletname","Outletname",];
  static final List<String> type = <String>["Outletname","Outletname",];
 
   bool isApiCallProcess = false;
@@ -177,7 +175,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: pink,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
