@@ -322,10 +322,11 @@ class _State extends State<JourneyListBuilder> {
              checkinoutdata.checkid = gettodayjp.id[index];
              var data = await outletwhencheckin();
              if(data != null ){
-               Navigator.push(
+              await Navigator.push(
                    context,
                    MaterialPageRoute(
                        builder: (BuildContextcontext) => OutLet()));
+
                setState(() {
                  isApiCallProcess = false;
                });

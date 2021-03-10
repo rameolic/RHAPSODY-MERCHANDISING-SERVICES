@@ -4,7 +4,6 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'Startday.dart';
 import 'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
@@ -13,6 +12,14 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Time Sheet.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/api/timesheetmonthly.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
+import 'Journeyplan.dart';
+import 'package:merchandising/model/distanceinmeters.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -67,7 +74,126 @@ class _DashBoardState extends State<DashBoard> {
               height: 30,
               image: AssetImage('images/rmsLogo.png'),
             ),
-            StartDay(),
+            GestureDetector(
+                onTap: () async{
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  await getJourneyPlan();
+                  await getskippedJourneyPlan();
+                  await getvisitedJourneyPlan();
+                  await getJourneyPlanweekly();
+                  await getSkipJourneyPlanweekly();
+                  await getVisitJourneyPlanweekly();
+                  await distinmeters();
+                  showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        backgroundColor: alertboxcolor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(
+                                Radius.circular(10.0))),
+                        content: Builder(
+                          builder: (context) {
+                            // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                            return Container(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text('Roll Call',style: TextStyle(color: orange,fontSize: 20),),
+                                  Divider(color: Colors.black,thickness: 0.8,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Uniform and Hygiene'),
+                                      Spacer(),
+                                      Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
+                                      Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey,),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Hand Held Unit Charge'),
+                                      Spacer(),
+                                      Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
+                                      Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('Transportation'),
+                                      Spacer(),
+                                      Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
+                                      Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text('POSM'),
+                                      Spacer(),
+                                      Icon(CupertinoIcons.check_mark_circled_solid,color: orange,),
+                                      Icon(CupertinoIcons.xmark_circle_fill,color: Colors.grey),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
+                                          },
+                                        child: Container(
+                                          height: 30,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: orange,borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+                                          Navigator.pop(context, MaterialPageRoute(builder: (BuildContext context) => DashBoard()));},
+                                        child: Container(
+                                          height: 30,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          child: Center(child: Text('Cancel',style: TextStyle(color: Colors.white))),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                  );
+                  setState(() {
+                    isApiCallProcess = false;
+                  });
+          },
+                  child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: orange,
+                      borderRadius: BorderRadius.circular(10.00),
+                    ),
+                    child: Text(
+                      'Start Day',
+                      style: TextStyle(color: Colors.white,fontSize: 15),
+                    ),
+                  ),
+        ),
           ],
         ),
       ),
@@ -240,7 +366,7 @@ class _DashBoardState extends State<DashBoard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('Working Time'),
+                              Text('Time Sheet'),
                               WorkingRow(
                                 icon: CupertinoIcons.calendar,
 
@@ -269,35 +395,57 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     Column(
                       children: [
-                        Container(
-                          height: 140,
-                          width: MediaQuery.of(context).size.width/1.75,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: containerscolor,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Journey Plan",),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  JourneryPlan(
-                                    color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? (monthpercentage/100): (todaypercentage/100),
-                                    textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
-                                    title: "Journey Plan\nCompletion",
-                                  ),
-                                  JourneryPlan(
-                                    color: Colors.grey[600],
-                                    percent: pressAttentionMTB == true ? 0.5 : 0.1,
-                                    textpercent: pressAttentionMTB == true ? '50' : '10',
-                                    title: "Process\nCompliance",
-                                  ),
-                                ],
-                              ),
-                            ],
+                        GestureDetector(
+                          onTap: ()async{
+                            setState(() {
+                              isApiCallProcess = true;
+                            });
+                            await getJourneyPlan();
+                            await getskippedJourneyPlan();
+                            await getvisitedJourneyPlan();
+                            await getJourneyPlanweekly();
+                            await getSkipJourneyPlanweekly();
+                            await getVisitJourneyPlanweekly();
+                            await distinmeters();
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContextcontext) => JourneyPlan()));
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
+
+                          },
+                          child: Container(
+                            height: 140,
+                            width: MediaQuery.of(context).size.width/1.75,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: containerscolor,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text("Journey Plan",),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    JourneryPlan(
+                                      color: Colors.orange,
+                                      percent: pressAttentionMTB == true ? (monthpercentage/100): (todaypercentage/100),
+                                      textpercent: pressAttentionMTB == true ? monthpercentage.toString() :todaypercentage.toString(),
+                                      title: "Journey Plan\nCompletion",
+                                    ),
+                                    JourneryPlan(
+                                      color: Colors.grey[600],
+                                      percent: pressAttentionMTB == true ? 0.5 : 0.1,
+                                      textpercent: pressAttentionMTB == true ? '50' : '10',
+                                      title: "Process\nCompliance",
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 5,),

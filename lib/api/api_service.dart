@@ -2,19 +2,13 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
-import 'Journeyplansapi/todayplan/jpskippedapi.dart';
-import 'Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
-import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
-import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
-import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 
 Uri ChartUrl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
@@ -33,7 +27,7 @@ Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journ
 Uri JPurl = Uri.parse("https://rms2.rhapsody.ae/api/today_planned_journey");
 Uri empdetailsurl = Uri.parse("https://rms2.rhapsody.ae/api/employee_details_for_report");
 Uri reportingdataurl = Uri.parse("https://rms2.rhapsody.ae/api/reporting_to_details");
-Uri addreportaurl = Uri.parse("https://rms2.rhapsody.ae/api/reporting_to_details");
+Uri addreportaurl = Uri.parse("https://rms2.rhapsody.ae/api/add_reporting");
 Uri holidaysdataurl = Uri.parse("https://rms2.rhapsody.ae/api/holidays_details");
 Uri addholidayurl = Uri.parse("https://rms2.rhapsody.ae/api/add_holidays");
 Uri WJPPlannedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_planned_journey");
@@ -135,12 +129,6 @@ Future DBRequestdaily() async{
     DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
     DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
     DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
-    getJourneyPlan();
-    getskippedJourneyPlan();
-    getvisitedJourneyPlan();
-    getJourneyPlanweekly();
-    getSkipJourneyPlanweekly();
-    getVisitJourneyPlanweekly();
     return  DBResponsedatadaily.todayPlanpercentage;
   }
   if(DBresponse.statusCode != 200){
@@ -274,7 +262,7 @@ void checkin() async {
   var checkinlocation = checkinoutdata.checkinlocation;
   Map checkinoutresponse =
   {
-    "timesheet_id": "$checkid",
+    "id": "$checkid",
     "checkin_time": "$checkintime",
     "checkin_location": "$checkinlocation",
   };
@@ -289,8 +277,6 @@ void checkin() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
-    DBRequestdaily();
-    DBRequestmonthly();
   }else{
     print(cicoresponse.body);
   }
@@ -301,7 +287,7 @@ void checkout() async {
   var checkoutlocation = checkinoutdata.checkoutlocation;
   Map checkinoutresponse =
   {
-    "timesheet_id": "$checkid",
+    "id": "$checkid",
     "checkout_time": "$checkouttime",
     "checkout_location": "$checkoutlocation",
   };
@@ -351,7 +337,7 @@ void leaverequest() async {
   print(leaveresponse.statusCode);
   if(leaveresponse.statusCode == 200 ){
     print(jsonDecode(leaveresponse.body));
-    leaveData();
+    await leaveData();
   }
 }
 

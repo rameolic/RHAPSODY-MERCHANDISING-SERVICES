@@ -26,8 +26,6 @@ Future getempdetailsforreport() async{
       reporting.enddate.add(decodeddata["data"][u]['reporting_end_date']);
     }
   }
-
-  print(reporting.merchandisers);
   if(EmpReport.statusCode != 200){
     print(EmpReport.body);
   }

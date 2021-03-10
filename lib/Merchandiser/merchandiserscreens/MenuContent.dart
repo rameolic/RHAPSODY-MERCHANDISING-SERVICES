@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/login_page.dart';
 import '../../Constants.dart';
-import 'Journeyplan.dart';
 import 'merchandiserdashboard.dart';
 import 'myprofile.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/model/distanceinmeters.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
@@ -128,19 +126,6 @@ class Menu extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        currentuser.roleid == 6 ? ListTile(
-          title: MenuElements(
-            title: 'Journey Plan',
-            icon: CupertinoIcons.map_fill,
-          ),
-          onTap: () {
-            distinmeters();
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => JourneyPlan()));
-          },
-        ):SizedBox(),
         ListTile(
           title: MenuElements(
             title: 'Notifications',

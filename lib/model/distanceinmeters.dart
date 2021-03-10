@@ -2,7 +2,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
-import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
 
 
@@ -16,6 +15,7 @@ distinmeters() {
     gettodayjp.distanceinmeters.add(dist/1000);
   }
   marker();
+  distinmetersforskipjp();
   }
 distinmetersforskipjp() {
   todayskipjplist.distanceinmeters=[];
@@ -23,11 +23,4 @@ distinmetersforskipjp() {
     double skippeddist = Geolocator.distanceBetween(lat, long, double.parse(todayskipjplist.outletlat[u]), double.parse(todayskipjplist.outletlong[u]));
     todayskipjplist.distanceinmeters.add(skippeddist/1000);
 }
-}
-distinmetersforvisited(){
-  todayvisjplist.distanceinmeters=[];
-  for(int u=0;u<todayvisjplist.outletlat.length;u++){
-    double Visitedlist = Geolocator.distanceBetween(lat, long, double.parse(todayvisjplist.outletlat[u]), double.parse(todayvisjplist.outletlong[u]));
-    todayvisjplist.distanceinmeters.add(Visitedlist/1000);
-  }
 }

@@ -35,6 +35,11 @@ Future<void> leaveData() async {
       String isaccepted = decodeLDData['data'][u]['is_approved'];
       leavedataResponse.isleaveaccepted.add(isaccepted);
     }
+    for (int u = 0; u< decodeLDData['data'].length; u++){
+      if(decodeLDData['data'][u]['is_approved'] == 1){
+
+      }
+    }
   }
 }
 
@@ -46,5 +51,10 @@ class leavedataResponse{
   static List<dynamic> enddates=[];
   static List<dynamic> isleaverejected=[];
   static List<dynamic> isleaveaccepted=[];
+}
+
+
+class hrresponse{
+
 }
 

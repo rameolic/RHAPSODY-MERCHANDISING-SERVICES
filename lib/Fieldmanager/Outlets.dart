@@ -19,21 +19,7 @@ class Oulets extends StatelessWidget {
       body: Stack(
         children: [
           BackGround(),
-          Container(
-            height: MediaQuery.of(context).size.height/1.5,
-            width: double.infinity,
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: pink,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              children: <Widget>[
-                OutletList(),
-              ],
-            ),
-          ),
+          OutletList(),
           Align(
             alignment: Alignment.bottomRight,
             child: Container(
@@ -66,10 +52,7 @@ class OutletList extends StatefulWidget {
 }
 
 class _OutletListState extends State<OutletList> {
-  static final List<String> serialno = <String>["1","2",];
   static final List<String> outletname = <String>["Outletname1","Outletname2",];
-  static final List<String> outletlat = <String>["64.98753","73.903215",];
-  static final List<String> outletlong = <String>["42.87687","34.09866",];
   static final List<String> outletarea = <String>["PVR","ABC Mall",];
   static final List<String> outletcity = <String>["Vellore","Vellore",];
   static final List<String> outletstate = <String>["TamilNadu","TamilNadu",];
@@ -91,48 +74,21 @@ class _OutletListState extends State<OutletList> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text("S.No:"),
-                      Text('${serialno[index]}'),
-                    ],
-                  ),
-                  SizedBox(height: 10),
                   Row(children: [
-                    Text('OutletName:',
+                    Text('OutletName :',
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.0,fontWeight: FontWeight.bold,
                         )),
                     SizedBox(width: 10),
-                    Text('${outletname[index]}'),
+                    Text('${outletname[index]}',style:TextStyle(
+                      fontSize: 14.0,fontWeight: FontWeight.bold,
+                    ) ,),
                   ]),
                   SizedBox(height: 10),
                   Row(children: [
-                    Text('Outlet Latitude',
+                    Text('Outlet Area :',
                         style: TextStyle(
-                          fontSize: 13.0,
-                        )),
-                    SizedBox(width: 10),
-                    Text(
-                      '${outletlat[index]}',
-                    )
-                  ]),
-                  SizedBox(height: 10),
-                  Row(children: [
-                    Text('Outlet Longitide:',
-                        style: TextStyle(
-                          fontSize: 13.0,
-                        )),
-                    SizedBox(width: 10),
-                    Text(
-                      '${outletlong[index]}',
-                    ),
-                  ]),
-                  SizedBox(height: 10),
-                  Row(children: [
-                    Text('Outlet Area:',
-                        style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.0,
                         )),
                     SizedBox(width: 10),
                     Text(
@@ -141,9 +97,9 @@ class _OutletListState extends State<OutletList> {
                   ]),
                   SizedBox(height: 10),
                   Row(children: [
-                    Text('Outlet City',
+                    Text('Outlet City :',
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.0,
                         )),
                     SizedBox(width: 10),
                     Text('${outletcity[index]}',
@@ -152,9 +108,9 @@ class _OutletListState extends State<OutletList> {
                   SizedBox(height: 10),
 
                   Row(children: [
-                    Text('outlet State',
+                    Text('outlet State :',
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.0,
                         )),
                     SizedBox(width: 10),
                     Text('${outletstate[index]}',
@@ -162,9 +118,9 @@ class _OutletListState extends State<OutletList> {
                   ]),
                   SizedBox(height: 10),
                   Row(children: [
-                    Text('Outlet Country',
+                    Text('Outlet Country :',
                         style: TextStyle(
-                          fontSize: 13.0,
+                          fontSize: 14.0,
                         )),
                     SizedBox(width: 10),
                     Text('${outletcountry[index]}',

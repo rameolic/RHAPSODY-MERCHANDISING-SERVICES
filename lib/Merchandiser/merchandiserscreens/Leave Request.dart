@@ -14,6 +14,8 @@ import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'dart:convert';
 import 'dart:io';
+
+
 class leavelogic {
   static DateTime StratDate;
 }
@@ -466,11 +468,11 @@ class _LeaveRequestState extends State<LeaveRequest> {
                     ),
                   ),
                   GestureDetector(
-                      onTap: () {
+                      onTap: () async{
                         if (valuefirst == true &&
                             reasoninputcontroller.text != "" && leave.startdate != null && leave.enddate !=null && leave.type !=null ) {
                           leave.reason = reasoninputcontroller.text;
-                          leaverequest();
+                          await leaverequest();
                           leavedataResponse.isleaverejected=[];
                           leavedataResponse.isleaveaccepted=[];
                           leavedataResponse.enddates=[];

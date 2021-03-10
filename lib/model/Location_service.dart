@@ -29,8 +29,6 @@ class Location {
   lat = location.latitude;
   long =location.longitude;
   distinmeters();
-  distinmetersforskipjp();
-  distinmetersforvisited();
 }
 
 address() async {

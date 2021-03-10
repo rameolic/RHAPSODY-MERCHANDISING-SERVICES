@@ -1,17 +1,11 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
-import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
-import 'package:merchandising/model/leaveresponse.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:intl/intl.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:merchandising/api/HRapi/addingreportapi.dart';
 
 class pickeddate{
@@ -106,11 +100,25 @@ class addreporting extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-                      report.feildmanagerid = 'Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'),'')}';
-                      report.merchandiserid = 'Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'),'')}';
-                      report.startdate = pickeddate.startdate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.startdate ;
-                      report.enddate = pickeddate.enddate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.enddate ;
-                      addreport();
+                      if(merchandiser == null){
+                        Flushbar(
+                          message:  "please select merchandiser",
+                          duration:  Duration(seconds: 3),
+                        )..show(context);
+                      }else if(feildmanager == null){
+                        Flushbar(
+                          message:  "please select feild manager",
+                          duration:  Duration(seconds: 3),
+                        )..show(context);
+                      } else{
+                        print('Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'),'')}');
+                        print('Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'),'')}');
+                        report.feildmanagerid = 'Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'),'')}';
+                        report.merchandiserid = 'Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'),'')}';
+                        report.startdate = pickeddate.startdate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.startdate ;
+                        report.enddate = pickeddate.enddate == null ?  DateFormat('"yyyy-MM-dd"').format(DateTime.now()): pickeddate.enddate ;
+                        addreport();
+                      }
                       },
                     child: Center(
                       child: Container(
@@ -177,7 +185,7 @@ class _StartDateState extends State<StartDate> {
     return Container(
       child: Row(
         children: [
-          Text("End Date",style: TextStyle(fontSize: 16),),
+          Text("Start Date",style: TextStyle(fontSize: 16),),
           Spacer(),
           Text("${StartDate.toLocal()}".split(' ')[0],
             style: TextStyle(fontSize: 16),),

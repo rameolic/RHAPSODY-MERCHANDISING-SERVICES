@@ -89,20 +89,6 @@ class _State extends State<visitedJourneyListBuilder> {
                       Text('${todayvisjplist.contactnumbers[index]}',
                           style: TextStyle(color: orange)),
                     ]),
-                    TableRow(children: [
-                      Text('Distance',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                          )),
-                      Text(":"),
-                      Row(
-                        children: [
-                          Text('${todayvisjplist.distanceinmeters[index].toStringAsFixed(2)}',
-                              style: TextStyle(color: orange)),
-                          Text("KM", style: TextStyle(color: orange))
-                        ],
-                      ),
-                    ]),
                   ],
                 ),
               ],

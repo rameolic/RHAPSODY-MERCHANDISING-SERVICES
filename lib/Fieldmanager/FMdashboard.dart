@@ -58,7 +58,7 @@ Widget _uiSetup(BuildContext context) {
             children: [
               SizedBox(height: 10,),
               Container(
-                margin: EdgeInsets.all(10.0),
+                margin: EdgeInsets.all(7.0),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),

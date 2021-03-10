@@ -16,15 +16,12 @@ Future<void> getvisitedJourneyPlan() async {
     String JPdata = jPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
     todayvisjplist.storenames=[];
-    todayvisjplist.distanceinmeters=[];
     todayvisjplist.contactnumbers=[];
     todayvisjplist.outletcountry=[];
     todayvisjplist.outletcity=[];
     todayvisjplist.outletarea=[];
     todayvisjplist.storecodes=[];
     todayvisjplist.id=[];
-    todayvisjplist.outletlong=[];
-    todayvisjplist.outletlat=[];
     todayvisjplist.outletids=[];
     for(int u=0;u<decodeJPData['data'].length;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
@@ -33,10 +30,6 @@ Future<void> getvisitedJourneyPlan() async {
       todayvisjplist.storecodes.add(storecode);
       dynamic outletid = decodeJPData['data'][u]['outlet_id'];
       todayvisjplist.outletids.add(outletid);
-      dynamic outletlat = decodeJPData['data'][u]['outlet_lat'];
-      todayvisjplist.outletlat.add(outletlat);
-      dynamic outletlong = decodeJPData['data'][u]['outlet_long'];
-      todayvisjplist.outletlong.add(outletlong);
       dynamic outletarea = decodeJPData['data'][u]['outlet_area'];
       todayvisjplist.outletarea.add(outletarea);
       dynamic outletcity = decodeJPData['data'][u]['outlet_city'];
@@ -58,12 +51,9 @@ class todayvisjplist {
   static List<dynamic> storecodes = [];
   static List<dynamic> storenames = [];
   static List<dynamic> outletids = [];
-  static List<dynamic> outletlat = [];
-  static List<dynamic> outletlong = [];
   static List<dynamic> outletarea = [];
   static List<dynamic> outletcity = [];
   static List<dynamic> outletcountry = [];
   static List<dynamic> id = [];
   static List<dynamic> contactnumbers = [];
-  static List<dynamic> distanceinmeters = [];
 }

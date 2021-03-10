@@ -138,20 +138,10 @@ class _TimeSheetListState extends State<TimeSheetList> {
                     color:containerscolor,
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            "Merchandiser Name:",
-                            style: TextStyle(fontSize: 16,),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(DBrequestdata.empname,
-                              style: TextStyle(fontSize: 16,))
-                        ],
-                      ),
+                      Text(DBrequestdata.empname,
+                          style: TextStyle(fontSize: 16,)),
                       Row(
                         children: [
                           Text(

@@ -25,49 +25,42 @@ Future<void> getSkipJourneyPlanweekly() async {
           .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyskipjp.sundaystorenames.add(storename);
-        print(getweeklyskipjp.sundaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyskipjp.mondaystorenames.add(storename);
-        print(getweeklyskipjp.mondaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyskipjp.tuesdaystorenames.add(storename);
-        print( getweeklyskipjp.tuesdaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyskipjp.wednesdaystorenames.add(storename);
-        print(getweeklyskipjp.wednesdaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyskipjp.thrusdaystorenames.add(storename);
-        print( getweeklyskipjp.thrusdaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyskipjp.fridaystorenames.add(storename);
-        print(getweeklyskipjp.fridaystorenames);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
           .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyskipjp.saturdaystorenames.add(storename);
-        print(getweeklyskipjp.saturdaystorenames);
       }
 
       dynamic storecode = decodeJPData['data'][u]['store_code'];

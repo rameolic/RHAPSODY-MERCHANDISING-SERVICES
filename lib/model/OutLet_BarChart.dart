@@ -116,18 +116,14 @@ class SurveyChart extends StatelessWidget {
     return Card(
       elevation: 0,
       color: pink,
-      child: Expanded(
-        child: ShaderMask(
-          child: charts.BarChart(series, animate: true),
-          shaderCallback: (Rect bounds){
-            return LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
-          },
-        )
-
-
+      child: ShaderMask(
+        child: charts.BarChart(series, animate: true),
+        shaderCallback: (Rect bounds){
+          return LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
+        },
       ),
     );
   }

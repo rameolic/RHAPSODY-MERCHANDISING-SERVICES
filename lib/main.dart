@@ -4,9 +4,6 @@ import 'package:merchandising/Constants.dart';
 import 'login_page.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'dart:async';
-import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
-import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
-import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'model/rememberme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api/api_service.dart';
@@ -15,15 +12,8 @@ import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 
-recallapi(){
-  getJourneyPlan();
-  getskippedJourneyPlan();
-  getvisitedJourneyPlan();
-}
 
 Future<void> main() async {
-  const seconds = const Duration(seconds: 900);
-  Timer.periodic(seconds, (Timer t) => recallapi());
   const period = const Duration(seconds: 60);
   Timer.periodic(period, (Timer t) => getLocation());
   WidgetsFlutterBinding.ensureInitialized();
