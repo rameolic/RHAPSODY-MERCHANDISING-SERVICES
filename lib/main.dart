@@ -96,5 +96,5 @@ class currentuser{
 }
 
 class remaining{
-  static int leaves;
+  static var leaves;
 }
