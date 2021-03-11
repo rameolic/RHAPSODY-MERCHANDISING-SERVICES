@@ -6,9 +6,7 @@ import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
-import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/api/holidays.dart';
-import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 
 Uri ChartUrl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
@@ -70,8 +68,6 @@ Future loginapi() async {
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
     if(currentuser.roleid == 3){
-      getallempdetails();//hr o
-      getempdetailsforreport();// nly
     }
     getempdetails();
     leaveData();
@@ -85,7 +81,6 @@ Future loginapi() async {
     return currentuser.roleid;
   }
 }
-
 class loginrequestdata {
   static var inputemail;
   static var inputpassword;
@@ -93,7 +88,6 @@ class loginrequestdata {
 class outletrequestdata {
   static var outletidpressed;
 }
-
 class DBrequestdata {
   static var receivedtoken;
   static var receivedempid;

@@ -11,6 +11,8 @@ import 'package:merchandising/HR/HRdashboard.dart';
 import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 
 
 Future<void> main() async {
@@ -38,8 +40,11 @@ Future<void> main() async {
             accentColor: orange,),
           home:  DashBoard()
       ));
-    }else if(userroleid == 3){
+    }
+    else if(userroleid == 3){
       await HRdb();
+      await getallempdetails();
+      await getempdetailsforreport();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -49,7 +54,8 @@ Future<void> main() async {
             accentColor: orange,),
           home: HRdashboard()
       ));
-    }else if(userroleid == 5){
+    }
+    else if(userroleid == 5){
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -59,7 +65,8 @@ Future<void> main() async {
             accentColor: orange,),
           home: FieldManagerDashBoard()
       ));
-    }else{
+    }
+    else{
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -70,7 +77,8 @@ Future<void> main() async {
           home: LoginPage()
       ));
     }
-  } else{
+  }
+  else{
     runApp(MaterialApp(
         title: 'Rhapsody merchandising solutions',
         debugShowCheckedModeBanner: false,
