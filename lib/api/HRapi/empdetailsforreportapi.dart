@@ -12,6 +12,7 @@ Future getempdetailsforreport() async{
     body: jsonEncode(DBrequestData),
   );
   if (EmpReport.statusCode == 200){
+    print('reporting details done');
     reporting.feildmanager = [];
     reporting.startdate = [];
     reporting.merchandisers = [];

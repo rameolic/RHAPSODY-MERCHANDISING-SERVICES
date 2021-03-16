@@ -30,6 +30,7 @@ Future getempdetails() async{
     body: jsonEncode(DBrequestData),
   );
   if (DBresponse.statusCode == 200){
+    print('empolyee details done');
     String empdata = DBresponse.body;
     var decodedempdata = jsonDecode(empdata);
     myprofile.surname =decodedempdata["data"][0]['surname'];

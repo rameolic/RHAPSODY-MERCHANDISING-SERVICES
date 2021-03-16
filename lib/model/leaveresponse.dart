@@ -4,6 +4,9 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:merchandising/api/FMapi/merc_leave_details.dart';
+
+int leave;
 
 class ResponsetoLeave extends StatefulWidget {
   @override
@@ -11,10 +14,6 @@ class ResponsetoLeave extends StatefulWidget {
 }
 
 class _ResponsetoLeaveState extends State<ResponsetoLeave> {
-
- static final List<String> leavereason = <String>["Outletname","Outletname",];
- static final List<String> type = <String>["Outletname","Outletname",];
-
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
@@ -24,6 +23,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
       opacity: 0.3,
     );
   }
+
   Widget _uiSetup(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -44,22 +44,15 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
         body: Stack(children: [
           BackGround(),
           ListView.builder(
-              itemCount: leavereason.length,
+              itemCount: leavedataResponse.reasons.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      isApiCallProcess = true;
-                    });
+                  onTap: () {
+                    leave = index;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                leaveresult()));
-                    setState(() {
-                      isApiCallProcess = false;
-                    });
+                            builder: (BuildContext context) => leaveresult()));
                   },
                   child: Container(
                     margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
@@ -67,17 +60,14 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(10))),
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Row(
                           children: [
                             Text(
-                              'Reason :',
+                              'Reason : ',
                               style: TextStyle(
                                   fontSize: 15.0, fontWeight: FontWeight.bold),
                             ),
@@ -86,11 +76,12 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                             ),
                             Flexible(
                               child: AutoSizeText(
-                                '${leavereason[leavereason.length - 1 -index]}',
+                                '${leavedataResponse.reasons[leavedataResponse.reasons.length - 1 - index]}',
                                 maxLines: 2,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    fontSize: 15.0, fontWeight: FontWeight.bold),
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -105,7 +96,8 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                             SizedBox(
                               width: 5,
                             ),
-                            Text('${type[type.length - 1 -index]}',
+                            Text(
+                                '${leavedataResponse.leavetypes[leavedataResponse.leavetypes.length - 1 - index]}',
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 )),
@@ -114,14 +106,19 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Text('total number of days',
+                            Text('Number of days :',
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 )),
                             SizedBox(
                               width: 5,
                             ),
-                            Text('2',
+                            Text(
+                                leavedataResponse.totnoofdays[
+                                        leavedataResponse.totnoofdays.length -
+                                            1 -
+                                            index]
+                                    .toString(),
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 )),
@@ -130,14 +127,18 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                         SizedBox(height: 5),
                         Row(
                           children: [
-                            Text('Employee name :',
+                            Text('Employee :',
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 )),
                             SizedBox(
                               width: 5,
                             ),
-                            Text("ram"),
+                            Text(leavedataResponse.empname[
+                                    leavedataResponse.empname.length -
+                                        1 -
+                                        index]
+                                .toString()),
                           ],
                         ),
                         SizedBox(height: 5),
@@ -145,21 +146,22 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                     ),
                   ),
                 );
-              }
-          ),
+              }),
         ]));
   }
 }
 
-
-  class leaveresult extends StatelessWidget {
+class leaveresult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: pink,
         iconTheme: IconThemeData(color: orange),
-        title: Text("Leave Response",style: TextStyle(color: orange),),
+        title: Text(
+          "Leave Response",
+          style: TextStyle(color: orange),
+        ),
       ),
       drawer: Drawer(
         child: Menu(),
@@ -171,6 +173,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
             child: Column(
               children: [
                 Container(
+                  height: MediaQuery.of(context).size.height/2.3,
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
                   margin: EdgeInsets.all(10),
@@ -184,7 +187,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                       Row(
                         children: [
                           Text(
-                            'Reason :',
+                            'Reason : ',
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
@@ -193,80 +196,91 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                           ),
                           Flexible(
                             child: AutoSizeText(
-                              "Reason"
+                              leavedataResponse.reasons[
+                                  leavedataResponse.reasons.length - 1 - leave],
+                              style: TextStyle( fontSize: 16.0, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('Leave Type:',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                           SizedBox(
                             width: 5,
                           ),
-                          Text('type',
+                          Text(
+                              leavedataResponse.leavetypes[
+                                      leavedataResponse.leavetypes.length -
+                                          1 -
+                                          leave]
+                                  .toString(),
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('total number of days',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
-                          Text('2',
+                          Text(
+                              leavedataResponse.totnoofdays[
+                                      leavedataResponse.totnoofdays.length -
+                                          1 -
+                                          leave]
+                                  .toString(),
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('Employee name :',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("ram"),
+                          Text(leavedataResponse.empname[
+                                  leavedataResponse.empname.length - 1 - leave]
+                              .toString()),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('Employee ID :',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("EMP55266"),
+                          Text(leavedataResponse
+                              .empid[leavedataResponse.empid.length - 1 - leave]
+                              .toString()),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('Start Date :',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("10-12-12"),
+                          Text(leavedataResponse.Startdates[
+                              leavedataResponse.Startdates.length - 1 - leave]),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('End date :',
@@ -276,94 +290,113 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text("15-12-20"),
+                          Text(leavedataResponse.enddates[
+                                  leavedataResponse.enddates.length - 1 - leave]
+                              .toString()),
                         ],
                       ),
-                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Text('Requested on :',
                               style: TextStyle(
-                                fontSize: 16.0,
+                                fontSize: 15.0,
                               )),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("25-12-20"),
+                          Text(leavedataResponse.requestedon[
+                                  leavedataResponse.requestedon.length -
+                                      1 -
+                                      leave]
+                              .toString()
+                              .substring(0, 10)),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Text('Supported Documents :',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              )),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext
-                                      context) =>
-                                          VeiwImage()));
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: orange,
-                                borderRadius: BorderRadius.circular(10),
+                      leavedataResponse.leavetypes[
+                                      leavedataResponse.leavetypes.length -
+                                          1 -
+                                          leave]
+                                  .toString() ==
+                              "Sick_Leave"
+                          ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Supported Documents :',
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                    )),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                VeiwImage()));
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: orange,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(child: Text("Veiw",style: TextStyle(color: Colors.white),)),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
+                      Padding(
+                        padding: const EdgeInsets.only(top:20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ResponsetoLeave()));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Reject Leave",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                              child: Text("Veiw"),
                             ),
-                          ),
-                        ],
-                      ),
-
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ResponsetoLeave()));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text(
+                                  "Accept Leave",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext
-                                context) =>
-                                    ResponsetoLeave()));
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text("Reject Leave",style: TextStyle(color: Colors.white),),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext
-                                context) =>
-                                    ResponsetoLeave()));
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text("Accept Leave",style: TextStyle(color: Colors.white),),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           )
@@ -372,18 +405,16 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
     );
   }
 }
+
 class VeiwImage extends StatelessWidget {
+  String url =
+      "https://rms2.rhapsody.ae/leavedocuments/${leavedataResponse.supportdocs[leavedataResponse.supportdocs.length - 1 - leave].toString()}";
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: double.infinity,
-      child: PhotoView(
-        imageProvider: AssetImage("images/rmsLogo.png"),
+    return PhotoView(
+      imageProvider: NetworkImage(
+        url,
       ),
     );
   }
 }
-
-
-

@@ -2,7 +2,6 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'empdetailsapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
@@ -34,6 +33,15 @@ Uri WJPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/week_completed_journ
 Uri TSMurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_monthly");
 Uri HRdburl = Uri.parse("https://rms2.rhapsody.ae/api/hr_dashboard");
 Uri visitsurl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
+Uri MercNameList = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_under_fieldmanager_details");
+Uri Storedetailsurl = Uri.parse("https://rms2.rhapsody.ae/api/store_details");
+Uri AddStoreurl = Uri.parse("https://rms2.rhapsody.ae/api/add_store");
+Uri StoreDetailsurl = Uri.parse("https://rms2.rhapsody.ae/api/store_details");
+Uri FMDashBoardurl = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_dashboard");
+Uri AddOutletsurl = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet");
+Uri FMJPurl = Uri.parse("https://rms2.rhapsody.ae/api/journey");
+Uri MercLeaveDetails = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_leave_details");
+Uri AddEmployee = Uri.parse("https://rms2.rhapsody.ae/api/add_employee");
 
 
 
@@ -67,11 +75,8 @@ Future loginapi() async {
     DBrequestdata.empname = decodeData['user'] ['name'];
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
-    if(currentuser.roleid == 3){
-    }
-    getempdetails();
-    leaveData();
-    holidaysdata();
+    print(DBrequestdata.empname);
+
     return currentuser.roleid;
   }
   else {
@@ -95,9 +100,8 @@ class DBrequestdata {
   static var emailid;
 }
 var token = DBrequestdata.receivedtoken;
-var Empid = DBrequestdata.receivedempid;
 Map DBrequestData = {
-  'emp_id': '$Empid'
+  'emp_id': '${DBrequestdata.receivedempid}'
 };
 
 Future DBRequestdaily() async{
@@ -205,7 +209,7 @@ Future outletwhencheckin() async {
   var outletid = outletrequestdata.outletidpressed;
   chartoutletid.outlet = outletrequestdata.outletidpressed;
   Map ODrequestDataforcheckin = {
-    "emp_id": "$Empid",
+    "emp_id": "${DBrequestdata.receivedempid}",
     'outlet_id': '$outletid',
   };
   print(ODrequestDataforcheckin);
@@ -312,7 +316,7 @@ void leaverequest() async {
   var image = leave.image;
   Map leaverequestbody =
   {
-    'emp_id': '$Empid',
+    'emp_id': '${DBrequestdata.receivedempid}',
     "leavetype": "$leavetype",
     "leavestartdate": "$startdate",
     "leaveenddate": "$enddate",
@@ -331,7 +335,6 @@ void leaverequest() async {
   print(leaveresponse.statusCode);
   if(leaveresponse.statusCode == 200 ){
     print(jsonDecode(leaveresponse.body));
-    await leaveData();
   }
 }
 
@@ -351,7 +354,7 @@ Future changepassword() async{
   var newpassword = change.password;
   Map requestchangepassword =
   {
-    'emp_id': '$Empid',
+    'emp_id': '${DBrequestdata.receivedempid}',
     "password": "$newpassword"
   };
   http.Response changedpasswordresponse = await http.post(passwordchangeurl,

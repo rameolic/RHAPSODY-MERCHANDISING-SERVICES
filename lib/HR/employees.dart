@@ -17,10 +17,6 @@ class EmployeeDetailes extends StatefulWidget {
 }
 
 class _EmployeeDetailesState extends State<EmployeeDetailes> {
-  static final List<String> leavereason = <String>["Outletname","Outletname",];
-  static final List<String> startdate = <String>["checkintime","Outletname",];
-  static final List<String> enddate = <String>["Outletname","Outletname",];
-  static final List<String> type = <String>["Outletname","Outletname",];
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
@@ -71,7 +67,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                           Flexible(
                             child: AutoSizeText(
                               '${employees.fullname[index]}',
-                              maxLines: 2,
+                              maxLines: 1,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                   fontSize: 15.0, fontWeight: FontWeight.bold),

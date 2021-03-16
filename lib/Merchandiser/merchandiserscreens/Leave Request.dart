@@ -1,4 +1,4 @@
-
+import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/main.dart';
 import 'MenuContent.dart';
@@ -236,17 +236,26 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
   bool valuefirst = false;
   TextEditingController reasoninputcontroller = TextEditingController();
-  File _file;
+  FilePickerResult _file;
   Future getFile()async{
-    File file = await FilePicker.getFile();
+    FilePickerResult file = await FilePicker.platform.pickFiles();
     setState(() {
       _file = file;
-      pickedfile.name = _file.path;
+      pickedfile.name = file.names.toString();
     });
     return _file;
   }
+
+  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
+    return ProgressHUD(
+      child: _uiSetup(context),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+    );
+  }
+  Widget _uiSetup(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: containerscolor,
@@ -339,7 +348,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                     leave.type = "Loss_of_Pay";
                                   }
                                   if (dropDownValue == 1) {
-                                    leave.type = "Sick_leave";
+                                    leave.type = "Sick_Leave";
                                     setState(() {
                                       istypesick.issick = dropDownValue;
 
@@ -388,14 +397,15 @@ class _LeaveRequestState extends State<LeaveRequest> {
                                 Spacer(),
                                 GestureDetector(
                                   onTap: () async{
-                                    File picked = await getFile();
+                                    FilePickerResult picked = await getFile();
                                     if(picked != null){
-                                      var imagebytes = picked.readAsBytesSync();
+                                      File file = File(picked.files.single.path);
+                                      var imagebytes = file.readAsBytesSync();
                                       leave.image = base64Encode(imagebytes);
-                                       print(leave.image);
+                                      print(leave.image);
                                     }
                                   },
-                                    child: Icon(CupertinoIcons.folder_badge_plus),
+                                  child: Icon(CupertinoIcons.folder_badge_plus),
                                 )
                               ],
                             ),
@@ -471,6 +481,9 @@ class _LeaveRequestState extends State<LeaveRequest> {
                       onTap: () async{
                         if (valuefirst == true &&
                             reasoninputcontroller.text != "" && leave.startdate != null && leave.enddate !=null && leave.type !=null ) {
+                          setState(() {
+                            isApiCallProcess = true;
+                          });
                           leave.reason = reasoninputcontroller.text;
                           await leaverequest();
                           leavedataResponse.isleaverejected=[];
@@ -482,102 +495,111 @@ class _LeaveRequestState extends State<LeaveRequest> {
                           if(currentuser.roleid == 6){
 
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => DashBoard()));
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
                           }
                           if(currentuser.roleid == 3){
 
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HRdashboard()));
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
                           }
                           if(currentuser.roleid == 5){
 
                             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FieldManagerDashBoard()));
+                            setState(() {
+                              isApiCallProcess = false;
+                            });
                           }
                         } else {
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
-                                    backgroundColor: alertboxcolor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0))),
-                                    content: Builder(
-                                      builder: (context) {
-                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                        return Container(
-                                          child: SizedBox(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                backgroundColor: alertboxcolor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                content: Builder(
+                                  builder: (context) {
+                                    // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                    return Container(
+                                      child: SizedBox(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Alert",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
+                                            SizedBox(
+                                              height: 10.00,
+                                            ),
+                                            Text(
+                                                valuefirst == false?
+                                                "Please accept the terms and conditions":
+                                                reasoninputcontroller.text == ""?
+                                                "Reason can not be empty":
+                                                leave.startdate == null ?
+                                                "Please select Start date":
+                                                leave.enddate ==null?
+                                                "please select Enddate":
+                                                leave.type == null ?
+                                                "Please select the leave type":null,
+                                                style: TextStyle(
+                                                    fontSize: 13.6)),
+                                            SizedBox(
+                                              height: 10.00,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  "Alert",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                SizedBox(
-                                                  height: 10.00,
-                                                ),
-                                                Text(
-                                                    valuefirst == false?
-                                                    "Please accept the terms and conditions":
-                                                    reasoninputcontroller.text == ""?
-                                                    "Reason can not be empty":
-                                                    leave.startdate == null ?
-                                                    "Please select Start date":
-                                                    leave.enddate ==null?
-                                                    "please select Enddate":
-                                                    leave.type == null ?
-                                                    "Please select the leave type":null,
-                                                    style: TextStyle(
-                                                        fontSize: 13.6)),
-                                                SizedBox(
-                                                  height: 10.00,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.pop(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    LeaveRequest()));
-                                                      },
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 70,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: orange,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        margin: EdgeInsets.only(
-                                                            right: 10.00),
-                                                        child: Center(
-                                                            child: Text(
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pop(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                            context) =>
+                                                                LeaveRequest()));
+                                                  },
+                                                  child: Container(
+                                                    height: 40,
+                                                    width: 70,
+                                                    decoration:
+                                                    BoxDecoration(
+                                                      color: orange,
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(5),
+                                                    ),
+                                                    margin: EdgeInsets.only(
+                                                        right: 10.00),
+                                                    child: Center(
+                                                        child: Text(
                                                           "ok",
                                                           style: TextStyle(
                                                               color:
-                                                                  Colors.white),
+                                                              Colors.white),
                                                         )),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ));
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ));
                         }
                       },
                       child: Center(
@@ -600,9 +622,12 @@ class _LeaveRequestState extends State<LeaveRequest> {
           ),
         ],
       ),
-    );
-  }
+    );}
 }
+
+
+
+
 
 class istypesick{
   static int issick;

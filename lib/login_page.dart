@@ -8,7 +8,7 @@ import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/HRapi/hrdashboardapi.dart';
-import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'package:merchandising/main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -163,8 +163,8 @@ class _LoginPageState extends State<LoginPage> {
                                       int userroleid = await loginapi();
                                       currentuser.roleid = userroleid;
                                       if (userroleid == 6) {
-                                        int DBMresult = await DBRequestmonthly();
-                                        int DBDresult = await DBRequestdaily();
+                                        var DBMresult = await DBRequestmonthly();
+                                        var DBDresult = await DBRequestdaily();
                                         if (DBMresult != null && DBDresult != null) {
                                           Navigator.pushReplacement(
                                               context,
@@ -184,6 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       HRdashboard()));
                                         }
                                       } else if (userroleid == 5){
+                                        await getFMdb();
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(

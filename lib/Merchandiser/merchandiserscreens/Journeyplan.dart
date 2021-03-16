@@ -363,6 +363,14 @@ class _State extends State<JourneyListBuilder> {
                         style: TextStyle(
                             fontSize: 15.0, fontWeight: FontWeight.bold),
                       ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      gettodayjp.isscheduled[index] == 0 ? Text(
+                        '(unscheduled)',
+                        style: TextStyle(
+                            fontSize: 13.0,color: orange),
+                      ) :SizedBox(),
                     ],
                   ),
                   SizedBox(height: 5),

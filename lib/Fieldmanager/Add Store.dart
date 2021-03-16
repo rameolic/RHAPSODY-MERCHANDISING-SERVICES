@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
+import 'package:merchandising/api/FMapi/addstoresapi.dart';
+import 'dart:async';
+
 
 class AddStores extends StatefulWidget {
   @override
@@ -12,7 +16,6 @@ class AddStores extends StatefulWidget {
 class _AddStoresState extends State<AddStores> {
 
   TextEditingController storecode = TextEditingController();
-
   TextEditingController storename = TextEditingController();
 
   TextEditingController contactnumber = TextEditingController();
@@ -22,17 +25,6 @@ class _AddStoresState extends State<AddStores> {
 
   GlobalKey<FormState> addstores = GlobalKey<FormState>();
   String outlet_id;
-  List<String> outlet = [
-    "Sheba Market",
-    "Fair Mart ",
-    "Al Quoz",
-    "Umm Al Sheif ",
-    "Anuragha",
-    "Harish ",
-    "Reliance Smart",
-    "More Market",
-    "Big Bazzar"
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,9 +163,20 @@ class _AddStoresState extends State<AddStores> {
 
                         Center(
                           child: GestureDetector(
-                            onTap: (){
-                              if(validateform()){
-                                Navigator.push(
+                            onTap: ()async{
+                              if(validateform()== true){
+                                setState(() {
+                                  isApiCallProcess = true;
+                                });
+                                storedetails.storecode = storecode.text;
+                                storedetails.storename = storename.text;
+                                storedetails.contactnumber = contactnumber.text;
+                                storedetails.address = address.text;
+                                await addstoredetails();
+                                setState(() {
+                                  isApiCallProcess = false;
+                                });
+                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (BuildContext

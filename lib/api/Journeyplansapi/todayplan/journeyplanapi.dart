@@ -32,6 +32,8 @@ Future<void> getJourneyPlan() async {
       gettodayjp.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];
       gettodayjp.storecodes.add(storecode);
+      int isschdlue = decodeJPData['data'][u]['scheduled_calls'];
+      gettodayjp.isscheduled.add(isschdlue);
       dynamic outletid = decodeJPData['data'][u]['outlet']['outlet_id'];
       gettodayjp.outletids.add(outletid);
       dynamic outletlat = decodeJPData['data'][u]['outlet']['outlet_lat'];
@@ -68,4 +70,5 @@ class gettodayjp{
   static List<dynamic> id=[];
   static List<dynamic> contactnumbers=[];
   static List<dynamic> distanceinmeters=[];
+  static List<int> isscheduled=[];
 }

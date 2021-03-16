@@ -11,14 +11,15 @@ import 'package:merchandising/HR/HRdashboard.dart';
 import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
-import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
-import 'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'api/FMapi/fmdbapi.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
 
 Future<void> main() async {
   const period = const Duration(seconds: 60);
   Timer.periodic(period, (Timer t) => getLocation());
   WidgetsFlutterBinding.ensureInitialized();
+ // await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('useremail');
   var password = prefs.getString('userpassword');
@@ -43,8 +44,6 @@ Future<void> main() async {
     }
     else if(userroleid == 3){
       await HRdb();
-      await getallempdetails();
-      await getempdetailsforreport();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -56,6 +55,7 @@ Future<void> main() async {
       ));
     }
     else if(userroleid == 5){
+      await getFMdb();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

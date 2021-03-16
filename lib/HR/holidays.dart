@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
+import 'package:merchandising/main.dart';
 import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
@@ -86,7 +87,7 @@ class HoliDays extends StatelessWidget {
                 );
               }
           ),
-          Align(
+          currentuser.roleid == 3 ? Align(
             alignment: Alignment.bottomRight,
             child: Container(
               margin: EdgeInsets.all(15.0),
@@ -104,7 +105,7 @@ class HoliDays extends StatelessWidget {
                 child: Icon(Icons.add,color: orange,),
               ),
             ),
-          ),
+          ) : SizedBox(),
         ],
       ),
     );

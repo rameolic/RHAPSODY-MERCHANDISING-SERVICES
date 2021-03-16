@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/HQThree.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/HQTwo.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:merchandising/api/api_service.dart';
+//receiver sender
+final String receiver = "rameolic";
+final String sender = DBrequestdata.receivedempid;
 
-class HQOne extends StatefulWidget {
+class ChatScreen extends StatefulWidget {
   @override
-  _HQOneState createState() => _HQOneState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _HQOneState extends State<HQOne> {
+class _ChatScreenState extends State<ChatScreen> {
+  TextEditingController typedmsg = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,121 +37,148 @@ class _HQOneState extends State<HQOne> {
         children: [
           BackGround(),
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HQOneCustom(
-                num: "25",
-                monthyear: "March 2019",
-                text1: "Month Target Details",
-                text2: "Lorem ipsum Dollar sit Ameth",
-                onpress: (){
-                  {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              HQTwo()));}
-                },
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.fromLTRB(10.0, 10, 10.0, 10.0),
+                decoration: BoxDecoration(
+                  color: pink,
+                  borderRadius: BorderRadius.circular(100.0),),
+                child: Text('Feildmanager: $receiver',style: TextStyle(fontSize: 16),),
               ),
-              HQOneCustom(
-                num: "23",
-                monthyear: "March 2019",
-                text1: "Month Target Details",
-                text2: "Lorem ipsum Dollar sit Ameth",
+              StreamBuilder//<QuerySnapshot>
+                (
+                  //stream:  FirebaseFirestore.instance.collection('$sender.$receiver').orderBy('time', descending: true).snapshots(),
+                  builder: (context,snapshot){
+                    if(!snapshot.hasData){
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
+                      );
+                    }
+                    if(snapshot.hasData){
+                      data.messages = [];
+                      for(var message in snapshot.data.docs){
+                        final messagetext = message.data()['text'];
+                        final messagesender = message.data()['sender'];
+                        final time = message.data()['time'];
+                        final messageWidget =
+                        messagesender == '$sender' ?
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/1.5),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right:10.0,bottom: 10.0),
+                                child: Material(
+                                  color: Color(0xffFEE8DA),
+                                  borderRadius: BorderRadius.only(topLeft:Radius.circular(10.0),bottomLeft:Radius.circular(10.0),bottomRight:Radius.circular(10.0)),
+                                  elevation: 5.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(time,softWrap: true,style: TextStyle(fontSize: 10,color: Colors.grey),),
+                                        SizedBox(width: 5.0,),
+                                        Text('$messagetext',softWrap: true,style: TextStyle(fontSize: 18),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ):
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/1.5),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:10.0,bottom: 10.0),
+                                child: Material(
+                                  color: Color(0xffFEE8DA),
+                                  borderRadius: BorderRadius.only(topRight:Radius.circular(10.0),bottomLeft:Radius.circular(10.0),bottomRight:Radius.circular(10.0)),
+                                  elevation: 5.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text('$messagetext',softWrap: true,style: TextStyle(fontSize: 18),),
+                                        SizedBox(width: 5.0,),
+                                        Text(time,softWrap: true,style: TextStyle(fontSize: 10,color: Colors.grey),),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                        data.messages.add(messageWidget);
+                      }
+                    }
+                    return Expanded(
+                      child: ListView(
+                        reverse: true,
+                        children: data.messages,
+                      ),
+                    );}
               ),
-              HQOneCustom(
-                num: "22",
-                monthyear: "March 2019",
-                text1: "Month Target Details",
-                text2: "Lorem ipsum Dollar sit Ameth",
+              Container(
+                padding: EdgeInsets.only(right:10.0),
+                margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                decoration: BoxDecoration(
+                  color: pink,
+                  borderRadius: BorderRadius.circular(100.0),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        style: TextStyle(color: orange),
+                        controller: typedmsg,
+                        cursorColor:orange,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                          focusColor: orange,
+                          hintText: 'Type your message here...',
+                          hintStyle: TextStyle(color: orange),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async{
+                        if(typedmsg.text.isNotEmpty){
+                         // await FirebaseFirestore.instance.collection('$receiver.$sender').add({'text': typedmsg.text, 'sender': '$sender','time': '${DateFormat("h:mma").format(DateTime.now())}',});
+                         // await FirebaseFirestore.instance.collection('$sender.$receiver').add({'text': typedmsg.text, 'sender': '$sender','time': '${DateFormat("h:mma").format(DateTime.now())}',});
+                          typedmsg.clear();
+                        }
+                      },
+                      child: Icon(Icons.send,color: orange,),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add, size: 30, color: Colors.deepOrange),
-        backgroundColor: Color(0xFFFFF3E0),
-        onPressed: () {
-          print("clicked");
-        },
       ),
     );
   }
 }
 
-class HQOneCustom extends StatelessWidget {
-  HQOneCustom({this.num, this.monthyear, this.text1, this.text2,this.onpress});
-  final num;
-  final monthyear;
-  final text1;
-  final text2;
-  final onpress;
 
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Container(
-
-      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-      padding: EdgeInsets.all(10),
-      height: 70,
-      width: double.infinity,
-      decoration: BoxDecoration(
-          color: Color(0xFFFFF3E0), borderRadius: BorderRadius.circular(10.0)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: [
-              Text(
-                num,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[800],
-                    fontSize: 18),
-              ),
-              Text(
-                monthyear,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-              )
-            ],
-          ),
-          Column(
-            children: [
-              Container(
-                height: 50,
-                width: 0.8,
-                decoration: BoxDecoration(color: Colors.black),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 50),
-                child: Text(
-                  text1,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ),
-              Text(
-                text2,
-                style: TextStyle(fontSize: 15),
-              )
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                  icon: Icon(Icons.keyboard_arrow_right,
-                      size: 25.0, color: Colors.grey[600]),
-                  onPressed:onpress),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+class data{
+  static List<Row>  messages;
 }

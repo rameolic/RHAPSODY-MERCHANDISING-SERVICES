@@ -164,6 +164,11 @@ class Menu extends StatelessWidget {
             currentuser.roleid = null;
             remembereddata.email= null;
             remembereddata.password =null;
+            DBrequestdata.receivedtoken =null;
+            DBrequestdata.receivedempid = null;
+            DBrequestdata.empname = null;
+            DBrequestdata.emailid =null;
+            currentuser.roleid = null;
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

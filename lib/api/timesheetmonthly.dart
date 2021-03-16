@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/api/api_service.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/timesheetmonthly.dart';
+import 'package:merchandising/api/timesheetapi.dart';
+import 'package:merchandising/main.dart';
 
 
 final DateTime now = DateTime.now();
@@ -18,17 +20,21 @@ Future<void> gettimesheetmonthly() async {
           int.parse(DateFormat('mm').format(DateTime.now())))),
           (i) => "${int.parse(DateFormat('yyyy').format(DateTime.now()))}-${DateFormat('MM').format(DateTime.now())}-${'${i + 1}'.toString().padLeft(2,"0")}");
   Map request = {
-    "emp_id": "$Empid",
+    "emp_id": "${DBrequestdata.receivedempid}",
     "month" : "$todaydate"
   };
-  print(request);
+  Map fmrequest = {
+    "emp_id": "${timesheet.empid}",
+    "month" : "$todaydate"
+  };
+  print(fmrequest);
   http.Response dataresponse = await http.post(TSMurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(request),
+      body: currentuser.roleid == 6 ? jsonEncode(request) : jsonEncode(fmrequest),
   );
   if (dataresponse.statusCode == 200) {
     TMmonthly.day1=[];

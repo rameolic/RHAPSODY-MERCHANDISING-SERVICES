@@ -17,6 +17,7 @@ Future HRdb() async{
     body: jsonEncode(DBrequestData),
   );
   if (DBresponse.statusCode == 200){
+    print('hr dashboard done');
     String data = DBresponse.body;
     var decodeData = jsonDecode(data);
     HRdashboarddata.fmtotal = decodeData['FieldManager'];

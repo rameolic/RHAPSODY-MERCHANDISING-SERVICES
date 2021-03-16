@@ -5,6 +5,7 @@ import 'MenuContent.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/timesheetapi.dart';
 import 'timesheetmonthly.dart';
+import 'package:merchandising/main.dart';
 
 class TimeSheetList extends StatefulWidget {
   @override
@@ -151,7 +152,7 @@ class _TimeSheetListState extends State<TimeSheetList> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(DBrequestdata.receivedempid,
+                          Text(currentuser.roleid == 5 ? timesheet.empid :DBrequestdata.receivedempid,
                               style: TextStyle(fontSize: 16,))
                         ],
                       ),

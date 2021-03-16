@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
+import 'package:merchandising/api/FMapi/outletapi.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/api/FMapi/addoutletapi.dart';
 
 class AddOutlets extends StatefulWidget {
   @override
@@ -18,21 +22,10 @@ class _AddOutletsState extends State<AddOutlets> {
   TextEditingController area = TextEditingController();
 
   TextEditingController city = TextEditingController();
-
+  TextEditingController country = TextEditingController();
   TextEditingController state = TextEditingController();
   GlobalKey<FormState> addoutlets = GlobalKey<FormState>();
   String outlet_id;
-  List<String> outlet = [
-    "Sheba Market",
-    "Fair Mart ",
-    "Al Quoz",
-    "Umm Al Sheif ",
-    "Anuragha",
-    "Harish ",
-    "Reliance Smart",
-    "More Market",
-    "Big Bazzar"
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,17 +75,14 @@ class _AddOutletsState extends State<AddOutlets> {
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Expanded(
-                                  child: DropDownField(
-                                    onValueChanged: (dynamic value) {
-                                      outlet_id = value;
-                                    },
-                                    value: outlet_id,
-                                    required: false,
-                                    hintText: 'Select Outlet',
-                                    labelText: 'Outlet Name',
-                                    items: outlet,
-                                  ),
+                                child: DropDownField(
+                                  onValueChanged: (dynamic value) {
+                                    outlet_id = value;
+                                  },
+                                  value: outlet_id,
+                                  required: false,
+                                  hintText: 'Select Outlet',
+                                  items: store.addoutlet,
                                 ),
                               )
                             ],
@@ -100,7 +90,6 @@ class _AddOutletsState extends State<AddOutlets> {
                         ),
 
                         Container(
-
                           margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
                           padding: EdgeInsets.only(left:10.0),
                           decoration: BoxDecoration(
@@ -230,7 +219,7 @@ class _AddOutletsState extends State<AddOutlets> {
                             color: Colors.white,
                           ),
                           child: TextFormField(
-                            controller: state,
+                            controller: country,
                             cursorColor: grey,
                             validator: (input) => !input.isNotEmpty
                                 ? "Outlet Country should not be empty"
@@ -248,9 +237,32 @@ class _AddOutletsState extends State<AddOutlets> {
                         ),
                         Center(
                           child: GestureDetector(
-                            onTap: (){
-                              if(validateform()){
-
+                            onTap: ()async{
+                             if(validateform()){
+                               setState(() {
+                                 isApiCallProcess = true;
+                               });
+                                for(int u=0;u<store.addoutlet.length;u++){
+                                  if(store.addoutlet[u] == outlet_id){
+                                      outletdetails.outletname =store.storeid[u];
+                                  }
+                                }
+                                outletdetails.outletlat = latitude.text;
+                                outletdetails.outletlong = longitude.text;
+                                outletdetails.outletarea = outlet_id;
+                                outletdetails.outletcity = city.text;
+                                outletdetails.outletstate = state.text;
+                                outletdetails.outletcountry = country.text;
+                                await addoutletdetails();
+                                setState(() {
+                                  isApiCallProcess = false;
+                                });
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder:
+                                            (BuildContextcontext) =>
+                                                FieldManagerDashBoard()));
                               }
                             },
                             child: Container(
@@ -284,269 +296,3 @@ class _AddOutletsState extends State<AddOutlets> {
     return false;
   }
 }
-
-/*class AddOutlets extends StatefulWidget {
-  @override
-  _AddOutletsState createState() => _AddOutletsState();
-}
-
-class _AddOutletsState extends State<AddOutlets> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pink,
-        title: Text(
-          "Add Outlets",
-          style: TextStyle(color: orange),
-        ),
-      ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: pink,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      AddOutletData(),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: RaisedButton(onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                Oulets()));
-                  },
-                      color: pink,
-                      child: Text("ADD")),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-class AddOutletData extends StatefulWidget {
-  @override
-  _AddOutletDataState createState() => _AddOutletDataState();
-}
-
-class _AddOutletDataState extends State<AddOutletData> {
-  String outlet_id;
-  List<String> outlet = [
-    "Sheba Market",
-    "Fair Mart ",
-    "Al Quoz",
-    "Umm Al Sheif ",
-    "Anuragha",
-    "Harish ",
-    "Reliance Smart",
-    "More Market",
-    "Big Bazzar"
-  ];
-  TextEditingController longitude = TextEditingController();
-  TextEditingController latitude = TextEditingController();
-  TextEditingController area = TextEditingController();
-  TextEditingController city = TextEditingController();
-  TextEditingController state = TextEditingController();
-  TextEditingController country = TextEditingController();
-  GlobalKey<FormState> addoutlets = GlobalKey<FormState>();
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: addoutlets,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-
-              child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width/1.26,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Expanded(
-                      child: DropDownField(
-                        onValueChanged: (dynamic value) {
-                          outlet_id = value;
-                        },
-                        value: outlet_id,
-                        required: false,
-                        hintText: 'Select Outlet',
-                        labelText: 'Outlet Name',
-                        items: outlet,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: longitude,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.number,
-                      validator: (input) => !input.isNotEmpty
-                          ? "latitude should not be empty"
-                          : null,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet Latitude',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: latitude,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet Longitude',
-                      ),
-
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-
-                  Expanded(
-                    child: TextField(
-                      controller: area,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet Area',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: city,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet City',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: state,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet State',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
-              height: 50,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: country,
-                      cursorColor: grey,
-                      keyboardType: TextInputType.name,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Outlet Country',
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-
-  }
-
-}*/
-
-
-
-
-

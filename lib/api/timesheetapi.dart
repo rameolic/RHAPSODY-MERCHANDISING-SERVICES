@@ -1,25 +1,34 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:merchandising/main.dart';
 import 'api_service.dart';
 import 'package:intl/intl.dart';
+
+class timesheet{
+  static var empid;
+}
 
 
 void getTimeSheetdaily() async {
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   final String todaydate = formatter.format(now);
-  Map Timesheetrequest = {
-    'emp_id': '$Empid',
+  Map timesheetfm = {
+    'emp_id': '${timesheet.empid}',
     'date': '$todaydate',
   };
-  print(Timesheetrequest);
+  Map Timesheetrequest = {
+    'emp_id': '${DBrequestdata.receivedempid}',
+    'date': '$todaydate',
+  };
+  print(timesheetfm);
   http.Response tsresponse = await http.post(TSurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(Timesheetrequest),
+    body: currentuser.roleid == 6 ? jsonEncode(Timesheetrequest) : jsonEncode(timesheetfm),
   );
   if (tsresponse.statusCode == 200) {
     TimeSheetdatadaily.outletname = [];
