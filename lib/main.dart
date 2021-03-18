@@ -12,14 +12,12 @@ import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/FMapi/fmdbapi.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 
 Future<void> main() async {
-  const period = const Duration(seconds: 60);
-  Timer.periodic(period, (Timer t) => getLocation());
   WidgetsFlutterBinding.ensureInitialized();
- // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('useremail');
   var password = prefs.getString('userpassword');
@@ -30,6 +28,8 @@ Future<void> main() async {
     currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
+      const period = const Duration(seconds: 60);
+      Timer.periodic(period, (Timer t) => getLocation());
       await DBRequestmonthly();
       await DBRequestdaily();
       runApp(MaterialApp(

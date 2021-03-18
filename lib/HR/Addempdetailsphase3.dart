@@ -1,9 +1,13 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
+import 'package:merchandising/api/HRapi/addemployeeapi.dart';
+import 'package:intl/intl.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -19,165 +23,220 @@ class AddempPhase3 extends StatefulWidget {
 class _AddempPhase3State extends State<AddempPhase3> {
   GlobalKey<FormState> addempphase3 = GlobalKey<FormState>();
 
-  TextEditingController department = TextEditingController();
+  TextEditingController passport = TextEditingController();
+  TextEditingController visacompany = TextEditingController();
+  TextEditingController visanumber = TextEditingController();
+  TextEditingController medicalinsurance = TextEditingController();
+
+  TextEditingController emiratesid = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Row(
-            children: [
-              Text(
-                'Add Employee',
-                style: TextStyle(color: orange),
-              ),
-            ],
-          ),
-        ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
-          children: [
-            BackGround(),
-            SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: pink,
-                  borderRadius: BorderRadius.circular(10),
+    return ProgressHUD(
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: containerscolor,
+            iconTheme: IconThemeData(color: orange),
+            title: Row(
+              children: [
+                Text(
+                  'Add Employee',
+                  style: TextStyle(color: orange),
                 ),
-                child: Form(
-                  key: addempphase3 ,
-                  child: Column(
-                    children: [
-                      Text("Documents Info",style: TextStyle(color: orange),),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
-                        padding: EdgeInsets.only(left:10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: department,
-                          cursorColor: grey,
-                          validator: (input) => !input.isNotEmpty
-                              ? "Passport Number should not be empty"
-                              : null,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: orange,
-                            hintText: "Passport Number (@required)",
-                            hintStyle: TextStyle(
-                              color: grey,
-                              fontSize: 16.0,
+              ],
+            ),
+          ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
+          body: Stack(
+            children: [
+              BackGround(),
+              SingleChildScrollView(
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: pink,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Form(
+                    key: addempphase3 ,
+                    child: Column(
+                      children: [
+                        Text("Documents Info",style: TextStyle(color: orange),),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: emiratesid,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "Emirates id should not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Emirates ID (@required)",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      PassportExpirydate(),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
-                        padding: EdgeInsets.only(left:10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: department,
-                          cursorColor: grey,
-                          validator: (input) => !input.isNotEmpty
-                              ? "Visa Company should not be empty"
-                              : null,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: orange,
-                            hintText: "Visa Company (@required)",
-                            hintStyle: TextStyle(
-                              color: grey,
-                              fontSize: 16.0,
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: passport,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "Passport Number should not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Passport Number (@required)",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0),
-                        padding: EdgeInsets.only(left:10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: department,
-                          cursorColor: grey,
-                          validator: (input) => !input.isNotEmpty
-                              ? "Visa Number should not be empty"
-                              : null,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: orange,
-                            hintText: "Visa Number (@required)",
-                            hintStyle: TextStyle(
-                              color: grey,
-                              fontSize: 16.0,
+                        PassportExpirydate(),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: visacompany,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "Visa Company should not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Visa Company (@required)",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      visaExpirydate(),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10.0),
-                        padding: EdgeInsets.only(left:10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: TextFormField(
-                          controller: department,
-                          cursorColor: grey,
-                          validator: (input) => !input.isNotEmpty
-                              ? "Mediacal Insurance should not be empty"
-                              : null,
-                          decoration: new InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: orange,
-                            hintText: "Medical Insurance Number (@required)",
-                            hintStyle: TextStyle(
-                              color: grey,
-                              fontSize: 16.0,
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: visanumber,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "Visa Number should not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Visa Number (@required)",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      MedicalExpirydate(),
-                      Center(
-                        child: GestureDetector(
-                          onTap: (){
-                            validateform();
+                        visaExpirydate(),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: medicalinsurance,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "Mediacal Insurance should not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Medical Insurance Number (@required)",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        MedicalExpirydate(),
+                        Center(
+                          child: GestureDetector(
+                            onTap: ()async{
+                              if(validateform()){
+                                setState(() {
+                                  isApiCallProcess =true;
+                                });
+                                employeedetails.emiratesid = emiratesid.text;
+                                employeedetails.passportno = passport.text;
+                                employeedetails.visacompanyname = visacompany.text;
+                                print(visanumber.text);
+                                employeedetails.medicalinsno = medicalinsurance.text;
+                                employeedetails.passportexpdate = DateFormat('yyyy-MM-dd').format(passportexpiry);
+                                employeedetails.visaexpdate = DateFormat('yyyy-MM-dd').format(visaexpiry);
+                                employeedetails.medicalinsexpdate = DateFormat('yyyy-MM-dd').format(medicalexpiry);
+                                await addemployees();
+                                setState(() {
+                                  isApiCallProcess =false;
+                                });
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder:
+                                            (BuildContextcontext) =>
+                                                HRdashboard()));
+                              }
 
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10,top: 10),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: orange,
-                              borderRadius: BorderRadius.circular(10),
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 10,top: 10),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: orange,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text('Next'),
                             ),
-                            child: Text('Next'),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        )
+            ],
+          )
+      ),
     );
   }
   bool validateform() {
@@ -196,11 +255,10 @@ class visaExpirydate extends StatefulWidget {
 }
 
 class _visaExpirydateState extends State<visaExpirydate> {
-  DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: StartDate,
+      initialDate: visaexpiry,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget child) {
@@ -218,9 +276,9 @@ class _visaExpirydateState extends State<visaExpirydate> {
         );
       },
     );
-    if (picked != null && picked != StartDate)
+    if (picked != null && picked != visaexpiry)
       setState(() {
-        StartDate = picked;
+        visaexpiry = picked;
       });
   }
   @override
@@ -237,7 +295,7 @@ class _visaExpirydateState extends State<visaExpirydate> {
         children: [
           Text("Visa Expiry Date",style: TextStyle(fontSize: 16),),
           Spacer(),
-          Text("${StartDate.toLocal()}".split(' ')[0],
+          Text("${visaexpiry.toLocal()}".split(' ')[0],
             style: TextStyle(fontSize: 16),),
           IconButton(
             icon: Icon(CupertinoIcons.calendar),
@@ -250,6 +308,11 @@ class _visaExpirydateState extends State<visaExpirydate> {
 }
 
 
+DateTime visaexpiry = DateTime.now();
+
+DateTime passportexpiry = DateTime.now();
+
+DateTime medicalexpiry = DateTime.now();
 
 class PassportExpirydate extends StatefulWidget {
   @override
@@ -257,11 +320,10 @@ class PassportExpirydate extends StatefulWidget {
 }
 
 class _PassportExpirydateState extends State<PassportExpirydate> {
-  DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: StartDate,
+      initialDate: passportexpiry,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget child) {
@@ -281,7 +343,7 @@ class _PassportExpirydateState extends State<PassportExpirydate> {
     );
     if (picked != null && picked != StartDate)
       setState(() {
-        StartDate = picked;
+        passportexpiry = picked;
       });
   }
   @override
@@ -298,7 +360,7 @@ class _PassportExpirydateState extends State<PassportExpirydate> {
         children: [
           Text("Passport Expiry Date",style: TextStyle(fontSize: 16),),
           Spacer(),
-          Text("${StartDate.toLocal()}".split(' ')[0],
+          Text("${passportexpiry.toLocal()}".split(' ')[0],
             style: TextStyle(fontSize: 16),),
           IconButton(
             icon: Icon(CupertinoIcons.calendar),
@@ -316,11 +378,10 @@ class MedicalExpirydate extends StatefulWidget {
 }
 
 class _MedicalExpirydate extends State<MedicalExpirydate> {
-  DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: StartDate,
+      initialDate: medicalexpiry,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget child) {
@@ -340,7 +401,7 @@ class _MedicalExpirydate extends State<MedicalExpirydate> {
     );
     if (picked != null && picked != StartDate)
       setState(() {
-        StartDate = picked;
+        medicalexpiry = picked;
       });
   }
   @override
@@ -357,7 +418,7 @@ class _MedicalExpirydate extends State<MedicalExpirydate> {
         children: [
           Text("Insurance Expiry Date",style: TextStyle(fontSize: 16),),
           Spacer(),
-          Text("${StartDate.toLocal()}".split(' ')[0],
+          Text("${medicalexpiry.toLocal()}".split(' ')[0],
             style: TextStyle(fontSize: 16),),
           IconButton(
             icon: Icon(CupertinoIcons.calendar),

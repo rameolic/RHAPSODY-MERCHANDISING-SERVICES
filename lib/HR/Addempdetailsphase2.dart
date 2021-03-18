@@ -10,8 +10,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/HR/addreport.dart';
 import 'package:country_picker/country_picker.dart';
 import 'Addempdetailsphase3.dart';
-
-
+import 'package:merchandising/api/HRapi/addemployeeapi.dart';
+import 'package:intl/intl.dart';
+String selecteddesignation;
 class AddempPhase2 extends StatefulWidget {
   @override
   _AddempPhase2State createState() => _AddempPhase2State();
@@ -65,80 +66,24 @@ class _AddempPhase2State extends State<AddempPhase2> {
                               color: Colors.white
                           ),
                           width: double.infinity,
-                          child: DropdownButton(
+                          child: DropdownButton<String>(
                               isExpanded: true,
                               iconEnabledColor: orange,
                               elevation: 20,
                               dropdownColor: Colors.white,
-                              value: designationdropdown,
-                              onChanged: (int newVal) {
-                                if (newVal != 0 ){
-                                  setState(() {
-                                    designationdropdown = newVal;
-                                  });
-                                }
-                              },
-                              items:[
-                                DropdownMenuItem(
-                                  value: 0,
-                                  child: Text('Select Designation (@required)',style: TextStyle(color: grey, fontSize: 16.0,),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 1,
-                                  child: Row(
-                                    children: [Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 2,
-                                  child: Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 3,
-                                  child: Row(
-                                    children: [Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 4,
-                                  child: Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 5,
-                                  child: Row(
-                                    children: [Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 6,
-                                  child: Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 7,
-                                  child: Row(
-                                    children: [Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 8,
-                                  child: Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                ),
-                                DropdownMenuItem(
-                                  value: 9,
-                                  child: Row(
-                                    children: [Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                    ],
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 10,
-                                  child: Text('Reason', style: TextStyle(fontSize: 16.0,),),
-                                ),
-                              ] ),
+                              items: rolenames.designation.map((String val) {
+                                return new DropdownMenuItem<String>(
+                                  value: val,
+                                  child: new Text(val),
+                                );
+                              }).toList(),
+                              hint: Text("Select Designation (@required)"),
+                              value: selecteddesignation,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  selecteddesignation = newVal;
+                                });
+                              })
 
                         ),
                         Container(
@@ -169,13 +114,23 @@ class _AddempPhase2State extends State<AddempPhase2> {
                         Center(
                           child: GestureDetector(
                             onTap: (){
-                              if(validateform()){
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder:
-                                            (BuildContextcontext) =>
-                                            AddempPhase3()));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder:
+                                          (BuildContextcontext) =>
+                                          AddempPhase3()));
+                              if(validateform() && selecteddesignation != null){
+                                for(int u=0;u<rolenames.designation.length;u++){
+                                  if (rolenames.designation[u] == selecteddesignation) {
+                                    employeedetails.designation = rolenames.id[u];
+                                  }}
+                                employeedetails.departmant = department.text;
+                                employeedetails.joiningdate = DateFormat('yyyy-MM-dd').format(joiningdate);
+                                print(employeedetails.designation);
+                                print(employeedetails.departmant);
+                                print(employeedetails.joiningdate);
+
                               }
                             },
                             child: Container(
@@ -213,13 +168,12 @@ class Joiningdate extends StatefulWidget {
   @override
   _JoiningdateState createState() => _JoiningdateState();
 }
-
+DateTime joiningdate = DateTime.now();
 class _JoiningdateState extends State<Joiningdate> {
-  DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
-      initialDate: StartDate,
+      initialDate: joiningdate,
       firstDate: DateTime(2015, 8),
       lastDate: DateTime(2101),
       builder: (BuildContext context, Widget child) {
@@ -237,9 +191,9 @@ class _JoiningdateState extends State<Joiningdate> {
         );
       },
     );
-    if (picked != null && picked != StartDate)
+    if (picked != null && picked != joiningdate)
       setState(() {
-        StartDate = picked;
+        joiningdate = picked;
       });
   }
   @override
@@ -256,7 +210,7 @@ class _JoiningdateState extends State<Joiningdate> {
         children: [
           Text("Joining Date",style: TextStyle(fontSize: 16),),
           Spacer(),
-          Text("${StartDate.toLocal()}".split(' ')[0],
+          Text("${joiningdate.toLocal()}".split(' ')[0],
             style: TextStyle(fontSize: 16),),
           IconButton(
             icon: Icon(CupertinoIcons.calendar),

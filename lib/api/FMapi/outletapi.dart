@@ -18,6 +18,7 @@ Future getFMoutletdetails() async{
     print("getOutlet Details Done");
     String outletdetdata = OutletDetails.body;
     var decodeoutlet = jsonDecode(outletdetdata);
+    outletdata.outletid=[];
     outletdata.contactnumber = [];
     outletdata.outletname = [];
     outletdata.outletlat = [];
@@ -31,6 +32,7 @@ Future getFMoutletdetails() async{
     for(int u=0;u<decodeoutlet['data'].length;u++) {
       outletdata.contactnumber.add(decodeoutlet['data'][u]['store'][0]['contact_number']);
       outletdata.address.add(decodeoutlet['data'][u]['store'][0]['address']);
+      outletdata.outletid.add(decodeoutlet['data'][u]['outlet_id']);
       dynamic code = decodeoutlet['data'][u]['store'][0]['store_code'];
       outletdata.code.add(code);
       dynamic outletname = decodeoutlet['data'][u]['store'][0]['store_name'];
@@ -65,8 +67,9 @@ Future getFMoutletdetails() async{
 }
 
 class outletdata {
+  static List<int> outletid=[];
   static List<dynamic> contactnumber= [];
-  static List<dynamic> outletname= [];
+  static List<String> outletname= [];
   static List<dynamic> outletlat= [];
   static List<dynamic> outletlong=[];
   static List<dynamic> outletarea= [];

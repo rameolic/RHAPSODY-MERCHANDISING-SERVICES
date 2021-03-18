@@ -42,6 +42,10 @@ Uri AddOutletsurl = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet");
 Uri FMJPurl = Uri.parse("https://rms2.rhapsody.ae/api/journey");
 Uri MercLeaveDetails = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_leave_details");
 Uri AddEmployee = Uri.parse("https://rms2.rhapsody.ae/api/add_employee");
+Uri unschdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_unscheduled_journeyplan");
+Uri designation = Uri.parse("https://rms2.rhapsody.ae/api/all_roles");
+Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeyplan");
+
 
 
 

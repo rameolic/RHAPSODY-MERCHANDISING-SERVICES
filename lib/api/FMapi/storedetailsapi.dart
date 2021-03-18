@@ -21,7 +21,7 @@ Future<void> getStoreDetails() async {
     storesdata.storecontnum = [];
     storesdata.storeaddress = [];
     for(int u=0;u<decodestores['data'].length;u++) {
-      dynamic storecode = decodestores['data'][u]['store_code'];
+      String storecode = decodestores['data'][u]['store_code'];
       storesdata.storecode.add(storecode);
       storesdata.id.add(decodestores['data'][u]['id']);
       storesdata.storename.add(decodestores['data'][u]['store_name']);
@@ -39,7 +39,7 @@ Future<void> getStoreDetails() async {
 class storesdata {
   static List<int> id = [];
   static List<String> storecode = [];
-  static List<dynamic> storename = [];
+  static List<String> storename = [];
   static List<dynamic> storecontnum = [];
   static List<dynamic> storeaddress = [];
 }

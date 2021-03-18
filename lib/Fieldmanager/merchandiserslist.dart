@@ -58,7 +58,7 @@ class _MerchandisersListState extends State<MerchandisersList> {
                     },
                     child: Container(
                         padding: EdgeInsets.all(10.0),
-                        margin: EdgeInsets.all(10.0),
+                        margin: EdgeInsets.fromLTRB(10.0,5,10,5),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -85,3 +85,5 @@ class _MerchandisersListState extends State<MerchandisersList> {
     );
   }
 }
+
+

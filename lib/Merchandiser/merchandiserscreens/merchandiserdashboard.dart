@@ -21,7 +21,7 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
-import 'HQOne.dart';
+import 'package:merchandising/chatscreen.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -393,7 +393,7 @@ class _DashBoardState extends State<DashBoard> {
                         setState(() {
                           isApiCallProcess = true;
                         });
-                        await getTimeSheetdaily();
+                          await getTimeSheetdaily();
                          await gettimesheetmonthly();
                           Navigator.push(
                               context,
@@ -534,7 +534,10 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
+                        setState(() {
+                          chat.receiver = "Emp5906";
+                        });
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
                         },
                       child: Container(
                         height: 120,

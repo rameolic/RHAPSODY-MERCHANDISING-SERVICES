@@ -43,6 +43,7 @@ Future addemployees() async{
     'medical_ins_exp_date' : '${employeedetails.medicalinsexpdate}',
     'visa_company_name' : '${employeedetails.visacompanyname}',
   };
+  print(employeedata);
   http.Response employees = await http.post(AddEmployee,
     headers: {
       'Content-Type': 'application/json',
@@ -52,6 +53,33 @@ Future addemployees() async{
     body: jsonEncode(employeedata),
   );
   print(employees.body);
-  print("Add Employees Done");
+}
+class rolenames{
+  static List<String> designation;
+  static List<int> id;
+}
+Future getdesignations() async{
 
+  http.Response responsedata = await http.post(designation,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode(DBrequestData),
+  );
+  if (responsedata.statusCode == 200){
+    print('designations done');
+    var decodeddata = jsonDecode(responsedata.body);
+    rolenames.designation = [];
+    rolenames.id = [];
+    for(int u=0;u<decodeddata['data'].length;u++) {
+      rolenames.designation.add(decodeddata["data"][u]['name']);
+      rolenames.id.add(decodeddata["data"][u]['id']);
+    }
+  }
+  if(responsedata.statusCode != 200){
+    print(responsedata.statusCode);
+
+  }
 }

@@ -17,6 +17,7 @@ import 'merchandiserslist.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'package:merchandising/api/holidays.dart';
+import 'chatusers.dart';
 
 
 class FieldManagerDashBoard extends StatefulWidget {
@@ -380,6 +381,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                 isApiCallProcess = true;
                               });
                               await getmerchnamelist();
+                              await getFMoutletdetails();
                               setState(() {
                                 isApiCallProcess = false;
                               });
@@ -685,7 +687,33 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                       ),
                     ],
                   ),
-                )
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    margin: EdgeInsets.all(15.0),
+                    child: FloatingActionButton(
+                      onPressed: ()async{
+                        setState(() {
+                          isApiCallProcess = true;
+                        });
+                        await getmerchnamelist();
+                        setState(() {
+                          isApiCallProcess = false;
+                        });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext
+                                context) =>
+                                    chatusers()));
+                      },
+                      backgroundColor: pink,
+                      elevation: 8.0,
+                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: orange,),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
