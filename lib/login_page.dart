@@ -180,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
                                               context,
                                               MaterialPageRoute(
                                                   builder:
+                                                      // ignore: non_constant_identifier_names
                                                       (BuildContextcontext) =>
                                                       HRdashboard()));
                                         }
@@ -202,8 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                                             content: Text(
                                               "Username/password was wrong",
                                             ));
-                                        scaffoldKey.currentState
-                                            .showSnackBar(snackBar);
+                                        scaffoldKey.currentState.showSnackBar(snackBar);
                                       }
                                     }
                                   }

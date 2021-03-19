@@ -325,6 +325,7 @@ class _State extends State<JourneyListBuilder> {
               await Navigator.push(
                    context,
                    MaterialPageRoute(
+                       // ignore: non_constant_identifier_names
                        builder: (BuildContextcontext) => OutLet()));
 
                setState(() {

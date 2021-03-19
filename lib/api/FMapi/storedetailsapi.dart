@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
 Future<void> getStoreDetails() async {
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   print(DBrequestData);
   http.Response SDResponse = await http.post(StoreDetailsurl,
     headers: {
@@ -24,7 +27,7 @@ Future<void> getStoreDetails() async {
       String storecode = decodestores['data'][u]['store_code'];
       storesdata.storecode.add(storecode);
       storesdata.id.add(decodestores['data'][u]['id']);
-      storesdata.storename.add(decodestores['data'][u]['store_name']);
+      storesdata.storename.add('[$storecode] ${decodestores['data'][u]['store_name']}');
       dynamic contactnumber = decodestores['data'][u]['contact_number'];
       storesdata.storecontnum.add(contactnumber);
       dynamic storeaddress = decodestores['data'][u]['address'];

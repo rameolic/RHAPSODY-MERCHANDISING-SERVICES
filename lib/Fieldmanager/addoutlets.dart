@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/api/FMapi/addoutletapi.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class AddOutlets extends StatefulWidget {
   @override
@@ -25,6 +25,7 @@ class _AddOutletsState extends State<AddOutlets> {
   TextEditingController country = TextEditingController();
   TextEditingController state = TextEditingController();
   GlobalKey<FormState> addoutlets = GlobalKey<FormState>();
+  // ignore: non_constant_identifier_names
   String outlet_id;
   @override
   Widget build(BuildContext context) {
@@ -65,27 +66,20 @@ class _AddOutletsState extends State<AddOutlets> {
                           width: double.infinity,
                           decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
                          margin: EdgeInsets.only(top:10),
-                          padding: EdgeInsets.all(10.0),
-
-                          child: Row(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width/1.26,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: DropDownField(
-                                  onValueChanged: (dynamic value) {
-                                    outlet_id = value;
-                                  },
-                                  value: outlet_id,
-                                  required: false,
-                                  hintText: 'Select Outlet',
-                                  items: store.addoutlet,
-                                ),
-                              )
-                            ],
+                          padding: EdgeInsets.all(3.0),
+                          child: SearchableDropdown.single(
+                            underline: SizedBox(),
+                            items: store.addoutlet.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList(),
+                            value: outlet_id,
+                            hint: "Select outlet",
+                            searchHint: "Select outlet",
+                            onChanged: (value) {
+                              setState(() {
+                                outlet_id = value;
+                                print(value);
+                              });
+                            },
+                            isExpanded: true,
                           ),
                         ),
 
@@ -261,6 +255,7 @@ class _AddOutletsState extends State<AddOutlets> {
                                     context,
                                     MaterialPageRoute(
                                         builder:
+                                            // ignore: non_constant_identifier_names
                                             (BuildContextcontext) =>
                                                 FieldManagerDashBoard()));
                               }

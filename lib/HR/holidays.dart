@@ -1,17 +1,9 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
-import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/main.dart';
-import 'package:merchandising/model/leaveresponse.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:merchandising/api/leavestakenapi.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/addholiday.dart';
 import 'package:intl/intl.dart';
@@ -112,6 +104,7 @@ class HoliDays extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class AddHoliday extends StatelessWidget {
 
   TextEditingController descriptioncontroller = TextEditingController();
@@ -218,6 +211,7 @@ class StartDate extends StatefulWidget {
 }
 
 class _StartDateState extends State<StartDate> {
+  // ignore: non_constant_identifier_names
   DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

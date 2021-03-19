@@ -1,18 +1,12 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
 import 'package:intl/intl.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
-import 'package:merchandising/model/leaveresponse.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/HR/addreport.dart';
-import 'package:country_picker/country_picker.dart';
 
 
 class AddempPhase3 extends StatefulWidget {
@@ -213,6 +207,7 @@ class _AddempPhase3State extends State<AddempPhase3> {
                                     context,
                                     MaterialPageRoute(
                                         builder:
+                                            // ignore: non_constant_identifier_names
                                             (BuildContextcontext) =>
                                                 HRdashboard()));
                               }
@@ -249,11 +244,13 @@ class _AddempPhase3State extends State<AddempPhase3> {
   }
 }
 
+// ignore: camel_case_types
 class visaExpirydate extends StatefulWidget {
   @override
   _visaExpirydateState createState() => _visaExpirydateState();
 }
 
+// ignore: camel_case_types
 class _visaExpirydateState extends State<visaExpirydate> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -341,6 +338,7 @@ class _PassportExpirydateState extends State<PassportExpirydate> {
         );
       },
     );
+    // ignore: unrelated_type_equality_checks
     if (picked != null && picked != StartDate)
       setState(() {
         passportexpiry = picked;
@@ -399,6 +397,7 @@ class _MedicalExpirydate extends State<MedicalExpirydate> {
         );
       },
     );
+    // ignore: unrelated_type_equality_checks
     if (picked != null && picked != StartDate)
       setState(() {
         medicalexpiry = picked;

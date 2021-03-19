@@ -59,7 +59,9 @@ class rolenames{
   static List<int> id;
 }
 Future getdesignations() async{
-
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response responsedata = await http.post(designation,
     headers: {
       'Content-Type': 'application/json',

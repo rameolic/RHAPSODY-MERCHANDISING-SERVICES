@@ -1,20 +1,14 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
-import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
-import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:merchandising/api/leavestakenapi.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 
 
 class WorkDay extends StatelessWidget {
   static final List<String> date = <String>["01-02-20","01-02-20",];
+  // ignore: non_constant_identifier_names
   static final List<String> Description = <String>["Description here","Description here",];
   static final List<String> createdon = <String>["Outletname","Outletname",];
   @override
@@ -130,6 +124,7 @@ class WorkDay extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class AddWorkday extends StatelessWidget {
 
   TextEditingController reasoninputcontroller = TextEditingController();
@@ -234,6 +229,7 @@ class StartDate extends StatefulWidget {
 }
 
 class _StartDateState extends State<StartDate> {
+  // ignore: non_constant_identifier_names
   DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

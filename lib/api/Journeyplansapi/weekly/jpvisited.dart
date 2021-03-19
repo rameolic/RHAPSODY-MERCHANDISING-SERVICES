@@ -4,6 +4,9 @@ import '../../api_service.dart';
 import 'package:intl/intl.dart';
 
 Future<void> getVisitJourneyPlanweekly() async {
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response JPresponse = await http.post(
     WJPVisitedurl,
     headers: {

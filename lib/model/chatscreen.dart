@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:merchandising/main.dart';
-import 'Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'Constants.dart';
+import '../Merchandiser/merchandiserscreens/MenuContent.dart';
+import '../Constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/api/api_service.dart';

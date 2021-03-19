@@ -21,7 +21,7 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
-import 'package:merchandising/chatscreen.dart';
+import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
 
 class DashBoard extends StatefulWidget {
   @override

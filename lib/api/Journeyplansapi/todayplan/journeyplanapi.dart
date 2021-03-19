@@ -4,6 +4,9 @@ import '../../api_service.dart';
 import'package:merchandising/model/distanceinmeters.dart';
 
 Future<void> getJourneyPlan() async {
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response JPresponse = await http.post(JPurl,
     headers: {
       'Content-Type': 'application/json',

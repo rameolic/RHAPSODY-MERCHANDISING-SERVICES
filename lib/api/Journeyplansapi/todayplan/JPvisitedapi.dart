@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import '../../api_service.dart';
 
 Future<void> getvisitedJourneyPlan() async {
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response jPresponse = await http.post(JPVisitedurl,
     headers: {
       'Content-Type': 'application/json',

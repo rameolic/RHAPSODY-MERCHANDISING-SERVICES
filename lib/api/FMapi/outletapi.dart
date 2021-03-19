@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
 import 'storedetailsapi.dart';
-import 'package:flutter/foundation.dart';
 
 
 Future getFMoutletdetails() async{
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response OutletDetails = await http.post(OCurl,
     headers: {
       'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ Future getFMoutletdetails() async{
       dynamic code = decodeoutlet['data'][u]['store'][0]['store_code'];
       outletdata.code.add(code);
       dynamic outletname = decodeoutlet['data'][u]['store'][0]['store_name'];
-      outletdata.outletname.add(outletname);
+      outletdata.outletname.add('[$code] $outletname');
       dynamic outletlat = decodeoutlet['data'][u]['outlet_lat'];
       outletdata.outletlat.add(outletlat);
       dynamic outletlong = decodeoutlet['data'][u]['outlet_long'];
@@ -51,6 +53,8 @@ Future getFMoutletdetails() async{
       outletdata.outletcountry.add(outletcountry);
     }
     await getStoreDetails();
+    store.addoutlet=[];
+    store.storeid=[];
     for(int u=0;u<storesdata.storename.length;u++){
         if(outletdata.outletname.contains(storesdata.storename[u])){
         }else{

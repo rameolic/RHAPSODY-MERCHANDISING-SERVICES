@@ -196,7 +196,6 @@ class CompetionCheckOneDropDown extends StatefulWidget {
 }
 
 class _CompetionCheckOneDropDownState extends State<CompetionCheckOneDropDown> {
-  @override
   int dropDownValue =0;
   Widget build(BuildContext context) {
     return Container(

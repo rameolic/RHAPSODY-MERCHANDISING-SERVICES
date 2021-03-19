@@ -2,10 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
-import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
-import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 
 Uri ChartUrl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
@@ -45,8 +43,7 @@ Uri AddEmployee = Uri.parse("https://rms2.rhapsody.ae/api/add_employee");
 Uri unschdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_unscheduled_journeyplan");
 Uri designation = Uri.parse("https://rms2.rhapsody.ae/api/all_roles");
 Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeyplan");
-
-
+Uri Attendance = Uri.parse("https://rms2.rhapsody.ae/api/attendance_monthly");
 
 
 class loggedin{
@@ -57,13 +54,11 @@ class loggedin{
 Future loginapi() async {
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
-  print(loggedin.email);
   Map loginData = {
     'email': '${loggedin.email}',
     'password': '${loggedin.password}',
   };
   print(loginData);
-
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
@@ -104,11 +99,12 @@ class DBrequestdata {
   static var emailid;
 }
 var token = DBrequestdata.receivedtoken;
-Map DBrequestData = {
-  'emp_id': '${DBrequestdata.receivedempid}'
-};
+
 
 Future DBRequestdaily() async{
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   print(DBrequestData);
   http.Response DBresponse = await http.post(DBdailyurl,
     headers: {
@@ -138,6 +134,9 @@ Future DBRequestdaily() async{
   }
 }
 Future DBRequestmonthly() async{
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response DBresponse = await http.post(DBmonthlyurl,
     headers: {
       'Content-Type': 'application/json',
@@ -312,7 +311,7 @@ void checkout() async {
 }
 
 
-void leaverequest() async {
+Future leaverequest() async {
   var leavetype = leave.type;
   var startdate = leave.startdate;
   var enddate = leave.enddate;

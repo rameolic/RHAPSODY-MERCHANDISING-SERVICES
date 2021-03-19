@@ -18,6 +18,8 @@ import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'package:merchandising/api/holidays.dart';
 import 'chatusers.dart';
+import 'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/model/myattendance.dart';
 
 
 class FieldManagerDashBoard extends StatefulWidget {
@@ -587,8 +589,16 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
-                            onTap: () {
-
+                            onTap: ()async{
+                              setState(() {
+                                isApiCallProcess =true;
+                              });
+                              await getmyattandance();
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => MyAttendance()));
                             },
                             child: Container(
                               height: 120,
@@ -664,9 +674,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         ),
                         child: Row(
                           children: [
-                            Spacer(
-                              flex: 2,
-                            ),
+                            Spacer(flex: 2,),
                             Icon(
                               CupertinoIcons.sun_max,
                               color: Colors.black,
@@ -706,7 +714,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                             MaterialPageRoute(
                                 builder: (BuildContext
                                 context) =>
-                                    chatusers()));
+                                    ChatUsers()));
                       },
                       backgroundColor: pink,
                       elevation: 8.0,

@@ -1,14 +1,7 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
-import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
-import 'package:merchandising/model/leaveresponse.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:merchandising/HR/addreport.dart';
-import 'package:country_picker/country_picker.dart';
 import 'Addempdetailsphase3.dart';
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
 import 'package:intl/intl.dart';
@@ -67,6 +60,7 @@ class _AddempPhase2State extends State<AddempPhase2> {
                           ),
                           width: double.infinity,
                           child: DropdownButton<String>(
+                            underline: SizedBox(),
                               isExpanded: true,
                               iconEnabledColor: orange,
                               elevation: 20,
@@ -118,6 +112,7 @@ class _AddempPhase2State extends State<AddempPhase2> {
                                   context,
                                   MaterialPageRoute(
                                       builder:
+                                          // ignore: non_constant_identifier_names
                                           (BuildContextcontext) =>
                                           AddempPhase3()));
                               if(validateform() && selecteddesignation != null){

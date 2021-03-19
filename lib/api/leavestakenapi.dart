@@ -3,13 +3,16 @@ import 'package:http/http.dart' as http;
 import 'api_service.dart';
 
 Future<void> leaveData() async {
+  Map body = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response LDresponse = await http.post(LDurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(DBrequestData),
+    body: jsonEncode(body),
   );
   if (LDresponse.statusCode == 200) {
     leavedataResponse.reasons = [];

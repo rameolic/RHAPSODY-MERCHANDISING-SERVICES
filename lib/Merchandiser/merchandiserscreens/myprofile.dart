@@ -115,7 +115,7 @@ class _MyprofileState extends State<Myprofile> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(myprofile.surname),
+                                    Text(' '),
                                     Text(" "),
                                     Text(DBrequestdata.empname),
                                   ],

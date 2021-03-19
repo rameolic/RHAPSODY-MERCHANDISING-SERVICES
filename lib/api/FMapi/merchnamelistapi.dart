@@ -4,7 +4,9 @@ import '../api_service.dart';
 
 
 Future getmerchnamelist() async{
-
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response Merchname = await http.post(MercNameList,
     headers: {
       'Content-Type': 'application/json',

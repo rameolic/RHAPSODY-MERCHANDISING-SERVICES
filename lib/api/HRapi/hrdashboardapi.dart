@@ -2,11 +2,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/main.dart';
 
 
 Future HRdb() async{
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   print(DBrequestData);
   http.Response DBresponse = await http.post(HRdburl,
     headers: {

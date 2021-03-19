@@ -1,20 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/main.dart';
-import'package:merchandising/api/FMapi/merchnamelistapi.dart';
 
 
 Future getFMdb() async{
-  print(DBrequestData);
+  Map body = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
+  print(body);
   http.Response DBresponse = await http.post(FMDashBoardurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(DBrequestData),
+   body: jsonEncode(body),
 
   );
   if (DBresponse.statusCode == 200){

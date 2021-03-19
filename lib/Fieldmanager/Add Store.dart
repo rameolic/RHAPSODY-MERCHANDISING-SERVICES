@@ -5,7 +5,6 @@ import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/addstoresapi.dart';
-import 'dart:async';
 
 
 class AddStores extends StatefulWidget {
@@ -24,6 +23,7 @@ class _AddStoresState extends State<AddStores> {
 
 
   GlobalKey<FormState> addstores = GlobalKey<FormState>();
+  // ignore: non_constant_identifier_names
   String outlet_id;
   @override
   Widget build(BuildContext context) {

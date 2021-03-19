@@ -14,6 +14,8 @@ import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
+import 'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/model/myattendance.dart';
 
 class HRdashboard extends StatefulWidget {
   @override
@@ -118,10 +120,7 @@ class _HRdashboardState extends State<HRdashboard> {
                                         color: iconscolor,
                                       ),
                                       SizedBox(height: 10),
-                                      Text(
-                                        'Employees',
-                                        textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
-                                      ),
+                                      Text('Employees', textAlign: TextAlign.center,style: TextStyle(fontSize: 12),),
                                     ],
                                   ),
                                 ),
@@ -520,8 +519,16 @@ class _HRdashboardState extends State<HRdashboard> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
-                            onTap: (){
-
+                            onTap: ()async{
+                              setState(() {
+                                isApiCallProcess =true;
+                              });
+                              await getmyattandance();
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => MyAttendance()));
                             },
                             child: Container(
                               height: 120,

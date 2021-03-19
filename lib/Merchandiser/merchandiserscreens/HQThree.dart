@@ -112,10 +112,8 @@ class Raised extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: RaisedButton(
-        disabledColor: Colors.green[800],
-        disabledTextColor: Colors.black,
-        onPressed:(){},
+      child: GestureDetector(
+        onTap:(){},
         child: Text("SEND"),
 
       ),

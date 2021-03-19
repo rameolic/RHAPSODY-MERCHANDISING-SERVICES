@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import '../api_service.dart';
 
 Future<void> merchleavedetails() async {
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response LDresponse = await http.post(MercLeaveDetails,
     headers: {
       'Content-Type': 'application/json',

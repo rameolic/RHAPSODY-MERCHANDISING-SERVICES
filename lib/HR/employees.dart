@@ -1,110 +1,309 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
-import 'package:merchandising/model/leaveresponse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:merchandising/HR/addreport.dart';
 import 'package:country_picker/country_picker.dart';
 import 'Addempdetailsphase2.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
-class EmployeeDetailes extends StatelessWidget {
+class EmployeeDetailes extends StatefulWidget {
+  @override
+  _EmployeeDetailesState createState() => _EmployeeDetailesState();
+}
+
+
+class _EmployeeDetailesState extends State<EmployeeDetailes> {
+  var _searchview = new TextEditingController();
+  bool _firstSearch = true;
+  String _query = "";
+  List<dynamic> inputlist;
+  List<String> _filterList;
+  @override
+  void initState() {
+    super.initState();
+    inputlist =  employees.fullname;
+    inputlist.sort();
+  }
+
+  _EmployeeDetailesState() {
+
+    _searchview.addListener(() {
+      if (_searchview.text.isEmpty) {
+
+        setState(() {
+          _firstSearch = true;
+          _query = "";
+        });
+      } else {
+        setState(() {
+          _firstSearch = false;
+          _query = _searchview.text;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: containerscolor,
-        iconTheme: IconThemeData(color: orange),
-        title: Row(
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: containerscolor,
+          iconTheme: IconThemeData(color: orange),
+          title: Row(
+            children: [
+              Text(
+                'Employees',
+                style: TextStyle(color: orange),
+              ),
+            ],
+          ),
+        ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
+        body: Stack(
           children: [
-            Text(
-              'Employees',
-              style: TextStyle(color: orange),
+            BackGround(),
+            Container(
+              margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+              child: new Column(
+                children: <Widget>[
+                  _createSearchView(),
+                  SizedBox(height: 10.0,),
+                  _firstSearch ? _createListView() : _performSearch(),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: EdgeInsets.all(15.0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext
+                            context) =>
+                                AddEmployee()));
+                  },
+                  backgroundColor: pink,
+                  elevation: 8.0,
+                  child: Icon(Icons.add,color: orange,),
+                ),
+              ),
             ),
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          ListView.builder(
-              itemCount: employees.fullname.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: AutoSizeText(
-                              '${employees.fullname[index]}',
-                              maxLines: 1,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 15.0, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        children: [
-                          Text('Designation :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(employees.rolename[index]),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              margin: EdgeInsets.all(15.0),
-              child: FloatingActionButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext
-                          context) =>
-                              AddEmployee()));
-                },
-                backgroundColor: pink,
-                elevation: 8.0,
-                child: Icon(Icons.add,color: orange,),
-              ),
-            ),
-          ),
-        ],
+    );
+  }
+
+  Widget _createSearchView() {
+    return new Container(
+      padding: EdgeInsets.only(left: 20.0),
+      width: double.infinity,
+      decoration: BoxDecoration(color: pink,
+          borderRadius: BorderRadius.circular(25.0)),
+      child: new TextField(
+        style: TextStyle(color: orange),
+        controller: _searchview,
+        cursorColor:orange,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+          focusColor: orange,
+          hintText: 'Search by name or EmpID',
+          hintStyle: TextStyle(color: orange),
+          border: InputBorder.none,
+          icon: Icon(CupertinoIcons.search,color: orange,),
+        ),
       ),
     );
   }
+  Widget _createListView() {
+    return new Flexible(
+      child: new ListView.builder(
+          itemCount: employees.rolename.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onLongPress: (){
+                print(employees.fullname[index]);
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0,0,0, 10),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: AutoSizeText(
+                            '${employees.fullname[index]}',
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('Designation :',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(employees.rolename[index]),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+      ),
+    );
+  }
+
+  Widget _performSearch() {
+    _filterList = [];
+    for (int i = 0; i <employees.fullname.length; i++) {
+      var item = employees.fullname[i];
+      if (item.toLowerCase().contains(_query.toLowerCase())) {
+        _filterList.add(item);
+      }
+    }
+    return _createFilteredListView();
+  }
+
+  Widget _createFilteredListView() {
+    return new Flexible(
+      child: new ListView.builder(
+          itemCount: _filterList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onLongPress: (){
+                showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      backgroundColor: alertboxcolor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          return Container(
+                            child: SizedBox(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Alert",
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 15.00,
+                                  ),
+                                  Text(
+                                      "Do you want to Edit Employee details ?",
+                                      style: TextStyle(fontSize: 14)),
+                                  SizedBox(
+                                    height: 25.00,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                         //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: orange,
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          margin: EdgeInsets.only(right: 10.00),
+                                          child: Center(child: Text("yes")),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ));
+                print(_filterList[index]);
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: AutoSizeText(
+                            _filterList[index],
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('Designation :',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(employees.rolename[index]),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+      ),
+    );
+  }
+
 }
 
 bool isgenderfemale =false;
@@ -115,6 +314,7 @@ class AddEmployee extends StatefulWidget {
 }
 
 class _AddEmployeeState extends State<AddEmployee> {
+  // ignore: non_constant_identifier_names
   String Selectedcountry;
   String selectedcountrycode;
   int designationdropdown = 0;
@@ -392,7 +592,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     color: Colors.white,
                                   ),
                                   child: selectedcountrycode != null ? Center(
-                                    child: Text('+${selectedcountrycode}',style: TextStyle(color: Colors.black,fontSize: 16),),
+                                    child: Text('+$selectedcountrycode',style: TextStyle(color: Colors.black,fontSize: 16),),
                                   ) : SizedBox()
                               ),
                               Container(
@@ -445,6 +645,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       context,
                                       MaterialPageRoute(
                                           builder:
+                                              // ignore: non_constant_identifier_names
                                               (BuildContextcontext) =>
                                               AddempPhase2()));
                                 }

@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:merchandising/api/HRapi/addingreportapi.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+// ignore: camel_case_types
 class pickeddate{
   static String startdate;
   static String enddate;
 }
+// ignore: must_be_immutable, camel_case_types
 class addreporting extends StatelessWidget {
   String feildmanager;
   String merchandiser;
@@ -43,44 +45,48 @@ class addreporting extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(top: 5,bottom: 5),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropDownField(
-                      onValueChanged: (dynamic value) {
-                        merchandiser = value;
-                      },
+                    child: SearchableDropdown.single(
+                      closeButton: SizedBox(),
+                      underline: SizedBox(),
+                      items: employees.merchandisers.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList(),
                       value: merchandiser,
-                      required: false,
-                      hintText: 'Select Merchandiser',
-                      items: employees.merchandisers,
+                      hint: "Select Merchandiser",
+                      searchHint: "Select Merchandiser",
+                      onChanged: (value) {
+                          merchandiser = value;
+                      },
+                      isExpanded: true,
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(top: 5,bottom: 5),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: DropDownField(
-                      onValueChanged: (dynamic value) {
+                    child: SearchableDropdown.single(
+                      closeButton: SizedBox(),
+                      underline: SizedBox(),
+                      items: employees.feildmanagers.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList(),
+                      value: feildmanager,
+                      hint: "Select Field Manager",
+                      searchHint: "Select Field Manager",
+                      onChanged: (value) {
                         feildmanager = value;
                       },
-                      value: feildmanager,
-                      required: false,
-                      hintText: 'Select FeildManager',
-                      items: employees.feildmanagers,
+                      isExpanded: true,
                     ),
                   ),
                   Container(
+                    margin: EdgeInsets.only(top: 5,bottom: 5),
                     padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -90,7 +96,7 @@ class addreporting extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.only(top: 5,bottom: 5),
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -122,7 +128,7 @@ class addreporting extends StatelessWidget {
                       },
                     child: Center(
                       child: Container(
-                        margin: EdgeInsets.fromLTRB(10, 40, 10, 10),
+                        margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
                         padding: EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           color: orange,
@@ -151,6 +157,7 @@ class StartDate extends StatefulWidget {
 }
 
 class _StartDateState extends State<StartDate> {
+  // ignore: non_constant_identifier_names
   DateTime StartDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -182,20 +189,17 @@ class _StartDateState extends State<StartDate> {
   @override
 
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Text("Start Date",style: TextStyle(fontSize: 16),),
-          Spacer(),
-          Text("${StartDate.toLocal()}".split(' ')[0],
-            style: TextStyle(fontSize: 16),),
-          IconButton(
-            icon: Icon(CupertinoIcons.calendar),
-            onPressed: () => _selectDate(context),
-          ),
-        ],
-      ),
-
+    return Row(
+      children: [
+        Text("Start Date",style: TextStyle(fontSize: 16),),
+        Spacer(),
+        Text("${StartDate.toLocal()}".split(' ')[0],
+          style: TextStyle(fontSize: 16),),
+        IconButton(
+          icon: Icon(CupertinoIcons.calendar),
+          onPressed: () => _selectDate(context),
+        ),
+      ],
     );
   }
 }
@@ -206,6 +210,7 @@ class EndDate extends StatefulWidget {
 }
 
 class _EndDateState extends State<EndDate> {
+  // ignore: non_constant_identifier_names
   DateTime EndDate = DateTime.now();
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

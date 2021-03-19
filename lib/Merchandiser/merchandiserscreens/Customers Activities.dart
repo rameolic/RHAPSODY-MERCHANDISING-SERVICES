@@ -192,6 +192,7 @@ class Activities extends StatelessWidget {
   }
 }
 
+// ignore: camel_case_types
 class checkoutbutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

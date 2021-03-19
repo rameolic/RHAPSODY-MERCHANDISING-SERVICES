@@ -3,6 +3,9 @@ import 'package:http/http.dart' as http;
 import '../api_service.dart';
 
 Future getempdetailsforreport() async{
+  Map DBrequestData = {
+  'emp_id': '${DBrequestdata.receivedempid}'
+};
   http.Response EmpReport = await http.post(reportingdataurl,
     headers: {
       'Content-Type': 'application/json',

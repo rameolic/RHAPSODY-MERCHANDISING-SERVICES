@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
+import 'package:flutter/cupertino.dart';
 
 int leave;
 
@@ -15,6 +16,8 @@ class ResponsetoLeave extends StatefulWidget {
 
 class _ResponsetoLeaveState extends State<ResponsetoLeave> {
   bool isApiCallProcess = false;
+  String accepted = "2";
+  String rejected = "1";
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -76,7 +79,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                             ),
                             Flexible(
                               child: AutoSizeText(
-                                '${leavedataResponse.reasons[leavedataResponse.reasons.length - 1 - index]}',
+                                '${leavedataResponse.reasons[index]}',
                                 maxLines: 2,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
@@ -97,7 +100,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                               width: 5,
                             ),
                             Text(
-                                '${leavedataResponse.leavetypes[leavedataResponse.leavetypes.length - 1 - index]}',
+                                '${leavedataResponse.leavetypes[index]}',
                                 style: TextStyle(
                                   fontSize: 15.0,
                                 )),
@@ -114,10 +117,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                               width: 5,
                             ),
                             Text(
-                                leavedataResponse.totnoofdays[
-                                        leavedataResponse.totnoofdays.length -
-                                            1 -
-                                            index]
+                                leavedataResponse.totnoofdays[index]
                                     .toString(),
                                 style: TextStyle(
                                   fontSize: 15.0,
@@ -134,11 +134,40 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                             SizedBox(
                               width: 5,
                             ),
-                            Text(leavedataResponse.empname[
-                                    leavedataResponse.empname.length -
-                                        1 -
-                                        index]
+                            Text(leavedataResponse.empname[index]
                                 .toString()),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text('Status :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                                leavedataResponse.isleaveaccepted[index] == accepted
+                                    ? 'Accepted'
+                                    : leavedataResponse.isleaverejected[index] == rejected
+                                    ? 'Rejected'
+                                    : 'Pending',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            Spacer(),
+                            Icon(
+                              leavedataResponse.isleaveaccepted[index] == accepted
+                                  ? CupertinoIcons.check_mark_circled_solid
+                                  : leavedataResponse.isleaverejected[index] == rejected ? CupertinoIcons
+                                  .clear_circled_solid : CupertinoIcons
+                                  .arrow_up_arrow_down_circle_fill,
+                              color: leavedataResponse.isleaveaccepted[index] == accepted
+                                  ? Colors.green
+                                  : leavedataResponse.isleaverejected[index] == rejected ? Colors.red : Colors.grey,
+                            )
                           ],
                         ),
                         SizedBox(height: 5),
@@ -196,8 +225,7 @@ class leaveresult extends StatelessWidget {
                           ),
                           Flexible(
                             child: AutoSizeText(
-                              leavedataResponse.reasons[
-                                  leavedataResponse.reasons.length - 1 - leave],
+                              leavedataResponse.reasons[leave],
                               style: TextStyle( fontSize: 16.0, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -213,10 +241,7 @@ class leaveresult extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                              leavedataResponse.leavetypes[
-                                      leavedataResponse.leavetypes.length -
-                                          1 -
-                                          leave]
+                              leavedataResponse.leavetypes[leave]
                                   .toString(),
                               style: TextStyle(
                                 fontSize: 15.0,
@@ -230,10 +255,7 @@ class leaveresult extends StatelessWidget {
                                 fontSize: 15.0,
                               )),
                           Text(
-                              leavedataResponse.totnoofdays[
-                                      leavedataResponse.totnoofdays.length -
-                                          1 -
-                                          leave]
+                              leavedataResponse.totnoofdays[leave]
                                   .toString(),
                               style: TextStyle(
                                 fontSize: 15.0,
@@ -249,8 +271,7 @@ class leaveresult extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(leavedataResponse.empname[
-                                  leavedataResponse.empname.length - 1 - leave]
+                          Text(leavedataResponse.empname[leave]
                               .toString()),
                         ],
                       ),
@@ -264,7 +285,7 @@ class leaveresult extends StatelessWidget {
                             width: 5,
                           ),
                           Text(leavedataResponse
-                              .empid[leavedataResponse.empid.length - 1 - leave]
+                              .empid[leave]
                               .toString()),
                         ],
                       ),
@@ -277,8 +298,7 @@ class leaveresult extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(leavedataResponse.Startdates[
-                              leavedataResponse.Startdates.length - 1 - leave]),
+                          Text(leavedataResponse.Startdates[leave]),
                         ],
                       ),
                       Row(
@@ -290,8 +310,7 @@ class leaveresult extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(leavedataResponse.enddates[
-                                  leavedataResponse.enddates.length - 1 - leave]
+                          Text(leavedataResponse.enddates[leave]
                               .toString()),
                         ],
                       ),
@@ -304,18 +323,12 @@ class leaveresult extends StatelessWidget {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(leavedataResponse.requestedon[
-                                  leavedataResponse.requestedon.length -
-                                      1 -
-                                      leave]
+                          Text(leavedataResponse.requestedon[leave]
                               .toString()
                               .substring(0, 10)),
                         ],
                       ),
-                      leavedataResponse.leavetypes[
-                                      leavedataResponse.leavetypes.length -
-                                          1 -
-                                          leave]
+                      leavedataResponse.leavetypes[leave]
                                   .toString() ==
                               "Sick_Leave"
                           ? Row(

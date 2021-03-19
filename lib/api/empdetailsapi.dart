@@ -21,13 +21,16 @@ class myprofile {
 
 
 Future getempdetails() async{
+  Map body = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
   http.Response DBresponse = await http.post(empdataurl,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     },
-    body: jsonEncode(DBrequestData),
+    body: jsonEncode(body),
   );
   if (DBresponse.statusCode == 200){
     print('empolyee details done');
