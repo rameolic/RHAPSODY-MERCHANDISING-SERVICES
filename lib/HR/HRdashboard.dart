@@ -133,6 +133,7 @@ class _HRdashboardState extends State<HRdashboard> {
                                 isApiCallProcess = true;
                               });
                               await getempdetailsforreport();
+                              await getallempdetails();
                               setState(()  {
                                 isApiCallProcess = false;
                               });

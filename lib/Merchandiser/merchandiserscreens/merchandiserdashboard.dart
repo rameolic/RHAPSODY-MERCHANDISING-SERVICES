@@ -189,10 +189,11 @@ class _DashBoardState extends State<DashBoard> {
                                                   await getSkipJourneyPlanweekly();
                                                   await getVisitJourneyPlanweekly();
                                                   await distinmeters();
-                                                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
+
                                                   setState(() {
                                                     isApiCallProcess = false;
                                                   });
+                                                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                 },
                                                 child: Container(
                                                   height: 30,
@@ -226,9 +227,6 @@ class _DashBoardState extends State<DashBoard> {
                             );
                           })
                   );
-                  setState(() {
-                    isApiCallProcess = false;
-                  });
           },
                   child: Container(
                     padding: EdgeInsets.all(10.0),

@@ -98,7 +98,6 @@ class DBrequestdata {
   static var empname;
   static var emailid;
 }
-var token = DBrequestdata.receivedtoken;
 
 
 Future DBRequestdaily() async{
@@ -110,7 +109,7 @@ Future DBRequestdaily() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(DBrequestData),
   );
@@ -141,7 +140,7 @@ Future DBRequestmonthly() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${{DBrequestdata.receivedtoken}}',
     },
     body: jsonEncode(DBrequestData),
   );
@@ -220,7 +219,7 @@ Future outletwhencheckin() async {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(ODrequestDataforcheckin),
   );
@@ -272,7 +271,7 @@ void checkin() async {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(checkinoutresponse),
   );
@@ -297,7 +296,7 @@ void checkout() async {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(checkinoutresponse),
   );
@@ -331,7 +330,7 @@ Future leaverequest() async {
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(leaverequestbody),
   );
@@ -364,7 +363,7 @@ Future changepassword() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(requestchangepassword),
   );

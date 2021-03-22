@@ -11,10 +11,11 @@ Future getmerchnamelist() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(DBrequestData),
   );
+  print(Merchname.body);
   if (Merchname.statusCode == 200){
     merchnamelist.employeeid = [];
     merchnamelist.firstname = [];

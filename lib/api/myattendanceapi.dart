@@ -17,7 +17,7 @@ Future getmyattandance() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(empattenddata),
   );

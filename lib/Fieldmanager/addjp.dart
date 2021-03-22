@@ -136,26 +136,19 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Column(
-                              children: [
-                                selectedmerchandiser != null ? SizedBox(height: 8,) : SizedBox(),
-                                Padding(
-                                  padding: const EdgeInsets.only(left:10.0),
-                                  child: SearchableDropdown.single(
-                                    underline: SizedBox(),
-                                    items: merchandisers,
-                                    value: selectedmerchandiser,
-                                    hint: "Select Merchandiser",
-                                    searchHint: "Select Merchandiser",
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedmerchandiser = value;
-                                      });
-                                    },
-                                    isExpanded: true,
-                                  ),
-                                ),
-                              ],
+                            child: SearchableDropdown.single(
+
+                              underline: SizedBox(),
+                              items: merchandisers,
+                              value: selectedmerchandiser,
+                              hint: "Select Merchandiser",
+                              searchHint: "Select Merchandiser",
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedmerchandiser = value;
+                                });
+                              },
+                              isExpanded: true,
                             ),
                           ),
                           Container(

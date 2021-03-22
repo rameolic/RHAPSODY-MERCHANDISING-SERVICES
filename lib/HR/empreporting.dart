@@ -107,6 +107,7 @@ class _ReportingempState extends State<Reportingemp> {
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
+          isCollapsed: true,
         ),
       ),
     );
