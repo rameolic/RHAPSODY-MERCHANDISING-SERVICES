@@ -716,9 +716,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                 context) =>
                                     ChatUsers()));
                       },
-                      backgroundColor: pink,
-                      elevation: 8.0,
-                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: orange,),
+                      backgroundColor: orange,
+                      elevation: 10.0,
+                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,),
                     ),
                   ),
                 ),

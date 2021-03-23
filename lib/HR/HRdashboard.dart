@@ -16,7 +16,7 @@ import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/api/myattendanceapi.dart';
 import 'package:merchandising/model/myattendance.dart';
-
+import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 class HRdashboard extends StatefulWidget {
   @override
   _HRdashboardState createState() => _HRdashboardState();
@@ -376,7 +376,14 @@ class _HRdashboardState extends State<HRdashboard> {
                                   color: containerscolor,
                                 ),
                                 child: GestureDetector(
-                                  onTap: (){
+                                  onTap: ()async{
+                                    setState(() {
+                                      isApiCallProcess = true;
+                                    });
+                                    await merchleavedetails();
+                                    setState(() {
+                                      isApiCallProcess = false;
+                                    });
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (BuildContext context) => ResponsetoLeave()));
                                   },

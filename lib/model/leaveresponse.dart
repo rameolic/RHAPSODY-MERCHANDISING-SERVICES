@@ -3,6 +3,7 @@ import 'package:merchandising/Constants.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/main.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ class ResponsetoLeave extends StatefulWidget {
 class _ResponsetoLeaveState extends State<ResponsetoLeave> {
   bool isApiCallProcess = false;
   String accepted = "2";
+  String acceptedbyfm = "1";
   String rejected = "1";
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                 return GestureDetector(
                   onTap: () {
                     leave = index;
+                    print(leavedataResponse.isleaveaccepted[leave]);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -153,6 +156,8 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
                                     ? 'Accepted'
                                     : leavedataResponse.isleaverejected[index] == rejected
                                     ? 'Rejected'
+                                    :  leavedataResponse.isleaveaccepted[index] == acceptedbyfm
+                                    ? 'Waiting for hr'
                                     : 'Pending',
                                 style: TextStyle(
                                   fontSize: 15.0,
@@ -359,7 +364,55 @@ class leaveresult extends StatelessWidget {
                               ],
                             )
                           : SizedBox(),
-                      Padding(
+                       currentuser.roleid == 3 && leavedataResponse.isleaveaccepted[leave] == '1' && leavedataResponse.isleaverejected[leave] == '0' ? Padding(
+                         padding: const EdgeInsets.only(top:20),
+                         child: Row(
+                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                           children: [
+                             GestureDetector(
+                               onTap: () {
+                                 Navigator.push(
+                                     context,
+                                     MaterialPageRoute(
+                                         builder: (BuildContext context) =>
+                                             ResponsetoLeave()));
+                               },
+                               child: Container(
+                                 padding: EdgeInsets.all(10),
+                                 decoration: BoxDecoration(
+                                   color: Colors.red,
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                                 child: Text(
+                                   "Reject Leave",
+                                   style: TextStyle(color: Colors.white),
+                                 ),
+                               ),
+                             ),
+                             GestureDetector(
+                               onTap: () {
+                                 Navigator.push(
+                                     context,
+                                     MaterialPageRoute(
+                                         builder: (BuildContext context) =>
+                                             ResponsetoLeave()));
+                               },
+                               child: Container(
+                                 padding: EdgeInsets.all(10),
+                                 decoration: BoxDecoration(
+                                   color: Colors.green,
+                                   borderRadius: BorderRadius.circular(10),
+                                 ),
+                                 child: Text(
+                                   "Accept Leave",
+                                   style: TextStyle(color: Colors.white),
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ) : SizedBox(),
+                      currentuser.roleid == 5 && leavedataResponse.isleaveaccepted[leave] == '0' && leavedataResponse.isleaverejected[leave] == '0'? Padding(
                         padding: const EdgeInsets.only(top:20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -406,7 +459,7 @@ class leaveresult extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ) : SizedBox()
                     ],
                   ),
                 ),

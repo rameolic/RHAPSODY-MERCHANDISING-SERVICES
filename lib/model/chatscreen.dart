@@ -4,6 +4,7 @@ import '../Constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/main.dart';
 
 
 class chat{
@@ -11,8 +12,7 @@ class chat{
 }
 
 //receiver sender
-//String receiver = currentuser.roleid ==  5 ? chat.receiver : "Emp5906";
-final String sender = DBrequestdata.receivedempid;
+String receiver = currentuser.roleid ==  5 ? chat.receiver : "Emp5906";
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   StreamBuilder<QuerySnapshot>(
-                      stream:  FirebaseFirestore.instance.collection('$sender.${chat.receiver}').orderBy('time', descending: true).snapshots(),
+                      stream:  FirebaseFirestore.instance.collection('${DBrequestdata.receivedempid}.${chat.receiver}').orderBy('time', descending: true).snapshots(),
                       builder: (context,snapshot){
                         if(!snapshot.hasData){
                           return Center(
@@ -64,7 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             final messagesender = message.data()['sender'];
                             final time = message.data()['time'];
                             final messageWidget =
-                            messagesender == '$sender' ?
+                            messagesender == '${DBrequestdata.receivedempid}' ?
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -160,8 +160,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         GestureDetector(
                           onTap: () async{
                             if(typedmsg.text.isNotEmpty){
-                             await FirebaseFirestore.instance.collection('${chat.receiver}.$sender').add({'text': typedmsg.text, 'sender': '$sender','time': '${DateTime.now()}',});
-                             await FirebaseFirestore.instance.collection('$sender.${chat.receiver}').add({'text': typedmsg.text, 'sender': '$sender','time': '${DateTime.now()}',});
+                             await FirebaseFirestore.instance.collection('${chat.receiver}.${DBrequestdata.receivedempid}').add({'text': typedmsg.text, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
+                             await FirebaseFirestore.instance.collection('${DBrequestdata.receivedempid}.${chat.receiver}').add({'text': typedmsg.text, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
                               typedmsg.clear();
                             }
                           },
