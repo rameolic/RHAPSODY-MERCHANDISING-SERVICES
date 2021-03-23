@@ -425,6 +425,14 @@ class VeiwImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PhotoView(
+      loadingBuilder: (context, event) => Center(
+        child: Container(
+          width: 40.0,
+          height: 40.0,
+          child: CircularProgressIndicator(
+          ),
+        ),
+      ),
       imageProvider: NetworkImage(
         url,
       ),

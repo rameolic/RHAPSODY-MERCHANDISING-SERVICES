@@ -44,3 +44,69 @@ class employees {
   static List<String> feildmanagers = [];
   static List<String> merchandisers = [];
 }
+class updatedata{
+  static bool employee = false;
+  static var empid;
+}
+
+Future getempdata() async{
+  Map request = {
+    'emp_id': '${updatedata.empid}'
+  };
+  print(request);
+  http.Response EmpReport = await http.post(empdataurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(request),
+  );
+  if (EmpReport.statusCode == 200){
+    String empdata = EmpReport.body;
+    var decodedempdata = jsonDecode(empdata);
+    for(int u=0;u<decodedempdata['data'].length;u++) {
+      employeedata.firstname = decodedempdata['data'][u]['first_name'];
+      employeedata.middlename = decodedempdata['data'][u]['middle_name'];
+      employeedata.surname = decodedempdata['data'][u]['surname'];
+      employeedata.passportno = decodedempdata['data'][u]['passport_number'];
+      employeedata.nationality = decodedempdata['data'][u]['nationality'];
+      employeedata.gender = decodedempdata['data'][u]['gender'];
+      employeedata.codes = decodedempdata['data'][u]['codes'];
+      employeedata.emiratesid = decodedempdata['data'][u]['emirates_id'];
+      employeedata.mobileno = decodedempdata['data'][u]['mobile_number'];
+      employeedata.email = decodedempdata['data'][u]['email'];
+      employeedata.designation = decodedempdata['data'][u]['designation'];
+      employeedata.departmant = decodedempdata['data'][u]['department'];
+      employeedata.joiningdate = decodedempdata['data'][u]['joining_date'];
+      employeedata.visaexpdate = decodedempdata['data'][u]['visa_exp_date'];
+      employeedata.passportexpdate = decodedempdata['data'][u]['passport_exp_date'];
+      employeedata.medicalinsno = decodedempdata['data'][u]['medical_ins_no'];
+      employeedata.medicalinsexpdate = decodedempdata['data'][u]['medical_ins_exp_date'];
+      employeedata.visacompanyname = decodedempdata['data'][u]['visa_company_name'];
+    }
+  }
+  if(EmpReport.statusCode != 200){
+    print(EmpReport.statusCode);
+  }
+}
+class employeedata{
+  static var firstname;
+  static var middlename;
+  static var surname;
+  static var passportno;
+  static var nationality;
+  static var gender;
+  static var codes;
+  static var emiratesid;
+  static var mobileno;
+  static var email;
+  static var designation;
+  static var departmant;
+  static var joiningdate;
+  static var visaexpdate;
+  static var passportexpdate;
+  static var medicalinsno;
+  static var medicalinsexpdate;
+  static var visacompanyname;
+}

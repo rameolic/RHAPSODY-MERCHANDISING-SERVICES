@@ -9,6 +9,7 @@ import 'package:country_picker/country_picker.dart';
 import 'Addempdetailsphase2.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
+
 class EmployeeDetailes extends StatefulWidget {
   @override
   _EmployeeDetailesState createState() => _EmployeeDetailesState();
@@ -16,6 +17,7 @@ class EmployeeDetailes extends StatefulWidget {
 
 
 class _EmployeeDetailesState extends State<EmployeeDetailes> {
+
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
   String _query = "";
@@ -83,6 +85,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                 margin: EdgeInsets.all(15.0),
                 child: FloatingActionButton(
                   onPressed: (){
+                    updatedata.employee =false;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -104,22 +107,34 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
 
   Widget _createSearchView() {
     return new Container(
-      padding: EdgeInsets.only(left: 20.0),
+      padding: EdgeInsets.only(left: 20.0,right: 20.0),
       width: double.infinity,
       decoration: BoxDecoration(color: pink,
           borderRadius: BorderRadius.circular(25.0)),
-      child: new TextField(
-        style: TextStyle(color: orange),
-        controller: _searchview,
-        cursorColor:orange,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
-          focusColor: orange,
-          hintText: 'Search by name or EmpID',
-          hintStyle: TextStyle(color: orange),
-          border: InputBorder.none,
-          icon: Icon(CupertinoIcons.search,color: orange,),
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: new TextField(
+              style: TextStyle(color: orange),
+              controller: _searchview,
+              cursorColor:orange,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                focusColor: orange,
+                hintText: 'Search by name or EmpID',
+                hintStyle: TextStyle(color: orange),
+                border: InputBorder.none,
+                icon: Icon(CupertinoIcons.search,color: orange,),
+              ),
+            ),
+          ),
+          GestureDetector(
+              onTap: (){
+                _searchview.clear();
+              },
+              child: Icon(CupertinoIcons.clear_circled_solid,color: orange,))
+        ],
       ),
     );
   }
@@ -129,8 +144,89 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
           itemCount: employees.rolename.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onLongPress: (){
-                print(employees.fullname[index]);
+              onLongPress: () {
+                updatedata.empid = 'Emp${employees.fullname[index].replaceAll(
+                    new RegExp(r'[^0-9]'), '')}';
+                print(updatedata.empid);
+                showDialog(
+                    context: context,
+                    builder: (_) =>StatefulBuilder(
+                        builder: (context, setState) {
+                          return ProgressHUD(
+                              inAsyncCall: isApiCallProcess,
+                              opacity: 0.3,
+                              child: AlertDialog(
+                          backgroundColor: alertboxcolor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0))),
+                          content: Builder(
+                            builder: (context) {
+                              // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                              return Container(
+                                child: SizedBox(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Text(
+                                        "Alert",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 15.00,
+                                      ),
+                                      Text(
+                                          "Do you want to edit this employee details?",
+                                          style: TextStyle(fontSize: 14)),
+                                      SizedBox(
+                                        height: 25.00,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              updatedata.employee = true;
+                                              await getempdata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(builder: (
+                                                      BuildContext context) =>
+                                                      AddEmployee()));
+                                            },
+                                            child: Container(
+                                              height: 40,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                color: orange,
+                                                borderRadius: BorderRadius
+                                                    .circular(5),
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                  right: 10.00),
+                                              child: Center(child: Text("yes")),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ));
+              }));
               },
               child: Container(
                 margin: EdgeInsets.fromLTRB(0,0,0, 10),
@@ -198,9 +294,16 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onLongPress: (){
+                updatedata.empid = 'Emp${_filterList[index].replaceAll(new RegExp(r'[^0-9]'), '')}';
+                print(updatedata.empid);
                 showDialog(
                     context: context,
-                    builder: (_) => AlertDialog(
+                    builder: (_) => StatefulBuilder(
+                        builder: (context, setState) {
+                          return ProgressHUD(
+                              inAsyncCall: isApiCallProcess,
+                              opacity: 0.3,
+                              child: AlertDialog(
                       backgroundColor: alertboxcolor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -222,7 +325,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                                     height: 15.00,
                                   ),
                                   Text(
-                                      "Do you want to Edit Employee details ?",
+                                      "Do you want to edit this employee details?",
                                       style: TextStyle(fontSize: 14)),
                                   SizedBox(
                                     height: 25.00,
@@ -231,8 +334,16 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       GestureDetector(
-                                        onTap: () {
-                                         //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => OutLet()));
+                                        onTap: () async{
+                                          setState(() {
+                                            isApiCallProcess = true;
+                                          });
+                                          updatedata.employee = true;
+                                          await getempdata();
+                                          setState(() {
+                                            isApiCallProcess = false;
+                                          });
+                                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AddEmployee()));
                                         },
                                         child: Container(
                                           height: 40,
@@ -254,7 +365,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                         },
                       ),
                     ));
-                print(_filterList[index]);
+              }));
               },
               child: Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
@@ -318,11 +429,11 @@ class _AddEmployeeState extends State<AddEmployee> {
   String Selectedcountry;
   String selectedcountrycode;
   int designationdropdown = 0;
-  TextEditingController firstname = TextEditingController();
-  TextEditingController middlename = TextEditingController();
-  TextEditingController lastname = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController mobilenumber = TextEditingController();
+  TextEditingController firstname = updatedata.employee == true ? TextEditingController(text: employeedata.firstname):TextEditingController();
+  TextEditingController middlename = updatedata.employee == true ? TextEditingController(text: employeedata.middlename):TextEditingController();
+  TextEditingController lastname = updatedata.employee == true ? TextEditingController(text: employeedata.surname):TextEditingController();
+  TextEditingController email = updatedata.employee == true ? TextEditingController(text: employeedata.email):TextEditingController();
+  TextEditingController mobilenumber = updatedata.employee == true ? TextEditingController(text: employeedata.mobileno):TextEditingController();
   GlobalKey<FormState> addempphase1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -371,7 +482,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                               color: Colors.white,
                             ),
                             child: TextFormField(
-                              controller: firstname,
+                              controller:firstname,
                               cursorColor: grey,
                               validator: (input) => !input.isNotEmpty
                                   ? "First Name should not be empty"
@@ -641,7 +752,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   setState(() {
                                     isApiCallProcess =false;
                                   });
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder:

@@ -4,7 +4,7 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
 
 
-void addreport() async {
+Future addreport() async {
   Map newreport =
   {
     "employee_id": "${report.merchandiserid}",

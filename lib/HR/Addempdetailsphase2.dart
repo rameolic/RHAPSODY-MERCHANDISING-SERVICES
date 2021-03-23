@@ -5,6 +5,8 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'Addempdetailsphase3.dart';
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
 import 'package:intl/intl.dart';
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
+
 String selecteddesignation;
 class AddempPhase2 extends StatefulWidget {
   @override
@@ -15,7 +17,7 @@ class _AddempPhase2State extends State<AddempPhase2> {
   int designationdropdown = 0;
   GlobalKey<FormState> addempphase2 = GlobalKey<FormState>();
 
-  TextEditingController department = TextEditingController();
+  TextEditingController department = updatedata.employee == true ? TextEditingController(text: employeedata.departmant):TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,7 +165,7 @@ class Joiningdate extends StatefulWidget {
   @override
   _JoiningdateState createState() => _JoiningdateState();
 }
-DateTime joiningdate = DateTime.now();
+DateTime joiningdate =  updatedata.employee == true ? DateFormat("yyyy-MM-dd").parse(employeedata.joiningdate) : DateTime.now();
 class _JoiningdateState extends State<Joiningdate> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(

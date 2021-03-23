@@ -44,6 +44,7 @@ Uri unschdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_unscheduled_journe
 Uri designation = Uri.parse("https://rms2.rhapsody.ae/api/all_roles");
 Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeyplan");
 Uri Attendance = Uri.parse("https://rms2.rhapsody.ae/api/attendance_monthly");
+Uri updateemp = Uri.parse("https://rms2.rhapsody.ae/api/update_employee");
 
 
 class loggedin{
@@ -140,10 +141,11 @@ Future DBRequestmonthly() async{
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ${{DBrequestdata.receivedtoken}}',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
     body: jsonEncode(DBrequestData),
   );
+  print(DBresponse.body);
   if (DBresponse.statusCode == 200){
     print('dashboard monthly done');
     String DBdata = DBresponse.body;

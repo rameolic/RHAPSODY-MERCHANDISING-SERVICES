@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 class employeedetails{
   static var firstname;
   static var middlename;
@@ -23,7 +24,8 @@ class employeedetails{
 }
 
 Future addemployees() async{
-  Map employeedata = {
+  Map updateempboday = {
+    "emp_id": "${updatedata.empid}",
     'first_name' : '${employeedetails.firstname}',
     'middle_name' : '${employeedetails.middlename}',
     'surname' : '${employeedetails.surname}',
@@ -43,14 +45,34 @@ Future addemployees() async{
     'medical_ins_exp_date' : '${employeedetails.medicalinsexpdate}',
     'visa_company_name' : '${employeedetails.visacompanyname}',
   };
-  print(employeedata);
-  http.Response employees = await http.post(AddEmployee,
+  Map addempbody = {
+    'first_name' : '${employeedetails.firstname}',
+    'middle_name' : '${employeedetails.middlename}',
+    'surname' : '${employeedetails.surname}',
+    'passport_number' : '${employeedetails.passportno}',
+    'nationality' : '${employeedetails.nationality}',
+    'gender' : '${employeedetails.gender}',
+    'codes' : '${employeedetails.codes}',
+    'emirates_id' : '${employeedetails.emiratesid}',
+    'mobile_number' : '${employeedetails.mobileno}',
+    'email' : '${employeedetails.email}',
+    'designation' : '${employeedetails.designation}',
+    'department' : '${employeedetails.departmant}',
+    'joining_date' : '${employeedetails.joiningdate}',
+    'visa_exp_date' : '${employeedetails.visaexpdate}',
+    'passport_exp_date' : '${employeedetails.passportexpdate}',
+    'medical_ins_no' : '${employeedetails.medicalinsno}',
+    'medical_ins_exp_date' : '${employeedetails.medicalinsexpdate}',
+    'visa_company_name' : '${employeedetails.visacompanyname}',
+  };
+  print(addempbody);
+  http.Response employees = await http.post(updatedata.employee == true ? updateemp :AddEmployee,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
-    body: jsonEncode(employeedata),
+    body: updatedata.employee == true ? jsonEncode(updateempboday) :jsonEncode(addempbody),
   );
   print(employees.body);
 }

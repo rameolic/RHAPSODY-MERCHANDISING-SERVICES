@@ -7,7 +7,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:merchandising/api/HRapi/addemployeeapi.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/HR/addreport.dart';
-
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 
 class AddempPhase3 extends StatefulWidget {
   @override
@@ -17,12 +17,11 @@ class AddempPhase3 extends StatefulWidget {
 class _AddempPhase3State extends State<AddempPhase3> {
   GlobalKey<FormState> addempphase3 = GlobalKey<FormState>();
 
-  TextEditingController passport = TextEditingController();
-  TextEditingController visacompany = TextEditingController();
-  TextEditingController visanumber = TextEditingController();
-  TextEditingController medicalinsurance = TextEditingController();
-
-  TextEditingController emiratesid = TextEditingController();
+  TextEditingController passport = updatedata.employee == true ? TextEditingController(text: employeedata.passportno):TextEditingController();
+  TextEditingController visacompany = updatedata.employee == true ? TextEditingController(text: employeedata.visacompanyname):TextEditingController();
+  TextEditingController visanumber = updatedata.employee == true ? TextEditingController(text: employeedata.visacompanyname):TextEditingController();
+  TextEditingController medicalinsurance = updatedata.employee == true ? TextEditingController(text: employeedata.medicalinsno):TextEditingController();
+  TextEditingController emiratesid = updatedata.employee == true ? TextEditingController(text: employeedata.emiratesid):TextEditingController();
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -305,11 +304,11 @@ class _visaExpirydateState extends State<visaExpirydate> {
 }
 
 
-DateTime visaexpiry = DateTime.now();
+DateTime visaexpiry = updatedata.employee == true ? DateFormat("yyyy-MM-dd").parse(employeedata.visaexpdate) : DateTime.now();
 
-DateTime passportexpiry = DateTime.now();
+DateTime passportexpiry = updatedata.employee == true ? DateFormat("yyyy-MM-dd").parse(employeedata.passportexpdate) : DateTime.now();
 
-DateTime medicalexpiry = DateTime.now();
+DateTime medicalexpiry = updatedata.employee == true ? DateFormat("yyyy-MM-dd").parse(employeedata.medicalinsexpdate) : DateTime.now();
 
 class PassportExpirydate extends StatefulWidget {
   @override

@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
@@ -16,7 +17,7 @@ class AddJourneyPlan extends StatefulWidget {
 class _AddJourneyPlanState extends State<AddJourneyPlan> {
   List merchandisers = merchnamelist.firstname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
   String selectedmerchandiser;
-  List <int>selectedoutlets = [];
+  List <int>selectedoutlets;
   List outlets = outletdata.outletname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
   bool pressschdlue = false;
   bool pressunschdle = true;
@@ -195,44 +196,68 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                             alignment: Alignment.bottomCenter,
                             child: GestureDetector(
                                 onTap: () async{
-                                  setState(() {
-                                    isApiCallProcess = true;
-                                  });
                                   print(pressschdlue);
                                   addunschdulejp.outletid=[];
                                   addschdulejp.outletid=[];
                                   addschdulejp.days = [];
-                                  for(int u=0;u<selectedoutlets.length;u++){
-                                    addunschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
-                                    addschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
-                                  }
-                                  for(int u=0;u<merchnamelist.firstname.length;u++){
-                                    if (merchnamelist.firstname[u] == selectedmerchandiser) {
-                                      addunschdulejp.empid = merchnamelist.employeeid[u];
-                                      addschdulejp.empid = merchnamelist.employeeid[u];
-                                    }}
                                   if(pressschdlue == true){
-                                    for(int u=0;u<months.length;u++){
-                                      if (months[u] == selectedmonth) {
-                                        addschdulejp.month = u+1;
-                                      }}
-                                    for(int u=0;u<selectedweekday.length;u++){
-                                      addschdulejp.days.add("\"${weekdays[selectedweekday[u]]}\"");
+                                    if(selectedoutlets != null &&  selectedmerchandiser != null && selectedmonth != null && selectedweekday != null){
+                                      for(int u=0;u<selectedoutlets.length;u++){
+                                        addunschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
+                                        addschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
+                                      }
+                                      for(int u=0;u<merchnamelist.firstname.length;u++){
+                                        if (merchnamelist.firstname[u] == selectedmerchandiser) {
+                                          addunschdulejp.empid = merchnamelist.employeeid[u];
+                                          addschdulejp.empid = merchnamelist.employeeid[u];
+                                        }}
+                                      for(int u=0;u<months.length;u++){
+                                        if (months[u] == selectedmonth) {
+                                          addschdulejp.month = u+1;
+                                        }}
+                                      for(int u=0;u<selectedweekday.length;u++){
+                                        addschdulejp.days.add("\"${weekdays[selectedweekday[u]]}\"");
+                                      }
+                                      setState(() {
+                                        isApiCallProcess = true;
+                                      });
+                                      await addschdulejourneypaln();
+                                      setState(() {
+                                        isApiCallProcess = false;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext
+                                              context) =>
+                                                  FieldManagerDashBoard()));
+                                    }else{
+                                      Flushbar(
+                                        message: selectedoutlets == null ? "Outlet Should not be Empty" : selectedmerchandiser == null ? "Merchandiser cannot be empty": selectedmonth == null ? "Month cannot be empty" : "days cannot be empty",
+                                        duration:  Duration(seconds: 3),
+                                      )..show(context);
                                     }
-                                    await addschdulejourneypaln();
+
                                   }else{
+                                    if(selectedoutlets != null &&  selectedmerchandiser != null && selecteddate != null){
+                                    for(int u=0;u<selectedoutlets.length;u++){
+                                      addunschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
+                                      addschdulejp.outletid.add(outletdata.outletid[selectedoutlets[u]]);
+                                    }
+                                    for(int u=0;u<merchnamelist.firstname.length;u++){
+                                      if (merchnamelist.firstname[u] == selectedmerchandiser) {
+                                        addunschdulejp.empid = merchnamelist.employeeid[u];
+                                        addschdulejp.empid = merchnamelist.employeeid[u];
+                                      }}
                                     addunschdulejp.date =  DateFormat('yyyy-MM-dd').format(selecteddate);
                                     await addunschdulejourneypaln();
+                                  }else{
+                                      Flushbar(
+                                        message: selectedoutlets == null ? "Outlet Should not be Empty" : selectedmerchandiser == null ? "Merchandiser cannot be empty" : "Date cannot be empty",
+                                        duration:  Duration(seconds: 3),
+                                      )..show(context);
+                                    }
                                   }
-                                  setState(() {
-                                    isApiCallProcess = false;
-                                  });
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext
-                                          context) =>
-                                              FieldManagerDashBoard()));
                                 },
                                 child: Container(
                                     margin: EdgeInsets.only(top: 10.0),
@@ -326,7 +351,7 @@ List weekday = weekdays.map((String val) {return new DropdownMenuItem<String>(va
 List<String> months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 String selectedmonth;
 List<String> weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-List<int> selectedweekday=[];
+List<int> selectedweekday;
 // ignore: camel_case_types
 class _schedulejpState extends State<schedulejp> {
   @override
