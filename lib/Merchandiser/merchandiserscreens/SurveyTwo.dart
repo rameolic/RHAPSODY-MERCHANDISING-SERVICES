@@ -24,15 +24,8 @@ class _SurveyTwoState extends State<SurveyTwo> {
               style: TextStyle(color: orange),
             ),
             Spacer(),
-            SubmitButton(
-              onpress: (){
-                {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CustomerActivities()));}
-              },
-            ),
+
+
           ],
         ),
       ),
@@ -178,7 +171,7 @@ class _SurveyTwoState extends State<SurveyTwo> {
                       Row(
                         children: [
                           Spacer(flex: 1),
-                          StarDisplay(),
+                          //StarDisplay(),
                           Spacer(flex: 15),
                         ],
                       )
@@ -356,7 +349,7 @@ class _SurveyTwoDropDownState extends State<SurveyTwoDropDown> {
 
 }
 
-class StarDisplay extends StatefulWidget {
+/*class StarDisplay extends StatefulWidget {
   @override
   _StarDisplayState createState() => _StarDisplayState();
 }
@@ -407,6 +400,6 @@ class SubmitButton extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 

@@ -45,6 +45,7 @@ Uri designation = Uri.parse("https://rms2.rhapsody.ae/api/all_roles");
 Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeyplan");
 Uri Attendance = Uri.parse("https://rms2.rhapsody.ae/api/attendance_monthly");
 Uri updateemp = Uri.parse("https://rms2.rhapsody.ae/api/update_employee");
+Uri LeaveacceptReject = Uri.parse("https://rms2.rhapsody.ae/api/leave_accept_reject");
 
 
 class loggedin{

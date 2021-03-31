@@ -30,6 +30,8 @@ Future<void> merchleavedetails() async {
     for (int u = 0; u< decodeLDData['data'].length; u++) {
       if(currentuser.roleid == 3 ){
       if(decodeLDData['data'][u]['is_approved'] == '1' || decodeLDData['data'][u]['is_approved'] == '2'){
+        dynamic id = decodeLDData['data'][u]['lrid'];
+        leavedataResponse.leaveid.add(id);
         dynamic reason = decodeLDData['data'][u]['reason'];
         leavedataResponse.reasons.add(reason);
         dynamic type = decodeLDData['data'][u]['leavetype'];
@@ -59,6 +61,8 @@ Future<void> merchleavedetails() async {
         leavedataResponse.supportdocs.add(suppdoc);
       }}
       else{
+        dynamic id = decodeLDData['data'][u]['lrid'];
+        leavedataResponse.leaveid.add(id);
         dynamic reason = decodeLDData['data'][u]['reason'];
         leavedataResponse.reasons.add(reason);
         dynamic type = decodeLDData['data'][u]['leavetype'];
@@ -93,6 +97,7 @@ Future<void> merchleavedetails() async {
 
 
 class leavedataResponse{
+  static List<dynamic> leaveid=[];
   static List<dynamic> reasons=[];
   static List<dynamic> leavetypes=[];
   static List<dynamic> totnoofdays=[];

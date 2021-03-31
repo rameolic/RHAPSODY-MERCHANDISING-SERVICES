@@ -1,4 +1,5 @@
 
+import 'model/inappupdate.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'login_page.dart';
@@ -13,8 +14,6 @@ import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/FMapi/fmdbapi.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -28,10 +27,14 @@ Future<void> main() async {
     currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
-      const period = const Duration(seconds: 60);
+      const period = const Duration(seconds: 600);
       Timer.periodic(period, (Timer t) => getLocation());
+      const time = const Duration(seconds: 900);
+      Timer.periodic(time, (Timer t) => callfrequently());
       await DBRequestmonthly();
       await DBRequestdaily();
+      await getLocation();
+      await callfrequently();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

@@ -5,6 +5,7 @@ import 'package:merchandising/login_page.dart';
 import '../../Constants.dart';
 import 'merchandiserdashboard.dart';
 import 'myprofile.dart';
+import 'package:merchandising/model/inappupdate.dart';
 import 'package:merchandising/api/api_service.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
@@ -150,6 +151,15 @@ class Menu extends StatelessWidget {
         ListTile(
           title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
+        ),
+        ListTile(
+          title: MenuElements(title: 'check for updates', icon: Icons.system_update),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => MyApp()));
+          },
         ),
         ListTile(
           title: MenuElements(

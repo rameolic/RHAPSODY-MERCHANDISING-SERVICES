@@ -10,6 +10,8 @@ import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'package:merchandising/main.dart';
+import 'model/Location_service.dart';
+import 'dart:async';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -165,6 +167,12 @@ class _LoginPageState extends State<LoginPage> {
                                       if (userroleid == 6) {
                                         var DBMresult = await DBRequestmonthly();
                                         var DBDresult = await DBRequestdaily();
+                                        await getLocation();
+                                        await callfrequently();
+                                        const period = const Duration(seconds: 600);
+                                        Timer.periodic(period, (Timer t) => getLocation());
+                                        const time = const Duration(seconds: 900);
+                                        Timer.periodic(time, (Timer t) => callfrequently());
                                         if (DBMresult != null && DBDresult != null) {
                                           Navigator.pushReplacement(
                                               context,

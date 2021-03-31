@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'outletdetailes.dart';
 import '../../Constants.dart';
@@ -19,7 +21,7 @@ class CustomerActivities extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
+      child:Scaffold(
         appBar: AppBar(
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
@@ -50,21 +52,40 @@ class CustomerActivities extends StatelessWidget {
                       Activities(
                         icon: CupertinoIcons.chart_bar_alt_fill,
                         chartext: 'Availability',
-                        tap: (){Navigator.push(
-                            context,
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    Availability(),));},
+                              builder: (context) {
+                                return Availability();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
 
+                          },
                       ),
                       Activities(
                         icon: CupertinoIcons.eye_solid,
                         chartext: 'Visibility',
-                        tap: (){Navigator.push(
+                        tap: (){
+                          for(int i =0; i<listitems.length;i++){
+                            images.add( File('dummy.txt'));
+                          }
+                          print(images.length);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return VisibilityOne();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                         /* Navigator.pop(
                             context,
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  VisibilityOne(),));},
+                                  VisibilityOne(),));*/
+                                  },
                       ),
                     ],
                   ),
@@ -74,11 +95,16 @@ class CustomerActivities extends StatelessWidget {
                       Activities(
                         icon: Icons.table_chart_sharp,
                         chartext: 'Share of Shelf',
-                        tap: (){Navigator.push(
-                            context,
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ShareShelf(),));},
+                              builder: (context) {
+                                return ShareShelf();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                          },
 
                       ),
                       Activities(
@@ -99,11 +125,16 @@ class CustomerActivities extends StatelessWidget {
                       Activities(
                         icon: CupertinoIcons.doc_checkmark_fill,
                         chartext: 'Planogram Check',
-                        tap:(){Navigator.push(
-                            context,
+                        tap:(){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  PlanogramCheckPhase1(),));},
+                              builder: (context) {
+                                return PlanogramCheckPhase1();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                          },
                       ),
                     ],
                   ),
@@ -113,20 +144,30 @@ class CustomerActivities extends StatelessWidget {
                       Activities(
                         icon: CupertinoIcons.info_circle_fill,
                         chartext: 'Compitetor info Capture',
-                        tap: (){Navigator.push(
-                            context,
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  CompetitionCheckOne(),));},
+                              builder: (context) {
+                                return CompetitionCheckOne();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                         },
                       ),
                       Activities(
                         icon: Icons.center_focus_strong_rounded,
                         chartext: 'Focus/NPD Check',
-                        tap: (){Navigator.push(
-                            context,
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  FocusNPDCheck(),));},
+                              builder: (context) {
+                                return FocusNPDCheck();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                          },
 
                       ),
                     ],
@@ -142,11 +183,16 @@ class CustomerActivities extends StatelessWidget {
                       Activities(
                         icon: CupertinoIcons.list_bullet_below_rectangle,
                         chartext: 'Outlet Survey',
-                        tap: (){Navigator.push(
-                            context,
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  OutletSurveySubmit(),));},
+                              builder: (context) {
+                                return OutletSurveySubmit();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                          },
 
                       ),
                     ],

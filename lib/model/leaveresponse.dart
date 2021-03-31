@@ -7,6 +7,10 @@ import 'package:merchandising/main.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/api/leaveresult.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
+
 
 int leave;
 
@@ -15,8 +19,8 @@ class ResponsetoLeave extends StatefulWidget {
   _ResponsetoLeaveState createState() => _ResponsetoLeaveState();
 }
 
+bool isApiCallProcess = false;
 class _ResponsetoLeaveState extends State<ResponsetoLeave> {
-  bool isApiCallProcess = false;
   String accepted = "2";
   String acceptedbyfm = "1";
   String rejected = "1";
@@ -185,289 +189,340 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
   }
 }
 
-class leaveresult extends StatelessWidget {
+class leaveresult extends StatefulWidget {
+  @override
+  _leaveresultState createState() => _leaveresultState();
+}
+
+class _leaveresultState extends State<leaveresult> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pink,
-        iconTheme: IconThemeData(color: orange),
-        title: Text(
-          "Leave Response",
-          style: TextStyle(color: orange),
+    return ProgressHUD(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: pink,
+          iconTheme: IconThemeData(color: orange),
+          title: Text(
+            "Leave Response",
+            style: TextStyle(color: orange),
+          ),
         ),
-      ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height/2.3,
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Reason : ',
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Flexible(
-                            child: AutoSizeText(
-                              leavedataResponse.reasons[leave],
-                              style: TextStyle( fontSize: 16.0, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Leave Type:',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                              leavedataResponse.leavetypes[leave]
-                                  .toString(),
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('total number of days',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          Text(
-                              leavedataResponse.totnoofdays[leave]
-                                  .toString(),
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Employee name :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(leavedataResponse.empname[leave]
-                              .toString()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Employee ID :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(leavedataResponse
-                              .empid[leave]
-                              .toString()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Start Date :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(leavedataResponse.Startdates[leave]),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('End date :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(leavedataResponse.enddates[leave]
-                              .toString()),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Requested on :',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(leavedataResponse.requestedon[leave]
-                              .toString()
-                              .substring(0, 10)),
-                        ],
-                      ),
-                      leavedataResponse.leavetypes[leave]
-                                  .toString() ==
-                              "Sick_Leave"
-                          ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Supported Documents :',
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                    )),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                VeiwImage()));
-                                  },
-                                  child: Container(
-                                    width: 60,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: orange,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(child: Text("Veiw",style: TextStyle(color: Colors.white),)),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : SizedBox(),
-                       currentuser.roleid == 3 && leavedataResponse.isleaveaccepted[leave] == '1' && leavedataResponse.isleaverejected[leave] == '0' ? Padding(
-                         padding: const EdgeInsets.only(top:20),
-                         child: Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                           children: [
-                             GestureDetector(
-                               onTap: () {
-                                 Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                         builder: (BuildContext context) =>
-                                             ResponsetoLeave()));
-                               },
-                               child: Container(
-                                 padding: EdgeInsets.all(10),
-                                 decoration: BoxDecoration(
-                                   color: Colors.red,
-                                   borderRadius: BorderRadius.circular(10),
-                                 ),
-                                 child: Text(
-                                   "Reject Leave",
-                                   style: TextStyle(color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                             GestureDetector(
-                               onTap: () {
-                                 Navigator.push(
-                                     context,
-                                     MaterialPageRoute(
-                                         builder: (BuildContext context) =>
-                                             ResponsetoLeave()));
-                               },
-                               child: Container(
-                                 padding: EdgeInsets.all(10),
-                                 decoration: BoxDecoration(
-                                   color: Colors.green,
-                                   borderRadius: BorderRadius.circular(10),
-                                 ),
-                                 child: Text(
-                                   "Accept Leave",
-                                   style: TextStyle(color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ) : SizedBox(),
-                      currentuser.roleid == 5 && leavedataResponse.isleaveaccepted[leave] == '0' && leavedataResponse.isleaverejected[leave] == '0'? Padding(
-                        padding: const EdgeInsets.only(top:20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        drawer: Drawer(
+          child: Menu(),
+        ),
+        body: Stack(
+          children: [
+            BackGround(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height/2.3,
+                    width: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ResponsetoLeave()));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  "Reject Leave",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                            Text(
+                              'Reason : ',
+                              style: TextStyle(
+                                  fontSize: 16.0, fontWeight: FontWeight.bold),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ResponsetoLeave()));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  "Accept Leave",
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Flexible(
+                              child: AutoSizeText(
+                                leavedataResponse.reasons[leave],
+                                style: TextStyle( fontSize: 16.0, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
                         ),
-                      ) : SizedBox()
-                    ],
+                        Row(
+                          children: [
+                            Text('Leave Type:',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                                leavedataResponse.leavetypes[leave]
+                                    .toString(),
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('total number of days',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            Text(
+                                leavedataResponse.totnoofdays[leave]
+                                    .toString(),
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('Employee name :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(leavedataResponse.empname[leave]
+                                .toString()),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('Employee ID :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(leavedataResponse
+                                .empid[leave]
+                                .toString()),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('Start Date :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(leavedataResponse.Startdates[leave]),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('End date :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(leavedataResponse.enddates[leave]
+                                .toString()),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('Requested on :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(leavedataResponse.requestedon[leave]
+                                .toString()
+                                .substring(0, 10)),
+                          ],
+                        ),
+                        leavedataResponse.leavetypes[leave]
+                            .toString() ==
+                            "Sick_Leave"
+                            ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Supported Documents :',
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                )),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            VeiwImage()));
+                              },
+                              child: Container(
+                                width: 60,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: orange,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(child: Text("Veiw",style: TextStyle(color: Colors.white),)),
+                              ),
+                            ),
+                          ],
+                        )
+                            : SizedBox(),
+                        currentuser.roleid == 3 && leavedataResponse.isleaveaccepted[leave] == '1' && leavedataResponse.isleaverejected[leave] == '0' ? Padding(
+                          padding: const EdgeInsets.only(top:20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  setState(() {
+                                    isApiCallProcess = true;
+                                  });
+                                  result.id = null;
+                                  result.isapproved = null;
+                                  result.isrejected = null;
+                                  result.isrejected = '1';
+                                  currentuser.roleid ==3 ? result.isapproved ="1":result.isapproved ="0";
+                                  result.id = leavedataResponse.leaveid[leave];
+                                  await leaveacceptorreject();
+                                  setState(() {
+                                    isApiCallProcess = false;
+                                  });
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              HRdashboard()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Reject Leave",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async{
+                                  result.id = null;
+                                  result.isapproved = null;
+                                  result.isrejected = null;
+                                  currentuser.roleid ==3 ? result.isapproved ="2":result.isapproved ="1";
+                                  result.id = leavedataResponse.leaveid[leave];
+                                  result.isrejected = '0';
+                                  await leaveacceptorreject();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              HRdashboard()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Accept Leave",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ) : SizedBox(),
+                        currentuser.roleid == 5 && leavedataResponse.isleaveaccepted[leave] == '0' && leavedataResponse.isleaverejected[leave] == '0' ?
+                        Padding(
+                          padding: const EdgeInsets.only(top:20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  setState(() {
+                                    isApiCallProcess = true;
+                                  });
+                                  result.id = null;
+                                  result.isapproved = null;
+                                  result.isrejected = null;
+                                  result.isrejected = '1';
+                                  currentuser.roleid ==3 ? result.isapproved ="1":result.isapproved ="0";
+                                  result.id = leavedataResponse.leaveid[leave];
+                                  await leaveacceptorreject();
+                                  setState(() {
+                                    isApiCallProcess = false;
+                                  });
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              FieldManagerDashBoard()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Reject Leave",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  result.id = null;
+                                  result.isapproved = null;
+                                  result.isrejected = null;
+                                  currentuser.roleid ==3 ? result.isapproved ="2":result.isapproved ="1";
+                                  result.id = leavedataResponse.leaveid[leave];
+                                  result.isrejected = '0';
+                                  await leaveacceptorreject();
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              FieldManagerDashBoard()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text(
+                                    "Accept Leave",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                            : SizedBox()
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
     );
   }
 }
@@ -492,3 +547,4 @@ class VeiwImage extends StatelessWidget {
     );
   }
 }
+

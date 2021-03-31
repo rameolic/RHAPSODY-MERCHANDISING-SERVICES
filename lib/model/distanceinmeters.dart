@@ -14,6 +14,7 @@ distinmeters() {
     double dist = Geolocator.distanceBetween(lat, long, double.parse(gettodayjp.outletlat[u]), double.parse(gettodayjp.outletlong[u]));
     gettodayjp.distanceinmeters.add(dist/1000);
   }
+  print(gettodayjp.distanceinmeters);
   marker();
   distinmetersforskipjp();
   }

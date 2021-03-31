@@ -22,7 +22,15 @@ import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
-
+Future callfrequently()async{
+  await getJourneyPlan();
+  await getskippedJourneyPlan();
+  await getvisitedJourneyPlan();
+  await getJourneyPlanweekly();
+  await getSkipJourneyPlanweekly();
+  await getVisitJourneyPlanweekly();
+  await distinmeters();
+}
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
@@ -176,24 +184,8 @@ class _DashBoardState extends State<DashBoard> {
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               GestureDetector(
-                                                onTap: () async{
-                                                  print( isApiCallProcess);
-                                                  setState(() {
-                                                    isApiCallProcess = true;
-                                                  });
-                                                  print(isApiCallProcess);
-                                                  await getJourneyPlan();
-                                                  await getskippedJourneyPlan();
-                                                  await getvisitedJourneyPlan();
-                                                  await getJourneyPlanweekly();
-                                                  await getSkipJourneyPlanweekly();
-                                                  await getVisitJourneyPlanweekly();
-                                                  await distinmeters();
-
-                                                  setState(() {
-                                                    isApiCallProcess = false;
-                                                  });
-                                                  await Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
+                                                onTap: () {
+                                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                 },
                                                 child: Container(
                                                   height: 30,

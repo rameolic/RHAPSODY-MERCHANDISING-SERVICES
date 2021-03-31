@@ -1,351 +1,410 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'Customers Activities.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
+List<String> categories = ['Chocolate', 'Petfood', 'Icecream'];
+List<String> Brands = ['mars', 'cadbury', 'ArunIceCreams', 'pedigree'];
+String Selectedcategory;
+String Selectedbrand;
+List<String> defaulflist = ['dairymilk', 'snikers', 'silk','pedigree','dry dog food','dry kibble','strawberry','vanilla','butterscoth'];
+List<String> filteredList = [];
 class Availability extends StatefulWidget {
   @override
   _AvailabilityState createState() => _AvailabilityState();
 }
 
 class _AvailabilityState extends State<Availability> {
+  //List<bool> isSelected;
+  var _searchview = new TextEditingController();
+  bool _firstSearch = true;
+  String _query = "";
+  List<String> _filterList;
+  List<String> InputList = defaulflist;
+  @override
+  _AvailabilityState() {
+
+    _searchview.addListener(() {
+      if (_searchview.text.isEmpty) {
+
+        setState(() {
+          _firstSearch = true;
+          _query = "";
+        });
+      } else {
+        setState(() {
+          _firstSearch = false;
+          _query = _searchview.text;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Row(
-            children: [
-              Text(
-                'Availability',
-                style: TextStyle(color: orange),
-              ),
-              Spacer(),
-              SubmitButton(),
-            ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: containerscolor,
+            iconTheme: IconThemeData(color: orange),
+            title: Row(
+              children: [
+                Text(
+                  'Availability',
+                  style: TextStyle(color: orange),
+                ),
+                Spacer(),
+                SubmitButton(),
+              ],
+            ),
           ),
-        ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
-          children: [
-            BackGround(),
-            SingleChildScrollView(
-              child: Column(
+          drawer: Drawer(
+            child: Menu(),
+          ),
+          body: Stack(
+            children: [
+              BackGround(),
+              Column(
                 children: [
                   OutletDetails(),
-                  /*
                   Container(
-                    margin: EdgeInsets.all(10.0),
-                    height: 40,
-                    padding: EdgeInsets.all(10.00),
-                    decoration: BoxDecoration(
-                        color: pink,
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Expanded(
-                      child: Theme(
-                        data: ThemeData(primaryColor: orange),
-                        child: TextField(
-                          cursorColor: orange,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            focusColor: Colors.black,
-                            hintText: 'Search by Customer Code/Name',
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 13.0,
-                            ),
-                            suffixIcon: Icon(
-                              CupertinoIcons.search,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  */
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
-                    decoration: BoxDecoration(
-                      color: orange,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0)),
-                    ),
-                    height: 40.0,
-                    width: MediaQuery.of(context).size.width,
+                    margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Item/Description",
-                          style:
-                          TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                        SizedBox(width: 10,),
-                        Text(
-                          " Avl",
-                          style:
-                          TextStyle(color: Colors.white, fontSize: 16),
-                        ),
+                        Container(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            width: MediaQuery.of(context).size.width/2.15,
+                            child: DropdownButton<String>(
+                                underline: SizedBox(),
+                                isExpanded: true,
+                                iconEnabledColor: orange,
+                                elevation: 20,
+                                dropdownColor: Colors.white,
+                                items: categories.map((String val) {
+                                  return new DropdownMenuItem<String>(
+                                    value: val,
+                                    child: new Text(val),
+                                  );
+                                }).toList(),
+                                hint: Text("Category"),
+                                value: Selectedcategory,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    Selectedcategory = newVal;
+                                  });
+                                })),
+                        Container(
+                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            width: MediaQuery.of(context).size.width/2.15,
+                            child: DropdownButton<String>(
+                                underline: SizedBox(),
+                                isExpanded: true,
+                                iconEnabledColor: orange,
+                                elevation: 20,
+                                dropdownColor: Colors.white,
+                                items: Brands.map((String val) {
+                                  return new DropdownMenuItem<String>(
+                                    value: val,
+                                    child: new Text(val),
+                                  );
+                                }).toList(),
+                                hint: Text("Brand"),
+                                value: Selectedbrand,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    Selectedbrand = newVal;
+                                  });
+                                })),
                       ],
                     ),
                   ),
-                  Container(
-                      height: 35,
-                      width: double.infinity,
-                      color: Colors.white,
-                      margin: EdgeInsets.only(left: 10, right: 10),
-                      padding: EdgeInsets.all(10),
-                      child: FittedBox(
-                          fit: BoxFit.fitHeight, child: Text("Tang"))),
-                  Container(
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                    child: Table(
-                      border: TableBorder.symmetric(
-                        inside: BorderSide(color: Colors.grey),),
-                      columnWidths: {
-                        0: FractionColumnWidth(0.65),
-                        1: FractionColumnWidth(0.35),
-                      },
-                      children: [
-                        TableRow(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFF3E0),
-                          ),
-                          children: [
-                            Productdetailes(
-                              productid: "58745",
-                              productsubname: "Tang Orange Instant Drink  Mix",
-                              packweightingrams: "500 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-                        TableRow(
-                          decoration:
-                          BoxDecoration(color: Color(0xFFFFF3E0)),
-                          children: [
-                            Productdetailes(
-                              productid: "58754",
-                              productsubname: "Tang  Orange Instant Drink  Mix",
-                              packweightingrams: "750 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-                        TableRow(
-                          decoration:
-                          BoxDecoration(color: Color(0xFFFFF3E0)),
-                          children: [
-                            Productdetailes(
-                              productid: "58887",
-                              productsubname: "Tang  Lemon Instant Drink  Mix",
-                              packweightingrams: "500 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-                        TableRow(
-                          decoration:
-                          BoxDecoration(color: Color(0xFFFFF3E0)),
-                          children: [
-                            Productdetailes(
-                              productid: "58745",
-                              productsubname: "Tang  Mango Instant Drink  Mix",
-                              packweightingrams: "750 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-                        TableRow(
-                          decoration:
-                          BoxDecoration(color: Color(0xFFFFF3E0)),
-                          children: [
-                            Productdetailes(
-                              productid: "58897",
-                              productsubname: "Tang Mosambi Instant Drink Mix",
-                              packweightingrams: "500 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-                        TableRow(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFF3E0),
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(15.0),
-                                bottomRight: Radius.circular(15.0)),
-                          ),
-                          children: [
-                            Productdetailes(
-                              productid: "58664",
-                              productsubname: "Tang Lemon and Mint Drink Mix",
-                              packweightingrams: "750 Gm Pack",
-                            ),
-                            SwitchOne(),
-                          ],
-                        ),
-
-                      ],
+                  _createSearchView(),
+                  _firstSearch
+                      ? _createListView()
+                      : _performSearch(),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
+  Widget _createSearchView() {
+    return new Container(
+      margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+      padding: EdgeInsets.only(left: 20.0,right: 20.0),
+      width: double.infinity,
+      decoration: BoxDecoration(color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: new TextField(
+              style: TextStyle(color: orange),
+              controller: _searchview,
+              cursorColor:orange,
+              decoration: InputDecoration(
+                isCollapsed: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                focusColor: orange,
+                hintText: 'Search by Product Name',
+                hintStyle: TextStyle(color: orange),
+                border: InputBorder.none,
+                icon: Icon(CupertinoIcons.search,color: orange,),
+              ),
+            ),
+          ),
+          GestureDetector(
+              onTap: (){
+                _searchview.clear();
+              },
+              child: Icon(CupertinoIcons.clear_circled_solid,color: orange,))
+        ],
+      ),
+    );
+  }
+  Widget _createListView() {
+    return new Flexible(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: orange,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+              ),
+              height: 40.0,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left:20),
+                    child: Text(
+                      "Item/Description",
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
-                  SizedBox(height:30),
+                  Padding(
+                    padding: const EdgeInsets.only(right:20.0),
+                    child: Text(
+                      " Avl",
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
+              decoration: BoxDecoration(
+                color: pink,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
+              ),
+              child: new ListView.builder(
+                shrinkWrap: true,
+                  itemCount: InputList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/1.25,
+                            decoration: index != InputList.length-1 ? BoxDecoration(
+
+                              border: Border(
+                                right: BorderSide( //                   <--- left side
+                                  color: Colors.black,
+                                ),
+                                bottom:BorderSide( //                   <--- left side
+                                  color: Colors.black,
+                                ),
+                              )
+                            ):BoxDecoration(
+                              border: Border(
+                                right: BorderSide( //                   <--- left side
+                                  color: Colors.black,
+                                ),)
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${InputList[index]}',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
+                              decoration:index != InputList.length-1 ? BoxDecoration(
+                                border: Border(
+                                  bottom:BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),
+                                ),):BoxDecoration(
+                              ),
+                              child: ToggleSwitch(
+                                item: InputList[index],
+                              ))
+                        ],
+                      ),
+                    );
+                  }),
+            ),
           ],
-        ));
-  }
-}
-
-class SwitchOne extends StatefulWidget {
-  @override
-  _SwitchOneState createState() => _SwitchOneState();
-}
-
-class _SwitchOneState extends State<SwitchOne> {
-  bool isSwitched = false;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-
-      color: Colors.transparent,
-      child: Column(
-        children: [
-          Switch(
-            value: isSwitched,
-            onChanged: (value) {
-              setState(() {
-                isSwitched = value;
-                print(isSwitched);
-              });
-            },
-            inactiveTrackColor: orange,
-            activeColor: Colors.red,
-          ),
-          isSwitched == true ? DropDown() : SizedBox(width: 5,)
-        ],
+        ),
       ),
     );
   }
-}
 
-class DropDown extends StatefulWidget {
-  @override
-  _DropDownState createState() => _DropDownState();
-}
+  Widget _performSearch() {
+    _filterList = [];
+    for (int i = 0; i <InputList.length; i++) {
+      var item = InputList[i];
+      if (item.toLowerCase().contains(_query.toLowerCase())) {
+        _filterList.add(item);
+      }
+    }
+    return _createFilteredListView();
+  }
 
-class _DropDownState extends State<DropDown> {
-  int dropDownValue = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: DropdownButton(
-        elevation: 0,
-        dropdownColor: Colors.white,
-        value: dropDownValue,
-        onChanged: (int newVal) {
-          setState(() {
-            dropDownValue = newVal;
-          });
-        },
-        items: [
-          DropdownMenuItem(
-            value: 0,
-            child: Text(
-              'Reason',
-              style: TextStyle(
-                fontSize: 10.0,
+  Widget _createFilteredListView() {
+    return new Flexible(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
+              decoration: BoxDecoration(
+                color: orange,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0)),
+              ),
+              height: 40.0,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left:20),
+                    child: Text(
+                      "Item/Description",
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right:20.0),
+                    child: Text(
+                      " Avl",
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          DropdownMenuItem(
-            value: 1,
-            child: Text(
-              'Reason1',
-              style: TextStyle(
-                fontSize: 14.0,
+            Container(
+              margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
+              decoration: BoxDecoration(
+                color: pink,
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
               ),
+              child: new ListView.builder(
+                 shrinkWrap: true,
+                  itemCount: _filterList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/1.25,
+                            decoration: index != _filterList.length-1 ? BoxDecoration(
+
+                                border: Border(
+                                  right: BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),
+                                  bottom:BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),
+                                )
+                            ):BoxDecoration(
+                                border: Border(
+                                  right: BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),)
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${_filterList[index]}',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                          ),
+                          Container(
+                              height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
+                              decoration:index != _filterList.length-1 ? BoxDecoration(
+                                border: Border(
+                                  bottom:BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),
+                                ),):BoxDecoration(
+                              ),
+                              child: ToggleSwitch(
+                                item: _filterList[index],
+                              ))
+                        ],
+                      ),
+                    );
+                  }),
             ),
-          ),
-          DropdownMenuItem(
-            value: 2,
-            child: Text(
-              'Reason2',
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-          DropdownMenuItem(
-            value: 3,
-            child: Text(
-              'Reason3',
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
+
 }
-
-class Productdetailes extends StatelessWidget {
-  Productdetailes({this.productid, this.productsubname, this.packweightingrams});
-  final productid;
-  final productsubname;
-  final packweightingrams;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 10, right: 10),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(color: Color(0xFFFFF3E0)),
-      width: 370,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                productid,
-              ),
-              SizedBox(width: 10,),
-              Text(
-                packweightingrams,
-                style: TextStyle(color: Colors.grey[700]),
-              ),
-            ],
-          ),
-          SizedBox(height: 10,),
-          Text(
-            productsubname,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                fontSize: 16.0),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 
 class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:(){
+      onTap: () {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    CustomerActivities()));
+                builder: (BuildContext context) => CustomerActivities()));
       },
       child: Container(
         margin: EdgeInsets.only(right: 10.00),
@@ -362,3 +421,42 @@ class SubmitButton extends StatelessWidget {
     );
   }
 }
+
+List<String> outofStockitems = [];
+
+class ToggleSwitch extends StatefulWidget {
+  ToggleSwitch({this.item});
+   final item;
+  @override
+  _ToggleSwitchState createState() => _ToggleSwitchState();
+}
+
+class _ToggleSwitchState extends State<ToggleSwitch> {
+
+   bool isSwitched = false;
+  @override
+   Void initState() {
+    super.initState();
+    bool value = outofStockitems.contains(widget.item) == true ? true : false;
+    setState(() {
+      isSwitched = value;
+    });
+  }
+ // bool isSwitched = false;
+  @override
+  Widget build(BuildContext context) {
+    return Switch(
+      value: isSwitched,
+      onChanged: (value) {
+        setState(() {
+          isSwitched = value;
+          isSwitched == true ? outofStockitems.add( widget.item) : outofStockitems.remove( widget.item);
+          print(outofStockitems);
+        });
+      },
+      inactiveTrackColor: Colors.green,
+      activeColor: Colors.red,
+    );
+  }
+}
+

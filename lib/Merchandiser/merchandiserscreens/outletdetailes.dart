@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/api/api_service.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,7 +7,9 @@ import 'MenuContent.dart';
 import 'checkin.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:merchandising/model/Location_service.dart';
 
+// ignore: must_be_immutable
 class OutLet extends StatefulWidget {
   double currentdist;
   @override
@@ -23,15 +26,33 @@ class _OutLetState extends State<OutLet> {
         position: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong),
         ))
   ];
+  double distance = chekinoutlet.currentdistance/1000;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
-        title: Text(
-          'Outlet Details',
-          style: TextStyle(color: orange),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Outlet Details',
+              style: TextStyle(color: orange),
+            ),
+            IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
+              setState(() {
+                isApiCallProcess = true;
+              });
+              await getLocation();
+              await outletwhencheckin();
+              setState((){
+                print(chekinoutlet.currentdistance/1000);
+                distance = chekinoutlet.currentdistance/1000;
+                isApiCallProcess = false;
+              });
+            })
+          ],
         ),
       ),
       drawer: Drawer(
@@ -65,16 +86,60 @@ class _OutLetState extends State<OutLet> {
                       ),
 
                       SizedBox(height: 10,),
-                      OutLetContent(
-                        ooutletid: chekinoutlet.checkinoutletid,
-                        omarketname: chekinoutlet.checkinoutletname,
-                        oarea: chekinoutlet.checkinarea,
-                        ocity: chekinoutlet.checkincity,
-                        ostate: chekinoutlet.checkinstate,
-                        ocountry: chekinoutlet.checkincountry,
-                        address: chekinoutlet.checkinaddress,
-                        onumber: chekinoutlet.contactnumber,
-                        odistance: (chekinoutlet.currentdistance/1000).toStringAsFixed(2),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '[${chekinoutlet.checkinoutletid}]',
+                                style: TextStyle( fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(width: 5,),
+                              Text(
+                                chekinoutlet.checkinoutletname,
+                                style: TextStyle( fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Text(chekinoutlet.checkinaddress),
+                          Row(
+                            children: [
+                              Text(chekinoutlet.checkinarea),SizedBox(width: 5,),Text(chekinoutlet.checkincity),SizedBox(width: 5,),Text(chekinoutlet.checkinstate),SizedBox(width: 5,),Text(chekinoutlet.checkincountry),
+                            ],
+                          ),
+                          SizedBox(height: 5,),
+                          Table(
+                            columnWidths: {
+                              0: FlexColumnWidth(2.5),
+                              1: FlexColumnWidth(1),
+                              2: FlexColumnWidth(2),
+                            },
+                            children: [
+                              TableRow(children: [
+                                Text('Contact Number',
+                                ),
+                                Text(":"),
+                                SelectableText(chekinoutlet.contactnumber.toString(), style: TextStyle(color: orange)),
+                              ]),
+                              // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
+                              TableRow(children: [
+                                Text('Distance',
+                                ),
+                                Text(":"),
+                                Row(
+                                  children: [
+                                    Text((distance).toStringAsFixed(2).toString(), style: TextStyle(color: orange)),
+                                    Text("KM",style: TextStyle(color: orange))
+                                  ],
+                                ),
+                              ]),
+                              //TableRow(children: [Text('Coverage Productivity %',),Text(":"),Text(oproductivity, style: TextStyle(color: orange)),]),
+                              //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -98,92 +163,7 @@ class _OutLetState extends State<OutLet> {
 }
 
 
-class OutLetContent extends StatelessWidget {
-  OutLetContent({
-    this.omarketname,
-    this.oarea,
-    this.olastvisit,
-    this.onumber,
-    this.oproductivity,
-    this.oprogramname,
-    this.odistance,
-    this.ooutletid,
-    this.ocity,
-    this.ocountry,
-    this.ostate,
-    this.address
-  });
-  final ooutletid;
-  final omarketname;
-  final oarea;
-  final ocity;
-  final ostate;
-  final ocountry;
-  final onumber;
-  final odistance;
-  final oproductivity;
-  final oprogramname;
-  final olastvisit;
-  final address;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Row(
-          children: [
-            Text(
-              '[$ooutletid]',
-              style: TextStyle( fontWeight: FontWeight.bold),
-            ),
-            SizedBox(width: 5,),
-            Text(
-              omarketname,
-              style: TextStyle( fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        Text(address),
-        Row(
-          children: [
-            Text(oarea),SizedBox(width: 5,),Text(ocity),SizedBox(width: 5,),Text(ostate),SizedBox(width: 5,),Text(ocountry),
-          ],
-        ),
-        SizedBox(height: 5,),
-        Table(
-          columnWidths: {
-            0: FlexColumnWidth(2.5),
-            1: FlexColumnWidth(1),
-            2: FlexColumnWidth(2),
-          },
-          children: [
-            TableRow(children: [
-              Text('Contact Number',
-                  ),
-              Text(":"),
-              SelectableText(onumber.toString(), style: TextStyle(color: orange)),
-            ]),
-           // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
-            TableRow(children: [
-              Text('Distance',
-                  ),
-              Text(":"),
-              Row(
-                children: [
-                  Text(odistance.toString(), style: TextStyle(color: orange)),
-                  Text("KM",style: TextStyle(color: orange))
-                ],
-              ),
-            ]),
-            //TableRow(children: [Text('Coverage Productivity %',),Text(":"),Text(oproductivity, style: TextStyle(color: orange)),]),
-            //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
-          ],
-        ),
-      ],
-    );
-  }
-}
+
 
 class OutLetContainer extends StatelessWidget {
   OutLetContainer({

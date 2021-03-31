@@ -74,11 +74,9 @@ class CheckIn extends StatelessWidget {
               ));
         } else {
           SubmitCheckin();
-        Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-        builder: (BuildContext context) =>
-        CustomerActivities()));
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+            return CustomerActivities();
+          }), (Route<dynamic> route) => false);
         }
       },
       child: Container(
@@ -276,31 +274,25 @@ class _RoundCheckBOXState extends State<RoundCheckBOX> {
               if (gpsnotworking == true) {
                 print("gps not working");
                 SubmitCheckin();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CustomerActivities()));
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+                  return CustomerActivities();
+                }), (Route<dynamic> route) => false);
               }
               else {
                 if(geolocation == true){
                   SubmitCheckin();
                   print("geo Location was wrong");
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              CustomerActivities()));
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+                    return CustomerActivities();
+                  }), (Route<dynamic> route) => false);
                 }
                 else {
                   if(others == true){
                     SubmitCheckin();
                     print("others");
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                CustomerActivities()));
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+                      return CustomerActivities();
+                    }), (Route<dynamic> route) => false);
                   }
                   else{
                     null ;
