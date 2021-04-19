@@ -1,5 +1,6 @@
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
+import 'package:merchandising/Fieldmanager/products.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'Outlets.dart';
@@ -9,17 +10,19 @@ import 'package:merchandising/Fieldmanager/Store Details.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'package:merchandising/Fieldmanager/addjp.dart';
-import 'package:merchandising/hr/holidays.dart';
 import 'package:merchandising/api/FMapi/storedetailsapi.dart';
 import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'merchandiserslist.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
-import 'package:merchandising/api/holidays.dart';
 import 'chatusers.dart';
 import 'package:merchandising/api/myattendanceapi.dart';
 import 'package:merchandising/model/myattendance.dart';
+import 'package:merchandising/api/FMapi/add_brandapi.dart';
+import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
+import 'package:merchandising/api/FMapi/category_detailsapi.dart';
+import 'package:merchandising/api/FMapi/product_detailsapi.dart';
 
 
 class FieldManagerDashBoard extends StatefulWidget {
@@ -490,12 +493,17 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               setState(() {
                                 isApiCallProcess = true;
                               });
-                              await holidaysdata();
+                              await getBrandDetails();
+                              await getemployeestoaddbrand();
+                              await getCategoryDetails();
+                              await getProductDetails();
+                              await getFMoutletdetails();
+
                               setState(() {
                                 isApiCallProcess = false;
                               });
                               Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) => HoliDays()));
+                                  MaterialPageRoute(builder: (BuildContext context) => Products()));
                             },
                             child: Container(
                               height: 120,
@@ -515,14 +523,14 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        CupertinoIcons.clock_fill,
+                                        CupertinoIcons.barcode,
                                         size: 35,
                                         color: iconscolor,
                                       ),
 
                                       SizedBox(height: 10),
                                       Text(
-                                        'Holidays',
+                                        'Products',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontSize: 15),
                                       ),

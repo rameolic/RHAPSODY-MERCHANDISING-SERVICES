@@ -18,6 +18,9 @@ class _ReportingempState extends State<Reportingemp> {
   String _query = "";
   List<dynamic> inputlist;
   List<String> _filterList;
+  List<String> _filterreportingList;
+  List<String> _filterstartList;
+  List<String> _filterendList;
   @override
   void initState() {
     super.initState();
@@ -44,48 +47,56 @@ class _ReportingempState extends State<Reportingemp> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pink,
-        iconTheme: IconThemeData(color: orange),
-        title: Text("Reporting",style: TextStyle(color: orange),),
-      ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          Container(
-            margin: EdgeInsets.fromLTRB(10.0,10,10,0),
-            child: new Column(
-              children: <Widget>[
-                _createSearchView(),
-                SizedBox(height: 10.0,),
-                _firstSearch ? _createListView() : _performSearch(),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              margin: EdgeInsets.all(15.0),
-              child: FloatingActionButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext
-                          context) =>
-                              addreporting()));
-                },
-                backgroundColor: pink,
-                elevation: 8.0,
-                child: Icon(Icons.add,color: orange,),
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: pink,
+          iconTheme: IconThemeData(color: orange),
+          title: Text("Reporting",style: TextStyle(color: orange),),
+        ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
+        body: Stack(
+          children: [
+            BackGround(),
+            Container(
+              margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+              child: new Column(
+                children: <Widget>[
+                  _createSearchView(),
+                  SizedBox(height: 10.0,),
+                  _firstSearch ? _createListView() : _performSearch(),
+                ],
               ),
             ),
-          ),
-        ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: EdgeInsets.all(15.0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext
+                            context) =>
+                                addreporting()));
+                  },
+                  backgroundColor: pink,
+                  elevation: 8.0,
+                  child: Icon(Icons.add,color: orange,),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -201,10 +212,17 @@ class _ReportingempState extends State<Reportingemp> {
 
   Widget _performSearch() {
     _filterList = [];
+    _filterendList =[];
+    _filterstartList =[];
+    _filterreportingList=[];
     for (int i = 0; i <reporting.merchandisers.length; i++) {
       var item = reporting.merchandisers[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        int index = reporting.merchandisers.indexOf(item);
+        _filterreportingList.add(reporting.feildmanager[index]);
+        _filterstartList.add(reporting.startdate[index]);
+        _filterendList.add(reporting.enddate[index]);
       }
     }
     return _createFilteredListView();
@@ -251,7 +269,7 @@ class _ReportingempState extends State<Reportingemp> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(reporting.feildmanager[index],
+                      Text(_filterreportingList[index],
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -267,7 +285,7 @@ class _ReportingempState extends State<Reportingemp> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(reporting.startdate[index],
+                      Text(_filterstartList[index],
                           style: TextStyle(
                             fontSize: 15.0,
                           )),
@@ -283,7 +301,7 @@ class _ReportingempState extends State<Reportingemp> {
                       SizedBox(
                         width: 5,
                       ),
-                      Text('${reporting.enddate[index]}',
+                      Text('${_filterendList[index]}',
                           style: TextStyle(
                             fontSize: 15.0,
                           )),

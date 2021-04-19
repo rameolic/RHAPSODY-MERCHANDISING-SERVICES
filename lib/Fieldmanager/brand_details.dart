@@ -2,30 +2,26 @@ import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'addoutlets.dart';
-import 'package:merchandising/api/FMapi/outletapi.dart';
+import 'package:merchandising/Fieldmanager/addbrand.dart';
+import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 
 
-class Oulets extends StatefulWidget {
+class BrandDetails extends StatefulWidget {
   @override
-  _OuletsState createState() => _OuletsState();
+  _BrandDetailsState createState() => _BrandDetailsState();
 }
 
-class _OuletsState extends State<Oulets> {
+class _BrandDetailsState extends State<BrandDetails> {
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
   String _query = "";
-  List<dynamic> outletsdata;
+
   List<String> _filterList;
-  @override
-  void initState() {
-    super.initState();
-    outletsdata =  outletdata.outletname;
-    outletsdata.sort();
-  }
+  List<String>_filterClient;
+  List<String>_filterField;
+  List<String>_filterSales;
 
-  _OuletsState() {
-
+  _BrandDetailsState() {
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
 
@@ -54,7 +50,7 @@ class _OuletsState extends State<Oulets> {
         appBar: AppBar(
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
-          title: Text("Outlet Details",style: TextStyle(color: orange),),
+          title: Text("Brand Details",style: TextStyle(color: orange),),
         ),
         drawer: Drawer(
           child: Menu(),
@@ -72,6 +68,7 @@ class _OuletsState extends State<Oulets> {
                 ],
               ),
             ),
+
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -83,7 +80,7 @@ class _OuletsState extends State<Oulets> {
                         MaterialPageRoute(
                             builder: (BuildContext
                             context) =>
-                                AddOutlets()));
+                                AddBrand()));
                   },
                   backgroundColor: pink,
                   elevation: 8.0,
@@ -91,6 +88,7 @@ class _OuletsState extends State<Oulets> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
@@ -101,7 +99,7 @@ class _OuletsState extends State<Oulets> {
       padding: EdgeInsets.only(left: 20.0),
       width: double.infinity,
       decoration: BoxDecoration(color: pink,
-          borderRadius: BorderRadius.circular(100.0)),
+          borderRadius: BorderRadius.circular(25.0)),
       child: new TextField(
         style: TextStyle(color: orange),
         controller: _searchview,
@@ -109,7 +107,7 @@ class _OuletsState extends State<Oulets> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
           focusColor: orange,
-          hintText: 'Search by Storename/Code',
+          hintText: 'Search by Brand Name/Code',
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
@@ -119,11 +117,12 @@ class _OuletsState extends State<Oulets> {
     );
   }
 
+
   Widget _createListView() {
     return new Flexible(
-      child: new ListView.builder(
+      child: new  ListView.builder(
           shrinkWrap: true,
-          itemCount: outletdata.outletname.length,
+          itemCount:BrandData.brandname.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
                 padding: EdgeInsets.all(10.0),
@@ -135,23 +134,26 @@ class _OuletsState extends State<Oulets> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${outletdata.outletname[index]}',
+                    Text('Brand Name : ${BrandData.brandname[index]}',
                         style: TextStyle(
-                            fontSize: 14.0,fontWeight: FontWeight.bold
+                            fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
                     SizedBox(height: 5),
-                    Text('${outletdata.address[index]}'),
-                    SizedBox(height: 5),
-                    Text('Latitude : ${outletdata.outletlat[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Longitude : ${outletdata.outletlong[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Contact Number : ${outletdata.contactnumber[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Location : ${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',
+                    Text("Client : ${BrandData.client[index]}",
                         style: TextStyle(
                           fontSize: 14.0,
                         )),
+                    SizedBox(height: 5),
+                    Text('Field Manager : ${BrandData.fieldmanager[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+                    SizedBox(height: 5),
+                    Text('Sales Manager : ${BrandData.salesmanager[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+
                   ],
                 ));
           }),
@@ -160,10 +162,17 @@ class _OuletsState extends State<Oulets> {
 
   Widget _performSearch() {
     _filterList = [];
-    for (int i = 0; i <outletdata.outletname.length; i++) {
-      var item = outletdata.outletname[i];
+    _filterClient = [];
+    _filterField = [];
+    _filterSales = [];
+    for (int i = 0; i <BrandData.brandname.length; i++) {
+      var item = BrandData.brandname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        int index = BrandData.brandname.indexOf(item);
+        _filterClient.add(BrandData.client[index]);
+        _filterField.add(BrandData.fieldmanager[index]);
+        _filterSales.add(BrandData.salesmanager[index]);
       }
     }
     return _createFilteredListView();
@@ -173,7 +182,7 @@ class _OuletsState extends State<Oulets> {
     return new Flexible(
       child: new ListView.builder(
           shrinkWrap: true,
-          itemCount: _filterList.length,
+          itemCount:  _filterList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
                 padding: EdgeInsets.all(10.0),
@@ -185,23 +194,26 @@ class _OuletsState extends State<Oulets> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${_filterList[index]}',
+                    Text('Brand Name : ${ _filterList[index]}',
                         style: TextStyle(
-                            fontSize: 14.0,fontWeight: FontWeight.bold
+                            fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
                     SizedBox(height: 5),
-                    Text('${outletdata.address[index]}'),
-                    SizedBox(height: 5),
-                    Text('Latitude : ${outletdata.outletlat[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Longitude : ${outletdata.outletlong[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Contact Number : ${outletdata.contactnumber[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Location : ${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',
+                    Text("Client  : ${_filterClient[index]}",
                         style: TextStyle(
                           fontSize: 14.0,
                         )),
+                    SizedBox(height: 5),
+                    Text('Field Manager : ${_filterField[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+                    SizedBox(height: 5),
+                    Text('Sales Manager : ${_filterSales[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+
                   ],
                 ));
           }),

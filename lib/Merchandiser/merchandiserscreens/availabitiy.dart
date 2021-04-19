@@ -6,7 +6,6 @@ import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'Customers Activities.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 List<String> categories = ['Chocolate', 'Petfood', 'Icecream'];
 List<String> Brands = ['mars', 'cadbury', 'ArunIceCreams', 'pedigree'];
@@ -176,52 +175,53 @@ class _AvailabilityState extends State<Availability> {
     );
   }
   Widget _createListView() {
-    return new Flexible(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
-              decoration: BoxDecoration(
-                color: orange,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
-              ),
-              height: 40.0,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left:20),
-                    child: Text(
-                      "Item/Description",
-                      style:
-                      TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right:20.0),
-                    child: Text(
-                      " Avl",
-                      style:
-                      TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
+            decoration: BoxDecoration(
+              color: orange,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0)),
             ),
-            Container(
+            height: 40.0,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left:20),
+                  child: Text(
+                    "Item/Description",
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right:20.0),
+                  child: Text(
+                    " Avl",
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(5.0),
               margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
               decoration: BoxDecoration(
                 color: pink,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
               ),
               child: new ListView.builder(
-                shrinkWrap: true,
+                //shrinkWrap: true,
                   itemCount: InputList.length,
-                  physics: const NeverScrollableScrollPhysics(),
+                 // physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
@@ -230,7 +230,7 @@ class _AvailabilityState extends State<Availability> {
                         children: [
                           Container(
                             height: 50,
-                            width: MediaQuery.of(context).size.width/1.25,
+                            width: MediaQuery.of(context).size.width/2.1,
                             decoration: index != InputList.length-1 ? BoxDecoration(
 
                               border: Border(
@@ -273,8 +273,8 @@ class _AvailabilityState extends State<Availability> {
                     );
                   }),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -306,7 +306,7 @@ class _AvailabilityState extends State<Availability> {
               height: 40.0,
               width: MediaQuery.of(context).size.width,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left:20),
@@ -345,9 +345,8 @@ class _AvailabilityState extends State<Availability> {
                         children: [
                           Container(
                             height: 50,
-                            width: MediaQuery.of(context).size.width/1.25,
+                            width: MediaQuery.of(context).size.width/2,
                             decoration: index != _filterList.length-1 ? BoxDecoration(
-
                                 border: Border(
                                   right: BorderSide( //                   <--- left side
                                     color: Colors.black,
@@ -382,7 +381,7 @@ class _AvailabilityState extends State<Availability> {
                               ),
                               child: ToggleSwitch(
                                 item: _filterList[index],
-                              ))
+                              )),
                         ],
                       ),
                     );
@@ -432,6 +431,8 @@ class ToggleSwitch extends StatefulWidget {
 }
 
 class _ToggleSwitchState extends State<ToggleSwitch> {
+  String selectedreason;
+  List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
 
    bool isSwitched = false;
   @override
@@ -445,17 +446,49 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
  // bool isSwitched = false;
   @override
   Widget build(BuildContext context) {
-    return Switch(
-      value: isSwitched,
-      onChanged: (value) {
-        setState(() {
-          isSwitched = value;
-          isSwitched == true ? outofStockitems.add( widget.item) : outofStockitems.remove( widget.item);
-          print(outofStockitems);
-        });
-      },
-      inactiveTrackColor: Colors.green,
-      activeColor: Colors.red,
+    return Row(
+      children: [
+        Container(
+          width: 70,
+          margin: EdgeInsets.only(right:5.0),
+          decoration: BoxDecoration(
+            border: Border(
+              right: BorderSide( //                   <--- left side
+                color: Colors.black,
+              ),),),
+          child: Switch(
+            value: isSwitched,
+            onChanged: (value) {
+              setState(() {
+                isSwitched = value;
+                isSwitched == true ? outofStockitems.add( widget.item) : outofStockitems.remove( widget.item);
+                print(outofStockitems);
+              });
+            },
+            inactiveTrackColor: Colors.green,
+            activeColor: Colors.red,
+          ),
+        ),
+        SizedBox(
+          height: 50,
+          width: 100,
+          child: isSwitched == true ? DropdownButton(
+            elevation: 0,
+            dropdownColor: Colors.white,
+            isExpanded: true,
+            iconEnabledColor: orange,
+            iconSize: 35.0,
+            value: selectedreason,
+            onChanged: (newVal){
+              setState(() {
+                selectedreason = newVal;
+              });
+            },
+            items: DropDownItems,
+            hint: Text("Select Reason",style: TextStyle(color: Colors.black),),
+          ) : SizedBox()
+        ),
+      ],
     );
   }
 }

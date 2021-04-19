@@ -1,31 +1,26 @@
-import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'addoutlets.dart';
-import 'package:merchandising/api/FMapi/outletapi.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/Fieldmanager/add_category.dart';
+import 'package:merchandising/api/FMapi/category_detailsapi.dart';
 
 
-class Oulets extends StatefulWidget {
+class CategoryDetails extends StatefulWidget {
   @override
-  _OuletsState createState() => _OuletsState();
+  _CategoryDetailsState createState() => _CategoryDetailsState();
 }
 
-class _OuletsState extends State<Oulets> {
+class _CategoryDetailsState extends State<CategoryDetails> {
+  bool isApiCallProcess = false;
+
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
   String _query = "";
-  List<dynamic> outletsdata;
+
   List<String> _filterList;
-  @override
-  void initState() {
-    super.initState();
-    outletsdata =  outletdata.outletname;
-    outletsdata.sort();
-  }
 
-  _OuletsState() {
-
+  _CategoryDetailsState() {
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
 
@@ -52,9 +47,16 @@ class _OuletsState extends State<Oulets> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: pink,
+          backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
-          title: Text("Outlet Details",style: TextStyle(color: orange),),
+          title: Row(
+            children: [
+              Text(
+                'Category Details',
+                style: TextStyle(color: orange),
+              ),
+            ],
+          ),
         ),
         drawer: Drawer(
           child: Menu(),
@@ -72,6 +74,7 @@ class _OuletsState extends State<Oulets> {
                 ],
               ),
             ),
+
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
@@ -83,7 +86,7 @@ class _OuletsState extends State<Oulets> {
                         MaterialPageRoute(
                             builder: (BuildContext
                             context) =>
-                                AddOutlets()));
+                                CategoryofProducts()));
                   },
                   backgroundColor: pink,
                   elevation: 8.0,
@@ -91,17 +94,19 @@ class _OuletsState extends State<Oulets> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
     );
   }
+
   Widget _createSearchView() {
     return new Container(
       padding: EdgeInsets.only(left: 20.0),
       width: double.infinity,
       decoration: BoxDecoration(color: pink,
-          borderRadius: BorderRadius.circular(100.0)),
+          borderRadius: BorderRadius.circular(25.0)),
       child: new TextField(
         style: TextStyle(color: orange),
         controller: _searchview,
@@ -109,7 +114,7 @@ class _OuletsState extends State<Oulets> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
           focusColor: orange,
-          hintText: 'Search by Storename/Code',
+          hintText: 'Search by Brand Name/Code',
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
@@ -119,14 +124,15 @@ class _OuletsState extends State<Oulets> {
     );
   }
 
+
   Widget _createListView() {
     return new Flexible(
-      child: new ListView.builder(
+      child: new  ListView.builder(
           shrinkWrap: true,
-          itemCount: outletdata.outletname.length,
+          itemCount:Category.name.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(15.0),
                 margin: EdgeInsets.only(bottom:5.0,top: 5.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -135,23 +141,15 @@ class _OuletsState extends State<Oulets> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${outletdata.outletname[index]}',
-                        style: TextStyle(
-                            fontSize: 14.0,fontWeight: FontWeight.bold
-                        )),
-                    SizedBox(height: 5),
-                    Text('${outletdata.address[index]}'),
-                    SizedBox(height: 5),
-                    Text('Latitude : ${outletdata.outletlat[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Longitude : ${outletdata.outletlong[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Contact Number : ${outletdata.contactnumber[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Location : ${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        )),
+                    Row(
+                      children: [
+                        Text('Category Name : ',
+                            style: TextStyle(
+                                fontSize: 15.0,fontWeight: FontWeight.bold,
+                            )),
+                        Text("${Category.name[index]}"),
+                      ],
+                    ),
                   ],
                 ));
           }),
@@ -160,8 +158,8 @@ class _OuletsState extends State<Oulets> {
 
   Widget _performSearch() {
     _filterList = [];
-    for (int i = 0; i <outletdata.outletname.length; i++) {
-      var item = outletdata.outletname[i];
+    for (int i = 0; i <Category.name.length; i++) {
+      var item = Category.name[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
       }
@@ -173,10 +171,10 @@ class _OuletsState extends State<Oulets> {
     return new Flexible(
       child: new ListView.builder(
           shrinkWrap: true,
-          itemCount: _filterList.length,
+          itemCount:  _filterList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(15.0),
                 margin: EdgeInsets.only(bottom:5.0,top: 5.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -185,23 +183,17 @@ class _OuletsState extends State<Oulets> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${_filterList[index]}',
-                        style: TextStyle(
-                            fontSize: 14.0,fontWeight: FontWeight.bold
-                        )),
-                    SizedBox(height: 5),
-                    Text('${outletdata.address[index]}'),
-                    SizedBox(height: 5),
-                    Text('Latitude : ${outletdata.outletlat[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Longitude : ${outletdata.outletlong[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Contact Number : ${outletdata.contactnumber[index].toString()}'),
-                    SizedBox(height: 5),
-                    Text('Location : ${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        )),
+                    Row(
+                      children: [
+                        Text('Category Name :',
+                            style: TextStyle(
+                                fontSize: 15.0,fontWeight: FontWeight.bold,
+                            )),
+                        Text('${ _filterList[index]}'),
+                      ],
+                    ),
+
+
                   ],
                 ));
           }),

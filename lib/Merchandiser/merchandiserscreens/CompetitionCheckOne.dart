@@ -1,17 +1,35 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
 import 'CompetitonCheckTwo.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
+import 'package:photo_view/photo_view.dart';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:merchandising/model/camera.dart';
+import 'package:camera/camera.dart';
+
+
+
+File capturedimage = File('dummy.txt');
 class CompetitionCheckOne extends StatefulWidget {
   @override
   _CompetitionCheckOneState createState() => _CompetitionCheckOneState();
 }
 
 class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
+  GlobalKey<FormState> products = GlobalKey<FormState>();
+  TextEditingController itemname = TextEditingController();
+  TextEditingController promtdescp = TextEditingController();
+  TextEditingController mrp = TextEditingController();
+  TextEditingController sellingprice = TextEditingController();
+
+  GlobalKey<FormState> keyone = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
@@ -23,12 +41,29 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
             ),
             Spacer(),
             SubmitButton(
-              onpress: (){
-                {Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CompetitionCheckTwo()));}
+              onpress: () {
+                if (validateform() == true) {
+                  if (selectcompanydropdown != null &&
+                      selectpromotiondropdown != null &&
+                      selectbranddropdown != null) {
+                    print(itemname.text);
+                    print(promtdescp.text);
+                    print(mrp.text);
+                    print(sellingprice.text);
+                    print(selectcompanydropdown);
+                    print(selectpromotiondropdown);
+                    print(selectbranddropdown);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CustomerActivities()));
+                  }
+                  else Flushbar(
+                      message: selectcompanydropdown==null?"select company should not be null"
+                          :selectpromotiondropdown==null?"select promotion should not be null":"select Brand name should not be null "
+                  )..show(context);
+                }
               },
             ),
           ],
@@ -37,75 +72,213 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
       drawer: Drawer(
         child: Menu(),
       ),
-
       body: Stack(
         children: [
           BackGround(),
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
               children: [
                 OutletDetails(),
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.all(10),
-
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      DefaultTabController(
-                        length: 2, // length of tabs
-                        initialIndex: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.all(8),
-                              height: 40,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFFFFF3E0),
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              child: TabBar(
-                                labelColor: Colors.deepOrange,
-                                unselectedLabelColor: Colors.black,
-                                indicatorColor: Colors.deepOrange,
-                                tabs: [
-                                  Tab(text: 'PROMOTION'),
-                                  Tab(text: 'VISIBILTY'),
-                                ],
+                  child: Form(
+                    key: keyone,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 30,
+                          width: 120,
+                          margin: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            color: orange,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10.0),
+                                topRight: Radius.circular(10.0)),
+                          ),
+                          child: Center(
+                              child: Text(
+                                "Competitor Info",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10.00),
+                          decoration: BoxDecoration(
+                              color: pink, borderRadius: BorderRadius.circular(10.0)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(left:10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: DropdownSelectCompany(),
                               ),
-                            ),
-                            Container(
-                              width: double.infinity,
-                              height: MediaQuery.of(context).size.height,
-                              child: TabBarView(
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          child: CompetionCheckOneTab(),
-                                        ),
-                                      ],
+                              Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: DropdownSelectBrand()),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.0),
+                                padding: EdgeInsets.only(left:10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: TextFormField(
+                                  controller: itemname,
+                                  cursorColor: grey,
+                                  validator: (input) =>
+                                  !input.isNotEmpty ? "Item should not be empty" : null,
+                                  decoration: new InputDecoration(
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Item Name",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
                                     ),
                                   ),
-
-                                  Container(
-                                    child:Center(
-                                        child: Text("Tab 2 Display",
-                                          style: TextStyle(fontSize: 30,color: Colors.white),)),),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                              Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: DropdownSelectPromotion()),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.0),
+                                padding: EdgeInsets.only(left:10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: TextFormField(
+                                  maxLines: 3,
+                                  controller: promtdescp,
+                                  cursorColor: grey,
+                                  validator: (input) => !input.isNotEmpty
+                                      ? "Promotion Description should not be empty"
+                                      : null,
+                                  decoration: new InputDecoration(
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Enter Promotion Description  here",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.0),
+                                padding: EdgeInsets.only(left:10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: TextFormField(
+                                  controller: mrp,
+                                  cursorColor: grey,
+                                  validator: (input) =>
+                                  !input.isNotEmpty ? "MRP should not be empty" : null,
+                                  decoration: new InputDecoration(
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Enter MRP Here",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 10.0),
+                                padding: EdgeInsets.only(left:10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: TextFormField(
+                                  controller: sellingprice,
+                                  cursorColor: grey,
+                                  validator: (input) => !input.isNotEmpty
+                                      ? "Selling Price should not be empty"
+                                      : null,
+                                  decoration: new InputDecoration(
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Enter Selling Price Here",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:10.0),
+                                child: Row(
+                                  children: [
+                                    Text("Capture Image"),
+                                    Spacer(),
+                                    Container(
+                                      margin: EdgeInsets.all(10),
+                                      child:
+                                      // ignore: unrelated_type_equality_checks
+                                      capturedimage.toString() !=
+                                          'File: \'dummy.txt\''
+                                          ? GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (BuildContext context) =>
+                                                      PreveiwScreen(
+                                                        input: capturedimage,
+                                                      )));
+                                        },
+                                        child: Image(
+                                          height: 50,
+                                          width: 50,
+                                          image: FileImage(capturedimage),
+                                        ),
+                                      )
+                                          : Image(
+                                        width: 50,
+                                        image: AssetImage('images/capture.png'),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        icon: Icon(
+                                          CupertinoIcons.photo_camera_solid,
+                                          color: Colors.grey[700],
+                                        ),
+                                        onPressed: () {
+                                          _showSelectionDialog(context);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -115,163 +288,318 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
       ),
     );
   }
-}
-
-class CompetionCheckOneTab extends StatefulWidget {
-  @override
-  _CompetionCheckOneTabState createState() => _CompetionCheckOneTabState();
-}
-
-class _CompetionCheckOneTabState extends State<CompetionCheckOneTab> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              height: 30,
-              width: 130,
-              margin: EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                color: Color(0XFFF57C00),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
-              ),
-              child: Center(
-                  child: Text(
-                    "Competitor Info",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-          ],
-        ),
-        Container(
-          padding: EdgeInsets.all(10.0),
-          margin: EdgeInsets.only(right: 10,left:10),
-          decoration: BoxDecoration(
-              color: Color(0xFFFFF3E0),
-              borderRadius: BorderRadius.circular(10.0)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Company Name",style: TextStyle(fontSize: 15)),
-              CompetionCheckOneDropDown(),
-              Text("Brand Name",style: TextStyle(fontSize: 15)),
-              CompetionCheckOneDropDown(),
-              Text("Item Name",style: TextStyle(fontSize: 15)),
-              SizedBox(
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Type Here",
-                  ),
-                  style: TextStyle(color: Colors.black,fontSize: 15.0),
-                ),
-              ),
-              Text("Promotion Type",style: TextStyle(fontSize: 15)),
-              CompetionCheckOneDropDown(),
-              Text("Promotion Description",style: TextStyle(fontSize: 15)),
-              SizedBox(
-                height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Here",
-                  ),
-                  style: TextStyle(color: Colors.black,fontSize: 15.0),
-                ),
-              ),
-              Text("MRP",style: TextStyle(fontSize: 15)),
-              SizedBox( height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Here",
-                  ),
-                  style: TextStyle(color: Colors.black,fontSize: 15.0),
-                ),
-              ),
-              Text("Selling Price",style: TextStyle(fontSize: 15)),
-              SizedBox( height: 30,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Enter Here",),
-                  style: TextStyle(color: Colors.black,fontSize: 15.0),
-                ),
-              ),
-              Row(
-                children: [
-                  Text("Capture Image"),
-                  Spacer(),
-                  IconButton(
-                      icon: Icon(
-                        CupertinoIcons.photo_camera_solid,
-                        color: Colors.grey[700],
-                      ),
-                      onPressed: () {}),
-
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+  bool validateform() {
+    final form = keyone.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }
 
 
-class CompetionCheckOneDropDown extends StatefulWidget {
+class PreveiwScreen extends StatelessWidget {
+  PreveiwScreen({@required this.input});
+  File input;
   @override
-  _CompetionCheckOneDropDownState createState() => _CompetionCheckOneDropDownState();
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Stack(
+        children: [
+          GestureDetector(
+            onVerticalDragEnd: (details) {
+              Navigator.pop(context);
+            },
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              child: PhotoView(
+                  loadingBuilder: (context, event) => Center(
+                    child: Container(
+                      width: 40.0,
+                      height: 40.0,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                  imageProvider: FileImage(input)),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: FloatingActionButton(
+                  backgroundColor: pink,
+                  child: Icon(Icons.check,size: 35,color: orange),
+                  onPressed:(){
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => CompetitionCheckOne()));
+                  }
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+Future<void> _showSelectionDialog(BuildContext context) {
+  FilePickerResult _file;
+  Future getFile() async {
+    FilePickerResult file = await FilePicker.platform.pickFiles();
+    _file = file;
+    return _file;
+  }
+
+  return showModalBottomSheet(
+      context: context,
+      builder: (builder) {
+        return new Container(
+          height: 180,
+          color: Colors.transparent, //could change this to Color(0xFF737373),
+          //so you don't have to change MaterialApp canvasColor
+          child: new Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(10.0),
+                      topRight: const Radius.circular(10.0))),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "From where do you want to take the photo?",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      Selectedscreen ="competitioncheck";
+                      WidgetsFlutterBinding.ensureInitialized();
+
+                      // Obtain a list of the available cameras on the device.
+                      final cameras = await availableCameras();
+
+                      // Get a specific camera from the list of available cameras.
+                      final firstCamera = cameras.first;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  TakePictureScreen(
+                                  )));
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      height: 50,
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.camera_fill,
+                            size: 40,
+                            color: orange,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Camera",
+                          ),
+                          Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      FilePickerResult picked = await getFile();
+                      if (picked != null) {
+                        File file = File(picked.files.single.path);
+                        capturedimage = file;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    CompetitionCheckOne()));
+                      }
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      height: 50,
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.doc_circle_fill,
+                            size: 40,
+                            color: orange,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("File Explorer"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Note* If you select File Explorer you have to select the images that contain watermark of date and time ",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: orange,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )),
+        );
+      });
 }
 
-class _CompetionCheckOneDropDownState extends State<CompetionCheckOneDropDown> {
-  int dropDownValue =0;
+
+
+
+class DropdownSelectCompany extends StatefulWidget {
+  @override
+  _DropdownSelectCompanyState createState() => _DropdownSelectCompanyState();
+}
+
+String selectcompanydropdown;
+
+class _DropdownSelectCompanyState extends State<DropdownSelectCompany> {
+  static List DropDownItems = [
+    "Company One",
+    "Company Two",
+    "Company Three",
+    "Company Four"
+  ].map((String val) {
+    return new DropdownMenuItem<String>(
+      value: val,
+      child: new Text(val),
+    );
+  }).toList();
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-
+      width: double.infinity,
       child: DropdownButton(
+        underline: SizedBox(),
+        elevation: 0,
         dropdownColor: Colors.white,
-        value: dropDownValue,
-        onChanged: (int newVal){
+        isExpanded: true,
+        iconEnabledColor: orange,
+        iconSize: 35.0,
+        value: selectcompanydropdown,
+        onChanged: (newVal) {
           setState(() {
-            dropDownValue = newVal;
+            selectcompanydropdown = newVal;
           });
         },
-        items: [
-          DropdownMenuItem(
-            value: 0,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 200),
-              child: Text('Select Here'),
-            ),
-          ),
-          DropdownMenuItem(
-            value: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 200),
-              child: Text('Select Company'),
-            ),
-          ),
-          DropdownMenuItem(
-            value: 2,
-            child: Text('Select Brand'),
-          ),
-          DropdownMenuItem(
-            value: 3,
-            child: Text('Select Promotion Type'),
-          ),
-          DropdownMenuItem(
-            value: 4,
-            child: Text('Select Visibility Type'),
-          ),
+        items: DropDownItems,
+        hint: Text(
+          "Select Company",
+          style: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+}
 
-        ],
+class DropdownSelectBrand extends StatefulWidget {
+  @override
+  _DropdownSelectBrandState createState() => _DropdownSelectBrandState();
+}
+
+String selectbranddropdown;
+
+class _DropdownSelectBrandState extends State<DropdownSelectBrand> {
+  int dropDownValue = 0;
+  static List DropDownItems =
+  ["Brand One", "Brand Two", "Brand Three", "Brand Four"].map((String val) {
+    return new DropdownMenuItem<String>(
+      value: val,
+      child: new Text(val),
+    );
+  }).toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: DropdownButton(
+        underline: SizedBox(),
+        elevation: 0,
+        dropdownColor: Colors.white,
+        isExpanded: true,
+        iconEnabledColor: orange,
+        iconSize: 35.0,
+        value: selectbranddropdown,
+        onChanged: (newVal) {
+          setState(() {
+            selectbranddropdown = newVal;
+          });
+        },
+        items: DropDownItems,
+        hint: Text(
+          "Select Brand",
+          style: TextStyle(color: Colors.grey),
+        ),
+      ),
+    );
+  }
+}
+
+class DropdownSelectPromotion extends StatefulWidget {
+  @override
+  _DropdownSelectPromotionState createState() =>
+      _DropdownSelectPromotionState();
+}
+
+String selectpromotiondropdown;
+
+class _DropdownSelectPromotionState extends State<DropdownSelectPromotion> {
+  static List DropDownItems = [
+    "Promotion One",
+    "Promotion Two",
+    "Promotion Three",
+    "Promotion Four"
+  ].map((String val) {
+    return new DropdownMenuItem<String>(
+      value: val,
+      child: new Text(val),
+    );
+  }).toList();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: DropdownButton(
+        underline: SizedBox(),
+        elevation: 0,
+        dropdownColor: Colors.white,
+        isExpanded: true,
+        iconEnabledColor: orange,
+        iconSize: 35.0,
+        value: selectpromotiondropdown,
+        onChanged: (newVal) {
+          setState(() {
+            selectpromotiondropdown = newVal;
+          });
+        },
+        items: DropDownItems,
+        hint: Text(
+          "Select Promotion Type",
+          style: TextStyle(color: Colors.grey),
+        ),
       ),
     );
   }
@@ -299,5 +627,4 @@ class SubmitButton extends StatelessWidget {
     );
   }
 }
-
 

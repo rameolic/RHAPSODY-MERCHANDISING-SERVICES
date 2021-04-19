@@ -27,209 +27,217 @@ class _AddempPhase3State extends State<AddempPhase3> {
     return ProgressHUD(
       inAsyncCall: isApiCallProcess,
       opacity: 0.3,
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: containerscolor,
-            iconTheme: IconThemeData(color: orange),
-            title: Row(
-              children: [
-                Text(
-                  'Add Employee',
-                  style: TextStyle(color: orange),
-                ),
-              ],
-            ),
-          ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
-          body: Stack(
-            children: [
-              BackGround(),
-              SingleChildScrollView(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: pink,
-                    borderRadius: BorderRadius.circular(10),
+      child: GestureDetector(
+        onTap: (){
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: containerscolor,
+              iconTheme: IconThemeData(color: orange),
+              title: Row(
+                children: [
+                  Text(
+                    'Add Employee',
+                    style: TextStyle(color: orange),
                   ),
-                  child: Form(
-                    key: addempphase3 ,
-                    child: Column(
-                      children: [
-                        Text("Documents Info",style: TextStyle(color: orange),),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: emiratesid,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Emirates id should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Emirates ID (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                ],
+              ),
+            ),
+            drawer: Drawer(
+              child: Menu(),
+            ),
+            body: Stack(
+              children: [
+                BackGround(),
+                SingleChildScrollView(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: pink,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Form(
+                      key: addempphase3 ,
+                      child: Column(
+                        children: [
+                          Text("Documents Info",style: TextStyle(color: orange),),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: emiratesid,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Emirates id should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Emirates ID (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: passport,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Passport Number should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Passport Number (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: passport,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Passport Number should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Passport Number (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        PassportExpirydate(),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: visacompany,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Visa Company should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Visa Company (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                          PassportExpirydate(),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: visacompany,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Visa Company should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Visa Company (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: visanumber,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Visa Number should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Visa Number (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: visanumber,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Visa Number should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Visa Number (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        visaExpirydate(),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: medicalinsurance,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Mediacal Insurance should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Medical Insurance Number (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                          visaExpirydate(),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: medicalinsurance,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Mediacal Insurance should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Medical Insurance Number (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        MedicalExpirydate(),
-                        Center(
-                          child: GestureDetector(
-                            onTap: ()async{
-                              if(validateform()){
-                                setState(() {
-                                  isApiCallProcess =true;
-                                });
-                                employeedetails.emiratesid = emiratesid.text;
-                                employeedetails.passportno = passport.text;
-                                employeedetails.visacompanyname = visacompany.text;
-                                print(visanumber.text);
-                                employeedetails.medicalinsno = medicalinsurance.text;
-                                employeedetails.passportexpdate = DateFormat('yyyy-MM-dd').format(passportexpiry);
-                                employeedetails.visaexpdate = DateFormat('yyyy-MM-dd').format(visaexpiry);
-                                employeedetails.medicalinsexpdate = DateFormat('yyyy-MM-dd').format(medicalexpiry);
-                                await addemployees();
-                                setState(() {
-                                  isApiCallProcess =false;
-                                });
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder:
-                                            // ignore: non_constant_identifier_names
-                                            (BuildContextcontext) =>
-                                                HRdashboard()));
-                              }
+                          MedicalExpirydate(),
+                          Center(
+                            child: GestureDetector(
+                              onTap: ()async{
+                                if(validateform()){
+                                  setState(() {
+                                    isApiCallProcess =true;
+                                  });
+                                  employeedetails.emiratesid = emiratesid.text;
+                                  employeedetails.passportno = passport.text;
+                                  employeedetails.visacompanyname = visacompany.text;
+                                  print(visanumber.text);
+                                  employeedetails.medicalinsno = medicalinsurance.text;
+                                  employeedetails.passportexpdate = DateFormat('yyyy-MM-dd').format(passportexpiry);
+                                  employeedetails.visaexpdate = DateFormat('yyyy-MM-dd').format(visaexpiry);
+                                  employeedetails.medicalinsexpdate = DateFormat('yyyy-MM-dd').format(medicalexpiry);
+                                  await addemployees();
+                                  setState(() {
+                                    isApiCallProcess =false;
+                                  });
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder:
+                                              // ignore: non_constant_identifier_names
+                                              (BuildContextcontext) =>
+                                                  HRdashboard()));
+                                }
 
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10,top: 10),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: orange,
-                                borderRadius: BorderRadius.circular(10),
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10,top: 10),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: orange,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text('Next'),
                               ),
-                              child: Text('Next'),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          )
+              ],
+            )
+        ),
       ),
     );
   }

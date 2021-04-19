@@ -20,134 +20,142 @@ class _AddempPhase2State extends State<AddempPhase2> {
   TextEditingController department = updatedata.employee == true ? TextEditingController(text: employeedata.departmant):TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Row(
-            children: [
-              Text(
-                'Add Employee',
-                style: TextStyle(color: orange),
-              ),
-            ],
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: containerscolor,
+            iconTheme: IconThemeData(color: orange),
+            title: Row(
+              children: [
+                Text(
+                  'Add Employee',
+                  style: TextStyle(color: orange),
+                ),
+              ],
+            ),
           ),
-        ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
-          children: [
-            BackGround(),
-            SingleChildScrollView(
-                child: Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: pink,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Form(
-                    key: addempphase2 ,
-                    child: Column(
-                      children: [
-                        Text("Professional Details",style: TextStyle(color: orange),),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
-                          padding: EdgeInsets.only(left:10.0,right: 10.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white
-                          ),
-                          width: double.infinity,
-                          child: DropdownButton<String>(
-                            underline: SizedBox(),
-                              isExpanded: true,
-                              iconEnabledColor: orange,
-                              elevation: 20,
-                              dropdownColor: Colors.white,
-                              items: rolenames.designation.map((String val) {
-                                return new DropdownMenuItem<String>(
-                                  value: val,
-                                  child: new Text(val),
-                                );
-                              }).toList(),
-                              hint: Text("Select Designation (@required)"),
-                              value: selecteddesignation,
-                              onChanged: (newVal) {
-                                setState(() {
-                                  selecteddesignation = newVal;
-                                });
-                              })
-
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10.0),
-                          padding: EdgeInsets.only(left:10.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: TextFormField(
-                            controller: department,
-                            cursorColor: grey,
-                            validator: (input) => !input.isNotEmpty
-                                ? "Department should not be empty"
-                                : null,
-                            decoration: new InputDecoration(
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Department (@required)",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Joiningdate(),
-                        Center(
-                          child: GestureDetector(
-                            onTap: (){
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder:
-                                          // ignore: non_constant_identifier_names
-                                          (BuildContextcontext) =>
-                                          AddempPhase3()));
-                              if(validateform() && selecteddesignation != null){
-                                for(int u=0;u<rolenames.designation.length;u++){
-                                  if (rolenames.designation[u] == selecteddesignation) {
-                                    employeedetails.designation = rolenames.id[u];
-                                  }}
-                                employeedetails.departmant = department.text;
-                                employeedetails.joiningdate = DateFormat('yyyy-MM-dd').format(joiningdate);
-                                print(employeedetails.designation);
-                                print(employeedetails.departmant);
-                                print(employeedetails.joiningdate);
-
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 10,top: 10),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: orange,
+          drawer: Drawer(
+            child: Menu(),
+          ),
+          body: Stack(
+            children: [
+              BackGround(),
+              SingleChildScrollView(
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: pink,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Form(
+                      key: addempphase2 ,
+                      child: Column(
+                        children: [
+                          Text("Professional Details",style: TextStyle(color: orange),),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
+                            padding: EdgeInsets.only(left:10.0,right: 10.0),
+                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
+                                color: Colors.white
+                            ),
+                            width: double.infinity,
+                            child: DropdownButton<String>(
+                              underline: SizedBox(),
+                                isExpanded: true,
+                                iconEnabledColor: orange,
+                                elevation: 20,
+                                dropdownColor: Colors.white,
+                                items: rolenames.designation.map((String val) {
+                                  return new DropdownMenuItem<String>(
+                                    value: val,
+                                    child: new Text(val),
+                                  );
+                                }).toList(),
+                                hint: Text("Select Designation (@required)"),
+                                value: selecteddesignation,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    selecteddesignation = newVal;
+                                  });
+                                })
+
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10.0),
+                            padding: EdgeInsets.only(left:10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: TextFormField(
+                              controller: department,
+                              cursorColor: grey,
+                              validator: (input) => !input.isNotEmpty
+                                  ? "Department should not be empty"
+                                  : null,
+                              decoration: new InputDecoration(
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Department (@required)",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
-                              child: Text('Next'),
                             ),
                           ),
-                        ),
-                      ],
+                          Joiningdate(),
+                          Center(
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder:
+                                            // ignore: non_constant_identifier_names
+                                            (BuildContextcontext) =>
+                                            AddempPhase3()));
+                                if(validateform() && selecteddesignation != null){
+                                  for(int u=0;u<rolenames.designation.length;u++){
+                                    if (rolenames.designation[u] == selecteddesignation) {
+                                      employeedetails.designation = rolenames.id[u];
+                                    }}
+                                  employeedetails.departmant = department.text;
+                                  employeedetails.joiningdate = DateFormat('yyyy-MM-dd').format(joiningdate);
+                                  print(employeedetails.designation);
+                                  print(employeedetails.departmant);
+                                  print(employeedetails.joiningdate);
+
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10,top: 10),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: orange,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Text('Next'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-            ),
-          ],
-        )
+              ),
+            ],
+          )
+      ),
     );
   }
   bool validateform() {

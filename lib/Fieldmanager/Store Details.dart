@@ -42,50 +42,58 @@ class _StoreDetailsState extends State<StoreDetails> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pink,
-        iconTheme: IconThemeData(color: orange),
-        title: Text("Store Details",style: TextStyle(color: orange),),
-      ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          Container(
-            margin: EdgeInsets.fromLTRB(10.0,10,10,0),
-            child: new Column(
-              children: <Widget>[
-                _createSearchView(),
-                SizedBox(height: 10.0,),
-                _firstSearch ? _createListView() : _performSearch(),
-              ],
-            ),
-          ),
-
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              margin: EdgeInsets.all(15.0),
-              child: FloatingActionButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext
-                          context) =>
-                              AddStores()));
-                },
-                backgroundColor: pink,
-                elevation: 8.0,
-                child: Icon(Icons.add,color: orange,),
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: pink,
+          iconTheme: IconThemeData(color: orange),
+          title: Text("Store Details",style: TextStyle(color: orange),),
+        ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
+        body: Stack(
+          children: [
+            BackGround(),
+            Container(
+              margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+              child: new Column(
+                children: <Widget>[
+                  _createSearchView(),
+                  SizedBox(height: 10.0,),
+                  _firstSearch ? _createListView() : _performSearch(),
+                ],
               ),
             ),
-          ),
 
-        ],
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: EdgeInsets.all(15.0),
+                child: FloatingActionButton(
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext
+                            context) =>
+                                AddStores()));
+                  },
+                  backgroundColor: pink,
+                  elevation: 8.0,
+                  child: Icon(Icons.add,color: orange,),
+                ),
+              ),
+            ),
+
+          ],
+        ),
       ),
     );
   }
@@ -182,7 +190,7 @@ class _StoreDetailsState extends State<StoreDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Store Name : ${ _filterList[index]}',
+                    Text('Store Name : ${ storesdata.storename[index]}',
                         style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),

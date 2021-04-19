@@ -185,8 +185,10 @@ class _DashBoardState extends State<DashBoard> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
-                                                },
+                                                  if(uniform && unit && transport && posm){
+                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
+                                                  }
+                                                  },
                                                 child: Container(
                                                   height: 30,
                                                   width: 70,

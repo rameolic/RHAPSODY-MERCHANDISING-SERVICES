@@ -33,6 +33,7 @@ class Location {
 
 address() async {
   final coordinates = new Coordinates(lat,long);
+  print(coordinates);
   var addresses = await Geocoder.local.findAddressesFromCoordinates(
       coordinates);
   var first = addresses.first;

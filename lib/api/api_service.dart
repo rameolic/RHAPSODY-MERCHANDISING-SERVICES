@@ -46,7 +46,14 @@ Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeypla
 Uri Attendance = Uri.parse("https://rms2.rhapsody.ae/api/attendance_monthly");
 Uri updateemp = Uri.parse("https://rms2.rhapsody.ae/api/update_employee");
 Uri LeaveacceptReject = Uri.parse("https://rms2.rhapsody.ae/api/leave_accept_reject");
-
+Uri BrandDetails = Uri.parse("https://rms2.rhapsody.ae/api/brand_details");
+Uri AddBrand = Uri.parse("https://rms2.rhapsody.ae/api/add_brand");
+Uri CategoryDetails = Uri.parse("https://rms2.rhapsody.ae/api/category_details");
+Uri AddCategory = Uri.parse("https://rms2.rhapsody.ae/api/add_category");
+Uri AddProducts = Uri.parse("https://rms2.rhapsody.ae/api/add_product");
+Uri productdetails = Uri.parse("https://rms2.rhapsody.ae/api/product_details");
+Uri Addoutletbrandmap = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_brand_mapping");
+Uri outletbrandmapping = Uri.parse("https://rms2.rhapsody.ae/api/outlet_brand_mapping_details");
 
 class loggedin{
   static var email;

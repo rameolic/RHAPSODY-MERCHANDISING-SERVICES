@@ -10,7 +10,8 @@ import 'package:photo_view/photo_view.dart';
 import 'dart:io';
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/rendering.dart';
-
+import 'package:merchandising/Merchandiser/merchandiserscreens/CompetitionCheckOne.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
 
 
 
@@ -282,17 +283,30 @@ class _PreviewScreenState extends State<PreviewScreen>{
           child: Icon(Icons.send,color: orange,),
           backgroundColor: pink,
           onPressed: (){
-            images[selected.index]=widget.imgPath;
-            Navigator.push(context,
-                MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
-          },
+            if(Selectedscreen == "visibility"){
+              images[selected.index]=widget.imgPath;
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
+            }
+            if(Selectedscreen == "competitioncheck"){
+              capturedimage = widget.imgPath;
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => CompetitionCheckOne()));
+            }
+            if(Selectedscreen == "planogram"){
+              ontap == 'before'?
+              beforeimage = widget.imgPath:afterimage= widget.imgPath;
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
+            }
+            },
         ),
       ),
     );
 
   }
 }
-
+String Selectedscreen;
 String  imagetaken;
 
 Future<File> drawTextOnImage() async {

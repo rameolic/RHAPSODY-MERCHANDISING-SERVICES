@@ -183,6 +183,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       size: 30,
                     ),
                     onPressed: () {
+                      Selectedscreen ="visibility";
                       selected.index = index;
                       _showSelectionDialog(context);
                       /*Navigator.push(context,
@@ -248,6 +249,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       size: 30,
                     ),
                     onPressed: () {
+                      Selectedscreen ="visibility";
                       selected.index = listitems.indexOf(_filterList[index]);
                       _showSelectionDialog(context);
 

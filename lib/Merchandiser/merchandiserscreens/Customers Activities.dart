@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'expiry_report.dart';
 import 'package:flutter/material.dart';
 import 'outletdetailes.dart';
 import '../../Constants.dart';
@@ -176,9 +177,18 @@ class CustomerActivities extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Activities(
-                        icon: Icons.delivery_dining,
-                        chartext: 'Delivery',
-                        tap: (){},
+                        icon: CupertinoIcons.calendar_badge_minus,
+                        chartext: 'Products Expiry Info',
+                        tap: (){
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ExpiryReport();
+                              },
+                            ),
+                                (Route<dynamic> route) => false,
+                          );
+                        },
                       ),
                       Activities(
                         icon: CupertinoIcons.list_bullet_below_rectangle,

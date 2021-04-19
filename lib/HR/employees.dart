@@ -23,6 +23,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
   String _query = "";
   List<dynamic> inputlist;
   List<String> _filterList;
+  List<String> _filterdesignationList;
   @override
   void initState() {
     super.initState();
@@ -50,56 +51,64 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Row(
+      home: GestureDetector(
+        onTap: (){
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: containerscolor,
+            iconTheme: IconThemeData(color: orange),
+            title: Row(
+              children: [
+                Text(
+                  'Employees',
+                  style: TextStyle(color: orange),
+                ),
+              ],
+            ),
+          ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
+          body: Stack(
             children: [
-              Text(
-                'Employees',
-                style: TextStyle(color: orange),
+              BackGround(),
+              Container(
+                margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+                child: new Column(
+                  children: <Widget>[
+                    _createSearchView(),
+                    SizedBox(height: 10.0,),
+                    _firstSearch ? _createListView() : _performSearch(),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  margin: EdgeInsets.all(15.0),
+                  child: FloatingActionButton(
+                    onPressed: (){
+                      updatedata.employee =false;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext
+                              context) =>
+                                  AddEmployee()));
+                    },
+                    backgroundColor: pink,
+                    elevation: 8.0,
+                    child: Icon(Icons.add,color: orange,),
+                  ),
+                ),
               ),
             ],
           ),
-        ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
-          children: [
-            BackGround(),
-            Container(
-              margin: EdgeInsets.fromLTRB(10.0,10,10,0),
-              child: new Column(
-                children: <Widget>[
-                  _createSearchView(),
-                  SizedBox(height: 10.0,),
-                  _firstSearch ? _createListView() : _performSearch(),
-                ],
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: FloatingActionButton(
-                  onPressed: (){
-                    updatedata.employee =false;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                AddEmployee()));
-                  },
-                  backgroundColor: pink,
-                  elevation: 8.0,
-                  child: Icon(Icons.add,color: orange,),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -278,10 +287,12 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
 
   Widget _performSearch() {
     _filterList = [];
+    _filterdesignationList = [];
     for (int i = 0; i <employees.fullname.length; i++) {
       var item = employees.fullname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        _filterdesignationList.add(employees.rolename[ employees.fullname.indexOf(item)]);
       }
     }
     return _createFilteredListView();
@@ -403,7 +414,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(employees.rolename[index]),
+                        Text(_filterdesignationList[index]),
                       ],
                     ),
                   ],

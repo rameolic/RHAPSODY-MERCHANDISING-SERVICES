@@ -1,4 +1,6 @@
 
+import 'package:merchandising/api/empdetailsapi.dart';
+
 import 'model/inappupdate.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
@@ -27,7 +29,7 @@ Future<void> main() async {
     currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
-      const period = const Duration(seconds: 600);
+      const period = const Duration(seconds: 60);
       Timer.periodic(period, (Timer t) => getLocation());
       const time = const Duration(seconds: 900);
       Timer.periodic(time, (Timer t) => callfrequently());
@@ -35,6 +37,7 @@ Future<void> main() async {
       await DBRequestdaily();
       await getLocation();
       await callfrequently();
+      await getempdetails();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -47,6 +50,7 @@ Future<void> main() async {
     }
     else if(userroleid == 3){
       await HRdb();
+      await getempdetails();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -59,6 +63,7 @@ Future<void> main() async {
     }
     else if(userroleid == 5){
       await getFMdb();
+      await getempdetails();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
