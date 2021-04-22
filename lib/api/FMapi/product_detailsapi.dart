@@ -34,14 +34,14 @@ Future<void> getProductDetails() async {
       dynamic categoryname = '${decodededproducts['data'][u]['product_name']}';
       productlist.productname.add(categoryname);
 
-      dynamic brandname = '${decodededproducts['data'][u]['brand'][0]['brand_name']}';
-      productlist.brandname.add(brandname);
+      // dynamic brandname = '${decodededproducts['data'][u]['brand'][0]['brand_name']}';
+      // productlist.brandname.add(brandname);
 
       dynamic type = '${decodededproducts['data'][u]['type']}';
       productlist.type.add(type);
 
-      dynamic categoryofpdts = '${decodededproducts['data'][u]['category'][0]['category_name']}';
-      productlist.productcategory.add(categoryofpdts);
+      // dynamic categoryofpdts = '${decodededproducts['data'][u]['category'][0]['category_name']}';
+      // productlist.productcategory.add(categoryofpdts);
 
       dynamic sku = '${decodededproducts['data'][u]['sku']}';
       productlist.sku.add(sku);

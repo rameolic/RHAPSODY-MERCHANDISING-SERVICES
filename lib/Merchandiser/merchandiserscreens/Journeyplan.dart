@@ -318,6 +318,7 @@ class _State extends State<JourneyListBuilder> {
              setState(() {
                isApiCallProcess = true;
               });
+             Currenttimesheetid =
              outletrequestdata.outletidpressed = gettodayjp.outletids[index];
              checkinoutdata.checkid = gettodayjp.id[index];
              var data = await outletwhencheckin();

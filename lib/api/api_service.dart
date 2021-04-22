@@ -6,6 +6,11 @@ import 'package:merchandising/main.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 
+Uri ShareofshelfDetails = Uri.parse("https://rms2.rhapsody.ae/api/share_of_shelf_details");
+Uri PlanogramDetails = Uri.parse("https://rms2.rhapsody.ae/api/Planogram_details");
+Uri getcompdetails = Uri.parse("https://rms2.rhapsody.ae/api/competition_details");
+Uri VisibilityDetails = Uri.parse("https://rms2.rhapsody.ae/api/visibility_details");
+Uri AddVisibility = Uri.parse("https://rms2.rhapsody.ae/api/add_visibility");
 Uri ChartUrl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_chart");
 Uri Loginurl = Uri.parse("https://rms2.rhapsody.ae/api/login");
 Uri DBdailyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_daily");
@@ -54,12 +59,13 @@ Uri AddProducts = Uri.parse("https://rms2.rhapsody.ae/api/add_product");
 Uri productdetails = Uri.parse("https://rms2.rhapsody.ae/api/product_details");
 Uri Addoutletbrandmap = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_brand_mapping");
 Uri outletbrandmapping = Uri.parse("https://rms2.rhapsody.ae/api/outlet_brand_mapping_details");
-
+Uri AvailabilityDetails = Uri.parse("https://rms2.rhapsody.ae/api/availability_details");
+Uri AddAvailability = Uri.parse("https://rms2.rhapsody.ae/api/add_availability");
 class loggedin{
   static var email;
   static var password;
 }
-
+int Currenttimesheetid;
 Future loginapi() async {
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;

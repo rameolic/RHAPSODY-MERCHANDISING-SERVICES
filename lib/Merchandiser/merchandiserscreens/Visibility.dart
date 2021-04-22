@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import '../../Constants.dart';
 import 'Customers Activities.dart';
+import 'package:merchandising/api/api_service.dart';
 import 'MenuContent.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
@@ -10,12 +11,13 @@ import 'dart:io';
 import 'package:merchandising/model/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:photo_view/photo_view.dart';
-
+import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/add_visibilityapi.dart';
 class selected {
   static int index;
 }
-
-List<String> listitems = ["Tang", "Rasna", "Coco-cola"];
+List<int>checkvaluevisibility =[];
+List<String> listitems = VisibilityData.productname;
 List<File> images = [];
 
 class VisibilityOne extends StatefulWidget {
@@ -59,7 +61,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
         home: Scaffold(
       appBar: new AppBar(
         backgroundColor: containerscolor,
-
+        iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
             new Text(
@@ -158,10 +160,33 @@ class _VisibilityOneState extends State<VisibilityOne> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 120,
-                    child: Image(
-                      image: AssetImage('images/tangjug.png'),
+                  GestureDetector(
+                    onTap:(){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return VeiwImage(
+                              url: VisibilityData.imageurl[index],
+                            );
+                          },
+                        ),);
+            },
+                    child: Container(
+                      height: 120,
+                      width: 80,
+                      child: PhotoView(
+                        loadingBuilder: (context, event) => Center(
+                          child: Container(
+                            width: 40.0,
+                            height: 40.0,
+                            child: CircularProgressIndicator(
+                              backgroundColor: orange,
+                            ),
+                          ),
+                        ),
+                        enableRotation: true,
+                        imageProvider: NetworkImage(VisibilityData.imageurl[index]),
+                      ),
                     ),
                   ),
                   Column(
@@ -224,10 +249,33 @@ class _VisibilityOneState extends State<VisibilityOne> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 120,
-                    child: Image(
-                      image: AssetImage('images/tangjug.png'),
+                  GestureDetector(
+                    onTap:(){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return VeiwImage(
+                              url: VisibilityData.imageurl[index],
+                            );
+                          },
+                        ),);
+                    },
+                    child: Container(
+                      height: 120,
+                      width: 80,
+                      child: PhotoView(
+                        loadingBuilder: (context, event) => Center(
+                          child: Container(
+                            width: 40.0,
+                            height: 40.0,
+                            child: CircularProgressIndicator(
+                              backgroundColor: orange,
+                            ),
+                          ),
+                        ),
+                        enableRotation: true,
+                        imageProvider: NetworkImage(VisibilityData.imageurl[index]),
+                      ),
                     ),
                   ),
                   Column(
@@ -239,7 +287,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       ),
                       SizedBox(height: 10),
                       VisibilitySwitchOne(
-                        indexrunning: listitems.indexOf(_filterList[index]),
+                        indexrunning: index,
                       ),
                     ],
                   ),
@@ -250,9 +298,8 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     ),
                     onPressed: () {
                       Selectedscreen ="visibility";
-                      selected.index = listitems.indexOf(_filterList[index]);
+                      selected.index = index;
                       _showSelectionDialog(context);
-
                       /*Navigator.push(context,
                               MaterialPageRoute(builder: (BuildContext context) => OpenCamera()));*/
                     },
@@ -280,6 +327,7 @@ class _VisibilitySwitchOneState extends State<VisibilitySwitchOne> {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1.8,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
@@ -294,11 +342,13 @@ class _VisibilitySwitchOneState extends State<VisibilitySwitchOne> {
                   style: TextStyle(fontSize: 15),
                 ),
                 Switch(
-                  value: isSwitched,
+                  value: checkvaluevisibility[widget.indexrunning]==0?true:false,
                   onChanged: (value) {
                     setState(() {
                       isSwitched = value;
-                      print(isSwitched);
+                      isSwitched == true ? checkvaluevisibility[widget.indexrunning] = 0  : checkvaluevisibility[widget.indexrunning]=1;
+                      images[widget.indexrunning] =File('dummy.txt');
+                      print(checkvaluevisibility);
                     });
                   },
                   inactiveTrackColor: orange,
@@ -313,11 +363,13 @@ class _VisibilitySwitchOneState extends State<VisibilitySwitchOne> {
             child: Column(
               children: [
                 Text(
-                  isSwitched == true ? "Reason" : "Capture Image",
+                  checkvaluevisibility[widget.indexrunning]==0 ? "Reason" : "Capture Image",
                   style: TextStyle(fontSize: 15),
                 ),
-                isSwitched == true
-                    ? ReasonDropdown()
+                checkvaluevisibility[widget.indexrunning]==0
+                    ? ReasonDropdown(
+                  item: widget.indexrunning,
+                )
                     : Container(
                         margin: EdgeInsets.all(10),
                         child:
@@ -357,61 +409,45 @@ class _VisibilitySwitchOneState extends State<VisibilitySwitchOne> {
     );
   }
 }
-
+List<String>visibilityreasons=[];
 class ReasonDropdown extends StatefulWidget {
+  ReasonDropdown({this.item});
+  final item;
   @override
   _ReasonDropdownState createState() => _ReasonDropdownState();
 }
 
-List<String> Reasons = [];
+List listofreasons =  ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+var selectedreason;
 
 class _ReasonDropdownState extends State<ReasonDropdown> {
-  int dropDownValue = 0;
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      iconEnabledColor: orange,
-      dropdownColor: Colors.white,
-      value: dropDownValue,
-      onChanged: (int newVal) {
-        setState(() {
-          dropDownValue = newVal;
-        });
-      },
-      items: [
-        DropdownMenuItem(
-          value: 0,
-          child: Text(
-            'Reason',
-            style: TextStyle(
-              fontSize: 10.0,
-            ),
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(top:8.0),
+      child: SizedBox(
+        height: 50,
+        width: 100,
+        child: DropdownButton(
+          elevation: 0,
+          underline: SizedBox(),
+          dropdownColor: Colors.white,
+          isExpanded: true,
+          iconEnabledColor: orange,
+          iconSize: 35.0,
+          value: selectedreason,
+          onChanged: (newVal){
+            setState(() {
+              selectedreason = newVal;
+              visibilityreasons[widget.item]='\"$newVal\"';
+              print(visibilityreasons);
+            });
+            },
+          items: listofreasons,
+          hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
         ),
-        DropdownMenuItem(
-          value: 1,
-          child: Text(
-            'Reason1',
-            style: TextStyle(
-              fontSize: 14.0,
-            ),
-          ),
-        ),
-        DropdownMenuItem(
-          value: 2,
-          child: Text(
-            'Reason2',
-            style: TextStyle(fontSize: 14.0),
-          ),
-        ),
-        DropdownMenuItem(
-          value: 3,
-          child: Text(
-            'Reason3',
-            style: TextStyle(fontSize: 14.0),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -420,7 +456,26 @@ class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        // for(int i=0;i<VisibilityData.productname.length;i++){
+        //   AddVisiData.brandname.add('\"${VisibilityData.brandname[i]}\"');
+        //   AddVisiData.categoryname.add('\"${VisibilityData.categoryname[i]}\"');
+        //   AddVisiData.productname.add('\"${VisibilityData.productname[i]}\"');
+        // }
+        AddVisiData.brandname = VisibilityData.brandname;
+        AddVisiData.categoryname=VisibilityData.categoryname;
+        AddVisiData.productname = VisibilityData.productname;
+        AddVisiData.outletid = outletrequestdata.outletidpressed;
+        AddVisiData.timesheetid = checkinoutdata.checkid;
+        AddVisiData.productid = VisibilityData.productid;
+        AddVisiData.brandid = VisibilityData.brandid;
+        AddVisiData.brandname = VisibilityData.brandname;
+        AddVisiData.categoryname = VisibilityData.categoryname;
+        AddVisiData.productname =VisibilityData.productname;
+        AddVisiData.reason = visibilityreasons;
+        AddVisiData.outletpdtmap = VisibilityData.mappingid;
+        AddVisiData.checkvalue = checkvaluevisibility;
+        await addVisibilitydata();
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -578,7 +633,9 @@ class PreveiwScreen extends StatelessWidget {
                         child: Container(
                           width: 40.0,
                           height: 40.0,
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            backgroundColor: orange,
+                          ),
                         ),
                       ),
                   imageProvider: FileImage(images[input])),
@@ -602,6 +659,51 @@ class PreveiwScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+
+class VeiwImage extends StatelessWidget {
+  VeiwImage({this.url});
+  var url;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        PhotoView(
+          loadingBuilder: (context, event) => Center(
+            child: Container(
+              width: 40.0,
+              height: 40.0,
+              child: CircularProgressIndicator(
+              ),
+            ),
+          ),
+          imageProvider: NetworkImage(
+            url,
+          ),
+        ),
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(left :15.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: FloatingActionButton(
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              VisibilityOne()));
+                },
+                backgroundColor: Colors.black,
+                child: Icon(Icons.arrow_back,color: orange,),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

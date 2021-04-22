@@ -6,9 +6,9 @@ import 'api_service.dart';
 var timesheetid;
 Future<void> Avaiablitity() async {
   Map body = {
-    "time_sheet_id" : "$timesheetid"
+    "time_sheet_id" : "331"//"$timesheetid"
   };
-  http.Response response = await http.post(LDurl,
+  http.Response response = await http.post(AvailabilityDetails,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -25,17 +25,25 @@ Future<void> Avaiablitity() async {
     var decodeddata = jsonDecode(availabititybody);
     for (int u = 0; u< decodeddata['data'].length; u++) {
       Avaiablity.productid.add(decodeddata['data'][u]['product_id']);
+      Avaiablity.brand.add(decodeddata['data'][u]['b_name']);
+      Avaiablity.category.add(decodeddata['data'][u]['c_name']);
       Avaiablity.productname.add(decodeddata['data'][u]['p_name']);
       Avaiablity.storedetailes.add('[${decodeddata['data'][u]['store_code']}] ${decodeddata['data'][u]['store_name']}');
     }
+    Distintbrands = Avaiablity.brand.toSet().toList();
+    Distintcategory = Avaiablity.category.toSet().toList();
   }
 }
 
-
+List Distintcategory;
+List Distintbrands;
 class Avaiablity{
   static List<dynamic> productid=[];
-  static List<dynamic> productname=[];
-  static List<dynamic> storedetailes=[];
+  static List<String> productname=[];
+  static List<String> storedetailes=[];
+  static List<String> brand=[];
+  static List<String> category=[];
+
 }
 
 

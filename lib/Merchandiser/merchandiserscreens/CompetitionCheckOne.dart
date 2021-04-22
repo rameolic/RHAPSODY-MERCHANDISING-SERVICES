@@ -10,6 +10,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:merchandising/model/camera.dart';
 import 'package:camera/camera.dart';
+import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
 
 
 
@@ -474,12 +475,7 @@ class DropdownSelectCompany extends StatefulWidget {
 String selectcompanydropdown;
 
 class _DropdownSelectCompanyState extends State<DropdownSelectCompany> {
-  static List DropDownItems = [
-    "Company One",
-    "Company Two",
-    "Company Three",
-    "Company Four"
-  ].map((String val) {
+  static List DropDownItems =  competitiondata.company.toSet().toList().map((String val) {
     return new DropdownMenuItem<String>(
       value: val,
       child: new Text(val),
@@ -523,7 +519,7 @@ String selectbranddropdown;
 class _DropdownSelectBrandState extends State<DropdownSelectBrand> {
   int dropDownValue = 0;
   static List DropDownItems =
-  ["Brand One", "Brand Two", "Brand Three", "Brand Four"].map((String val) {
+  competitiondata.brand.toSet().toList().map((String val) {
     return new DropdownMenuItem<String>(
       value: val,
       child: new Text(val),
@@ -566,12 +562,7 @@ class DropdownSelectPromotion extends StatefulWidget {
 String selectpromotiondropdown;
 
 class _DropdownSelectPromotionState extends State<DropdownSelectPromotion> {
-  static List DropDownItems = [
-    "Promotion One",
-    "Promotion Two",
-    "Promotion Three",
-    "Promotion Four"
-  ].map((String val) {
+  static List DropDownItems =  competitiondata.promotion.toSet().toList().map((String val) {
     return new DropdownMenuItem<String>(
       value: val,
       child: new Text(val),

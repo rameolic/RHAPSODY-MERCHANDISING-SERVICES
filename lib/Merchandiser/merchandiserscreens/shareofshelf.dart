@@ -3,8 +3,9 @@ import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'Customers Activities.dart';
 import 'MenuContent.dart';
-import 'PlanogramcheckPhase2.dart';
-import 'package:merchandising/model/arfiles/mesuredistance.dart';
+import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+
+
 
 class ShareShelf extends StatefulWidget {
   @override
@@ -12,6 +13,53 @@ class ShareShelf extends StatefulWidget {
 }
 
 class _ShareShelfState extends State<ShareShelf> {
+  GlobalKey<FormState> soskey = GlobalKey<FormState>();
+
+
+  List<TextEditingController> actual = [];
+  List<String> productlist = ShareData.brandname;
+  List<String> total = ShareData.total;
+  List<String> target = ShareData.target;
+  List<String> share = ShareData.share;
+
+
+
+  var _searchview = new TextEditingController();
+  bool _firstSearch = true;
+  String _query = "";
+  List<String> productdata;
+  List<String> _filterList;
+  List<String> _filetrtarget;
+  List<String> _filtertotal;
+  List<TextEditingController> _filteractual = [];
+  // List<String> _filteractual;
+
+  @override
+  void initState() {
+    super.initState();
+    productdata = productlist;
+    productdata.sort();
+  }
+
+  _ShareShelfState() {
+
+    _searchview.addListener(() {
+      if (_searchview.text.isEmpty) {
+
+        setState(() {
+          _firstSearch = true;
+          _query = "";
+        });
+      } else {
+        setState(() {
+          _firstSearch = false;
+          _query = _searchview.text;
+        });
+      }
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +73,16 @@ class _ShareShelfState extends State<ShareShelf> {
               style: TextStyle(color: orange),
             ),
             Spacer(),
-            SubmitButton(),
+            SubmitButton(
+              ontap: (){
+                if(validateform()==true)
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            CustomerActivities()));
+              },
+            ),
           ],
         ),
       ),
@@ -35,403 +92,297 @@ class _ShareShelfState extends State<ShareShelf> {
       body: Stack(
         children: [
           BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-
-                GestureDetector(
-                  onTap: (){
-                   /* Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                MeasurePage()));*/
-                  },
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 15,
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.all(10.00),
-                    padding: EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        color: pink,
-                        borderRadius: BorderRadiusDirectional.circular(10)),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Icon(
-                              Icons.house_sharp,
-                              color: iconscolor,
-                            ),
-                          ),
-                          SizedBox(width: 20.0),
-                          FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceEvenly,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "[5478] CARREFOUR MOE",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                    "Ground Floor,MOE,E11 Sheikh Zayed Dubai"),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10.0),
-                  height: 40,
-                  padding: EdgeInsets.all(10.00),
-                  decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  child: Expanded(
-                    child: Theme(
-                      data: ThemeData(primaryColor: orange),
-                      child: TextField(
-                        cursorColor: orange,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusColor: Colors.black,
-                          hintText: 'Search by Customer Code/Name',
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 13.0,
-                          ),
-                          suffixIcon: Icon(
-                            CupertinoIcons.search,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Column(
-                    children: [
-                      Table(
-                        border: TableBorder.symmetric(
-                          inside: BorderSide(color: Colors.grey),),
-
-                        columnWidths: {
-                          0: FractionColumnWidth(0.7),
-                          1: FractionColumnWidth(0.3),
-                        },
-                        children: [
-                          TableRow(
-                            decoration: BoxDecoration(color: orange,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                                  topRight:Radius.circular(10.0) ),),
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "Colgate",
-                                  style: TextStyle(color: Colors.white, fontSize: 18.0),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "15 Inches",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,),
-                                ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Pepsodent",
-                              ),
-                              CustomTwo(
-                                text: "15 Inches",
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Oral -B",
-                              ),
-                              CustomTwo(
-                                text: "11 Inches",
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Others",
-                              ),
-                              CustomTwo(
-                                text: "9  Inches",
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 60,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: pink,
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0),
-                              bottomRight:Radius.circular(10.0) ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  "Total",
-                                  style: TextStyle(
-                                      color: Colors.black, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "50 Inches",
-                                  style:
-                                  TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  "Target",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "40%",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  "Actual",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "40%",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, color: Colors.red[700]),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+          Column(
+            children: [
+              OutletDetails(),
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(10.0,0,10,0),
+                  child: new Column(
+                    children: <Widget>[
+                      _createSearchView(),
+                      //SizedBox(height: 10.0,),
+                      _firstSearch ? _createListView() : _performSearch(),
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 10,right: 10,top: 10),
-                  child: Column(
-                    children: [
-                      Table(
-                        border: TableBorder.symmetric(
-                          inside: BorderSide(color: Colors.grey),),
-
-                        columnWidths: {
-                          0: FractionColumnWidth(0.7),
-                          1: FractionColumnWidth(0.3),
-                        },
-                        children: [
-                          TableRow(
-                            decoration: BoxDecoration(color: orange,
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),
-                                  topRight:Radius.circular(10.0) ),),
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  "Tang",
-                                  style: TextStyle(color: Colors.white, fontSize: 18.0),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  "20 Inches",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Rasna",
-                              ),
-                              CustomTwo(
-                                text: "9 Inches",
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Energile",
-                              ),
-                              CustomTwo(
-                                text: "12 Inches",
-                              ),
-                            ],
-                          ),
-                          TableRow(
-                            children: [
-                              Custom(
-                                text: "Others",
-                              ),
-                              CustomTwo(
-                                text: "9  Inches",
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  width: double.infinity,
-                  margin: EdgeInsets.only(left: 10,right: 10),
-
-                  decoration: BoxDecoration(
-                    color: pink,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0),
-                        bottomRight:Radius.circular(10.0) ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Total",
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "50 Inches",
-                            style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Target",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "40%",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "Actual",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "40%",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, color: Colors.red[700]),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+
         ],
       ),
     );
   }
-}
 
-class Custom extends StatelessWidget {
-  Custom({this.text});
-  final text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.white),
-      height: 50,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text,style: TextStyle(fontSize: 18.0,
-            color: Color(0XFF388E3C),fontWeight: FontWeight.bold),),
+  Widget _createSearchView() {
+    return new Container(
+      padding: EdgeInsets.only(left: 20.0),
+      width: double.infinity,
+      decoration: BoxDecoration(color: pink,
+          borderRadius: BorderRadius.circular(25.0)),
+      child: new TextField(
+        style: TextStyle(color: orange),
+        controller: _searchview,
+        cursorColor:orange,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+          focusColor: orange,
+          hintText: 'Search by brand name/Code',
+          hintStyle: TextStyle(color: orange),
+          border: InputBorder.none,
+          icon: Icon(CupertinoIcons.search,color: orange,),
+          isCollapsed: true,
+        ),
       ),
     );
   }
-}
+  Widget _createListView() {
+    return new Flexible(
+      child: new   Form(
+        key: soskey,
+        child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount:productlist.length,
+            itemBuilder: (BuildContext context, int index) {
+              actual.add(TextEditingController());
+              return Container(
+                width:double.infinity,
+                margin: EdgeInsets.only(top:10.0),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: pink,
+                ),
 
-class CustomTwo extends StatelessWidget {
-  CustomTwo({this.text});
-  final text;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(text,style: TextStyle(fontSize: 15),),
+                child: Column(
+                  crossAxisAlignment:CrossAxisAlignment.start,
+
+                  children: [
+                    Text('Brand:  ${productlist[index]}',
+                        style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(height: 10,),
+                            Text("Total : ${total[index]} meters",style: TextStyle(
+                                fontSize: 15.0,
+                            )),
+                            SizedBox(height: 10,),
+                            Text("Share : ${share[index]} meters",style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                            SizedBox(height: 10,),
+                            Text("Target : ${target[index]}%",style: TextStyle(
+                                fontSize: 15.0,
+                            )),
+
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("actual share",style: TextStyle(
+                                fontSize: 15.0),),
+                            Container(
+                              decoration: BoxDecoration(
+                                color:Colors.white,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              width: 80,
+                              height: 40,
+                              padding: EdgeInsets.all(10.0),
+                              margin:EdgeInsets.all(10.0),
+                              child: Center(
+                                child: Center(
+                                  child: TextFormField(
+
+                                    keyboardType:
+                                    TextInputType.number,
+
+                                    controller: actual[index],
+                                    cursorColor: grey,
+                                    validator: (input) => !input
+                                        .isNotEmpty
+                                        ? "actual should not be empty"
+                                        : null,
+                                    decoration:
+                                    new InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 20),
+                                      isCollapsed: true,
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      //hintText: "Actual",
+                                      hintStyle: TextStyle(
+                                        color: grey,
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+              );
+            }),
       ),
     );
   }
+
+  Widget _performSearch() {
+    _filterList = [];
+    _filtertotal = [];
+    _filetrtarget = [];
+    _filteractual = [];
+
+    for (int i = 0; i <productlist.length; i++) {
+      var item = productlist[i];
+      if (item.toLowerCase().contains(_query.toLowerCase())) {
+        _filterList.add(item);
+        int index = productlist.indexOf(item);
+
+        _filtertotal.add(total[index]);
+        _filetrtarget.add(target[index]);
+        _filteractual.add(actual[index]);
+
+
+      }
+    }
+    return _createFilteredListView();
+  }
+
+  Widget _createFilteredListView() {
+    return new ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount:_filterList.length,
+        itemBuilder: (BuildContext context, int index) {
+          actual.add(TextEditingController());
+          return Container(
+            width:double.infinity,
+            margin: EdgeInsets.only(top:10.0,right: 10.0,left: 10.0),
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: pink,
+            ),
+
+            child: Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+
+              children: [
+                Text('Brand:  ${_filterList[index]}',
+                    style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold
+                    )),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Total: ${_filtertotal[index]} meters",style: TextStyle(
+                            fontSize: 15.0,fontWeight: FontWeight.bold
+                        )),
+                        SizedBox(height: 15,),
+                        Text("Target: ${_filetrtarget[index]}%",style: TextStyle(
+                            fontSize: 15.0,fontWeight: FontWeight.bold
+                        )),
+                        SizedBox(height: 15,),
+                        Text("Share: ${share[index]}%",style: TextStyle(
+                            fontSize: 15.0,fontWeight: FontWeight.bold
+                        )),
+
+
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("Actual",style: TextStyle(fontWeight: FontWeight.bold,
+                            fontSize: 15.0),),
+                        Container(
+                          decoration: BoxDecoration(
+                            color:Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          width: 60,
+                          height: 40,
+                          padding: EdgeInsets.all(10.0),
+                          margin:EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Center(
+                              child: TextFormField(
+                                keyboardType:TextInputType.number,
+
+                                controller: _filteractual[index],
+                                cursorColor: grey,
+                                validator: (input) => !input
+                                    .isNotEmpty
+                                    ? "actual should not be empty"
+                                    : null,
+                                decoration:
+                                new InputDecoration(
+                                  //contentPadding: ,
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  focusColor: orange,
+                                  //hintText: "Actual",
+                                  hintStyle: TextStyle(
+                                    color: grey,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+          );
+        });
+  }
+  bool validateform() {
+    final form = soskey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
 }
+
+
+
+
+
 
 class SubmitButton extends StatelessWidget {
+  SubmitButton({this.ontap});
+  final ontap;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:(){
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    CustomerActivities()));
-      },
+      onTap:ontap,
       child: Container(
         margin: EdgeInsets.only(right: 10.00),
         padding: EdgeInsets.all(10.0),

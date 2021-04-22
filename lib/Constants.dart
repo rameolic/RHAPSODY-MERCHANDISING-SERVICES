@@ -27,9 +27,9 @@ class BackGround extends StatelessWidget {
   }
 }
 
+String outletid = chekinoutlet.checkinoutletid;
 //ignore: must_be_immutable
 class OutletDetails extends StatelessWidget {
-  String outletid = chekinoutlet.checkinoutletid;
   String outletname = chekinoutlet.checkinoutletname;
   String outletarea = chekinoutlet.checkinarea;
   String outletcity = chekinoutlet.checkincity;

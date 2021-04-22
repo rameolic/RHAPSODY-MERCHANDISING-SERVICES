@@ -1,7 +1,7 @@
 
 import 'package:merchandising/api/empdetailsapi.dart';
 
-import 'model/inappupdate.dart';
+import 'model/database.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'login_page.dart';
@@ -38,6 +38,7 @@ Future<void> main() async {
       await getLocation();
       await callfrequently();
       await getempdetails();
+      await getproducts();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

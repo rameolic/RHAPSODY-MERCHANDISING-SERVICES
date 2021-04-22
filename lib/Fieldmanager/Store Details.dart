@@ -16,6 +16,9 @@ class _StoreDetailsState extends State<StoreDetails> {
   String _query = "";
   List<dynamic> outletsdata;
   List<String> _filterList;
+  List<String>_filterCode;
+  List<String>_filterContact;
+  List<String>_filterAddress;
   @override
   void initState() {
     super.initState();
@@ -165,10 +168,17 @@ class _StoreDetailsState extends State<StoreDetails> {
 
   Widget _performSearch() {
     _filterList = [];
+    _filterCode =[];
+    _filterContact = [];
+    _filterAddress = [];
     for (int i = 0; i <storesdata.storename.length; i++) {
       var item = storesdata.storename[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        int index = storesdata.storename.indexOf(item);
+        _filterCode.add(storesdata.storecode[index]);
+        _filterContact.add(storesdata.storecontnum[index].toString());
+        _filterAddress.add(storesdata.storeaddress[index]);
       }
     }
     return _createFilteredListView();
@@ -190,22 +200,22 @@ class _StoreDetailsState extends State<StoreDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Store Name : ${ storesdata.storename[index]}',
+                    Text('Store Name : ${ _filterList[index]}',
                         style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
                     SizedBox(height: 5),
-                    Text("Store Code : ${storesdata.storecode[index]}",
+                    Text("Store Code : ${_filterCode[index]}",
                         style: TextStyle(
                           fontSize: 14.0,
                         )),
                     SizedBox(height: 5),
-                    Text('Contact Number : ${storesdata.storecontnum[index]}',
+                    Text('Contact Number : ${_filterContact[index]}',
                         style: TextStyle(
                           fontSize: 14.0,
                         )),
                     SizedBox(height: 5),
-                    Text('Address : ${storesdata.storeaddress[index]}',
+                    Text('Address : ${_filterAddress[index]}',
                         style: TextStyle(
                           fontSize: 14.0,
                         )),

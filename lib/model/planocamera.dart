@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Visibility.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
@@ -10,13 +11,12 @@ import 'package:photo_view/photo_view.dart';
 import 'dart:io';
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/rendering.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/CompetitionCheckOne.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Promotion Check.dart';
 
-import 'dart:convert';
-import 'dart:io';
 
+
+
+
+String ontap;
 
 class TakePictureScreen extends StatefulWidget {
   @override
@@ -106,7 +106,7 @@ class _TakePictureScreenState extends State {
                                 context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        VisibilityOne(
+                                        PlanogramCheckPhase1(
                                         )));
                           },
                           child: SizedBox(
@@ -286,38 +286,18 @@ class _PreviewScreenState extends State<PreviewScreen>{
           child: Icon(Icons.send,color: orange,),
           backgroundColor: pink,
           onPressed: (){
-            if(Selectedscreen == "visibility"){
-              images[selected.index]=widget.imgPath;
-              var imagebytes = widget.imgPath.readAsBytesSync();
-              visibilityreasons[selected.index] = '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"';
-              print(visibilityreasons);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
-            }
-            if(Selectedscreen == "competitioncheck"){
-              capturedimage = widget.imgPath;
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => CompetitionCheckOne()));
-            }
-            if(Selectedscreen == "PromotionCheck"){
-              capturedimagepromotion = widget.imgPath;
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => PromotionCheck()));
-            }
-            if(Selectedscreen == "planogram"){
-              ontap == 'before'?
-              beforeimage = widget.imgPath:afterimage= widget.imgPath;
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
-            }
-            },
+            ontap == 'before'?
+            beforeimage = widget.imgPath:afterimage= widget.imgPath;
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
+          },
         ),
       ),
     );
 
   }
 }
-String Selectedscreen;
+
 String  imagetaken;
 
 Future<File> drawTextOnImage() async {
@@ -325,7 +305,6 @@ Future<File> drawTextOnImage() async {
 
   var decodeImg = img.decodeImage(image.readAsBytesSync());
   var now = DateTime.now();
-  img.drawString(decodeImg, img.arial_48, 0, 0,'${DateFormat.yMd().add_jm().format(now)}');
 
   var encodeImage = img.encodeJpg(decodeImg, quality: 100);
 

@@ -312,6 +312,7 @@ class MappedOutlets extends StatelessWidget {
                                 Text("Planogram Image : "),
                                 GestureDetector(
                                   onTap: (){
+                                    print(Selectedimage);
                                     Selectedimage = mapping.planogramimage[index];
                                     print('https://rms2.rhapsody.ae/product_image/$Selectedimage');
                                     Navigator.push(

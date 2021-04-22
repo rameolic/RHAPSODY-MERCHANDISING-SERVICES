@@ -13,7 +13,7 @@ import 'package:merchandising/main.dart';
 import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'dart:async';
-
+import 'model/database.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -178,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                                           await getLocation();
                                           await callfrequently();
                                           await getempdetails();
+                                          await getproducts();
                                           const period = const Duration(seconds: 600);
                                           Timer.periodic(period, (Timer t) => getLocation());
                                           const time = const Duration(seconds: 900);

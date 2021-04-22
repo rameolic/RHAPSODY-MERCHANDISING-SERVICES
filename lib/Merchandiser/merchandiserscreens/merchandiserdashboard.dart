@@ -385,6 +385,7 @@ class _DashBoardState extends State<DashBoard> {
                         setState(() {
                           isApiCallProcess = true;
                         });
+                        timesheet.empid = DBrequestdata.receivedempid;
                           await getTimeSheetdaily();
                          await gettimesheetmonthly();
                           Navigator.push(

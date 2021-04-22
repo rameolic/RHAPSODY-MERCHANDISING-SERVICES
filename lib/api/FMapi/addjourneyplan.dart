@@ -24,7 +24,11 @@ Future addunschdulejourneypaln() async{
     },
     body: jsonEncode(body),
   );
-  print(response.body);
+  if(response.statusCode == 200){
+    return true;
+  }else{
+    return  false;
+  }
 }
 
 class addschdulejp{
@@ -55,5 +59,9 @@ Future addschdulejourneypaln() async{
     },
     body: jsonEncode(body),
   );
-  print(response.body);
+  if(response.statusCode == 200){
+    return true;
+  }else{
+    return  false;
+  }
 }

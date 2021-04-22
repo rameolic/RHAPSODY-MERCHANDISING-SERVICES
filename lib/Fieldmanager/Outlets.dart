@@ -15,17 +15,15 @@ class _OuletsState extends State<Oulets> {
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
   String _query = "";
-  List<dynamic> outletsdata;
+
   List<String> _filterList;
-  @override
-  void initState() {
-    super.initState();
-    outletsdata =  outletdata.outletname;
-    outletsdata.sort();
-  }
+  List<String> _filterArea;
+  List<String> _filterLat;
+  List<String> _filterLong;
+  List<String> _filterContactnum;
+  List<String> _filterLocation;
 
   _OuletsState() {
-
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
 
@@ -160,10 +158,22 @@ class _OuletsState extends State<Oulets> {
 
   Widget _performSearch() {
     _filterList = [];
+    _filterArea = [];
+    _filterLat = [];
+    _filterLong =[];
+    _filterContactnum =[];
+    _filterLocation =[];
     for (int i = 0; i <outletdata.outletname.length; i++) {
       var item = outletdata.outletname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        int index = outletdata.outletname.indexOf(item);
+        _filterArea.add(outletdata.address[index]);
+        _filterLat.add(outletdata.outletlat[index]);
+        _filterLong.add(outletdata.outletlong[index]);
+        _filterContactnum.add(outletdata.contactnumber[index].toString());
+        _filterLocation.add('${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',);
+
       }
     }
     return _createFilteredListView();
@@ -190,15 +200,15 @@ class _OuletsState extends State<Oulets> {
                             fontSize: 14.0,fontWeight: FontWeight.bold
                         )),
                     SizedBox(height: 5),
-                    Text('${outletdata.address[index]}'),
+                    Text('${_filterArea[index]}'),
                     SizedBox(height: 5),
-                    Text('Latitude : ${outletdata.outletlat[index].toString()}'),
+                    Text('Latitude : ${_filterLat[index].toString()}'),
                     SizedBox(height: 5),
-                    Text('Longitude : ${outletdata.outletlong[index].toString()}'),
+                    Text('Longitude : ${_filterLong[index].toString()}'),
                     SizedBox(height: 5),
-                    Text('Contact Number : ${outletdata.contactnumber[index].toString()}'),
+                    Text('Contact Number : ${_filterContactnum[index].toString()}'),
                     SizedBox(height: 5),
-                    Text('Location : ${outletdata.outletarea[index]},${outletdata.outletcity[index]},${outletdata.outletstate[index]},${outletdata.outletcountry[index]}',
+                    Text('Location : ${_filterLocation[index]}',
                         style: TextStyle(
                           fontSize: 14.0,
                         )),

@@ -1,17 +1,25 @@
 import 'dart:ffi';
-
+import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'package:merchandising/api/FMapi/add_availabilityapi.dart';
 import 'Customers Activities.dart';
+import 'package:merchandising/api/api_service.dart';
 
-List<String> categories = ['Chocolate', 'Petfood', 'Icecream'];
-List<String> Brands = ['mars', 'cadbury', 'ArunIceCreams', 'pedigree'];
+List<String>selectedList=[];
+String Selectedtype = "SKU";
+
+String selecttype;
+
+
+List<String> categories = Distintcategory;
+List<String> Brands  = Distintbrands;
 String Selectedcategory;
 String Selectedbrand;
-List<String> defaulflist = ['dairymilk', 'snikers', 'silk','pedigree','dry dog food','dry kibble','strawberry','vanilla','butterscoth'];
+List<String> defaulflist = Avaiablity.productname;
 List<String> filteredList = [];
 class Availability extends StatefulWidget {
   @override
@@ -19,6 +27,7 @@ class Availability extends StatefulWidget {
 }
 
 class _AvailabilityState extends State<Availability> {
+
   //List<bool> isSelected;
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
@@ -99,6 +108,24 @@ class _AvailabilityState extends State<Availability> {
                                 onChanged: (newVal) {
                                   setState(() {
                                     Selectedcategory = newVal;
+                                    if(Selectedbrand==null){
+                                      InputList=[];
+                                      for(int i =0; i < defaulflist.length;i++){
+                                        if(Avaiablity.category[i] == Selectedcategory){
+                                          print(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.productname[i]);
+                                        }
+                                      }
+                                    }else{
+                                      InputList=[];
+                                      for(int i =0; i < defaulflist.length;i++){
+                                        if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
+                                          print(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.productname[i]);
+                                        }
+                                      }
+                                    }
+
                                   });
                                 })),
                         Container(
@@ -124,6 +151,23 @@ class _AvailabilityState extends State<Availability> {
                                 onChanged: (newVal) {
                                   setState(() {
                                     Selectedbrand = newVal;
+                                    if(Selectedcategory ==null){
+                                      InputList=[];
+                                      for(int i =0; i < defaulflist.length;i++){
+                                        if(Avaiablity.brand[i] == Selectedbrand){
+                                          print(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.productname[i]);
+                                        }
+                                      }
+                                    }else{
+                                      InputList=[];
+                                      for(int i =0; i < defaulflist.length;i++){
+                                        if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
+                                          print(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.productname[i]);
+                                        }
+                                      }
+                                    }
                                   });
                                 })),
                       ],
@@ -210,7 +254,7 @@ class _AvailabilityState extends State<Availability> {
               ],
             ),
           ),
-          Expanded(
+          Flexible(
             child: Container(
               padding: EdgeInsets.all(5.0),
               margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
@@ -219,9 +263,9 @@ class _AvailabilityState extends State<Availability> {
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
               ),
               child: new ListView.builder(
-                //shrinkWrap: true,
+                shrinkWrap: true,
                   itemCount: InputList.length,
-                 // physics: const NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       width: MediaQuery.of(context).size.width,
@@ -399,7 +443,16 @@ class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
+        AddAvail.outletid = outletrequestdata.outletidpressed;
+        AddAvail.timesheetid = checkinoutdata.checkid;
+        AddAvail.productid = Avaiablity.productid;
+        AddAvail.brandname = Avaiablity.brand;
+        AddAvail.categoryname = Avaiablity.category;
+        AddAvail.productname =Avaiablity.productname;
+        AddAvail.reason = reasons;
+        AddAvail.checkvalue = outofStockitems;
+        await addAvailability();
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -421,7 +474,6 @@ class SubmitButton extends StatelessWidget {
   }
 }
 
-List<String> outofStockitems = [];
 
 class ToggleSwitch extends StatefulWidget {
   ToggleSwitch({this.item});
@@ -434,7 +486,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
   String selectedreason;
   List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
 
-   bool isSwitched = false;
+   bool isSwitched;
   @override
    Void initState() {
     super.initState();
@@ -461,7 +513,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
             onChanged: (value) {
               setState(() {
                 isSwitched = value;
-                isSwitched == true ? outofStockitems.add( widget.item) : outofStockitems.remove( widget.item);
+                isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]='0' : outofStockitems[Avaiablity.productname.indexOf(widget.item)]='1';
                 print(outofStockitems);
               });
             },
@@ -482,6 +534,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
             onChanged: (newVal){
               setState(() {
                 selectedreason = newVal;
+                reasons[Avaiablity.productname.indexOf(widget.item)] = newVal;
               });
             },
             items: DropDownItems,
@@ -492,4 +545,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
     );
   }
 }
+List<String>reasons=[];
+
+List<String> outofStockitems = [];
 
