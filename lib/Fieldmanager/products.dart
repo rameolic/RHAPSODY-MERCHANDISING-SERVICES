@@ -9,6 +9,7 @@ import 'package:merchandising/Fieldmanager/editbrands_to_outlets.dart';
 import 'package:merchandising/Fieldmanager/product_details.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'outletbrandmapping.dart';
+import 'package:merchandising/Fieldmanager/addpromotion.dart';
 import 'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
 
 
@@ -104,6 +105,15 @@ class _ProductsState extends State<Products> {
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 OutletsmapedtoBrands()));
+                  } ,
+                ),
+                ProductContainer(text: "Promotion Details",
+                  onpress:(){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AddPromotion()));
                   } ,
                 ),
               ],

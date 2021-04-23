@@ -11,6 +11,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:merchandising/model/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
+import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
+import'package:merchandising/api/api_service.dart';
 
 
 
@@ -42,11 +44,21 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
             ),
             Spacer(),
             SubmitButton(
-              onpress: () {
+              onpress: () async{
                 if (validateform() == true) {
                   if (selectcompanydropdown != null &&
                       selectpromotiondropdown != null &&
                       selectbranddropdown != null) {
+                    AddCompData.timesheetid = outletrequestdata.outletidpressed;
+                    AddCompData.companyname = selectcompanydropdown;
+                    AddCompData.brandname = selectbranddropdown;
+                    AddCompData.itemname = itemname.text;
+                    AddCompData.promotype = selectpromotiondropdown;
+                    AddCompData.mrp = mrp.text;
+                    AddCompData.sellingprice = sellingprice.text;
+
+                    await addCompetition();
+
                     print(itemname.text);
                     print(promtdescp.text);
                     print(mrp.text);

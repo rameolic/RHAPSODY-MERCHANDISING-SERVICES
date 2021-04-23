@@ -61,6 +61,8 @@ Uri Addoutletbrandmap = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_brand
 Uri outletbrandmapping = Uri.parse("https://rms2.rhapsody.ae/api/outlet_brand_mapping_details");
 Uri AvailabilityDetails = Uri.parse("https://rms2.rhapsody.ae/api/availability_details");
 Uri AddAvailability = Uri.parse("https://rms2.rhapsody.ae/api/add_availability");
+Uri CompetitionDetails = Uri.parse("https://rms2.rhapsody.ae/api/competition_details");
+Uri AddCompetition = Uri.parse("https://rms2.rhapsody.ae/api/add_competition");
 class loggedin{
   static var email;
   static var password;
