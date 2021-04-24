@@ -7,7 +7,10 @@ import 'MenuContent.dart';
 import 'checkin.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:merchandising/model/googledirections.dart';
 import 'package:merchandising/model/Location_service.dart';
+
+
 
 // ignore: must_be_immutable
 class OutLet extends StatefulWidget {
@@ -20,13 +23,20 @@ class checkedoutlet {
   static bool checkoutlet = false;
 }
 
+var points;
+
 class _OutLetState extends State<OutLet> {
+  @override
   List<Marker> _markers = <Marker>[
-    Marker(markerId: MarkerId("outletpoint"),
-        position: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong),
+    Marker(
+        markerId: MarkerId("outletpoint"),
+        position: LatLng(
+          double.tryParse(chekinoutlet.checkinlat),
+          double.tryParse(chekinoutlet.checkinlong),
         ))
   ];
-  double distance = chekinoutlet.currentdistance/1000;
+
+  double distance = chekinoutlet.currentdistance / 1000;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,24 +50,30 @@ class _OutLetState extends State<OutLet> {
               'Outlet Details',
               style: TextStyle(color: orange),
             ),
-            IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
-              setState(() {
-                isApiCallProcess = true;
-              });
-              await getLocation();
-              await outletwhencheckin();
-              setState((){
-                print(chekinoutlet.currentdistance/1000);
-                distance = chekinoutlet.currentdistance/1000;
-                isApiCallProcess = false;
-              });
-            })
+            IconButton(
+                icon: Icon(
+                  CupertinoIcons.refresh_circled_solid,
+                  color: orange,
+                  size: 30,
+                ),
+                onPressed: () async {
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  await getLocation();
+                  await outletwhencheckin();
+                  setState(() {
+                    print(chekinoutlet.currentdistance / 1000);
+                    distance = chekinoutlet.currentdistance / 1000;
+                    isApiCallProcess = false;
+                  });
+                })
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -73,19 +89,25 @@ class _OutLetState extends State<OutLet> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height/5,
+                        height: MediaQuery.of(context).size.height / 5,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: GoogleMap(
                             zoomControlsEnabled: false,
                             zoomGesturesEnabled: true,
-                            markers:Set<Marker>.of(_markers),
-                            initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong)), zoom: 15),
+                            myLocationButtonEnabled: false,
+                            markers: Set<Marker>.of(_markers),
+                            initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                    double.tryParse(chekinoutlet.checkinlat),
+                                    double.tryParse(chekinoutlet.checkinlong)),
+                                zoom: 15),
                           ),
                         ),
                       ),
-
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -94,22 +116,38 @@ class _OutLetState extends State<OutLet> {
                             children: [
                               Text(
                                 '[${chekinoutlet.checkinoutletid}]',
-                                style: TextStyle( fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 5,),
+                              SizedBox(
+                                width: 5,
+                              ),
                               Text(
                                 chekinoutlet.checkinoutletname,
-                                style: TextStyle( fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                           Text(chekinoutlet.checkinaddress),
                           Row(
                             children: [
-                              Text(chekinoutlet.checkinarea),SizedBox(width: 5,),Text(chekinoutlet.checkincity),SizedBox(width: 5,),Text(chekinoutlet.checkinstate),SizedBox(width: 5,),Text(chekinoutlet.checkincountry),
+                              Text(chekinoutlet.checkinarea),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(chekinoutlet.checkincity),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(chekinoutlet.checkinstate),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(chekinoutlet.checkincountry),
                             ],
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           Table(
                             columnWidths: {
                               0: FlexColumnWidth(2.5),
@@ -118,20 +156,28 @@ class _OutLetState extends State<OutLet> {
                             },
                             children: [
                               TableRow(children: [
-                                Text('Contact Number',
+                                Text(
+                                  'Contact Number',
                                 ),
                                 Text(":"),
-                                SelectableText(chekinoutlet.contactnumber.toString(), style: TextStyle(color: orange)),
+                                SelectableText(
+                                    chekinoutlet.contactnumber.toString(),
+                                    style: TextStyle(color: orange)),
                               ]),
                               // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
                               TableRow(children: [
-                                Text('Distance',
+                                Text(
+                                  'Distance',
                                 ),
                                 Text(":"),
                                 Row(
                                   children: [
-                                    Text((distance).toStringAsFixed(2).toString(), style: TextStyle(color: orange)),
-                                    Text("KM",style: TextStyle(color: orange))
+                                    Text(
+                                        (distance)
+                                            .toStringAsFixed(2)
+                                            .toString(),
+                                        style: TextStyle(color: orange)),
+                                    Text("KM", style: TextStyle(color: orange))
                                   ],
                                 ),
                               ]),
@@ -150,9 +196,13 @@ class _OutLetState extends State<OutLet> {
                 OutLetContainer(
                   child: BarChatData(),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 CheckIn(),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
@@ -162,13 +212,8 @@ class _OutLetState extends State<OutLet> {
   }
 }
 
-
-
-
 class OutLetContainer extends StatelessWidget {
-  OutLetContainer({
-    this.child,this.height
-  });
+  OutLetContainer({this.child, this.height});
   final child;
   final height;
   @override

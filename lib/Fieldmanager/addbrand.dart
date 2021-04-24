@@ -40,9 +40,9 @@ class _AddBrandState extends State<AddBrand> {
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),

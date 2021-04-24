@@ -28,9 +28,9 @@ class _MerchandisersListState extends State<MerchandisersList> {
           iconTheme: IconThemeData(color: orange),
           title: Text("Timesheet",style: TextStyle(color: orange),),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

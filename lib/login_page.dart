@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                                           var DBDresult = await DBRequestdaily();
                                           await getLocation();
                                           await callfrequently();
-                                          await getempdetails();
+                                          //await getempdetails();
                                           await getproducts();
                                           const period = const Duration(seconds: 600);
                                           Timer.periodic(period, (Timer t) => getLocation());
@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                                                             DashBoard()));
                                           }
                                         } else if(userroleid == 3){
-                                          await getempdetails();
+                                          //await getempdetails();
                                           int result = await HRdb();
                                           if(result != null){
                                             Navigator.pushReplacement(
@@ -205,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
                                           }
                                         } else if (userroleid == 5){
                                           await getFMdb();
-                                          await getempdetails();
+                                         // await getempdetails();
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(

@@ -38,22 +38,28 @@ class _PromotionCheckState extends State<PromotionCheck> {
         },
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Promotion Check',
-                  style: TextStyle(color: orange),
+                Row(
+                  children: [
+                    Icon(Icons.menu),
+                    SizedBox(width: 25,),
+                    Text('Promotion Check',
+                      style: TextStyle(color: orange),
+                    ),
+                  ],
                 ),
                 SubmitButton()
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),

@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:merchandising/api/api_service.dart';
 
 final containerscolor = Color(0xffFAECE3);
@@ -71,14 +73,19 @@ class OutletDetails extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Text('$outletarea,', style: TextStyle(fontSize:15),),
-                  Text('$outletcity,', style: TextStyle(fontSize:15)),
-                  Text('$outletstate,', style: TextStyle(fontSize:15)),
-                  Text('$outletcountry', style: TextStyle(fontSize:15)),
-                ],
-              ),
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  '$outletarea,$outletcity,$outletstate,$outletcountry',
+                ),
+              )
+              // AutoSizeText('$outletarea,$outletcity,$outletstate,$outletstate,$outletcountry',
+              //   //style: TextStyle(fontSize:15),
+              //   maxLines: 1,
+              //   minFontSize: 12,
+              //   overflow: TextOverflow.ellipsis,
+              //   maxFontSize: double.infinity,
+              // ),
             ],
           ),
           SizedBox(width: 20.0),
@@ -122,9 +129,12 @@ class Containerblock extends StatelessWidget {
                 numbertext,style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 10),
-              Text(
-                chartext,
-                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  chartext,
+                  textAlign: TextAlign.center
+                ),
               ),
             ],
           ),

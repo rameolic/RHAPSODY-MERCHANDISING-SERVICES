@@ -60,22 +60,29 @@ class _VisibilityOneState extends State<VisibilityOne> {
       child: MaterialApp(
         home: Scaffold(
       appBar: new AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            new Text(
-              "Visibility",
-              style: TextStyle(color: orange),
+            Row(
+              children: [
+                Icon(Icons.menu),
+                SizedBox(width: 25,),
+                Text(
+                  'Visibility',
+                  style: TextStyle(color: orange),
+                ),
+              ],
             ),
             Spacer(),
             SubmitButton(),
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

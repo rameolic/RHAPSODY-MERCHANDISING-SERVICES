@@ -64,13 +64,20 @@ class _ShareShelfState extends State<ShareShelf> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            Text(
-              'Share of Shelf',
-              style: TextStyle(color: orange),
+            Row(
+              children: [
+                Icon(Icons.menu),
+                SizedBox(width: 25,),
+                Text(
+                  'Share of Shelf',
+                  style: TextStyle(color: orange),
+                ),
+              ],
             ),
             Spacer(),
             SubmitButton(
@@ -86,9 +93,9 @@ class _ShareShelfState extends State<ShareShelf> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

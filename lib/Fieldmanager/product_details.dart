@@ -53,9 +53,9 @@ class _ProductDetailsState extends State<ProductDetails> {
           iconTheme: IconThemeData(color: orange),
           title: Text("Product Details",style: TextStyle(color: orange),),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),
@@ -120,55 +120,52 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 
   Widget _createListView() {
-    return new Flexible(
-      child: new  ListView.builder(
-          shrinkWrap: true,
-          itemCount:productlist.brandname.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              onTap: (){
-                 position = index;
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => ProductDetailView()));
+    return new  ListView.builder(
+        shrinkWrap: true,
+        itemCount: productlist.brandname.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: (){
+               position = index;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ProductDetailView()));
+            },
+            child: Container(
+                padding: EdgeInsets.all(10.0),
+                margin: EdgeInsets.only(bottom:5.0,top: 5.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Product Name : ${productlist.productname[index]}',
+                        style: TextStyle(
+                            fontSize: 15.0,fontWeight: FontWeight.bold,
+                        )),
+                    SizedBox(height: 5),
+                    Text("Brand Name : ${productlist.brandname[index]}",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+                    SizedBox(height: 5),
+                    Text('Type : ${productlist.type[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
+                    SizedBox(height: 5),
+                    Text('Category : ${productlist.productcategory[index]}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        )),
 
-              },
-              child: Container(
-                  padding: EdgeInsets.all(10.0),
-                  margin: EdgeInsets.only(bottom:5.0,top: 5.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Product Name : ${productlist.productname[index]}',
-                          style: TextStyle(
-                              fontSize: 15.0,fontWeight: FontWeight.bold,
-                          )),
-                      SizedBox(height: 5),
-                      Text("Brand Name : ${productlist.brandname[index]}",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          )),
-                      SizedBox(height: 5),
-                      Text('Type : ${productlist.type[index]}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          )),
-                      SizedBox(height: 5),
-                      Text('Category : ${productlist.productcategory[index]}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                          )),
-
-                    ],
-                  )),
-            );
-          }),
-    );
+                  ],
+                )),
+          );
+        });
   }
 
   Widget _performSearch() {

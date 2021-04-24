@@ -37,9 +37,9 @@ class _CategoryofProductsState extends State<CategoryofProducts> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children:[
           BackGround(),

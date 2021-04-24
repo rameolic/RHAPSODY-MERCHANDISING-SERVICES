@@ -43,10 +43,15 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
             appBar: AppBar(
               backgroundColor: pink,
               iconTheme: IconThemeData(color: orange),
-              title: Image(
-              height: 30,
-              image: AssetImage('images/rmsLogo.png'),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image(
+                  height: 30,
+                  image: AssetImage('images/rmsLogo.png'),
             ),
+                ],
+              ),
             ),
             drawer: Drawer(
               child: Menu(),
@@ -61,7 +66,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                       SizedBox(height: 10,),
                       Container(
                         margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                        height: 181,
+
                         width: double.infinity,
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
@@ -710,19 +715,19 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                     margin: EdgeInsets.all(15.0),
                     child: FloatingActionButton(
                       onPressed: ()async{
-                        setState(() {
-                          isApiCallProcess = true;
-                        });
-                        await getmerchnamelist();
-                        setState(() {
-                          isApiCallProcess = false;
-                        });
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext
-                                context) =>
-                                    ChatUsers()));
+                        // setState(() {
+                        //   isApiCallProcess = true;
+                        // });
+                        // await getmerchnamelist();
+                        // setState(() {
+                        //   isApiCallProcess = false;
+                        // });
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (BuildContext
+                        //         context) =>
+                        //             ChatUsers()));
                       },
                       backgroundColor: pink,
                       elevation: 10.0,

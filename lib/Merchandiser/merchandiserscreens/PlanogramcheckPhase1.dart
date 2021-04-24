@@ -57,13 +57,20 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            Text(
-              'Planogram Check',
-              style: TextStyle(color: orange),
+            Row(
+              children: [
+                Icon(Icons.menu),
+                SizedBox(width: 25,),
+                Text(
+                  'Planogram Check',
+                  style: TextStyle(color: orange),
+                ),
+              ],
             ),
             Spacer(),
             SubmitButton(
@@ -78,9 +85,9 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

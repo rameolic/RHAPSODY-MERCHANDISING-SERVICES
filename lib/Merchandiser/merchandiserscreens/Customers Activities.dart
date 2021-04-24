@@ -17,6 +17,7 @@ import 'NPD Check.dart';
 import 'CompetitionCheckOne.dart';
 import 'Visibility.dart';
 import 'OutletSurvey.dart';
+import 'merchandiserdashboard.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/Location_service.dart';
 
@@ -31,19 +32,25 @@ class CustomerActivities extends StatelessWidget {
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Customer Activities',
-                style: TextStyle(color: orange),
+              Row(
+                children: [
+                  Icon(Icons.menu),
+                  SizedBox(width: 25,),
+                  Text(
+                    'Activities',
+                    style: TextStyle(color: orange),
+                  ),
+                ],
               ),
-              Spacer(),
               checkoutbutton(),
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        //),
         body: Stack(
           children: [
             BackGround(),
@@ -58,6 +65,8 @@ class CustomerActivities extends StatelessWidget {
                         icon: CupertinoIcons.chart_bar_alt_fill,
                         chartext: 'Availability',
                         tap: (){
+                          reasons=[];
+                          outofStockitems=[];
                           for(int i =0; i<Avaiablity.productname.length;i++){
                             reasons.add('\"\"');
                             outofStockitems.add('1');
@@ -77,6 +86,8 @@ class CustomerActivities extends StatelessWidget {
                         icon: CupertinoIcons.eye_solid,
                         chartext: 'Visibility',
                         tap: (){
+                          visibilityreasons=[];
+                          checkvaluevisibility=[];
                           for(int i =0; i<VisibilityData.productname.length;i++){
                             images.add( File('dummy.txt'));
                             visibilityreasons.add('\"\"');
@@ -402,7 +413,7 @@ class checkoutbutton extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (BuildContext context) =>
-                                                    JourneyPlan()));
+                                                    DashBoard()));
                                       }
                                     },
                                     child: Container(
@@ -448,7 +459,7 @@ class checkoutbutton extends StatelessWidget {
         ),
         child: Text(
           'Check out',
-          style: TextStyle(color: Colors.black, fontSize: 15),
+          style: TextStyle(color: Colors.black, fontSize: 14),
         ),
       ),
     );

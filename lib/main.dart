@@ -1,4 +1,4 @@
-
+import 'dart:io' show Platform;
 import 'package:merchandising/api/empdetailsapi.dart';
 
 import 'model/database.dart';
@@ -15,10 +15,13 @@ import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/FMapi/fmdbapi.dart';
-import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if(Platform.isAndroid){
+
+    //await Firebase.initializeApp();
+  }
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('useremail');
   var password = prefs.getString('userpassword');
@@ -37,7 +40,7 @@ Future<void> main() async {
       await DBRequestdaily();
       await getLocation();
       await callfrequently();
-      await getempdetails();
+      //await getempdetails();
       await getproducts();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
@@ -51,7 +54,7 @@ Future<void> main() async {
     }
     else if(userroleid == 3){
       await HRdb();
-      await getempdetails();
+      //await getempdetails();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,
@@ -64,7 +67,7 @@ Future<void> main() async {
     }
     else if(userroleid == 5){
       await getFMdb();
-      await getempdetails();
+      //await getempdetails();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

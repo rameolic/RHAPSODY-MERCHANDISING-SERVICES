@@ -31,18 +31,14 @@ class _AddStoresState extends State<AddStores> {
         appBar: AppBar(
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
-          title: Row(
-            children: [
-              Text(
-                'Add Stores',
-                style: TextStyle(color: orange),
-              ),
-            ],
+          title: Text(
+            'Add Stores',
+            style: TextStyle(color: orange),
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

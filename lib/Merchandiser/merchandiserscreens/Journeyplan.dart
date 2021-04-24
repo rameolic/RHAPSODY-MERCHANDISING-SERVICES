@@ -69,9 +69,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -279,13 +279,18 @@ class JourneyPlanHeader extends StatelessWidget {
           SizedBox(
             width: 2,
           ),
-          Text(
-            chartext,
-            style: TextStyle(
-              fontSize: 12,
-              color: textcolor,
+          SizedBox(
+            width: MediaQuery.of(context).size.width/6,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                chartext,
+                style: TextStyle(
+                  color: textcolor,
+                ),
+                textAlign: TextAlign.center,maxLines: 2,
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),

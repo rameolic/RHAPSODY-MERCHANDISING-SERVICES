@@ -58,9 +58,9 @@ class _CategoryDetailsState extends State<CategoryDetails> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/Constants.dart';
@@ -21,7 +22,7 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
+import 'package:merchandising/model/chatscreen.dart';
 Future callfrequently()async{
   await getJourneyPlan();
   await getskippedJourneyPlan();
@@ -347,7 +348,7 @@ class _DashBoardState extends State<DashBoard> {
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
-                      chartext: 'Scheduled Visits',
+                      chartext: ' Scheduled \nVisits',
                       icon: CupertinoIcons.phone_circle_fill,
                       color: Colors.green,
                     ),
@@ -361,14 +362,14 @@ class _DashBoardState extends State<DashBoard> {
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
-                      chartext: 'Scheduled\nVisits Done',
+                      chartext: ' Scheduled \nVisits Done',
                       icon:CupertinoIcons.check_mark_circled_solid,
                       color: Colors.green,
                     ),
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}': '${DBResponsedatadaily.UnShedulevisitsDone}',
-                      chartext: 'unScheduled Visits Done',
+                      chartext: 'unScheduled\nVisits Done',
                       icon: CupertinoIcons.checkmark_seal_fill,
                       color: Colors.red,
                     ),
@@ -527,11 +528,17 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          chat.receiver = "Emp5906";
-                        });
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
-                        },
+                        // if(Platform.isAndroid){
+                        //   setState(() {
+                        //     chat.receiver = "Emp5906";
+                        //   });
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //           builder: (BuildContext context) =>
+                        //               ChatScreen()));
+                        // }
+                      },
                       child: Container(
                         height: 120,
                         width: MediaQuery.of(context).size.width/3.25,
@@ -545,7 +552,8 @@ class _DashBoardState extends State<DashBoard> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
-                              Text("HQ Communication",textAlign: TextAlign.center,),
+                              FittedBox(
+                                  fit: BoxFit.fitWidth,child: Text("HQ\nCommunication",maxLines: 2,textAlign: TextAlign.center,)),
 
                             ],
                           ),
@@ -698,8 +706,11 @@ class ActivityPerformance extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0,top: 8.0,),
-                      child: Text(
-                        "Planned",style: TextStyle(fontSize: 12),
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          "Planned",maxLines: 1,
+                        ),
                       ),
                     ),
                     Padding(
@@ -710,8 +721,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             ptotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Total",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "  Total  ",maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
@@ -724,8 +738,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             pprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Primary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              " Primary ",maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
@@ -738,8 +755,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             psecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Secondary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "Secondary",maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
@@ -751,8 +771,11 @@ class ActivityPerformance extends StatelessWidget {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 14.0,right: 8.0,),
-                        child: Text(
-                          "Actual",style: TextStyle(fontSize: 12),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            " Actual",maxLines: 1,
+                          ),
                         ),
                       ),
                     ),
@@ -762,8 +785,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             atotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Total",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "  Total  ",maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
@@ -774,8 +800,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             aprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Primary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              " Primary ",maxLines: 1,
+                            ),
                           ),
                         ],
                       ),
@@ -786,9 +815,12 @@ class ActivityPerformance extends StatelessWidget {
                             Text(
                               asecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                             ),
-                           Text(
-                              "Secondary",style: TextStyle(fontSize: 10),
-                            ),
+                           FittedBox(
+                             fit: BoxFit.fitWidth,
+                             child: Text(
+                                "Secondary",maxLines: 1,
+                              ),
+                           ),
                         ],
                       ),
                     ),

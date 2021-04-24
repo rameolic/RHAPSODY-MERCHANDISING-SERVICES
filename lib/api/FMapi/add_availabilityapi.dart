@@ -24,15 +24,16 @@ Future addAvailability() async{
     'reason' : '${AddAvail.reason}',
 
   };
-  // http.Response availresponse = await http.post(AddAvailability,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-  //   },
-  //   body: jsonEncode(addavailability),
-  // );
-  // print(availresponse.body);
+  print(jsonEncode(addavailability));
+  http.Response availresponse = await http.post(AddAvailability,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(addavailability),
+  );
+  print(availresponse.body);
 
   print("Add Availability Done");
   print(addavailability);
