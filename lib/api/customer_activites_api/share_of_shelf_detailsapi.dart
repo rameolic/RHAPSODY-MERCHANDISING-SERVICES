@@ -4,7 +4,7 @@ import '../api_service.dart';
 
 Future<void> getShareofshelf() async {
   Map body = {
-    "time_sheet_id" : "625",// "${timesheetid.id}"
+    "time_sheet_id" : Currenttimesheetid// "${timesheetid.id}"
   };
   http.Response shareresponse = await http.post(ShareofshelfDetails,
     headers: {
@@ -17,6 +17,7 @@ Future<void> getShareofshelf() async {
   if (shareresponse.statusCode == 200) {
     print(body);
     ShareData.brandname = [];
+    ShareData.brandid =[];
     ShareData.share = [];
     ShareData.total = [];
     ShareData.target = [];
@@ -29,6 +30,7 @@ Future<void> getShareofshelf() async {
     for (int u = 0; u< decodeddata['data'].length; u++) {
 
       ShareData.brandname.add(decodeddata['data'][u]['b_name']);
+      ShareData.brandid.add(decodeddata['data'][u]['b_id']);
       ShareData.share.add(decodeddata['data'][u]['share']);
       ShareData.target.add(decodeddata['data'][u]['target']);
       ShareData.actual.add(decodeddata['data'][u]['actual']);
@@ -52,6 +54,7 @@ class ShareData{
   static List<String> total=[];
   static List<String> target=[];
   static List<String> actual = [];
+  static List<int> brandid = [];
 }
 
 

@@ -14,17 +14,17 @@ class AddAvail{
 
 Future addAvailability() async{
   Map addavailability = {
-    'outlet_id' : '${AddAvail.outletid}',
-    'timesheet_id' : '${AddAvail.timesheetid}',
-    'product_id' : '${AddAvail.productid}',
-    'brand_name' : '${AddAvail.brandname}',
-    'category_name' : '${AddAvail.categoryname}',
-    'product_name' : '${AddAvail.productname}',
-    'check_value' : '${AddAvail.checkvalue}',
-    'reason' : '${AddAvail.reason}',
+    'outlet_id' : AddAvail.outletid,
+    'timesheet_id' : 332,//'${AddAvail.timesheetid}',
+    'product_id' : AddAvail.productid,
+    'brand_name' : AddAvail.brandname,
+    'category_name' : AddAvail.categoryname,
+    'product_name' : AddAvail.productname,
+    'check_value' : AddAvail.checkvalue,
+    'reason' : AddAvail.reason,
 
   };
-  print(jsonEncode(addavailability));
+  print(addavailability);
   http.Response availresponse = await http.post(AddAvailability,
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,4 @@ Future addAvailability() async{
     body: jsonEncode(addavailability),
   );
   print(availresponse.body);
-
-  print("Add Availability Done");
-  print(addavailability);
 }

@@ -705,7 +705,7 @@ class VeiwImage extends StatelessWidget {
                               VisibilityOne()));
                 },
                 backgroundColor: Colors.black,
-                child: Icon(Icons.arrow_back,color: orange,),
+                child: Icon(CupertinoIcons.back,color: orange,),
               ),
             ),
           ),

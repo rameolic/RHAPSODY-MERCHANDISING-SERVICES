@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import 'api_service.dart';
 
 
-var timesheetid;
+
 Future<void> Avaiablitity() async {
   Map body = {
-    "time_sheet_id" : "331"//"$timesheetid"
+    "time_sheet_id" : timesheetid
   };
+  print('timesheet sending : $body');
   http.Response response = await http.post(AvailabilityDetails,
     headers: {
       'Content-Type': 'application/json',

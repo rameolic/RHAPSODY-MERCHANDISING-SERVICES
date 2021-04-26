@@ -46,12 +46,14 @@ Uri FMJPurl = Uri.parse("https://rms2.rhapsody.ae/api/journey");
 Uri MercLeaveDetails = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_leave_details");
 Uri AddEmployee = Uri.parse("https://rms2.rhapsody.ae/api/add_employee");
 Uri unschdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_unscheduled_journeyplan");
+Uri AddPlanogram = Uri.parse("https://rms2.rhapsody.ae/api/add_planogram");
 Uri designation = Uri.parse("https://rms2.rhapsody.ae/api/all_roles");
 Uri schdulejp = Uri.parse("https://rms2.rhapsody.ae/api/add_scheduled_journeyplan");
 Uri Attendance = Uri.parse("https://rms2.rhapsody.ae/api/attendance_monthly");
 Uri updateemp = Uri.parse("https://rms2.rhapsody.ae/api/update_employee");
 Uri LeaveacceptReject = Uri.parse("https://rms2.rhapsody.ae/api/leave_accept_reject");
 Uri BrandDetails = Uri.parse("https://rms2.rhapsody.ae/api/brand_details");
+Uri AddShareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/add_share_of_shelf");
 Uri AddBrand = Uri.parse("https://rms2.rhapsody.ae/api/add_brand");
 Uri CategoryDetails = Uri.parse("https://rms2.rhapsody.ae/api/category_details");
 Uri AddCategory = Uri.parse("https://rms2.rhapsody.ae/api/add_category");
@@ -63,6 +65,11 @@ Uri AvailabilityDetails = Uri.parse("https://rms2.rhapsody.ae/api/availability_d
 Uri AddAvailability = Uri.parse("https://rms2.rhapsody.ae/api/add_availability");
 Uri CompetitionDetails = Uri.parse("https://rms2.rhapsody.ae/api/competition_details");
 Uri AddCompetition = Uri.parse("https://rms2.rhapsody.ae/api/add_competition");
+Uri MercViewUpdtPromo = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_view_updated_promotion__details");
+Uri MercAddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_add_promotion__details");
+
+
+var timesheetid;
 class loggedin{
   static var email;
   static var password;

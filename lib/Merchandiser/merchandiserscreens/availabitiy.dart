@@ -453,7 +453,7 @@ class SubmitButton extends StatelessWidget {
     return GestureDetector(
       onTap: () async{
         AddAvail.outletid = outletrequestdata.outletidpressed;
-        AddAvail.timesheetid = checkinoutdata.checkid;
+        AddAvail.timesheetid = timesheetid;
         AddAvail.productid = Avaiablity.productid;
         AddAvail.brandname = Avaiablity.brand;
         AddAvail.categoryname = Avaiablity.category;

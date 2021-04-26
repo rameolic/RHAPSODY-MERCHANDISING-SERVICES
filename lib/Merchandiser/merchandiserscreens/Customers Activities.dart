@@ -68,7 +68,7 @@ class CustomerActivities extends StatelessWidget {
                           reasons=[];
                           outofStockitems=[];
                           for(int i =0; i<Avaiablity.productname.length;i++){
-                            reasons.add('\"\"');
+                            reasons.add('');
                             outofStockitems.add('1');
                           }
                           Navigator.of(context).pushAndRemoveUntil(

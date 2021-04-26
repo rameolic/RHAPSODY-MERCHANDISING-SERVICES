@@ -62,16 +62,8 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                     AddCompData.promotype = selectpromotiondropdown;
                     AddCompData.mrp = mrp.text;
                     AddCompData.sellingprice = sellingprice.text;
-
+                    AddCompData.promodesc = promtdescp.text;
                     await addCompetition();
-
-                    print(itemname.text);
-                    print(promtdescp.text);
-                    print(mrp.text);
-                    print(sellingprice.text);
-                    print(selectcompanydropdown);
-                    print(selectpromotiondropdown);
-                    print(selectbranddropdown);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

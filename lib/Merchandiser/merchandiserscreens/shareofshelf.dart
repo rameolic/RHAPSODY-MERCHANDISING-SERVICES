@@ -3,6 +3,8 @@ import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'Customers Activities.dart';
 import 'MenuContent.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/customer_activites_api/add_shareofshelfapi.dart';
 import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
 
 
@@ -81,13 +83,28 @@ class _ShareShelfState extends State<ShareShelf> {
             ),
             Spacer(),
             SubmitButton(
-              ontap: (){
+              ontap: ()async{
+                AddShareData.brandid = ShareData.brandid;
+                AddShareData.outletid = outletrequestdata.outletidpressed;
+                AddShareData.timesheetid = '332';//timesheetid.id;
+                AddShareData.totalshare = ShareData.total;
+                AddShareData.share = ShareData.share;
+                AddShareData.target = ShareData.target;
+                AddShareData.actual=[];
+                for(int i=0;i<productlist.length;i++){
+                  AddShareData.actual.add(actual[i].text);
+                }
+                await addShareofshelfdata();
+                print(AddShareData.outletid);
+                print(AddShareData.brandid);
+                print(AddShareData.timesheetid);
+                print(AddShareData.actual);
                 if(validateform()==true)
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            CustomerActivities()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              CustomerActivities()));
               },
             ),
           ],

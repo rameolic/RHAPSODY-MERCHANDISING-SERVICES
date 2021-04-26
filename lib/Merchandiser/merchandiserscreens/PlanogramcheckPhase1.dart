@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -75,11 +76,14 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
             Spacer(),
             SubmitButton(
               onpress: (){
-                {Navigator.push(
+                {
+
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                        CustomerActivities()));}
+                        CustomerActivities()));
+                }
               },
             ),
           ],
@@ -141,6 +145,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
           itemCount: planolist.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
+              margin: EdgeInsets.only(bottom: 10.0),
               decoration: BoxDecoration(color: pink,borderRadius: BorderRadius.circular(10)),
               height: MediaQuery.of(context).size.height/4,
              // margin: EdgeInsets.only(top:5),
