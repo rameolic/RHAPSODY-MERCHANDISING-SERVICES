@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:flutter/painting.dart';
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -58,22 +59,29 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
       onWillPop: () async => false,
       child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
             title: Row(
               children: [
-                Text(
-                  'Availability',
-                  style: TextStyle(color: orange),
+                Row(
+                  children: [
+                    Icon(Icons.menu),
+                    SizedBox(width: 25,),
+                    Text(
+                      'Availability',
+                      style: TextStyle(color: orange),
+                    ),
+                  ],
                 ),
                 Spacer(),
                 SubmitButton(),
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),
@@ -274,7 +282,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                         children: [
                           Container(
                             height: 50,
-                            width: MediaQuery.of(context).size.width/2.1,
+                            width: MediaQuery.of(context).size.width/2.15,
                             decoration: index != InputList.length-1 ? BoxDecoration(
 
                               border: Border(
@@ -445,7 +453,7 @@ class SubmitButton extends StatelessWidget {
     return GestureDetector(
       onTap: () async{
         AddAvail.outletid = outletrequestdata.outletidpressed;
-        AddAvail.timesheetid = checkinoutdata.checkid;
+        AddAvail.timesheetid = timesheetid;
         AddAvail.productid = Avaiablity.productid;
         AddAvail.brandname = Avaiablity.brand;
         AddAvail.categoryname = Avaiablity.category;
@@ -523,7 +531,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
         ),
         SizedBox(
           height: 50,
-          width: 100,
+          width: 95,
           child: isSwitched == true ? DropdownButton(
             elevation: 0,
             dropdownColor: Colors.white,
@@ -538,7 +546,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
               });
             },
             items: DropDownItems,
-            hint: Text("Select Reason",style: TextStyle(color: Colors.black),),
+            hint: FittedBox(fit: BoxFit.fitWidth,child: Text("Select\nReason",style: TextStyle(color: Colors.black),)),
           ) : SizedBox()
         ),
       ],

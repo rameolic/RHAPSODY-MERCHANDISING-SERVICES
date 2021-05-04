@@ -34,9 +34,9 @@ class _MerchandisersListState extends State<MerchandisersList> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

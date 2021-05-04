@@ -72,9 +72,9 @@ class _AddProductState extends State<AddProduct> {
                 ],
               ),
             ),
-            drawer: Drawer(
-              child: Menu(),
-            ),
+            // drawer: Drawer(
+            //   child: Menu(),
+            // ),
             body: Stack(
               children: [
                 BackGround(),

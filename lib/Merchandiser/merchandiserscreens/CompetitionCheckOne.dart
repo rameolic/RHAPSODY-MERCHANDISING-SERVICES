@@ -34,13 +34,19 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            Text(
-              'Competition Check',
-              style: TextStyle(color: orange),
+            Row(
+              children: [
+                Icon(Icons.menu),
+                SizedBox(width: 25,),
+                Text('Competition Check',
+                  style: TextStyle(color: orange),
+                ),
+              ],
             ),
             Spacer(),
             SubmitButton(
@@ -56,16 +62,8 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                     AddCompData.promotype = selectpromotiondropdown;
                     AddCompData.mrp = mrp.text;
                     AddCompData.sellingprice = sellingprice.text;
-
+                    AddCompData.promodesc = promtdescp.text;
                     await addCompetition();
-
-                    print(itemname.text);
-                    print(promtdescp.text);
-                    print(mrp.text);
-                    print(sellingprice.text);
-                    print(selectcompanydropdown);
-                    print(selectpromotiondropdown);
-                    print(selectbranddropdown);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -82,9 +80,9 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

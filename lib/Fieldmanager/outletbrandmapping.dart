@@ -60,9 +60,9 @@ class _OutletsmapedtoBrandsState extends State<OutletsmapedtoBrands> {
           iconTheme: IconThemeData(color: orange),
           title: Text("outlets Brands mapping",style: TextStyle(color: orange),),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

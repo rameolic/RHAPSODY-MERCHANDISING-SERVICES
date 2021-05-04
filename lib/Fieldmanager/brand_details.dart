@@ -52,9 +52,9 @@ class _BrandDetailsState extends State<BrandDetails> {
           iconTheme: IconThemeData(color: orange),
           title: Text("Brand Details",style: TextStyle(color: orange),),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),
