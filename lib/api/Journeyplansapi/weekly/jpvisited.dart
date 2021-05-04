@@ -17,6 +17,38 @@ Future<void> getVisitJourneyPlanweekly() async {
     body: jsonEncode(DBrequestData),
   );
   if (JPresponse.statusCode == 200) {
+    getweeklyvisitjp.sundaystorenames =[];
+    getweeklyvisitjp.mondaystorenames =[];
+    getweeklyvisitjp.tuesdaystorenames =[];
+    getweeklyvisitjp.wednesdaystorenames =[];
+    getweeklyvisitjp.thrusdaystorenames =[];
+    getweeklyvisitjp.fridaystorenames =[];
+    getweeklyvisitjp.saturdaystorenames =[];
+
+    getweeklyvisitjp.sundaystorecodes =[];
+    getweeklyvisitjp.mondaystorecodes =[];
+    getweeklyvisitjp.tuesdaystorecodes =[];
+    getweeklyvisitjp.wednesdaystorecodes =[];
+    getweeklyvisitjp.thrusdaystorecodes =[];
+    getweeklyvisitjp.fridaystorecodes =[];
+    getweeklyvisitjp.saturdaystorecodes =[];
+
+    getweeklyvisitjp.sundayaddress =[];
+    getweeklyvisitjp.mondayaddress =[];
+    getweeklyvisitjp.tuesdayaddress =[];
+    getweeklyvisitjp.wednesdayaddress =[];
+    getweeklyvisitjp.thrusdayaddress =[];
+    getweeklyvisitjp.fridayaddress=[];
+    getweeklyvisitjp.saturdayaddress =[];
+
+    getweeklyvisitjp.sundaycontactnumbers =[];
+    getweeklyvisitjp.mondaycontactnumbers =[];
+    getweeklyvisitjp.tuesdaycontactnumbers =[];
+    getweeklyvisitjp.wednesdaycontactnumbers =[];
+    getweeklyvisitjp.thrusdaycontactnumbers =[];
+    getweeklyvisitjp.fridaycontactnumbers=[];
+    getweeklyvisitjp.saturdaycontactnumbers =[];
+
     print('journey plan weekly visited done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);

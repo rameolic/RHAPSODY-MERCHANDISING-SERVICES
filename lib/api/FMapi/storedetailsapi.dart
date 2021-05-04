@@ -34,6 +34,8 @@ Future<void> getStoreDetails() async {
       storesdata.storeaddress.add(storeaddress);
     }
   }
+  print(storesdata.storecode[0]);
+  print(storesdata.storename[0]);
   if(SDResponse.statusCode != 200){
     print(SDResponse.statusCode);
   }

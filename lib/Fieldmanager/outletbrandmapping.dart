@@ -253,28 +253,31 @@ class MappedOutlets extends StatelessWidget {
               decoration: BoxDecoration(
                   color: pink,
                   borderRadius: BorderRadiusDirectional.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 10.0),
-                  Icon(
-                    Icons.house_sharp,
-                    color: iconscolor,size: 40,
-                  ),
-                  SizedBox(width: 10.0),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(Selectedoutlet,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
-                      Padding(
-                        padding: const EdgeInsets.only(left:5.0),
-                        child: Text(Selectedoutletaddress),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 20.0),
-                ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 10.0),
+                    Icon(
+                      Icons.house_sharp,
+                      color: iconscolor,size: 40,
+                    ),
+                    SizedBox(width: 10.0),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(Selectedoutlet,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
+                        Padding(
+                          padding: const EdgeInsets.only(left:5.0),
+                          child: Text(Selectedoutletaddress),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 20.0),
+                  ],
+                ),
               ),
         ),
               ListView.builder(

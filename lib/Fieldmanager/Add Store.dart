@@ -33,9 +33,15 @@ class _AddStoresState extends State<AddStores> {
           iconTheme: IconThemeData(color: orange),
           title: Row(
             children: [
-              Text(
-                'Add Stores',
-                style: TextStyle(color: orange),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Add Stores',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
               ),
             ],
           ),

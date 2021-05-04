@@ -3,9 +3,11 @@ import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:merchandising/main.dart';
+import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 
+Uri deltimesheet = Uri.parse("https://rms2.rhapsody.ae/api/delete_journeyplan");
 Uri ShareofshelfDetails = Uri.parse("https://rms2.rhapsody.ae/api/share_of_shelf_details");
 Uri PlanogramDetails = Uri.parse("https://rms2.rhapsody.ae/api/Planogram_details");
 Uri getcompdetails = Uri.parse("https://rms2.rhapsody.ae/api/competition_details");
@@ -17,10 +19,14 @@ Uri DBdailyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_daily");
 Uri DBmonthlyurl = Uri.parse("https://rms2.rhapsody.ae/api/dashboard_monthly");
 Uri OCurl = Uri.parse("https://rms2.rhapsody.ae/api/outlet_details");
 Uri CICOurl = Uri.parse("https://rms2.rhapsody.ae/api/check_in_out");
+Uri attendancein = Uri.parse("https://rms2.rhapsody.ae/api/attendance_in");
+Uri UpdateOutlet = Uri.parse("https://rms2.rhapsody.ae/api/update_outlet");
 Uri TSurl = Uri.parse("https://rms2.rhapsody.ae/api/timesheet_daily");
 Uri leaveurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_request");
 Uri empdataurl = Uri.parse("https://rms2.rhapsody.ae/api/employee_details");
 Uri passwordchangeurl = Uri.parse("https://rms2.rhapsody.ae/api/change_password");
+Uri taskdetailes = Uri.parse("https://rms2.rhapsody.ae/api/outlet_task_details");
+Uri taskresponse = Uri.parse("https://rms2.rhapsody.ae/api/send_outlet_task_response");
 Uri LDurl = Uri.parse("https://rms2.rhapsody.ae/api/leave_details");
 Uri JPSkippedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_skipped_journey");
 Uri JPVisitedurl = Uri.parse("https://rms2.rhapsody.ae/api/today_completed_journey");
@@ -63,11 +69,22 @@ Uri AvailabilityDetails = Uri.parse("https://rms2.rhapsody.ae/api/availability_d
 Uri AddAvailability = Uri.parse("https://rms2.rhapsody.ae/api/add_availability");
 Uri CompetitionDetails = Uri.parse("https://rms2.rhapsody.ae/api/competition_details");
 Uri AddCompetition = Uri.parse("https://rms2.rhapsody.ae/api/add_competition");
+Uri Weekoffdetails = Uri.parse("https://rms2.rhapsody.ae/api/week_off_details");
+Uri AddWeekoff = Uri.parse("https://rms2.rhapsody.ae/api/add_week_off");
+Uri AddTaskList = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_task");
+Uri GetTaskDetails = Uri.parse("https://rms2.rhapsody.ae/api/outlet_task_details");
+Uri stockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_product_details");
+Uri addexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry");
+var currenttimesheetid;
+var fieldmanagernameofcurrentmerch;
+var fieldmanagerofcurrentmerch;
+var currentmerchid;
 class loggedin{
   static var email;
   static var password;
 }
-int Currenttimesheetid;
+int currentoutletid;
+//int Currenttimesheetid;
 Future loginapi() async {
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
@@ -79,8 +96,6 @@ Future loginapi() async {
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
-    loggedin.email =null;
-    loggedin.password=null;
     userpassword.password = loggedin.password;
     print("LoginDone");
     getLocation();
@@ -92,7 +107,9 @@ Future loginapi() async {
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
     print(DBrequestdata.empname);
-
+    if(currentuser.roleid == 6){
+      currentmerchid = DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
+    }
     return currentuser.roleid;
   }
   else {
@@ -185,10 +202,10 @@ Future DBRequestmonthly() async{
 }
 
 class DBResponsedatadaily {
-  static var shedulevisits;
-  static var unshedulevisits;
-  static var ShedulevisitssDone;
-  static var UnShedulevisitsDone;
+  static int shedulevisits;
+  static int unshedulevisits;
+  static int ShedulevisitssDone;
+  static int UnShedulevisitsDone;
   static var Attendance;
   static var WorkingTime;
   static var EffectiveTime;
@@ -197,10 +214,10 @@ class DBResponsedatadaily {
 }
 
 class DBResponsedatamonthly{
-  static var shedulevisits;
-  static var unshedulevisits;
-  static var ShedulevisitssDone;
-  static var UnShedulevisitsDone;
+  static int shedulevisits;
+  static int unshedulevisits;
+  static int ShedulevisitssDone;
+  static int UnShedulevisitsDone;
   static var Attendance;
   static var WorkingTime;
   static var EffectiveTime;
@@ -272,7 +289,16 @@ class checkinoutdata{
   static var checkoutlocation;
   static var checkid;
 }
-
+void addattendence() async {
+  http.Response cicoresponse = await http.post(attendancein,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+  );
+  print(cicoresponse.body);
+}
 
 void checkin() async {
   var checkid = checkinoutdata.checkid;
@@ -391,8 +417,64 @@ Future changepassword() async{
     print(jsonDecode(changedpasswordresponse.body));
   }
 }
+var Selectedoutletatcheckin = 273 ;
+Future getTaskList() async{
+  Map taskbody =
+  {
+    "outlet_id" : "${outletrequestdata.outletidpressed}"
+  };
+  http.Response response = await http.post(taskdetailes,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(taskbody),
+  );
+  print(response.body);
+  if(response.statusCode==200){
+    task.list=[];
+    task.id=[];
+    String data = response.body;
+    var decodeODData = jsonDecode(data);
+    for(int i=0; i<decodeODData['data'].length;i++){
+    task.list.add(decodeODData['data'][i]['task_list']);
+    task.id.add(decodeODData['data'][i]['id']);
+    }
+    task.iscompleted=[];
+    for(int i=0;i<task.id.length;i++){
+      task.iscompleted.add(1);
+    };
+  }
+  print(task.list);
+}
+
+Future sendtaskresponse() async{
+
+  Map taskbody =
+  {
+    "timesheet_id" : "${outletrequestdata.outletidpressed}",
+    "task_id" : task.id,
+    "is_completed" : task.iscompleted,
+  };
+  print(taskbody);
+  http.Response response = await http.post(taskresponse,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(taskbody),
+  );
+  print(response.body);
+}
+
 
 class change{
   static var password;
 }
-
+class task{
+  static List<String>list=[];
+  static List<int>id=[];
+  static List<int>iscompleted=[];
+}

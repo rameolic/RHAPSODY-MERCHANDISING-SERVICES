@@ -5,7 +5,7 @@ import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 
 Future<void> getVisibility() async {
   Map body = {
-    "time_sheet_id" : "331"//"${timesheetid.id}"
+    "time_sheet_id" : "$currenttimesheetid"
   };
   http.Response VisibilityResponse = await http.post(VisibilityDetails,
     headers: {

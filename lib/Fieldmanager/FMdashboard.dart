@@ -18,12 +18,13 @@ import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'chatusers.dart';
 import 'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/api/FMapi/week_off_detailsapi.dart';
 import 'package:merchandising/model/myattendance.dart';
-import 'package:merchandising/api/FMapi/add_brandapi.dart';
+import 'package:merchandising/Fieldmanager/fmmapveiw.dart';
 import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 import 'package:merchandising/api/FMapi/category_detailsapi.dart';
+import 'package:merchandising/api/FMapi/add_brandapi.dart';
 import 'package:merchandising/api/FMapi/product_detailsapi.dart';
-
 
 class FieldManagerDashBoard extends StatefulWidget {
   @override
@@ -43,10 +44,16 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
             appBar: AppBar(
               backgroundColor: pink,
               iconTheme: IconThemeData(color: orange),
-              title: Image(
-              height: 30,
-              image: AssetImage('images/rmsLogo.png'),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image(
+                  height: 30,
+                  image: AssetImage('images/rmsLogo.png'),
             ),
+                  EmpInfo()
+                ],
+              ),
             ),
             drawer: Drawer(
               child: Menu(),
@@ -59,223 +66,240 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                   child: Column(
                     children: [
                       SizedBox(height: 10,),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                        height: 181,
-                        width: double.infinity,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: containerscolor,
-                        ),
-                        child: Column(
-                          children: [
-                            Text("Performance Indicator", style: TextStyle(
-                                fontSize: 16),),
-                            SizedBox(height: 10,),
-                            Table(
-                              border: TableBorder.symmetric(
-                                inside: BorderSide(color: Colors.grey),
+                      GestureDetector(
+                        onTap: () async{
+                          setState(() {
+                            isApiCallProcess = true;
+                          });
+                          await getmerchnamelist();
+                          setState(() {
+                            isApiCallProcess = false;
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext
+                                  context) =>
+                                      JourneyplansMapVeiw()));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                          height: 181,
+                          width: double.infinity,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: containerscolor,
+                          ),
+                          child: Column(
+                            children: [
+                              Text("Performance Indicator", style: TextStyle(
+                                  fontSize: 16),),
+                              SizedBox(height: 10,),
+                              Table(
+                                border: TableBorder.symmetric(
+                                  inside: BorderSide(color: Colors.grey),
+                                ),
+                                columnWidths: {
+                                  0: FractionColumnWidth(.35),
+                                },
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 14.0),
+                                        child: Center(
+                                          child: Text(
+                                            "Merchandisers",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.merchtotal.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Total",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(FMdashboarddata.merchpresent.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Present",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.merchabsent.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Absent",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 14.0),
+                                        child: Center(
+                                          child: Text(
+                                            "Total Outlets",
+                                            style: TextStyle(fontSize: 12),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Total",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Completed",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Pending",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 14.0),
+                                        child: Center(
+                                          child: Text(
+                                            "Today Outlets",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.totaloulets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Total",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.compoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Completed",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceEvenly,
+                                          children: [
+                                            Text(
+                                              FMdashboarddata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              "Pending",
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              columnWidths: {
-                                0: FractionColumnWidth(.35),
-                              },
-                              children: [
-                                TableRow(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 14.0),
-                                      child: Center(
-                                        child: Text(
-                                          "Merchandisers",
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.merchtotal.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Total",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(FMdashboarddata.merchpresent.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Present",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.merchabsent.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Absent",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 14.0),
-                                      child: Center(
-                                        child: Text(
-                                          "Total Outlets",
-                                          style: TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Total",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Completed",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Pending",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 14.0),
-                                      child: Center(
-                                        child: Text(
-                                          "Today Outlets",
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.totaloulets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Total",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.compoutlets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Completed",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .spaceEvenly,
-                                        children: [
-                                          Text(
-                                            FMdashboarddata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
-                                              fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            "Pending",
-                                            style: TextStyle(fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -387,6 +411,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               });
                               await getmerchnamelist();
                               await getFMoutletdetails();
+                              await getWeekoffdetails();
                               setState(() {
                                 isApiCallProcess = false;
                               });
@@ -493,12 +518,12 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               setState(() {
                                 isApiCallProcess = true;
                               });
+                              await getFMoutletdetails();
                               await getBrandDetails();
                               await getemployeestoaddbrand();
                               await getCategoryDetails();
                               await getProductDetails();
                               await getFMoutletdetails();
-
                               setState(() {
                                 isApiCallProcess = false;
                               });
@@ -724,9 +749,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                 context) =>
                                     ChatUsers()));
                       },
-                      backgroundColor: pink,
+                      backgroundColor: orange,
                       elevation: 10.0,
-                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: orange,),
+                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,),
                     ),
                   ),
                 ),

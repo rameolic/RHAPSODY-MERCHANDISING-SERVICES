@@ -21,13 +21,19 @@ class _TimeSheetListState extends State<TimeSheetList> {
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
-        title: Row(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Time Sheet',
-              style: TextStyle(color: orange),
+            Row(
+              children: [
+                Text(
+                  'Time Sheet',
+                  style: TextStyle(color: orange),
+                ),
+                Spacer(),
+              ],
             ),
-            Spacer(),
+            EmpInfo()
           ],
         ),
       ),
@@ -141,7 +147,7 @@ class _TimeSheetListState extends State<TimeSheetList> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(DBrequestdata.empname,
+                      Text(currentuser.roleid == 5 ? timesheet.empname : DBrequestdata.empname,
                           style: TextStyle(fontSize: 16,)),
                       Row(
                         children: [
@@ -188,44 +194,47 @@ class TimeSheetdaily extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.00)),
                 width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(children: [
-                      Text('Outlet name : ',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          )),
-                       Text('${TimeSheetdatadaily.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
-                    ]),
-                    Row(
-                        children: [
-                          Text('Checkin time : ',style: TextStyle(fontSize: 16.0,)),
-                          Text('${TimeSheetdatadaily.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
-                        ]),
-                    /*Row(children: [
-                      Text('Check In Location:',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                          )),
-                      SizedBox(width: 10),
-                      Text(${TimeSheetdata.[index]}),
-                    ]),*/
-                    Row(children: [
-                      Text('Checkout time : ',style: TextStyle(fontSize: 16.0,)),
-                      Text('${TimeSheetdatadaily.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
-                    ]),
-                    /* Row(children: [
-                      Text('Check Out Location:',
-                          style: TextStyle(
-                            fontSize: 13.0,
-                          )),
-                      SizedBox(width: 10),
-                      Text('${checkoutlocation[index]}',
-                      ),
-                    ]),*/
-                  ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(children: [
+                        Text('Outlet name : ',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                            )),
+                         Text('${TimeSheetdatadaily.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
+                      ]),
+                      Row(
+                          children: [
+                            Text('Checkin time : ',style: TextStyle(fontSize: 16.0,)),
+                            Text('${TimeSheetdatadaily.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
+                          ]),
+                      /*Row(children: [
+                        Text('Check In Location:',
+                            style: TextStyle(
+                              fontSize: 13.0,
+                            )),
+                        SizedBox(width: 10),
+                        Text(${TimeSheetdata.[index]}),
+                      ]),*/
+                      Row(children: [
+                        Text('Checkout time : ',style: TextStyle(fontSize: 16.0,)),
+                        Text('${TimeSheetdatadaily.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
+                      ]),
+                      /* Row(children: [
+                        Text('Check Out Location:',
+                            style: TextStyle(
+                              fontSize: 13.0,
+                            )),
+                        SizedBox(width: 10),
+                        Text('${checkoutlocation[index]}',
+                        ),
+                      ]),*/
+                    ],
+                  ),
                 ));
           }),
     );

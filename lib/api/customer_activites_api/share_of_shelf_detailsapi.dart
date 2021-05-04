@@ -4,7 +4,7 @@ import '../api_service.dart';
 
 Future<void> getShareofshelf() async {
   Map body = {
-    "time_sheet_id" : "625",// "${timesheetid.id}"
+    "time_sheet_id" : "$currenttimesheetid"
   };
   http.Response shareresponse = await http.post(ShareofshelfDetails,
     headers: {
@@ -36,7 +36,7 @@ Future<void> getShareofshelf() async {
 
 
     }
-    print(ShareData.brandname);
+    print('share of shelf : ${ShareData.brandname}');
 
 
   }

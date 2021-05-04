@@ -4,9 +4,17 @@ import '../api_service.dart';
 import 'storedetailsapi.dart';
 
 
+
+class updateoutlet{
+  static bool outletedit  = false;
+  static int outletid;
+  static String name;
+
+}
+
 Future getFMoutletdetails() async{
   Map DBrequestData = {
-    'emp_id': '${DBrequestdata.receivedempid}'
+    'emp_id': '${updateoutlet.outletid}'
   };
   http.Response OutletDetails = await http.post(OCurl,
     headers: {
@@ -32,6 +40,7 @@ Future getFMoutletdetails() async{
     outletdata.address = [];
     outletdata.code = [];
     for(int u=0;u<decodeoutlet['data'].length;u++) {
+
       outletdata.contactnumber.add(decodeoutlet['data'][u]['store'][0]['contact_number']);
       outletdata.address.add(decodeoutlet['data'][u]['store'][0]['address']);
       outletdata.outletid.add(decodeoutlet['data'][u]['outlet_id']);
@@ -87,4 +96,51 @@ class outletdata {
 class store{
   static List<String> addoutlet=[];
   static List<int> storeid = [];
+}
+
+
+Future getupdatingoutletdata() async {
+
+  Map ODrequestDataforcheckin = {
+    "emp_id": "${DBrequestdata.receivedempid}",
+    'outlet_id': '${updateoutlet.outletid}',
+  };
+  print(ODrequestDataforcheckin);
+  http.Response OCresponse = await http.post(OCurl,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(ODrequestDataforcheckin),
+  );
+  if (OCresponse.statusCode == 200){
+    String OCdata = OCresponse.body;
+    var decodeODData = jsonDecode(OCdata);
+    updatingoutlet.outletname = '[${decodeODData['data'][0]['store'][0]["store_code"]}] ${decodeODData['data'][0]['store'][0]["store_name"]}';
+    updatingoutlet.area = decodeODData['data'][0]['outlet_area'];
+    updatingoutlet.name = decodeODData['data'][0]['store'][0]["store_name"];
+    updatingoutlet.city = decodeODData['data'][0]['outlet_city'];
+    updatingoutlet.state = decodeODData['data'][0]['outlet_state'];
+    updatingoutlet.country = decodeODData['data'][0]['outlet_country'];
+    updatingoutlet.lat = decodeODData['data'][0]['outlet_lat'];
+    updatingoutlet.long = decodeODData['data'][0]['outlet_long'];
+  }
+
+  if(OCresponse.statusCode != 200){
+    print(OCresponse.statusCode);
+
+  }
+}
+
+class updatingoutlet{
+  static var outletname;
+  static var name;
+  static var lat;
+  static var long;
+  static var area;
+  static var city;
+  static var state;
+  static var country;
+
 }

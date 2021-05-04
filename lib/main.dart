@@ -31,14 +31,14 @@ Future<void> main() async {
     if(userroleid == 6){
       const period = const Duration(seconds: 60);
       Timer.periodic(period, (Timer t) => getLocation());
-      const time = const Duration(seconds: 900);
+      const time = const Duration(seconds: 120);
       Timer.periodic(time, (Timer t) => callfrequently());
       await DBRequestmonthly();
       await DBRequestdaily();
       await getLocation();
       await callfrequently();
-      await getempdetails();
-      await getproducts();
+       getempdetails();
+      getstockexpiryproducts();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

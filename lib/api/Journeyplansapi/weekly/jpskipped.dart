@@ -17,6 +17,38 @@ Future<void> getSkipJourneyPlanweekly() async {
     body: jsonEncode(DBrequestData),
   );
   if (JPresponse.statusCode == 200) {
+    getweeklyskipjp.sundaystorenames =[];
+    getweeklyskipjp.mondaystorenames =[];
+    getweeklyskipjp.tuesdaystorenames =[];
+    getweeklyskipjp.wednesdaystorenames =[];
+    getweeklyskipjp.thrusdaystorenames =[];
+    getweeklyskipjp.fridaystorenames =[];
+    getweeklyskipjp.saturdaystorenames =[];
+
+    getweeklyskipjp.sundaystorecodes =[];
+    getweeklyskipjp.mondaystorecodes =[];
+    getweeklyskipjp.tuesdaystorecodes =[];
+    getweeklyskipjp.wednesdaystorecodes =[];
+    getweeklyskipjp.thrusdaystorecodes =[];
+    getweeklyskipjp.fridaystorecodes =[];
+    getweeklyskipjp.saturdaystorecodes =[];
+
+    getweeklyskipjp.sundayaddress =[];
+    getweeklyskipjp.mondayaddress =[];
+    getweeklyskipjp.tuesdayaddress =[];
+    getweeklyskipjp.wednesdayaddress =[];
+    getweeklyskipjp.thrusdayaddress =[];
+    getweeklyskipjp.fridayaddress=[];
+    getweeklyskipjp.saturdayaddress =[];
+
+    getweeklyskipjp.sundaycontactnumbers =[];
+    getweeklyskipjp.mondaycontactnumbers =[];
+    getweeklyskipjp.tuesdaycontactnumbers =[];
+    getweeklyskipjp.wednesdaycontactnumbers =[];
+    getweeklyskipjp.thrusdaycontactnumbers =[];
+    getweeklyskipjp.fridaycontactnumbers=[];
+    getweeklyskipjp.saturdaycontactnumbers =[];
+
     print('journey plan weekly skipped done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);

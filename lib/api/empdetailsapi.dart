@@ -24,6 +24,7 @@ Future getempdetails() async{
   Map body = {
     'emp_id': '${DBrequestdata.receivedempid}'
   };
+  print(body);
   http.Response DBresponse = await http.post(empdataurl,
     headers: {
       'Content-Type': 'application/json',
@@ -32,6 +33,7 @@ Future getempdetails() async{
     },
     body: jsonEncode(body),
   );
+  print(DBresponse.body);
   if (DBresponse.statusCode == 200){
     print('empolyee details done');
     String empdata = DBresponse.body;

@@ -25,3 +25,5 @@ distinmetersforskipjp() {
     todayskipjplist.distanceinmeters.add(skippeddist/1000);
 }
 }
+
+

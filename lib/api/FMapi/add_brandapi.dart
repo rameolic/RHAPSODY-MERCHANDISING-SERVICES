@@ -15,6 +15,7 @@ Future addbranddetails() async{
     'sales_manager_id' : '${BrandDetails.salesempid}',
     'client_id' : '${BrandDetails.clientempid}',
   };
+  print(branddata);
   http.Response brand = await http.post(AddBrand,
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ Future addbranddetails() async{
     },
     body: jsonEncode(branddata),
   );
-  print(branddata);
+  print(brand.body);
 
   print("Add Brands Done");
 }

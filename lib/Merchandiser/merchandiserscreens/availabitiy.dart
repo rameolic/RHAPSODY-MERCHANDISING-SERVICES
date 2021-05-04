@@ -21,21 +21,21 @@ String Selectedcategory;
 String Selectedbrand;
 List<String> defaulflist = Avaiablity.productname;
 List<String> filteredList = [];
-class Availability extends StatefulWidget {
+class AvailabilityScreen extends StatefulWidget {
   @override
-  _AvailabilityState createState() => _AvailabilityState();
+  _AvailabilityScreenState createState() => _AvailabilityScreenState();
 }
 
-class _AvailabilityState extends State<Availability> {
+class _AvailabilityScreenState extends State<AvailabilityScreen> {
 
-  //List<bool> isSelected;
+  List<bool> isSelected;
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
   String _query = "";
   List<String> _filterList;
   List<String> InputList = defaulflist;
   @override
-  _AvailabilityState() {
+  _AvailabilityScreenState() {
 
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {

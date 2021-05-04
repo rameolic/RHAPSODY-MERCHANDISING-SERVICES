@@ -305,8 +305,11 @@ class _PreviewScreenState extends State<PreviewScreen>{
                   MaterialPageRoute(builder: (BuildContext context) => PromotionCheck()));
             }
             if(Selectedscreen == "planogram"){
+              var imagebytes = widget.imgPath.readAsBytesSync();
               ontap == 'before'?
-              beforeimage = widget.imgPath:afterimage= widget.imgPath;
+              beforeimages[selectedindex] = widget.imgPath:afterimages[selectedindex]= widget.imgPath;
+              ontap == 'before'?
+              beforeimagesencode[selectedindex] = '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"':afterimagesencode[selectedindex]= '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"';
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
             }

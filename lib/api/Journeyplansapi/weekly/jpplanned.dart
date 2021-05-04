@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:merchandising/main.dart';
 import '../../api_service.dart';
 import 'package:intl/intl.dart';
-
+var jpempid;
 Future<void> getJourneyPlanweekly() async {
   Map DBrequestData = {
     'emp_id': '${DBrequestdata.receivedempid}'
+  };
+  Map FmDBrequestData = {
+    'emp_id': '$jpempid'
   };
   http.Response JPresponse = await http.post(
     WJPPlannedurl,
@@ -14,9 +18,66 @@ Future<void> getJourneyPlanweekly() async {
       'Accept': 'application/json',
       'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
     },
-    body: jsonEncode(DBrequestData),
+    body: jsonEncode(currentuser.roleid == 6 ? DBrequestData : FmDBrequestData ),
   );
   if (JPresponse.statusCode == 200) {
+    getweeklyjp.sundaystorenames =[];
+    getweeklyjp.mondaystorenames =[];
+    getweeklyjp.tuesdaystorenames =[];
+    getweeklyjp.wednesdaystorenames =[];
+    getweeklyjp.thrusdaystorenames =[];
+    getweeklyjp.fridaystorenames =[];
+    getweeklyjp.saturdaystorenames =[];
+
+    getweeklyjp.sundaystorecodes =[];
+    getweeklyjp.mondaystorecodes =[];
+    getweeklyjp.tuesdaystorecodes =[];
+    getweeklyjp.wednesdaystorecodes =[];
+    getweeklyjp.thrusdaystorecodes =[];
+    getweeklyjp.fridaystorecodes =[];
+    getweeklyjp.saturdaystorecodes =[];
+
+    getweeklyjp.sundayaddress =[];
+    getweeklyjp.mondayaddress =[];
+    getweeklyjp.tuesdayaddress =[];
+    getweeklyjp.wednesdayaddress =[];
+    getweeklyjp.thrusdayaddress =[];
+    getweeklyjp.fridayaddress=[];
+    getweeklyjp.saturdayaddress =[];
+
+    getweeklyjp.sundaycontactnumbers =[];
+    getweeklyjp.mondaycontactnumbers =[];
+    getweeklyjp.tuesdaycontactnumbers =[];
+    getweeklyjp.wednesdaycontactnumbers =[];
+    getweeklyjp.thrusdaycontactnumbers =[];
+    getweeklyjp.fridaycontactnumbers=[];
+    getweeklyjp.saturdaycontactnumbers =[];
+
+    getweeklyjp.sundaylatitudes =[];
+    getweeklyjp.mondaylatitudes =[];
+    getweeklyjp.tuesdaylatitudes =[];
+    getweeklyjp.wednesdaylatitudes =[];
+    getweeklyjp.thrusdaylatitudes =[];
+    getweeklyjp.fridaylatitudes=[];
+    getweeklyjp.saturdaylatitudes =[];
+
+    getweeklyjp.sundaylongitudes =[];
+    getweeklyjp.mondaylongitudes =[];
+    getweeklyjp.tuesdaylongitudes =[];
+    getweeklyjp.wednesdaylongitudes =[];
+    getweeklyjp.thrusdaylongitudes =[];
+    getweeklyjp.fridaylongitudes=[];
+    getweeklyjp.saturdaylongitudes=[];
+
+
+    getweeklyjp.sundayid =[];
+    getweeklyjp.mondayid =[];
+    getweeklyjp.tuesdayid =[];
+    getweeklyjp.wednesdayid =[];
+    getweeklyjp.thrusdayid =[];
+    getweeklyjp.fridayid=[];
+    getweeklyjp.saturdayid=[];
+
     print('journey plan weekly done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
@@ -202,6 +263,141 @@ Future<void> getJourneyPlanweekly() async {
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaycontactnumbers.add(numbers);
       }
+
+      dynamic latitude = decodeJPData['data'][u]['outlet']['outlet_lat'];
+
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          : decodeJPData['data'][u]['day'] == 'Sunday') {
+        getweeklyjp.sundaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          : decodeJPData['data'][u]['day'] == 'Monday') {
+        getweeklyjp.mondaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          : decodeJPData['data'][u]['day'] == 'Tuesday') {
+        getweeklyjp.tuesdaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          : decodeJPData['data'][u]['day'] == 'Wednesday') {
+        getweeklyjp.wednesdaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          : decodeJPData['data'][u]['day'] == 'Thursday') {
+        getweeklyjp.thrusdaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          : decodeJPData['data'][u]['day'] == 'Friday') {
+        getweeklyjp.fridaylatitudes.add(latitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          : decodeJPData['data'][u]['day'] == 'Saturday') {
+        getweeklyjp.saturdaylatitudes.add(latitude);
+      }
+
+      dynamic longitude = decodeJPData['data'][u]['outlet']['outlet_long'];
+
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          : decodeJPData['data'][u]['day'] == 'Sunday') {
+        getweeklyjp.sundaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          : decodeJPData['data'][u]['day'] == 'Monday') {
+        getweeklyjp.mondaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          : decodeJPData['data'][u]['day'] == 'Tuesday') {
+        getweeklyjp.tuesdaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          : decodeJPData['data'][u]['day'] == 'Wednesday') {
+        getweeklyjp.wednesdaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          : decodeJPData['data'][u]['day'] == 'Thursday') {
+        getweeklyjp.thrusdaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          : decodeJPData['data'][u]['day'] == 'Friday') {
+        getweeklyjp.fridaylongitudes.add(longitude);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          : decodeJPData['data'][u]['day'] == 'Saturday') {
+        getweeklyjp.saturdaylongitudes.add(longitude);
+      }
+
+      dynamic timesheet = decodeJPData['data'][u]['id'];
+
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          : decodeJPData['data'][u]['day'] == 'Sunday') {
+        getweeklyjp.sundayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          : decodeJPData['data'][u]['day'] == 'Monday') {
+        getweeklyjp.mondayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          : decodeJPData['data'][u]['day'] == 'Tuesday') {
+        getweeklyjp.tuesdayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          : decodeJPData['data'][u]['day'] == 'Wednesday') {
+        getweeklyjp.wednesdayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          : decodeJPData['data'][u]['day'] == 'Thursday') {
+        getweeklyjp.thrusdayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          : decodeJPData['data'][u]['day'] == 'Friday') {
+        getweeklyjp.fridayid.add(timesheet);
+      }
+      if (decodeJPData['data'][u]['day'] == null
+          ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          : decodeJPData['data'][u]['day'] == 'Saturday') {
+        getweeklyjp.saturdayid.add(timesheet);
+      }
     }
   } else {
     print(JPresponse.statusCode);
@@ -240,4 +436,28 @@ class getweeklyjp {
   static List<int> thrusdaycontactnumbers = [];
   static List<int> fridaycontactnumbers = [];
   static List<int> saturdaycontactnumbers = [];
+
+  static List<String> sundaylatitudes = [];
+  static List<String> mondaylatitudes = [];
+  static List<String> tuesdaylatitudes = [];
+  static List<String> wednesdaylatitudes = [];
+  static List<String> thrusdaylatitudes = [];
+  static List<String> fridaylatitudes = [];
+  static List<String> saturdaylatitudes = [];
+
+  static List<String> sundaylongitudes = [];
+  static List<String> mondaylongitudes  = [];
+  static List<String> tuesdaylongitudes  = [];
+  static List<String> wednesdaylongitudes  = [];
+  static List<String> thrusdaylongitudes  = [];
+  static List<String> fridaylongitudes  = [];
+  static List<String> saturdaylongitudes  = [];
+
+  static List<int> sundayid = [];
+  static List<int> mondayid   = [];
+  static List<int> tuesdayid   = [];
+  static List<int> wednesdayid   = [];
+  static List<int> thrusdayid   = [];
+  static List<int> fridayid   = [];
+  static List<int> saturdayid   = [];
 }

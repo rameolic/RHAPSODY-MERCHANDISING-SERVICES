@@ -4,7 +4,7 @@ import '../api_service.dart';
 
 Future<void> getCompetition() async {
   Map body = {
-    "time_sheet_id" : "625",// "${timesheetid.id}"
+    "time_sheet_id" : "$currenttimesheetid"
   };
   http.Response competitionresponse = await http.post(CompetitionDetails,
     headers: {

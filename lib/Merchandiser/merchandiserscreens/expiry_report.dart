@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:flutter/rendering.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
+import 'package:intl/intl.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/database.dart';
 var productname = "select from the above";
@@ -62,9 +64,15 @@ class _ExpiryReportState extends State<ExpiryReport> {
             iconTheme: IconThemeData(color: orange),
             title: Row(
               children: [
-                Text(
-                  'Expiry Details',
-                  style: TextStyle(color: orange),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Expiry Details',
+                      style: TextStyle(color: orange),
+                    ),
+                    EmpInfo()
+                  ],
                 ),
                 Spacer(),
                 SubmitButton(),
@@ -78,165 +86,195 @@ class _ExpiryReportState extends State<ExpiryReport> {
           body: Stack(
             children: [
               BackGround(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 700,
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.all(10),
+              DefaultTabController(
+                length: 2, // lengt0h of tabs
+                initialIndex: 0,
+                child:Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: PreferredSize(
+                    preferredSize: Size.fromHeight(kToolbarHeight),
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(10,10,10,0),
                       decoration: BoxDecoration(
-                        color: pink,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white,
                       ),
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(top:10.0),
-                            padding: EdgeInsets.only(left:10.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                            child: DropdownButton(
-                              elevation: 0,
-                              dropdownColor: Colors.white,
-                              isExpanded: true,
-                              underline: Container(color: Colors.transparent),
-                              iconEnabledColor: orange,
-                              iconSize: 35.0,
-                              value: selecttype,
-                              onChanged: (newVal){
-                                setState(() {
-                                  selecttype = newVal;
-                                  selectcode = null;
-                                  if(newVal == 'BAR CODE(CS)'){
-                                    inputlist = barcodescs;
-                                  }else if(newVal == 'BAR CODE(BS)'){
-                                    inputlist= barcodesbs;
-                                  }else if(newVal == 'BAR CODE(PS)'){
-                                    inputlist= barcodesps;
-                                  }else if(newVal == 'ZREP'){
-                                    inputlist= zrep;
-                                  }else{
-                                    inputlist = sku;
-                                  }
-                                });
-                              },
-                              items: selecttypelist,
-                              hint: Text("Filter By ",style: TextStyle(color: Colors.grey),),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top:10.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                            child: SearchableDropdown.single(
-                              underline: SizedBox(),
-                              items: inputlist,
-                              value: selectcode,
-                              hint: "Select Product",
-                              searchHint: "Select Product",
-                              onChanged: (value) {
-                                if(value != null){
-                                  setState(() {
-                                    isApiCallProcess = true;
-                                  });
-                                    if(inputlist == barcodescs){
-                                      productname =  Expiry.sku[Expiry.barcode_cs.indexOf(value)];
-                                      print(productname);
-                                    }else if(inputlist == barcodesbs){
-                                      productname =  Expiry.sku[Expiry.barcode_bs.indexOf(value)];
-                                      print(productname);
-                                    }else if(inputlist == barcodesps){
-                                      productname =  Expiry.sku[Expiry.barcode_ps.indexOf(value)];
-                                      print(productname);
-                                    }else if(inputlist == zrep){
-                                      productname =  Expiry.sku[Expiry.zrepcodes.indexOf(value)];
-                                      print(productname);
-                                    }else{
-                                      productname =  value;
-                                      print(productname);
-                                    }
-                                  setState(() {
-                                    selectcode = value;
-                                    isApiCallProcess = false;
-                                  });
-                                }
-                              },
-                              isExpanded: true,
-                              iconEnabledColor: orange,
-                              iconSize: 25.0,
-                            ),
-                          ),
-                          Column(
+                      child: TabBar(
+                        //    controller: _controller,
+                        labelColor: orange,
+                        unselectedLabelColor: Colors.black,
+                        indicatorColor: orange,
+                        tabs: [
+                          Tab(text: 'Add Expiry Data'),
+                          Tab(text: 'Added Expiry Data'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  body: TabBarView(
+                    //physics: NeverScrollableScrollPhysics(),
+                    // controller: _controller,
+                      children: [
+                        SingleChildScrollView(
+                          child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Product : ",style: TextStyle(color: orange),),
-                                    Flexible(child: Text(productname,maxLines: 3,style: TextStyle(color: orange),)),
-                                  ],
-                                ),
-                              ),
-                              // Padding(
-                              //   padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-                              //   child: Row(
-                              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //     children: [
-                              //       Text("Price per piece",style: TextStyle(color: orange),),
-                              //       Text("$priceperpiece \$",style: TextStyle(color: orange),),
-                              //     ],
-                              //   ),
-                              // ),
                               Container(
-                                margin: EdgeInsets.only(top:10.0),
-                                padding: EdgeInsets.only(left:10.0),
-                                width: double.infinity,
-                                decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                                child: DropdownButton(
-                                  elevation: 0,
-                                  dropdownColor: Colors.white,
-                                  isExpanded: true,
-                                  underline: Container(color: Colors.transparent),
-                                  iconEnabledColor: orange,
-                                  iconSize: 35.0,
-                                  value: selectpack,
-                                  onChanged: (newVal){
-                                    setState(() {
-                                      selectpack = newVal;
-                                    });
-                                  },
-                                  items: copack_regular,
-                                  hint: Text("Select Pack ",style: TextStyle(color: Colors.grey),),
+                                //height: 700,
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: pink,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top:10.0),
-                            padding: EdgeInsets.only(left:10.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                            child: DropdownButton(
-                              elevation: 0,
-                              dropdownColor: Colors.white,
-                              isExpanded: true,
-                              underline: Container(color: Colors.transparent),
-                              iconEnabledColor: orange,
-                              iconSize: 35.0,
-                              value: SelectedPeriod,
-                              onChanged: (newVal){
-                                setState(() {
-                                  SelectedPeriod = newVal;
-                                });
-                              },
-                              items: period,
-                              hint: Text("select period",style: TextStyle(color: Colors.grey),),
-                            ),
-                          ),
-                          EndDate(),
-                          Expanded(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(top:10.0),
+                                      padding: EdgeInsets.only(left:10.0),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
+                                      child: DropdownButton(
+                                        elevation: 0,
+                                        dropdownColor: Colors.white,
+                                        isExpanded: true,
+                                        underline: Container(color: Colors.transparent),
+                                        iconEnabledColor: orange,
+                                        iconSize: 35.0,
+                                        value: selecttype,
+                                        onChanged: (newVal){
+                                          setState(() {
+                                            selecttype = newVal;
+                                            selectcode = null;
+                                            if(newVal == 'BAR CODE(CS)'){
+                                              inputlist = barcodescs;
+                                            }else if(newVal == 'BAR CODE(BS)'){
+                                              inputlist= barcodesbs;
+                                            }else if(newVal == 'BAR CODE(PS)'){
+                                              inputlist= barcodesps;
+                                            }else if(newVal == 'ZREP'){
+                                              inputlist= zrep;
+                                            }else{
+                                              inputlist = sku;
+                                            }
+                                          });
+                                        },
+                                        items: selecttypelist,
+                                        hint: Text("Filter By ",style: TextStyle(color: Colors.grey),),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top:10.0),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
+                                      child: SearchableDropdown.single(
+                                        underline: SizedBox(),
+                                        items: inputlist,
+                                        value: selectcode,
+                                        hint: "Select Product",
+                                        searchHint: "Select Product",
+                                        onChanged: (value) {
+                                          if(value != null){
+                                            setState(() {
+                                              isApiCallProcess = true;
+                                            });
+                                            if(inputlist == barcodescs){
+                                              productname =  Expiry.sku[Expiry.barcode_cs.indexOf(value)];
+                                              print(productname);
+                                            }else if(inputlist == barcodesbs){
+                                              productname =  Expiry.sku[Expiry.barcode_bs.indexOf(value)];
+                                              print(productname);
+                                            }else if(inputlist == barcodesps){
+                                              productname =  Expiry.sku[Expiry.barcode_ps.indexOf(value)];
+                                              print(productname);
+                                            }else if(inputlist == zrep){
+                                              productname =  Expiry.sku[Expiry.zrepcodes.indexOf(value)];
+                                              print(productname);
+                                            }else{
+                                              productname =  value;
+                                              print(productname);
+                                            }
+                                            setState(() {
+                                              selectcode = value;
+                                              isApiCallProcess = false;
+                                            });
+                                          }
+                                        },
+                                        isExpanded: true,
+                                        iconEnabledColor: orange,
+                                        iconSize: 25.0,
+                                      ),
+                                    ),
+                                    Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Product : ",style: TextStyle(color: orange),),
+                                              Flexible(child: Text(productname,maxLines: 3,style: TextStyle(color: orange),)),
+                                            ],
+                                          ),
+                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
+                                        //   child: Row(
+                                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        //     children: [
+                                        //       Text("Price per piece",style: TextStyle(color: orange),),
+                                        //       Text("$priceperpiece \$",style: TextStyle(color: orange),),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        Container(
+                                          margin: EdgeInsets.only(top:10.0),
+                                          padding: EdgeInsets.only(left:10.0),
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
+                                          child: DropdownButton(
+                                            elevation: 0,
+                                            dropdownColor: Colors.white,
+                                            isExpanded: true,
+                                            underline: Container(color: Colors.transparent),
+                                            iconEnabledColor: orange,
+                                            iconSize: 35.0,
+                                            value: selectpack,
+                                            onChanged: (newVal){
+                                              setState(() {
+                                                selectpack = newVal;
+                                              });
+                                            },
+                                            items: copack_regular,
+                                            hint: Text("Select Pack ",style: TextStyle(color: Colors.grey),),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top:10.0),
+                                      padding: EdgeInsets.only(left:10.0),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
+                                      child: DropdownButton(
+                                        elevation: 0,
+                                        dropdownColor: Colors.white,
+                                        isExpanded: true,
+                                        underline: Container(color: Colors.transparent),
+                                        iconEnabledColor: orange,
+                                        iconSize: 35.0,
+                                        value: SelectedPeriod,
+                                        onChanged: (newVal){
+                                          setState(() {
+                                            SelectedPeriod = newVal;
+                                          });
+                                        },
+                                        items: period,
+                                        hint: Text("select period",style: TextStyle(color: Colors.grey),),
+                                      ),
+                                    ),
+                                    EndDate(),
+                                    Peice(),
+                                    /*Expanded(
                             child: DefaultTabController(
                               length: 3, // length of tabs
                               initialIndex: 0,
@@ -269,108 +307,114 @@ class _ExpiryReportState extends State<ExpiryReport> {
                                     children: [
                                       Peice(),
                                       Box(),
-                                      Cotton(),
+                                      Cases(),
                                     ]),
                               ),
                               ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 10.0),
-                            padding: EdgeInsets.only(left:10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            child: TextFormField(
-                              controller: remarks,
-                              cursorColor: grey,
-                              keyboardType: TextInputType.number,
-                              validator: (input) => !input.isNotEmpty
-                                  ? "Department should not be empty"
-                                  : null,
-                              decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                focusColor: orange,
-                                hintText: "remarks if any*",
-                                hintStyle: TextStyle(
-                                  color: grey,
-                                  fontSize: 16.0,
+                          ),*/
+                                    Container(
+                                      margin: EdgeInsets.only(top: 10.0),
+                                      padding: EdgeInsets.only(left:10.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      child: TextFormField(
+                                        controller: remarks,
+                                        cursorColor: grey,
+                                        validator: (input) => !input.isNotEmpty
+                                            ? "Department should not be empty"
+                                            : null,
+                                        decoration: new InputDecoration(
+                                          border: InputBorder.none,
+                                          focusColor: orange,
+                                          hintText: "remarks if any*",
+                                          hintStyle: TextStyle(
+                                            color: grey,
+                                            fontSize: 16.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(onPressed: ()async{
-                      if(SelectedPeriod != null && selecttype!= null && selectcode!= null && packtype != null && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
-                        print("correct");
-                        Storecode = outletid;
-                        productid = Expiry.id[Expiry.sku.indexOf(productname)];
-                        packtypeselected=packtype;
-                        expirypc = expirypeciescount.text ;
-                         pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0] ;
-                         periodchoosed = SelectedPeriod;
-                         exposureqntypc = quantity.text == "" ? 0: quantity.text;
-                         pricepc = peiceprice.text== "" ? 0: peiceprice.text;
-                         expirycs = cottonexpirypeciescount.text == "" ? 0: cottonexpirypeciescount.text;
-                         csexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
-                         exposureqntycs = cottonquantity.text== "" ? 0: cottonquantity.text;
-                         pricecs = cottonprice.text== "" ? 0: cottonprice.text;
-                         expirybs = expiryBoxcount.text== "" ? 0: expiryBoxcount.text;
-                         bsexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
-                         exposureqntybs = boxquantity.text== "" ? 0: boxquantity.text;
-                         pricebs = boxprice.text== "" ? 0: boxprice.text;
-                         filledby = '${DBrequestdata.receivedempid}';
-                        remarksifany = remarks.text== "" ? 0: remarks.text;
-                        if(Estimatedvalue == null && Estimatedboxvalue == null && Estimatedvaluecotton == null){
-                          Flushbar(
-                            message: "please fill atleast one of the three forms",
-                            duration: Duration(seconds: 3),
-                          )..show(context);
-                        }else{
-                          setState(() {
-                            isApiCallProcess= true;
-                          });
-                          var result =await AddData();
-                          if(result != null){
-                            SelectedPeriod = null;
-                            productname = "select from the above";
-                            selectcode = null;
-                            selecttype = null;
-                            packtype = null;
-                            period =null;
-                            expirypeciescount.clear();
-                            quantity.clear();
-                            peiceprice.clear();
-                            cottonexpirypeciescount.clear();
-                            cottonquantity.clear();
-                            cottonprice.clear();
-                            expiryBoxcount.clear();
-                            boxquantity.clear();
-                            boxprice.clear();
-                            remarks.clear();
-                            setState(() {
-                              isApiCallProcess= false;
-                            });
-                            Flushbar(
-                              message: "data updated sucessfully",
-                              duration: Duration(seconds: 3),
-                            )..show(context);
-                          }
-                        }
-                      }else{
-                        Flushbar(
-                          message: SelectedPeriod == null ? "Please select period" :selectcode==null ?"Selected item should not be null ":packtype== null? "PLease Select Pack":selecttype==null?"Select type should not be null":"please select a vaild product Expiry date",
-                          duration: Duration(seconds: 3),
-                        )..show(context);
-                      }
+                              TextButton(onPressed: ()async{
+                                if(SelectedPeriod != null && selecttype!= null && selectcode!= null && packtype != null && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
+                                  print("correct");
+                                  Storecode = outletid;
+                                  productid = Expiry.id[Expiry.sku.indexOf(productname)];
+                                  packtypeselected=packtype;
+                                  expirypc = expirypeciescount.text ;
+                                  pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0] ;
+                                  periodchoosed = SelectedPeriod;
+                                  exposureqntypc = quantity.text == "" ? 0: quantity.text;
+                                  pricepc = peiceprice.text== "" ? 0: peiceprice.text;
+                                  expirycs = cottonexpirypeciescount.text == "" ? 0: cottonexpirypeciescount.text;
+                                  csexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
+                                  exposureqntycs = cottonquantity.text== "" ? 0: cottonquantity.text;
+                                  pricecs = cottonprice.text== "" ? 0: cottonprice.text;
+                                  expirybs = expiryBoxcount.text== "" ? 0: expiryBoxcount.text;
+                                  bsexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
+                                  exposureqntybs = boxquantity.text== "" ? 0: boxquantity.text;
+                                  pricebs = boxprice.text== "" ? 0: boxprice.text;
+                                  filledby = '${DBrequestdata.receivedempid}';
+                                  remarksifany = remarks.text== "" ? 0: remarks.text;
+                                  if(Estimatedvalue == null && Estimatedboxvalue == null && Estimatedvaluecotton == null){
+                                    Flushbar(
+                                      message: "please fill atleast one of the three forms",
+                                      duration: Duration(seconds: 3),
+                                    )..show(context);
+                                  }else{
+                                    setState(() {
+                                      isApiCallProcess= true;
+                                    });
+                                    await addexpiryproducts();
 
-                    }, style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(pink)),
-                        child: Text("SAVE",style: TextStyle(color:orange),))
-                  ],
+                                      addedsku.add('${Expiry.zrepcodes[Expiry.sku.indexOf(productname)]}-$productname');
+                                      addedexpirydate.add("${DateFormat.yMd().format(ENDdate)}");
+                                      addeditemscount.add(expirypeciescount.text);
+                                      addeditemscount;
+                                      addedexpirydate;
+                                      SelectedPeriod = null;
+                                      productname = "select from the above";
+                                      selectcode = null;
+                                      selecttype = null;
+                                      packtype = null;
+                                      expirypeciescount.clear();
+                                      quantity.clear();
+                                      peiceprice.clear();
+                                      cottonexpirypeciescount.clear();
+                                      cottonquantity.clear();
+                                      cottonprice.clear();
+                                      expiryBoxcount.clear();
+                                      boxquantity.clear();
+                                      boxprice.clear();
+                                      remarks.clear();
+                                      setState(() {
+                                        isApiCallProcess= false;
+                                      });
+                                      Flushbar(
+                                        message: "data updated sucessfully",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                    }
+                                }else{
+                                  Flushbar(
+                                    message: SelectedPeriod == null ? "Please select period" :selectcode==null ?"Selected item should not be null ":packtype== null? "PLease Select Pack":selecttype==null?"Select type should not be null":"please select a vaild product Expiry date",
+                                    duration: Duration(seconds: 3),
+                                  )..show(context);
+                                }
+
+                              }, style: ButtonStyle(
+                                  backgroundColor:
+                                  MaterialStateProperty.all(pink)),
+                                  child: Text("SAVE",style: TextStyle(color:orange),))
+                            ],
+                          ),
+                        ),
+                        Addedexpirydata(),
+                      ]),
                 ),
               ),
             ],
@@ -741,9 +785,9 @@ class _BoxState extends State<Box> {
   }
 }
 
-class Cotton extends StatefulWidget {
+class Cases extends StatefulWidget {
   @override
-  _CottonState createState() => _CottonState();
+  _CasesState createState() => _CasesState();
 }
 double pricepercotton;
 double Estimatedvaluecotton;
@@ -751,7 +795,7 @@ double Estimatedcottonquantityvalue;
 TextEditingController cottonquantity = TextEditingController();
 TextEditingController cottonexpirypeciescount = TextEditingController();
 TextEditingController cottonprice = TextEditingController();
-class _CottonState extends State<Cotton> {
+class _CasesState extends State<Cases> {
 
   @override
   Widget build(BuildContext context) {
@@ -875,4 +919,253 @@ class _CottonState extends State<Cotton> {
     );
   }
 }
+List<dynamic> addedsku =[];
+List<dynamic> addedexpirydate =[];
+List<dynamic> addeditemscount =[];
+
+class Addedexpirydata extends StatefulWidget {
+  @override
+  _AddedexpirydataState createState() => _AddedexpirydataState();
+}
+
+class _AddedexpirydataState extends State<Addedexpirydata> {
+  var _searchview = new TextEditingController();
+
+  bool _firstSearch = true;
+
+  String _query = "";
+
+  List<dynamic> inputlist;
+
+  List<String> _filterList;
+
+  List<String> _filteredexpiryList;
+  List<double> _filteredeitemsList;
+
+  @override
+  void initState() {
+    super.initState();
+    inputlist =  addedsku;
+    inputlist.sort();
+  }
+
+  _AddedexpirydataState() {
+
+    _searchview.addListener(() {
+      if (_searchview.text.isEmpty) {
+
+        setState(() {
+          _firstSearch = true;
+          _query = "";
+        });
+      } else {
+        setState(() {
+          _firstSearch = false;
+          _query = _searchview.text;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _createSearchView(),
+        SizedBox(height: 10.0,),
+        _firstSearch ? _createListView() : _performSearch(),
+      ],
+    );
+  }
+  Widget _createSearchView() {
+    return new Container(
+      margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+      padding: EdgeInsets.only(left: 20.0,right: 20.0),
+      width: double.infinity,
+      decoration: BoxDecoration(color: pink,
+          borderRadius: BorderRadius.circular(10.0)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: new TextField(
+              style: TextStyle(color: orange),
+              controller: _searchview,
+              cursorColor:orange,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                focusColor: orange,
+                hintText: 'Search by sku/Zrep',
+                hintStyle: TextStyle(color: orange),
+                border: InputBorder.none,
+                isCollapsed: true,
+                icon: Icon(CupertinoIcons.search,color: orange,),
+              ),
+            ),
+          ),
+          GestureDetector(
+              onTap: (){
+                _searchview.clear();
+              },
+              child: Icon(CupertinoIcons.clear_circled_solid,color: orange,))
+        ],
+      ),
+    );
+  }
+  Widget _createListView() {
+    return new Flexible(
+      child: new ListView.builder(
+          itemCount: addedsku.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.fromLTRB(10,0,10,10),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            '${addedsku[index]}',
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text('Expiry Date :',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(addedexpirydate[index]),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text('Items Count:',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(addeditemscount[index].toString()),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
+      ),
+    );
+  }
+
+  Widget _performSearch() {
+    _filterList = [];
+    _filteredexpiryList = [];
+    _filteredeitemsList = [];
+    for (int i = 0; i <addedsku.length; i++) {
+      var item = addedsku[i];
+      if (item.toLowerCase().contains(_query.toLowerCase())) {
+        _filterList.add(item);
+        _filteredexpiryList.add(addedexpirydate[addedsku.indexOf(item)]);
+        _filteredeitemsList.add(addeditemscount[addedsku.indexOf(item)]);
+      }
+    }
+    return _createFilteredListView();
+  }
+
+  Widget _createFilteredListView() {
+    return Flexible(
+      child: new ListView.builder(
+          itemCount: _filteredeitemsList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              margin: EdgeInsets.fromLTRB(10,0,10,10),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            '${_filterList[index]}',
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text('Expiry Date :',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(_filteredexpiryList[index]),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text('Items Count:',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          )),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(_filteredeitemsList[index].toString()),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
+      ),
+    );
+  }
+}
+
+
+
+
+
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
+import 'main.dart';
 import 'package:merchandising/api/api_service.dart';
-
+bool alreadycheckedin = false;
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
 final transparentwhite = Colors.white.withOpacity(0.18);
@@ -44,45 +45,53 @@ class OutletDetails extends StatelessWidget {
       decoration: BoxDecoration(
           color: pink,
           borderRadius: BorderRadiusDirectional.circular(10)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(width: 10.0),
-          Icon(
-            Icons.house_sharp,
-            color: iconscolor,size: 40,
-          ),
-          SizedBox(width: 5.0),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "[$outletid]",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,fontSize:16 ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 10.0),
+            Icon(
+              Icons.house_sharp,
+              color: iconscolor,size: 40,
+            ),
+            SizedBox(width: 5.0),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      "[$outletid]",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,fontSize:16 ),
+                    ),
+                    Text(
+                      outletname,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,fontSize:16),
+                    ),
+                  ],
+                ),
+                FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    '$outletarea,$outletcity,$outletstate,$outletcountry',
                   ),
-                  Text(
-                    outletname,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,fontSize:16),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text('$outletarea,', style: TextStyle(fontSize:15),),
-                  Text('$outletcity,', style: TextStyle(fontSize:15)),
-                  Text('$outletstate,', style: TextStyle(fontSize:15)),
-                  Text('$outletcountry', style: TextStyle(fontSize:15)),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(width: 20.0),
-        ],
+                )
+                // AutoSizeText('$outletarea,$outletcity,$outletstate,$outletstate,$outletcountry',
+                //   //style: TextStyle(fontSize:15),
+                //   maxLines: 1,
+                //   minFontSize: 12,
+                //   overflow: TextOverflow.ellipsis,
+                //   maxFontSize: double.infinity,
+                // ),
+              ],
+            ),
+            SizedBox(width: 20.0),
+          ],
+        ),
       ),
     );
   }
@@ -134,6 +143,30 @@ class Containerblock extends StatelessWidget {
   }
 }
 
+class EmpInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Text('${DBrequestdata.empname}(${DBrequestdata.receivedempid})'
+                ,style: TextStyle(fontSize: 8.0,color: orange),),
+              if(currentuser.roleid == 5)
+                Text('- Field Manager',style: TextStyle(fontSize: 8.0,color: orange),)
+              else if(currentuser.roleid == 6)
+                Text('-Merchandiser',
+                  style: TextStyle(fontSize: 8.0, color: orange),)
+              else Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 
 

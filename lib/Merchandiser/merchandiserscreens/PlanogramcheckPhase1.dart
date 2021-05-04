@@ -8,13 +8,17 @@ import 'dart:io';
 import 'package:flutter/rendering.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers Activities.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
-
+import 'package:merchandising/api/customer_activites_api/addplanogram.dart';
 String url = "https://rms2.rhapsody.ae/product_image/${PlanoDetails.imageurl.toString()}";
 
 
 String ontap;
-File beforeimage = File('dummy.txt');
-File afterimage = File('dummy.txt');
+int selectedindex;
+List<File> afterimages = [];
+List<File> beforeimages = [];
+
+List<String> afterimagesencode = [];
+List<String> beforeimagesencode = [];
 class PlanogramCheckPhase1 extends StatefulWidget {
   @override
   _PlanogramCheckPhase1State createState() => _PlanogramCheckPhase1State();
@@ -67,7 +71,10 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
             ),
             Spacer(),
             SubmitButton(
-              onpress: (){
+              onpress: ()async{
+                PlanoDetails.afterimage = afterimagesencode;
+                PlanoDetails.beforeimage = beforeimagesencode;
+                await addplanogramdata();
                 {Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -198,6 +205,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                     onTap: (){
                                       Selectedscreen = "planogram";
                                       ontap = 'before';
+                                      selectedindex = index;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -216,7 +224,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                               Container(
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: beforeimage.toString() !=
+                                child: beforeimages[index].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -225,12 +233,12 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: beforeimage,
+                                                  input: beforeimages[index],
                                                 )));
                                   },
                                   child: Image(
                                     height: 100,
-                                    image: FileImage(beforeimage),
+                                    image: FileImage(beforeimages[index]),
                                   ),
                                 )
                                     : Image(
@@ -268,7 +276,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                               Container(
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: afterimage.toString() !=
+                                child: afterimages[index].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -277,12 +285,12 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: afterimage,
+                                                  input: afterimages[index],
                                                 )));
                                   },
                                   child: Image(
                                     height: 100,
-                                    image: FileImage(afterimage),
+                                    image: FileImage(afterimages[index]),
                                   ),
                                 )
                                     : Image(
@@ -391,7 +399,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
 
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: beforeimage.toString() !=
+                                child: beforeimages[index].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -400,7 +408,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: beforeimage,
+                                                  input: beforeimages[index],
                                                 )));
                                   },
                                   child: SizedBox(
@@ -409,7 +417,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: Image(
-                                        image: FileImage(beforeimage),
+                                        image: FileImage(beforeimages[index]),
                                       ),
                                     ),
                                   ),
@@ -447,7 +455,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
 
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: beforeimage.toString() !=
+                                child: beforeimages[index].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -456,7 +464,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: afterimage,
+                                                  input: afterimages[index],
                                                 )));
                                   },
                                   child: SizedBox(
@@ -465,7 +473,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: Image(
-                                        image: FileImage(afterimage),
+                                        image: FileImage(afterimages[index]),
                                       ),
                                     ),
                                   ),

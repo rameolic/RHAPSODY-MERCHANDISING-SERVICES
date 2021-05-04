@@ -33,9 +33,15 @@ class _AddBrandState extends State<AddBrand> {
             iconTheme: IconThemeData(color: orange),
             title: Row(
               children: [
-                Text(
-                  'Add Brand',
-                  style: TextStyle(color: orange),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Add Brand',
+                      style: TextStyle(color: orange),
+                    ),
+                    EmpInfo()
+                  ],
                 ),
               ],
             ),
@@ -99,7 +105,7 @@ class _AddBrandState extends State<AddBrand> {
                                   'Emp${dropdownclient.replaceAll(new RegExp(r'[^0-9]'), '')}';
 
                                   BrandDetails.fieldmanagerempid =
-                                  'Emp${dropdownfieldmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                                  'RMS${dropdownfieldmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
 
                                   BrandDetails.salesempid =
                                   'Emp${dropdownsalesmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';

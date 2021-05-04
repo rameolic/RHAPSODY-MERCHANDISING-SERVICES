@@ -12,6 +12,7 @@ import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'package:merchandising/main.dart';
 import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
+import 'api/HRapi/empdetailsforreportapi.dart';
 import 'dart:async';
 import 'model/database.dart';
 class LoginPage extends StatefulWidget {
@@ -167,21 +168,22 @@ class _LoginPageState extends State<LoginPage> {
                                       loginrequestdata.inputpassword =passwordinputcontroller.text;
                                       if (loginrequestdata.inputemail != null &&
                                           loginrequestdata.inputpassword != null) {
-                                        if(rememberMe == true){
                                           addLogindetails();
-                                        }
                                         int userroleid = await loginapi();
                                         currentuser.roleid = userroleid;
                                         if (userroleid == 6) {
                                           var DBMresult = await DBRequestmonthly();
                                           var DBDresult = await DBRequestdaily();
+                                          print('here1');
                                           await getLocation();
                                           await callfrequently();
+                                          print('here 2');
                                           await getempdetails();
-                                          await getproducts();
+                                          getstockexpiryproducts();
+                                           getempdetailsforreport();
                                           const period = const Duration(seconds: 600);
                                           Timer.periodic(period, (Timer t) => getLocation());
-                                          const time = const Duration(seconds: 900);
+                                          const time = const Duration(seconds: 120);
                                           Timer.periodic(time, (Timer t) => callfrequently());
                                           if (DBMresult != null && DBDresult != null) {
                                             Navigator.pushReplacement(
@@ -229,6 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   },
                                   child: Container(
+                                    margin: EdgeInsets.only(bottom: 15.0),
                                     padding: EdgeInsets.all(15.0),
                                     width:
                                         MediaQuery.of(context).size.width / 1.5,
@@ -242,43 +245,6 @@ class _LoginPageState extends State<LoginPage> {
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: MediaQuery.of(context).size.width / 1.5,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SizedBox(
-                                        height: 65.0,
-                                        width: 30.0,
-                                        child: Theme(
-                                          data: ThemeData(
-                                              unselectedWidgetColor:
-                                                  Colors.white),
-                                          child: Checkbox(
-                                            value: rememberMe,
-                                            onChanged:_onRememberMeChanged,
-                                            activeColor: orange,
-                                          ),
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Text(
-                                        'Remember me',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14),
-                                      ),
-                                      Spacer(
-                                        flex: 7,
-                                      ),
-                                      Text(
-                                        'Forgot Password?',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               ],

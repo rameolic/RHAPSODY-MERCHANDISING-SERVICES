@@ -179,7 +179,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: BoxDecoration(
                   color: pink,
                   borderRadius: BorderRadius.circular(100.0),),
-                child: Text('Sending to: ${chat.receiver}',style: TextStyle(fontSize: 16),),
+                child: Text('TO : $fieldmanagernameofcurrentmerch',style: TextStyle(fontSize: 16,color: orange),),
               ),
             ],
           ),

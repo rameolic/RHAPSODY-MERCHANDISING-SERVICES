@@ -19,7 +19,13 @@ class _ChatUsersState extends State<ChatUsers> {
       appBar: AppBar(
         backgroundColor: pink,
         iconTheme: IconThemeData(color: orange),
-        title: Text("HQ Communication",style: TextStyle(color: orange),),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("HQ Communication",style: TextStyle(color: orange),),
+            EmpInfo()
+          ],
+        ),
       ),
       drawer: Drawer(
         child: Menu(),

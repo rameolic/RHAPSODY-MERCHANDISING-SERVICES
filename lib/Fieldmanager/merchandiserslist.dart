@@ -26,7 +26,13 @@ class _MerchandisersListState extends State<MerchandisersList> {
         appBar: AppBar(
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
-          title: Text("Timesheet",style: TextStyle(color: orange),),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Timesheet",style: TextStyle(color: orange),),
+              EmpInfo()
+            ],
+          ),
         ),
         drawer: Drawer(
           child: Menu(),
@@ -46,6 +52,7 @@ class _MerchandisersListState extends State<MerchandisersList> {
                         onTap:()async{
                           print(merchnamelist.employeeid[index]);
                           timesheet.empid = merchnamelist.employeeid[index];
+                          timesheet.empname = merchnamelist.name[index];
                           setState(() {
                             isApiCallProcess = true;
                           });

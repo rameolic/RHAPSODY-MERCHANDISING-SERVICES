@@ -15,15 +15,13 @@ class AddOutlets extends StatefulWidget {
 
 class _AddOutletsState extends State<AddOutlets> {
 
-  TextEditingController latitude = TextEditingController();
-
-  TextEditingController longitude = TextEditingController();
-
-  TextEditingController area = TextEditingController();
-
-  TextEditingController city = TextEditingController();
-  TextEditingController country = TextEditingController();
-  TextEditingController state = TextEditingController();
+  TextEditingController name = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.name):TextEditingController();
+  TextEditingController latitude = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.lat):TextEditingController();
+  TextEditingController longitude = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.long):TextEditingController();
+  TextEditingController area = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.area):TextEditingController();
+  TextEditingController city = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.city):TextEditingController();
+  TextEditingController country = updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.country):TextEditingController();
+  TextEditingController state =updateoutlet.outletedit ? TextEditingController(text:updatingoutlet.state):TextEditingController();
   GlobalKey<FormState> addoutlets = GlobalKey<FormState>();
   // ignore: non_constant_identifier_names
   String outlet_id;
@@ -35,9 +33,15 @@ class _AddOutletsState extends State<AddOutlets> {
           iconTheme: IconThemeData(color: orange),
           title: Row(
             children: [
-              Text(
-                'Add Outlets',
-                style: TextStyle(color: orange),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    updateoutlet.outletedit ?'Update Outlet' :'Add Outlets',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
               ),
             ],
           ),
@@ -62,7 +66,40 @@ class _AddOutletsState extends State<AddOutlets> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        updateoutlet.outletedit ?
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text( '${updatingoutlet.outletname}',style: TextStyle(color: orange),),
+                        ),
                         Container(
+                         // margin: EdgeInsets.only(bottom: 10.0,top: 10.0),
+                          padding: EdgeInsets.only(left:10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: TextFormField(
+                            controller: name,
+                            cursorColor: grey,
+                            validator: (input) => !input.isNotEmpty
+                                ? "name not be empty"
+                                : null,
+                            decoration: new InputDecoration(
+                              border: InputBorder.none,
+                              focusColor: orange,
+                              hintText: "Store name",
+                              hintStyle: TextStyle(
+                                color: grey,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                        :Container(
                           width: double.infinity,
                           decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
                          margin: EdgeInsets.only(top:10),
@@ -241,9 +278,12 @@ class _AddOutletsState extends State<AddOutlets> {
                                       outletdetails.outletname =store.storeid[u];
                                   }
                                 }
+                                if(updateoutlet.outletedit){
+                                  updateoutlet.name =name.text;
+                                }
                                 outletdetails.outletlat = latitude.text;
                                 outletdetails.outletlong = longitude.text;
-                                outletdetails.outletarea = outlet_id;
+                                outletdetails.outletarea = area.text;
                                 outletdetails.outletcity = city.text;
                                 outletdetails.outletstate = state.text;
                                 outletdetails.outletcountry = country.text;

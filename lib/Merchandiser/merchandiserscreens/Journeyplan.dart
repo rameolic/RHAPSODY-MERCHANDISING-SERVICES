@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -35,9 +36,15 @@ class _JourneyPlanState extends State<JourneyPlan> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Journey Plan',
-              style: TextStyle(color: orange),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Journey Plan',
+                  style: TextStyle(color: orange),
+                ),
+                EmpInfo()
+              ],
             ),
             GestureDetector(
                 onTap:(){
@@ -315,30 +322,35 @@ class _State extends State<JourneyListBuilder> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () async{
-             setState(() {
-               isApiCallProcess = true;
-              });
-             Currenttimesheetid =
-             outletrequestdata.outletidpressed = gettodayjp.outletids[index];
-             checkinoutdata.checkid = gettodayjp.id[index];
-             var data = await outletwhencheckin();
-             if(data != null ){
-              await Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                       // ignore: non_constant_identifier_names
-                       builder: (BuildContextcontext) => OutLet()));
+              if(gettodayjp.status[index] == 'done'){
+                alreadycheckedin = true;
+              }
+                    setState(() {
+                      isApiCallProcess = true;
+                    });
+                     outletrequestdata.outletidpressed =
+                        gettodayjp.outletids[index];
+                    checkinoutdata.checkid = gettodayjp.id[index];
+                    currenttimesheetid = gettodayjp.id[index];
+                    currentoutletid = gettodayjp.outletids[index];
+                    var data = await outletwhencheckin();
+                    if (data != null) {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              // ignore: non_constant_identifier_names
+                              builder: (BuildContextcontext) => OutLet()));
 
-               setState(() {
-                 isApiCallProcess = false;
-               });
-             }else{
-               setState(() {
-                 isApiCallProcess = false;
-               });
-             }
-             print(checkinoutdata.checkid);
-            },
+                      setState(() {
+                        isApiCallProcess = false;
+                      });
+                    } else {
+                      setState(() {
+                        isApiCallProcess = false;
+                      });
+                    }
+                    print(checkinoutdata.checkid);
+                },
             child: Container(
               margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
               padding: EdgeInsets.all(10.0),
@@ -347,83 +359,85 @@ class _State extends State<JourneyListBuilder> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               height: 130,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '[${gettodayjp.storecodes[index]}]',
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '${gettodayjp.storenames[index]}',
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      gettodayjp.isscheduled[index] == 0 ? Text(
-                        '(unscheduled)',
-                        style: TextStyle(
-                            fontSize: 13.0,color: orange),
-                      ) :SizedBox(),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text('${gettodayjp.outletarea[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('${gettodayjp.outletcity[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('${gettodayjp.outletcountry[index]}',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                    ],
-                  ),
-                  Spacer(),
-                  Table(
-                    children: [
-                      TableRow(children: [
-                        Text('Contact Number :',
-                            style: TextStyle(
-                              fontSize: 13.0,
-                            )),
-                        Text('${gettodayjp.contactnumbers[index]}',
-                            style: TextStyle(color: orange)),
-                      ]),
-                      TableRow(children: [
-                        Text('Distance :',
-                            style: TextStyle(
-                              fontSize: 13.0,
-                            )),
-                        Row(
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           children: [
-                            Text('${gettodayjp.distanceinmeters[index].toStringAsFixed(2)}',
-                                style: TextStyle(color: orange)),
-                            Text("KM", style: TextStyle(color: orange))
+                            Text(
+                              '[${gettodayjp.storecodes[index]}] ${gettodayjp.storenames[index]}',
+                              style: TextStyle(fontSize: 15,
+                               fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            gettodayjp.isscheduled[index] == 0 ? Text(
+                              '(unscheduled)',
+                              style: TextStyle(
+                                  fontSize: 13.0,color: orange),
+                            ) :SizedBox(),
                           ],
                         ),
-                      ]),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text('${gettodayjp.outletarea[index]}',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text('${gettodayjp.outletcity[index]}',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text('${gettodayjp.outletcountry[index]}',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              )),
+                        ],
+                      ),
+                      Spacer(),
+                      Table(
+                        children: [
+                          TableRow(children: [
+                            Text('Contact Number :',
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                )),
+                            Text('${gettodayjp.contactnumbers[index]}',
+                                style: TextStyle(color: orange)),
+                          ]),
+                          TableRow(children: [
+                            Text('Distance :',
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                )),
+                            Row(
+                              children: [
+                                Text('${gettodayjp.distanceinmeters[index].toStringAsFixed(2)}',
+                                    style: TextStyle(color: orange)),
+                                Text("KM", style: TextStyle(color: orange))
+                              ],
+                            ),
+                          ]),
+                        ],
+                      ),
                     ],
                   ),
+                  gettodayjp.status[index] == 'done' ? Align(
+                    alignment: Alignment.bottomRight,
+                      child: Icon(Icons.check_circle_outline_sharp,color: Colors.green,size: 20,)): SizedBox(),
                 ],
               ),
             ),

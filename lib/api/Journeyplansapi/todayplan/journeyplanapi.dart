@@ -30,6 +30,9 @@ Future<void> getJourneyPlan() async {
     gettodayjp.outletlong=[];
     gettodayjp.outletlat=[];
     gettodayjp.outletids=[];
+    gettodayjp.checkouttime=[];
+    gettodayjp.checkintime=[];
+    gettodayjp.status=[];
     for(int u=0;u<decodeJPData['data'].length;u++){
       dynamic storename = decodeJPData['data'][u]['store_name'];
       gettodayjp.storenames.add(storename);
@@ -53,6 +56,23 @@ Future<void> getJourneyPlan() async {
       gettodayjp.id.add(tableid);
       dynamic outletcontact = decodeJPData['data'][u]['contact_number'];
       gettodayjp.contactnumbers.add(outletcontact);
+      if(decodeJPData['data'][u]['checkin_time'] == null){
+        gettodayjp.checkintime.add('notcheckedin');
+      }else{
+        gettodayjp.checkintime.add(decodeJPData['data'][u]['checkin_time']);
+      }
+      if(decodeJPData['data'][u]['checkin_time'] == null){
+        gettodayjp.checkouttime.add('notcheckedout');
+      }else{
+        gettodayjp.checkouttime.add(decodeJPData['data'][u]['checkout_time']);
+      }
+      if(decodeJPData['data'][u]['checkin_time'] != null && decodeJPData['data'][u]['checkout_time'] != null){
+        gettodayjp.status.add('done');
+      }else if(decodeJPData['data'][u]['checkin_time'] != null && decodeJPData['data'][u]['checkout_time'] == null){
+        gettodayjp.status.add('working');
+      }else{
+        gettodayjp.status.add('pending');
+      }
     }
     distinmeters();
   }
@@ -74,4 +94,7 @@ class gettodayjp{
   static List<dynamic> contactnumbers=[];
   static List<dynamic> distanceinmeters=[];
   static List<int> isscheduled=[];
+  static List<dynamic> checkintime=[];
+  static List<dynamic> checkouttime=[];
+  static List<String> status=[];
 }

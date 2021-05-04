@@ -61,9 +61,15 @@ class _AddProductState extends State<AddProduct> {
             appBar: AppBar(
               backgroundColor: containerscolor,
               iconTheme: IconThemeData(color: orange),
-              title: Text(
-                'Add Products',
-                style: TextStyle(color: orange),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Add Products',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
               ),
             ),
             drawer: Drawer(
@@ -94,8 +100,8 @@ class _AddProductState extends State<AddProduct> {
                               keyboardType: TextInputType.number,
                               controller: sku,
                               cursorColor: grey,
-                              validator: (input) => !input.isNotEmpty
-                                  ? "SKU should not be empty"
+                              validator: (input) => input.length >12
+                                  ? "SKU should be more than 12 characters"
                                   : null,
                               decoration: new InputDecoration(
                                 border: InputBorder.none,

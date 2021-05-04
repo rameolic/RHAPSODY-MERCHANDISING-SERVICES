@@ -41,7 +41,7 @@ Future getFMdb() async{
 }
 
 class FMdashboarddata{
-  static int merchtotal;
+  static var merchtotal;
   static int merchpresent;
   static int merchabsent;
   static int totaloulets;

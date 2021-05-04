@@ -287,7 +287,7 @@ class _PreviewScreenState extends State<PreviewScreen>{
           backgroundColor: pink,
           onPressed: (){
             ontap == 'before'?
-            beforeimage = widget.imgPath:afterimage= widget.imgPath;
+            beforeimages[selectedindex] = widget.imgPath:afterimages[selectedindex]= widget.imgPath;
             Navigator.push(context,
                 MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
           },

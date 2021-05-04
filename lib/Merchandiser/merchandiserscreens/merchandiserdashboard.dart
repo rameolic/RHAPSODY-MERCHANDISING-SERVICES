@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +10,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/model/rememberme.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Time Sheet.dart';
 import 'package:merchandising/ProgressHUD.dart';
@@ -31,6 +37,8 @@ Future callfrequently()async{
   await getVisitJourneyPlanweekly();
   await distinmeters();
 }
+
+int workingid;
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
@@ -65,13 +73,35 @@ class _DashBoardState extends State<DashBoard> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image(
-              height: 30,
-              image: AssetImage('images/rmsLogo.png'),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image(
+                  height: 30,
+                  image: AssetImage('images/rmsLogo.png'),
+                ),
+                EmpInfo()
+              ],
             ),
             GestureDetector(
                 onTap: () {
-                  showDialog(
+                  print(gettodayjp.checkintime);
+                  print(gettodayjp.checkouttime);
+                  print(gettodayjp.status);
+
+                  for(int u =0;u<gettodayjp.status.length;u++){
+                    if(gettodayjp.status[u]=="working"){
+                      workingid = gettodayjp.id[u];
+                      print(gettodayjp.id[u]);
+                      chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
+                      chekinoutlet.checkinoutletname = gettodayjp.storenames[u];
+                      chekinoutlet.checkinarea = gettodayjp.outletarea[u];
+                      chekinoutlet.checkincity = gettodayjp.outletcity[u];
+                      chekinoutlet.checkinstate = gettodayjp.outletcountry[u];
+                      chekinoutlet.checkincountry = gettodayjp.outletcountry[u];
+                    }
+                  }
+                 workingid==null? showDialog(
                       context: context,
                       builder: (_) => StatefulBuilder(
                           builder: (context, setState) {
@@ -184,8 +214,18 @@ class _DashBoardState extends State<DashBoard> {
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: [
                                               GestureDetector(
-                                                onTap: () {
+                                                onTap: () async{
                                                   if(uniform && unit && transport && posm){
+                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                    String checkintime = prefs.getString('checkintime');
+                                                    print('checkintime : $checkintime');
+                                                    // ignore: unrelated_type_equality_checks
+                                                    if(checkintime !=  DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()){
+                                                      addcheckintime();
+                                                      addattendence();
+                                                    }else{
+                                                      print('checkintime already added');
+                                                    }
                                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                   }
                                                   },
@@ -220,7 +260,54 @@ class _DashBoardState extends State<DashBoard> {
                                 ),
                             );
                           })
-                  );
+                  ):showDialog(
+                      context: context,
+                      builder: (_) => StatefulBuilder(
+                      builder: (context, setState) {
+                        return ProgressHUD(
+                          inAsyncCall: isApiCallProcess,
+                          opacity: 0.3,
+                          child: AlertDialog(
+                            backgroundColor: alertboxcolor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            content: Builder(
+                              builder: (context) {
+                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
+                                    Divider(color: Colors.black,thickness: 0.8,),
+                                    Text("you have unfinished outlet please finish that outlet",textAlign: TextAlign.center,),
+                                    SizedBox(height: 20,),
+                                    Center(
+                                      child: GestureDetector(
+                                        onTap: () async{
+                                          outletrequestdata.outletidpressed = workingid;
+                                          checkinoutdata.checkid = workingid;
+                                          await getTaskList();
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: orange,borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      }));
           },
                   child: Container(
                     padding: EdgeInsets.all(10.0),
@@ -427,7 +514,6 @@ class _DashBoardState extends State<DashBoard> {
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.time,
-
                                 chartext: "Travel Time",
                                 numtext: pressAttentionMTB == true ?  "${DBResponsedatamonthly.TravelTime}": "${DBResponsedatadaily.TravelTime}",
                               ),
@@ -452,7 +538,7 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? (DBResponsedatamonthly.monthPlanpercentage/100): (DBResponsedatadaily.todayPlanpercentage/100),
+                                    percent: pressAttentionMTB == true ? DBResponsedatamonthly.monthPlanpercentage < 101 ?(DBResponsedatamonthly.monthPlanpercentage/100) :0.0: DBResponsedatadaily.todayPlanpercentage<101? (DBResponsedatadaily.todayPlanpercentage/100):0.0,
                                     textpercent: pressAttentionMTB == true ? DBResponsedatamonthly.monthPlanpercentage.toString() :DBResponsedatadaily.todayPlanpercentage.toString(),
                                     title: "Journey Plan\nCompletion",
                                   ),
@@ -517,18 +603,18 @@ class _DashBoardState extends State<DashBoard> {
                         color: containerscolor,
                       ),
                       child: ActivityPerformance(
-                        pprimary:pressAttentionMTB == true ? '37' : '14',
-                        psecondary: pressAttentionMTB == true ? '38' : '18',
-                        ptotal: pressAttentionMTB == true ? '26' : '08',
-                        aprimary: pressAttentionMTB == true ? '48' : '34',
-                        asecondary: pressAttentionMTB == true ? '37' : '22',
-                        atotal: pressAttentionMTB == true ? '28' : '19',
+                        pprimary:pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
+                        psecondary: pressAttentionMTB == true ? '${DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.unshedulevisits}',
+                        ptotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}',
+                        aprimary: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
+                        asecondary: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.UnShedulevisitsDone}',
+                        atotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}',
                       ),
                     ),
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          chat.receiver = "Emp5906";
+                          chat.receiver = fieldmanagerofcurrentmerch;
                         });
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
                         },

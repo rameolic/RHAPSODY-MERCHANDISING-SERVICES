@@ -86,7 +86,10 @@ class CheckIn extends StatelessWidget {
                 ));
               }));
         } else {
-          SubmitCheckin();
+           getTaskList();
+           if(alreadycheckedin == false){
+             SubmitCheckin();
+           }
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
             return CustomerActivities();
           }), (Route<dynamic> route) => false);
@@ -256,14 +259,15 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             setState(() {
                                               isApiCallProcess = true;
                                             });
+                                            await getTaskList();
                                             print("gps not working");
-                                            SubmitCheckin();
+                                            if(alreadycheckedin == false){SubmitCheckin();}
                                             await Avaiablitity();
                                             await getVisibility();
                                             await getcompinfo();
                                             await getPlanogram();
                                             await getShareofshelf();
-                                            //await getCompetition();
+                                            await getCompetition();
                                             setState(() {
                                               isApiCallProcess = false;
                                             });
@@ -273,7 +277,14 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                           }
                                           else {
                                             if(geolocation == true){
-                                              SubmitCheckin();
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              await getTaskList();
+                                              if(alreadycheckedin == false){SubmitCheckin();}
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
                                               print("geo Location was wrong");
                                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
                                                 return CustomerActivities();
@@ -281,7 +292,14 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             }
                                             else {
                                               if(others == true){
-                                                SubmitCheckin();
+                                                setState(() {
+                                                  isApiCallProcess = true;
+                                                });
+                                                await getTaskList();
+                                                if(alreadycheckedin == false){SubmitCheckin();}
+                                                setState(() {
+                                                  isApiCallProcess = false;
+                                                });
                                                 print("others");
                                                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
                                                   return CustomerActivities();

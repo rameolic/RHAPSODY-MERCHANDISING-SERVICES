@@ -166,16 +166,19 @@ class _MyprofileState extends State<Myprofile> {
                                 Text(myprofile.nationality),
                               ],
                             ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Visa Company Info :",
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(myprofile.visacompanyname),
-                              ],
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Visa Company Info :",
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(myprofile.visacompanyname),
+                                ],
+                              ),
                             ),
                             Row(
                               children: [
@@ -509,6 +512,7 @@ class _MyprofileState extends State<Myprofile> {
                                                           children: [
                                                             GestureDetector(
                                                               onTap: () {
+                                                                print(userpassword.password);
                                                                 if (validateAndSave()) {
                                                                   if(userpassword.password == currentpasswordcontroller.text) {
                                                                    if(newpasswordcontroller.text == newpasswordv2controller.text){

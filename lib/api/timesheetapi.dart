@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 class timesheet{
   static var empid;
+  static var empname;
 }
 
 
@@ -30,6 +31,7 @@ Future getTimeSheetdaily() async {
     },
     body: currentuser.roleid == 6 ? jsonEncode(Timesheetrequest) : jsonEncode(timesheetfm),
   );
+  print(tsresponse.body);
   if (tsresponse.statusCode == 200) {
     TimeSheetdatadaily.outletname = [];
     TimeSheetdatadaily.checkouttime = [];

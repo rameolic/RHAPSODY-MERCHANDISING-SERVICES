@@ -123,7 +123,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return new Flexible(
       child: new  ListView.builder(
           shrinkWrap: true,
-          itemCount:productlist.brandname.length,
+          itemCount:productlist.sku.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: (){

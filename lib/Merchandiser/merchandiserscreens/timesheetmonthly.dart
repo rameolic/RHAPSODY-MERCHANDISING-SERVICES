@@ -745,11 +745,14 @@ class day1list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day1[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day1[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -770,11 +773,14 @@ class day2list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day2[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day2[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -795,11 +801,14 @@ class day3list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day3[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day3[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -820,11 +829,14 @@ class day4list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day4[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day4[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -845,11 +857,14 @@ class day5list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day5[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day5[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -870,11 +885,14 @@ class day6list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day6[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day6[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -895,11 +913,14 @@ class day7list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day7[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day7[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -920,11 +941,14 @@ class day8list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day8[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day8[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -945,11 +969,14 @@ class day9list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day9[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day9[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -970,11 +997,14 @@ class day10list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day10[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day10[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -995,11 +1025,14 @@ class day11list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day11[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day11[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1020,11 +1053,14 @@ class day12list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day12[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day12[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1045,11 +1081,14 @@ class day13list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day13[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day13[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1070,11 +1109,14 @@ class day14list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day14[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day14[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1095,11 +1137,14 @@ class day15list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day15[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day15[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1120,11 +1165,14 @@ class day16list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day16[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day16[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1145,11 +1193,14 @@ class day17list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day17[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day17[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1170,11 +1221,14 @@ class day18list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day18[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day18[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1195,11 +1249,14 @@ class day19list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day19[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day19[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1220,11 +1277,14 @@ class day20list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day20[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day20[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1245,11 +1305,14 @@ class day21list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day21[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day21[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1270,11 +1333,14 @@ class day22list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day22[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day22[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1295,11 +1361,14 @@ class day23list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day23[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day23[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1320,11 +1389,14 @@ class day24list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day24[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day24[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1345,11 +1417,14 @@ class day25list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day25[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day25[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1370,11 +1445,14 @@ class day26list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day26[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day26[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1395,11 +1473,14 @@ class day27list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day27[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day27[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1420,11 +1501,14 @@ class day28list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day28[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day28[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1445,11 +1529,14 @@ class day29list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day29[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day29[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1470,11 +1557,14 @@ class day30list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day30[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day30[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });
@@ -1495,11 +1585,14 @@ class day31list extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.00)),
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              TMmonthly.day31[index],
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.bold),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                TMmonthly.day31[index],
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           );
         });

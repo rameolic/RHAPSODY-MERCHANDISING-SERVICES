@@ -11,7 +11,7 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'outletbrandmapping.dart';
 import 'package:merchandising/Fieldmanager/addpromotion.dart';
 import 'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
-
+import 'add_check_list.dart';
 
 List<String> InputListoutletname=[];
 List<String> distantlistaddress=[] ;
@@ -114,6 +114,15 @@ class _ProductsState extends State<Products> {
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 AddPromotion()));
+                  } ,
+                ),
+                ProductContainer(text: "Add Check List Details",
+                  onpress:(){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CheckList()));
                   } ,
                 ),
               ],

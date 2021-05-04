@@ -15,33 +15,36 @@ final menuitemscolor = Colors.black54;
 class DrawerHeaderinfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Icon(
-          CupertinoIcons.person_circle_fill,
-          color: Colors.white,
-          size: 50,
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              DBrequestdata.empname,
-              style: TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-            Text(
-              DBrequestdata.receivedempid,
-              style: TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
-            ),
-          ],
-        )
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(
+            CupertinoIcons.person_circle_fill,
+            color: Colors.white,
+            size: 50,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                DBrequestdata.empname,
+                style: TextStyle(
+                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+              ),
+              Text(
+                DBrequestdata.receivedempid,
+                style: TextStyle(
+                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -152,15 +155,15 @@ class Menu extends StatelessWidget {
           title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
         ),
-        ListTile(
-          title: MenuElements(title: 'check for updates', icon: Icons.system_update),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MyApp()));
-          },
-        ),
+        // ListTile(
+        //   title: MenuElements(title: 'check for updates', icon: Icons.system_update),
+        //   onTap: () {
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (BuildContext context) => MyApp()));
+        //   },
+        // ),
         ListTile(
           title: MenuElements(
             title: 'Log out',

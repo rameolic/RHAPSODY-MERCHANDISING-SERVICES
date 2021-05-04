@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/api/api_service.dart';
 import '../../Constants.dart';
@@ -36,9 +37,15 @@ class _OutLetState extends State<OutLet> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Outlet Details',
-              style: TextStyle(color: orange),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Outlet Details',
+                  style: TextStyle(color: orange),
+                ),
+                EmpInfo()
+              ],
             ),
             IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
               setState(() {
@@ -90,18 +97,21 @@ class _OutLetState extends State<OutLet> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                '[${chekinoutlet.checkinoutletid}]',
-                                style: TextStyle( fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(width: 5,),
-                              Text(
-                                chekinoutlet.checkinoutletname,
-                                style: TextStyle( fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Text(
+                                  '[${chekinoutlet.checkinoutletid}]',
+                                  style: TextStyle( fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(width: 5,),
+                                Text(
+                                  chekinoutlet.checkinoutletname,
+                                  style: TextStyle( fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                           Text(chekinoutlet.checkinaddress),
                           Row(

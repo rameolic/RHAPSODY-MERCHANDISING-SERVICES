@@ -30,9 +30,15 @@ class _CategoryofProductsState extends State<CategoryofProducts> {
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            Text(
-              'Add Category',
-              style: TextStyle(color: orange),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add Category',
+                  style: TextStyle(color: orange),
+                ),
+                EmpInfo()
+              ],
             ),
           ],
         ),

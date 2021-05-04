@@ -3,10 +3,9 @@ import 'package:http/http.dart' as http;
 import 'api_service.dart';
 
 
-var timesheetid;
 Future<void> Avaiablitity() async {
   Map body = {
-    "time_sheet_id" : "331"//"$timesheetid"
+    "time_sheet_id" : "$currenttimesheetid"
   };
   http.Response response = await http.post(AvailabilityDetails,
     headers: {
@@ -32,6 +31,7 @@ Future<void> Avaiablitity() async {
     }
     Distintbrands = Avaiablity.brand.toSet().toList();
     Distintcategory = Avaiablity.category.toSet().toList();
+    print("avaiability : ${Avaiablity.productname}");
   }
 }
 

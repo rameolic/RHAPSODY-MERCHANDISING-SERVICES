@@ -44,10 +44,10 @@ Future addschdulejourneypaln() async{
   final DateFormat formatter = DateFormat('yyyy');
   final String thisyear = formatter.format(now);
   Map body = {
-    "emp_id": "${addschdulejp.empid}",
-    "month": "${addschdulejp.month}",
+    "emp_id": addschdulejp.empid,
+    "month": addschdulejp.month,
     "days": addschdulejp.days,
-    "year": "$thisyear",
+    "year": thisyear,
     "outlet_id": addschdulejp.outletid
   };
   print(body);
@@ -59,6 +59,7 @@ Future addschdulejourneypaln() async{
     },
     body: jsonEncode(body),
   );
+  print(response.body);
   if(response.statusCode == 200){
     return true;
   }else{
