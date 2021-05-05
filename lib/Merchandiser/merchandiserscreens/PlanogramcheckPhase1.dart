@@ -85,9 +85,9 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

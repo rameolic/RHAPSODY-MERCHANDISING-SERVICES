@@ -289,7 +289,7 @@ class _PreviewScreenState extends State<PreviewScreen>{
             if(Selectedscreen == "visibility"){
               images[selected.index]=widget.imgPath;
               var imagebytes = widget.imgPath.readAsBytesSync();
-              visibilityreasons[selected.index] = '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"';
+              visibilityreasons[selected.index] = 'data:image/jpeg;base64,${base64Encode(imagebytes)}';
               print(visibilityreasons);
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
@@ -309,7 +309,7 @@ class _PreviewScreenState extends State<PreviewScreen>{
               ontap == 'before'?
               beforeimages[selectedindex] = widget.imgPath:afterimages[selectedindex]= widget.imgPath;
               ontap == 'before'?
-              beforeimagesencode[selectedindex] = '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"':afterimagesencode[selectedindex]= '\"data:image/jpeg;base64,${base64Encode(imagebytes)}\"';
+              beforeimagesencode[selectedindex] = 'data:image/jpeg;base64,${base64Encode(imagebytes)}':afterimagesencode[selectedindex]= 'data:image/jpeg;base64,${base64Encode(imagebytes)}';
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
             }

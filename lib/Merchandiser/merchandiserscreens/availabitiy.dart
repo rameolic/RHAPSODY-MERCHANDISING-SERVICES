@@ -54,134 +54,131 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: containerscolor,
-            iconTheme: IconThemeData(color: orange),
-            title: Row(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: containerscolor,
+          iconTheme: IconThemeData(color: orange),
+          title: Row(
+            children: [
+              Text(
+                'Availability',
+                style: TextStyle(color: orange),
+              ),
+              Spacer(),
+              SubmitButton(),
+            ],
+          ),
+        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
+        body: Stack(
+          children: [
+            BackGround(),
+            Column(
               children: [
-                Text(
-                  'Availability',
-                  style: TextStyle(color: orange),
+                OutletDetails(),
+                Container(
+                  margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white),
+                          width: MediaQuery.of(context).size.width/2.15,
+                          child: DropdownButton<String>(
+                              underline: SizedBox(),
+                              isExpanded: true,
+                              iconEnabledColor: orange,
+                              elevation: 20,
+                              dropdownColor: Colors.white,
+                              items: categories.map((String val) {
+                                return new DropdownMenuItem<String>(
+                                  value: val,
+                                  child: new Text(val),
+                                );
+                              }).toList(),
+                              hint: Text("Category"),
+                              value: Selectedcategory,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  Selectedcategory = newVal;
+                                  if(Selectedbrand==null){
+                                    InputList=[];
+                                    for(int i =0; i < defaulflist.length;i++){
+                                      if(Avaiablity.category[i] == Selectedcategory){
+                                        print(Avaiablity.productname[i]);
+                                        InputList.add(Avaiablity.productname[i]);
+                                      }
+                                    }
+                                  }else{
+                                    InputList=[];
+                                    for(int i =0; i < defaulflist.length;i++){
+                                      if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
+                                        print(Avaiablity.productname[i]);
+                                        InputList.add(Avaiablity.productname[i]);
+                                      }
+                                    }
+                                  }
+
+                                });
+                              })),
+                      Container(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white),
+                          width: MediaQuery.of(context).size.width/2.15,
+                          child: DropdownButton<String>(
+                              underline: SizedBox(),
+                              isExpanded: true,
+                              iconEnabledColor: orange,
+                              elevation: 20,
+                              dropdownColor: Colors.white,
+                              items: Brands.map((String val) {
+                                return new DropdownMenuItem<String>(
+                                  value: val,
+                                  child: new Text(val),
+                                );
+                              }).toList(),
+                              hint: Text("Brand"),
+                              value: Selectedbrand,
+                              onChanged: (newVal) {
+                                setState(() {
+                                  Selectedbrand = newVal;
+                                  if(Selectedcategory ==null){
+                                    InputList=[];
+                                    for(int i =0; i < defaulflist.length;i++){
+                                      if(Avaiablity.brand[i] == Selectedbrand){
+                                        print(Avaiablity.productname[i]);
+                                        InputList.add(Avaiablity.productname[i]);
+                                      }
+                                    }
+                                  }else{
+                                    InputList=[];
+                                    for(int i =0; i < defaulflist.length;i++){
+                                      if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
+                                        print(Avaiablity.productname[i]);
+                                        InputList.add(Avaiablity.productname[i]);
+                                      }
+                                    }
+                                  }
+                                });
+                              })),
+                    ],
+                  ),
                 ),
-                Spacer(),
-                SubmitButton(),
+                _createSearchView(),
+                _firstSearch
+                    ? _createListView()
+                    : _performSearch(),
               ],
             ),
-          ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
-          body: Stack(
-            children: [
-              BackGround(),
-              Column(
-                children: [
-                  OutletDetails(),
-                  Container(
-                    margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white),
-                            width: MediaQuery.of(context).size.width/2.15,
-                            child: DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                iconEnabledColor: orange,
-                                elevation: 20,
-                                dropdownColor: Colors.white,
-                                items: categories.map((String val) {
-                                  return new DropdownMenuItem<String>(
-                                    value: val,
-                                    child: new Text(val),
-                                  );
-                                }).toList(),
-                                hint: Text("Category"),
-                                value: Selectedcategory,
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    Selectedcategory = newVal;
-                                    if(Selectedbrand==null){
-                                      InputList=[];
-                                      for(int i =0; i < defaulflist.length;i++){
-                                        if(Avaiablity.category[i] == Selectedcategory){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
-                                        }
-                                      }
-                                    }else{
-                                      InputList=[];
-                                      for(int i =0; i < defaulflist.length;i++){
-                                        if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
-                                        }
-                                      }
-                                    }
-
-                                  });
-                                })),
-                        Container(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white),
-                            width: MediaQuery.of(context).size.width/2.15,
-                            child: DropdownButton<String>(
-                                underline: SizedBox(),
-                                isExpanded: true,
-                                iconEnabledColor: orange,
-                                elevation: 20,
-                                dropdownColor: Colors.white,
-                                items: Brands.map((String val) {
-                                  return new DropdownMenuItem<String>(
-                                    value: val,
-                                    child: new Text(val),
-                                  );
-                                }).toList(),
-                                hint: Text("Brand"),
-                                value: Selectedbrand,
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    Selectedbrand = newVal;
-                                    if(Selectedcategory ==null){
-                                      InputList=[];
-                                      for(int i =0; i < defaulflist.length;i++){
-                                        if(Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
-                                        }
-                                      }
-                                    }else{
-                                      InputList=[];
-                                      for(int i =0; i < defaulflist.length;i++){
-                                        if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
-                                        }
-                                      }
-                                    }
-                                  });
-                                })),
-                      ],
-                    ),
-                  ),
-                  _createSearchView(),
-                  _firstSearch
-                      ? _createListView()
-                      : _performSearch(),
-                ],
-              ),
-            ],
-          )),
-    );
+          ],
+        ));
   }
   Widget _createSearchView() {
     return new Container(
@@ -262,60 +259,62 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                 color: pink,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
               ),
-              child: new ListView.builder(
-                shrinkWrap: true,
-                  itemCount: InputList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width/2.1,
-                            decoration: index != InputList.length-1 ? BoxDecoration(
+              child: SingleChildScrollView(
+                child: new ListView.builder(
+                  shrinkWrap: true,
+                    itemCount: InputList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width/2.1,
+                              decoration: index != InputList.length-1 ? BoxDecoration(
 
-                              border: Border(
-                                right: BorderSide( //                   <--- left side
-                                  color: Colors.black,
-                                ),
-                                bottom:BorderSide( //                   <--- left side
-                                  color: Colors.black,
-                                ),
-                              )
-                            ):BoxDecoration(
-                              border: Border(
-                                right: BorderSide( //                   <--- left side
-                                  color: Colors.black,
-                                ),)
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                '${InputList[index]}',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
-                              decoration:index != InputList.length-1 ? BoxDecoration(
                                 border: Border(
+                                  right: BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),
                                   bottom:BorderSide( //                   <--- left side
                                     color: Colors.black,
                                   ),
-                                ),):BoxDecoration(
+                                )
+                              ):BoxDecoration(
+                                border: Border(
+                                  right: BorderSide( //                   <--- left side
+                                    color: Colors.black,
+                                  ),)
                               ),
-                              child: ToggleSwitch(
-                                item: InputList[index],
-                              ))
-                        ],
-                      ),
-                    );
-                  }),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${InputList[index]}',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
+                                decoration:index != InputList.length-1 ? BoxDecoration(
+                                  border: Border(
+                                    bottom:BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                  ),):BoxDecoration(
+                                ),
+                                child: ToggleSwitch(
+                                  item: InputList[index],
+                                ))
+                          ],
+                        ),
+                      );
+                    }),
+              ),
             ),
           ),
         ],
@@ -444,12 +443,28 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        AddAvail.outletid = outletrequestdata.outletidpressed;
-        AddAvail.timesheetid = checkinoutdata.checkid;
+        AddAvail.brandname =[];
+        AddAvail.categoryname=[];
+        AddAvail.productname=[];
+        AddAvail.productid = [];
+        AddAvail.reason = reasons;
+        AddAvail.checkvalue = [];
+        // for(int i=0;i<Avaiablity.productid.length;i++){
+        //   // AddAvail.brandname.add("\"${Avaiablity.brand[i]}\"");
+        //   // AddAvail.categoryname.add("\"${Avaiablity.category[i]}\"");
+        //   // AddAvail.productname.add("\"${Avaiablity.productname[i]}\"");
+        //  // ignore: unrelated_type_equality_checks
+        //   if(reasons != ""){
+        //     AddAvail.reason.add("${reasons[i]}");
+        //   }else{
+        //     AddAvail.reason.add(',');
+        //   }
+        // }
+
+        AddAvail.brandname =Avaiablity.brand;
+        AddAvail.categoryname=Avaiablity.category;
+        AddAvail.productname=Avaiablity.productname;
         AddAvail.productid = Avaiablity.productid;
-        AddAvail.brandname = Avaiablity.brand;
-        AddAvail.categoryname = Avaiablity.category;
-        AddAvail.productname =Avaiablity.productname;
         AddAvail.reason = reasons;
         AddAvail.checkvalue = outofStockitems;
         await addAvailability();
@@ -513,7 +528,7 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
             onChanged: (value) {
               setState(() {
                 isSwitched = value;
-                isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]='0' : outofStockitems[Avaiablity.productname.indexOf(widget.item)]='1';
+                isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
                 print(outofStockitems);
               });
             },
@@ -547,5 +562,5 @@ class _ToggleSwitchState extends State<ToggleSwitch> {
 }
 List<String>reasons=[];
 
-List<String> outofStockitems = [];
+List<int> outofStockitems = [];
 

@@ -10,6 +10,7 @@ import 'package:merchandising/api/api_service.dart';
 
 
 
+List <double> actualpercent =[];
 class ShareShelf extends StatefulWidget {
   @override
   _ShareShelfState createState() => _ShareShelfState();
@@ -23,7 +24,7 @@ class _ShareShelfState extends State<ShareShelf> {
   List<String> productlist = ShareData.brandname;
   List<String> total = ShareData.total;
   List<String> target = ShareData.target;
-  List<String> share = ShareData.share;
+  List<String> share = ['4.5'];//ShareData.share;
 
 
 
@@ -61,7 +62,6 @@ class _ShareShelfState extends State<ShareShelf> {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +108,9 @@ class _ShareShelfState extends State<ShareShelf> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -164,7 +164,7 @@ class _ShareShelfState extends State<ShareShelf> {
               actual.add(TextEditingController());
               return Container(
                 width:double.infinity,
-                margin: EdgeInsets.only(top:10.0,right: 10.0,left: 10.0),
+                margin: EdgeInsets.only(top:10.0),
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
@@ -176,75 +176,77 @@ class _ShareShelfState extends State<ShareShelf> {
 
 
                   children: [
-                    Text('Brand:  ${productlist[index]}',
-                        style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold
+                    Text('${productlist[index]}',
+                        style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
                         )),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text("Total: ${total[index]} meters",style: TextStyle(
-                                fontSize: 15.0,fontWeight: FontWeight.bold
-                            )),
-                            SizedBox(height: 15,),
-                            Text("Target: ${target[index]} %",style: TextStyle(
-                                fontSize: 15.0,fontWeight: FontWeight.bold
-                            )),
-                            SizedBox(height: 15,),
-                            Text("Share: ${share[index]} %",style: TextStyle(
-                                fontSize: 15.0,fontWeight: FontWeight.bold
-                            )),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text("Actual",style: TextStyle(fontWeight: FontWeight.bold,
-                                fontSize: 15.0),),
-                            Container(
-                              decoration: BoxDecoration(
-                                color:Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              width: 60,
-                              height: 40,
-                              padding: EdgeInsets.all(10.0),
-                              margin:EdgeInsets.all(10.0),
-                              child: Center(
-                                child: Center(
-                                  child: TextFormField(
+                        Text("Total: ${total[index]} meters",style: TextStyle(
+                            fontSize: 15.0
+                        )),
+                        SizedBox(height: 10,),
+                        Text("Target: ${target[index]} %",style: TextStyle(
+                            fontSize: 15.0
+                        )),
+                        SizedBox(height: 10,),
+                        Text("Share: ${share[index]} meters",style: TextStyle(
+                            fontSize: 15.0
+                        )),
 
-                                    keyboardType:
-                                    TextInputType.number,
+                        Container(
+                          decoration: BoxDecoration(
+                            color:Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          margin:EdgeInsets.only(top:10.0),
+                          child: Center(
+                            child: Center(
+                              child: TextFormField(
+                                onChanged: (value){
+                                  // ignore: unrelated_type_equality_checks
+                                  if(double.parse(value) <= double.parse(share[index])){
+                                    setState(() {
+                                      actualpercent[index] = (double.parse(value)/double.parse(share[index]))*100;
+                                    });
+                                  }else{
+                                    setState(() {
+                                      actualpercent[index] = 101;
+                                    });
+                                  }
+                                },
+                                keyboardType:
+                                TextInputType.number,
 
-                                    controller: actual[index],
-                                    cursorColor: grey,
-                                    validator: (input) => !input
-                                        .isNotEmpty
-                                        ? "actual should not be empty"
-                                        : null,
-                                    decoration:
-                                    new InputDecoration(
-                                      //contentPadding: ,
-                                      isCollapsed: true,
-                                      border: InputBorder.none,
-                                      focusColor: orange,
-                                      //hintText: "Actual",
-                                      hintStyle: TextStyle(
-                                        color: grey,
-                                        fontSize: 16.0,
-                                      ),
-                                    ),
+                                controller: actual[index],
+                                cursorColor: grey,
+                                validator: (input) => !input
+                                    .isNotEmpty
+                                    ? "actual should not be empty"
+                                    : null,
+                                decoration:
+                                new InputDecoration(
+                                  //contentPadding: ,
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  focusColor: orange,
+                                  hintText: "Actual in meters",
+                                  hintStyle: TextStyle(
+                                    color: grey,
+                                    fontSize: 16.0,
                                   ),
                                 ),
                               ),
                             ),
-
-                          ],
+                          ),
                         ),
+
+                        SizedBox(height: 10),
+
+                        Text(actualpercent[index] == 101 ?"Actual Percent : actual cannot be greater than share":"Actual Percent : ${actualpercent[index].toStringAsFixed(2)}%")
                       ],
                     ),
                   ],

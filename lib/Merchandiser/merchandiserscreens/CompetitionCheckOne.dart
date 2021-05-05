@@ -82,9 +82,9 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -557,7 +557,7 @@ class _DropdownSelectBrandState extends State<DropdownSelectBrand> {
         },
         items: DropDownItems,
         hint: Text(
-          "Select Brand",
+          "Select category",
           style: TextStyle(color: Colors.grey),
         ),
       ),

@@ -17,8 +17,6 @@ Future<void> getVisibility() async {
   );
   if (VisibilityResponse.statusCode == 200) {
     print(body);
-    VisibilityData.outletid = [];
-    VisibilityData.timesheetid = [];
     VisibilityData.productid = [];
     VisibilityData.brandid = [];
     VisibilityData.productname = [];
@@ -52,15 +50,13 @@ Future<void> getVisibility() async {
 
 class VisibilityData{
   static var mappingid;
-  static List<dynamic> outletid=[];
-  static List<dynamic> timesheetid=[];
-  static List<dynamic> productid=[];
-  static List<dynamic> brandid=[];
+  static List<int> productid=[];
+  static List<int> brandid=[];
   static List<String> productname=[];
   static List<String> brandname = [];
   static List<String> categoryname = [];
-  static List<dynamic> isavailable=[];
-  static List<dynamic> reason=[];
+  static List<int> isavailable=[];
+  static List<String> reason=[];
   static List<String> imageurl = [];
 }
 

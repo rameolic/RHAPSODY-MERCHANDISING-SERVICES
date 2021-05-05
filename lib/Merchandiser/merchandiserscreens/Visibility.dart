@@ -55,48 +55,45 @@ class _VisibilityOneState extends State<VisibilityOne> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: MaterialApp(
-        home: Scaffold(
-      appBar: new AppBar(
-        backgroundColor: containerscolor,
-        iconTheme: IconThemeData(color: orange),
-        title: Row(
-          children: [
-            new Text(
-              "Visibility",
-              style: TextStyle(color: orange),
-            ),
-            Spacer(),
-            SubmitButton(),
-          ],
-        ),
-      ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
-      body: Stack(
+    return MaterialApp(
+      home: Scaffold(
+    appBar: new AppBar(
+      backgroundColor: containerscolor,
+      iconTheme: IconThemeData(color: orange),
+      title: Row(
         children: [
-          BackGround(),
-          Column(
-            children: [
-              OutletDetails(),
-              Expanded(
-                child: Container(
-                  child: new Column(
-                    children: <Widget>[
-                      _createSearchView(),
-                      _firstSearch ? _createListView() : _performSearch()
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          new Text(
+            "Visibility",
+            style: TextStyle(color: orange),
           ),
+          Spacer(),
+          SubmitButton(),
         ],
       ),
+    ),
+    // drawer: Drawer(
+    //   child: Menu(),
+    // ),
+    body: Stack(
+      children: [
+        BackGround(),
+        Column(
+          children: [
+            OutletDetails(),
+            Expanded(
+              child: Container(
+                child: new Column(
+                  children: <Widget>[
+                    _createSearchView(),
+                    _firstSearch ? _createListView() : _performSearch()
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
+      ],
+    ),
       ),
     );
   }
@@ -191,10 +188,16 @@ class _VisibilityOneState extends State<VisibilityOne> {
                   ),
                   Column(
                     children: [
-                      new Text(
-                        "${listitems[index]}",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.7,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: new Text(
+                            "${listitems[index]}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10),
                       VisibilitySwitchOne(
@@ -440,7 +443,7 @@ class _ReasonDropdownState extends State<ReasonDropdown> {
           onChanged: (newVal){
             setState(() {
               selectedreason = newVal;
-              visibilityreasons[widget.item]='\"$newVal\"';
+              visibilityreasons[widget.item]=newVal;
               print(visibilityreasons);
             });
             },
