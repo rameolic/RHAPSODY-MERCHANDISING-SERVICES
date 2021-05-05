@@ -49,7 +49,7 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                   if (selectcompanydropdown != null &&
                       selectpromotiondropdown != null &&
                       selectbranddropdown != null) {
-                    AddCompData.timesheetid = outletrequestdata.outletidpressed;
+                    AddCompData.timesheetid = currenttimesheetid;
                     AddCompData.companyname = selectcompanydropdown;
                     AddCompData.brandname = selectbranddropdown;
                     AddCompData.itemname = itemname.text;
@@ -171,31 +171,15 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   child: DropdownSelectPromotion()),
-                              Container(
+                              promodescptn != null ? Container(
                                 margin: EdgeInsets.only(top: 10.0),
                                 padding: EdgeInsets.only(left:10.0),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                child: TextFormField(
-                                  maxLines: 3,
-                                  controller: promtdescp,
-                                  cursorColor: grey,
-                                  validator: (input) => !input.isNotEmpty
-                                      ? "Promotion Description should not be empty"
-                                      : null,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusColor: orange,
-                                    hintText: "Enter Promotion Description  here",
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                child: Text(promodescptn),
+                              ):SizedBox(),
                               Container(
                                 margin: EdgeInsets.only(top: 10.0),
                                 padding: EdgeInsets.only(left:10.0),
@@ -485,6 +469,7 @@ class DropdownSelectCompany extends StatefulWidget {
 }
 
 String selectcompanydropdown;
+var promodescptn;
 
 class _DropdownSelectCompanyState extends State<DropdownSelectCompany> {
   static List DropDownItems =  competitiondata.company.toSet().toList().map((String val) {

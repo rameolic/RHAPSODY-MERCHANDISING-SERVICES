@@ -20,6 +20,7 @@ Future<void> getcompinfo() async {
       competitiondata.company.add(decodeddata['data'][u]['company_name']);
       competitiondata.brand.add(decodeddata['data'][u]['brand_name']);
       competitiondata.promotion.add(decodeddata['data'][u]['promotion_type']);
+      competitiondata.descrptn.add(decodeddata['data'][u]['promotion_description']);
     }
     print(competitiondata.company);
   }
@@ -31,4 +32,5 @@ class competitiondata{
   static List<String> company=[];
   static List<String> brand=[];
   static List<String> promotion=[];
+  static List<String> descrptn=[];
 }
