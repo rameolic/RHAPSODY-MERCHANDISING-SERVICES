@@ -1,16 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:merchandising/Fieldmanager/product_details.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'MenuContent.dart';
 import '../../Constants.dart';
-import 'package:merchandising/model/googledirections.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
-class markers{static Set<Marker> outlets={};}
-class polyline{static Set<Polyline> route={};}
-var points;
-var destinationpoints;
+class markers{
+  static Set<Marker> outlets={};
+}
+class polyline{
+  static Set<Polyline> route={};
+}
+List <LatLng> routepoints = [
+  LatLng(lat,long),
+  LatLng( double.parse(gettodayjp.outletlat[0]),  double.parse(gettodayjp.outletlong[0]))
+];
+marker(){
+  polylines();
+  for(int u=0;u<gettodayjp.outletlat.length;u++){
+    markers.outlets.add(
+          Marker(markerId: MarkerId("Markers"),
+              position: LatLng(double.parse(gettodayjp.outletlat[u]),
+                  double.parse(gettodayjp.outletlong[u])),
+            infoWindow: InfoWindow(title: gettodayjp.storenames[u],
+                snippet: 'Distance: ${gettodayjp.distanceinmeters[u].toStringAsFixed(2)} KM')
+  ));
+  }
+}
+
+polylines(){
+  for(int u=0;u<gettodayjp.outletlat.length;u++){
+    Polyline(
+      polylineId: PolylineId('routes'),
+      visible: true,
+      points: routepoints,
+      color: Colors.blue,
+    );
+  }
+}
 
 class mapmarkersinfo{
   static var int = "id";
@@ -28,12 +55,7 @@ class MapVeiw extends StatefulWidget {
   _MapVeiwState createState() => _MapVeiwState();
 }
 
-class _MapVeiwState extends State<MapVeiw>{
-  @override
-  void initState() {
-    super.initState();
-    addmarker();
-  }
+class _MapVeiwState extends State<MapVeiw> {
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -47,9 +69,9 @@ class _MapVeiwState extends State<MapVeiw>{
               style: TextStyle(color: orange),
             ),
           ),
-          // drawer: Drawer(
-          //   child: Menu(),
-          // ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
           body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -59,7 +81,7 @@ class _MapVeiwState extends State<MapVeiw>{
               color: pink,
             ),
             child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: LatLng(lat, long), zoom: 13.5,),
+              initialCameraPosition: CameraPosition(target: LatLng(lat, long), zoom: 13,),
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               zoomControlsEnabled: true,
@@ -70,37 +92,5 @@ class _MapVeiwState extends State<MapVeiw>{
         ),
       ],
     );
-  }
-  addmarker(){
-    for(int u=0;u<gettodayjp.outletlat.length;u++){
-      markers.outlets.add(
-          Marker(markerId: MarkerId("Markers$u"),
-              position: LatLng(double.parse(gettodayjp.outletlat[u]),
-                  double.parse(gettodayjp.outletlong[u])),
-              infoWindow: InfoWindow(title: gettodayjp.storenames[u],
-                  snippet: 'Distance: ${gettodayjp.distanceinmeters[u].toStringAsFixed(2)} KM'),
-              onTap: () async{
-            print('${gettodayjp.outletlat[u]},${gettodayjp.outletlong[u]}');
-                var points = await DirectionsRepository().getDirections(
-                    origin: LatLng(lat,long),
-                    destination: LatLng(double.parse(gettodayjp.outletlat[u]),
-                        double.parse(gettodayjp.outletlong[u])),
-                );
-                polyline.route={};
-                setState(() {
-                  polyline.route.add(
-                      Polyline(
-                        polylineId: PolylineId('routes'),
-                        visible: true,
-                        points: points.polylinePoints.map((e) => LatLng(e.latitude,e.longitude)).toList(),
-                        color: orange,
-                        width: 2,
-                      ));
-                });
-
-              },
-          ));
-
-    }
   }
 }

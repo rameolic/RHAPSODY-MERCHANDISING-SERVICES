@@ -17,17 +17,18 @@ class AddCompData{
 
 Future addCompetition() async{
   Map addcompetition = {
-    'timesheet_id' : AddCompData.timesheetid,
-    'company_name': AddCompData.companyname,
-    'item_name' : AddCompData.itemname,
-    'brand_name' : AddCompData.brandname,
-    'promotion_type' : AddCompData.promotype,
-    'promotion_description' : AddCompData.promodesc,
-    'mrp' : AddCompData.mrp,
-    'selling_price' : AddCompData.sellingprice,
-    'capture_image' : AddCompData.captureimg,
+
+    'timesheet_id' : '${AddCompData.timesheetid}',
+    'company_name': '${AddCompData.companyname}',
+    'item_name' : '${AddCompData.itemname}',
+    'brand_name' : '${AddCompData.brandname}',
+    'promotion_type' : '${AddCompData.promotype}',
+    'promotion_description' : '${AddCompData.promodesc}',
+    'mrp' : '${AddCompData.mrp}',
+    'selling_price' : '${AddCompData.sellingprice}',
+    'capture_image' : '${AddCompData.captureimg}',
+
   };
-  print(addcompetition);
   http.Response response = await http.post(AddCompetition,
     headers: {
       'Content-Type': 'application/json',
@@ -36,6 +37,6 @@ Future addCompetition() async{
     },
     body: jsonEncode(addcompetition),
   );
-  print(response.body);
+  print(addcompetition);
 
 }

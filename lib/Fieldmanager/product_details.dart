@@ -53,9 +53,9 @@ class _ProductDetailsState extends State<ProductDetails> {
           iconTheme: IconThemeData(color: orange),
           title: Text("Product Details",style: TextStyle(color: orange),),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

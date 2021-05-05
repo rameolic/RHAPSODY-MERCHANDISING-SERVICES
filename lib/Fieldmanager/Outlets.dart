@@ -69,9 +69,9 @@ class _OuletsState extends State<Oulets> {
             ],
           ),
         ),
-        // drawer: Drawer(
-        //   child: Menu(),
-        // ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
         body: Stack(
           children: [
             BackGround(),

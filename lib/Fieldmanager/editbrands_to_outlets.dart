@@ -74,9 +74,9 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
               style: TextStyle(color: orange),
             ),
           ),
-          // drawer: Drawer(
-          //   child: Menu(),
-          // ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
           body: Stack(
             children: [
               BackGround(),

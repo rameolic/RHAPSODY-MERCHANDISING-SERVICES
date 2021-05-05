@@ -1,38 +1,34 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:merchandising/Constants.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
 import 'Customers Activities.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:merchandising/api/api_service.dart';
 import 'package:photo_view/photo_view.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:merchandising/model/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/api/customer_activites_api/add_promotionapi.dart';
+import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+
 File capturedimagepromotion = File('dummy.txt');
 String Selectedreason;
+var selectedbrand;
+//int selectedindex;
+var selectedcategory;
 class PromotionCheck extends StatefulWidget {
   @override
   _PromotionCheckState createState() => _PromotionCheckState();
 }
-bool isprocuctselected = false;
+
 var selectedproduct;
-//List<String> values = promodata.productname;
-List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
-var indexseletced;
-bool isSwitched=false;
+List DropDownItems  = PromoData.productname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+
 
 class _PromotionCheckState extends State<PromotionCheck> {
-
+  bool isSwitched=false;
   GlobalKey<FormState> keyone = GlobalKey<FormState>();
-  String selectedpromobrand = "dummy";
-  String selectedpromocategory = "dummy";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,28 +41,22 @@ class _PromotionCheckState extends State<PromotionCheck> {
         },
         child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.menu),
-                    SizedBox(width: 25,),
-                    Text('Promotion Check',
-                      style: TextStyle(color: orange),
-                    ),
-                  ],
+                Text(
+                  'Promotion Check',
+                  style: TextStyle(color: orange),
                 ),
                 SubmitButton()
               ],
             ),
           ),
-          // drawer: Drawer(
-          //   child: Menu(),
-          // ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
           body: Stack(
             children: [
               BackGround(),
@@ -124,117 +114,93 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                       value: selectedproduct,
                                       onChanged: (newVal) {
                                         setState(() {
-                                          isprocuctselected = true;
                                           selectedproduct = newVal;
-                                          indexseletced = promodata.productname.indexOf(selectedproduct);
-                                          print(indexseletced);
-                                          print( promodata.brandname[indexseletced]);
-                                          print( promodata.categoryname[indexseletced]);
-                                          setState(() {
-                                            selectedpromobrand = promodata.brandname[indexseletced];
-                                            selectedpromocategory = promodata.categoryname[indexseletced];
-                                          });
+                                          //selectedindex = PromoData.productname.indexOf(newVal);
+                                          // selectedbrand =
                                         });
                                       },
-                                      items: promodata.productname.map((String val) {
-                                        return new DropdownMenuItem<String>(
-                                          value: val,
-                                          child: new Text(val),
-                                        );}).toList(),
+                                      items: DropDownItems,
                                       hint: Text(
-                                        "Select product",
+                                        "Select Company",
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ),
                                   ),
-                                  isprocuctselected == true ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left:10.0,top: 10.0),
-                                        child: Row(
-                                          children: [
-                                            Text("Brand : ",style: TextStyle(color: orange,fontSize: 16),),
-                                            Text(selectedpromobrand,style: TextStyle(color: orange,fontSize: 16),),
-                                          ],
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(left:10.0,top: 10.0),
+                                  //   child: Text("Brand : $selectedbrand",style: TextStyle(color: orange,fontSize: 16),),
+                                  // ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(left:10.0,top: 10.0),
+                                  //   child: Text("Category : $selectedcategory",style: TextStyle(color: orange,fontSize: 16),),
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left:10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Available ?",style: TextStyle(color: orange,fontSize: 16),),
+                                        SizedBox(
+                                          width: 70,
+                                          child: Switch(
+                                            value: isSwitched,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                isSwitched = value;
+                                                });
+                                            },
+                                            inactiveTrackColor: Colors.green,
+                                            activeColor: Colors.red,
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left:10.0,top: 10.0),
-                                        child: Row(
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left:10.0),
+                                    child: Row(
+                                      children: [
+                                        Text(isSwitched != true?"Capture Image :":"Reason :",style: TextStyle(color: orange,fontSize: 16),),
+                                        Spacer(),
+                                        isSwitched != true? Row(
                                           children: [
-                                            Text("Category : ",style: TextStyle(color: orange,fontSize: 16),),
-                                            Text(selectedpromocategory,style: TextStyle(color: orange,fontSize: 16),),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left:10.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text("Available ?",style: TextStyle(color: orange,fontSize: 16),),
-                                            SizedBox(
-                                              width: 70,
-                                              child: Switch(
-                                                value: isSwitched,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    isSwitched = value;
-                                                  });
+                                            Container(
+                                              margin: EdgeInsets.all(10),
+                                              child:
+                                              // ignore: unrelated_type_equality_checks
+                                              capturedimagepromotion.toString() !=
+                                                  'File: \'dummy.txt\''
+                                                  ? GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) =>
+                                                              PreveiwScreen(
+                                                                input: capturedimagepromotion,
+                                                              )));
                                                 },
-                                                inactiveTrackColor: Colors.green,
-                                                activeColor: Colors.red,
+                                                child: Image(
+                                                  height: 50,
+                                                  width: 50,
+                                                  image: FileImage(capturedimagepromotion),
+                                                ),
+                                              )
+                                                  : Image(
+                                                width: 50,
+                                                image: AssetImage('images/capture.png'),
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left:10.0),
-                                        child: Row(
-                                          children: [
-                                            Text(isSwitched != true?"Capture Image :":"Reason :",style: TextStyle(color: orange,fontSize: 16),),
-                                            Spacer(),
-                                            isSwitched != true? Row(
-                                              children: [
-                                                Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  child:
-                                                  // ignore: unrelated_type_equality_checks
-                                                  capturedimagepromotion.toString() !=
-                                                      'File: \'dummy.txt\''
-                                                      ? GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (BuildContext context) =>
-                                                                  PreveiwScreen(
-                                                                    input: capturedimagepromotion,
-                                                                  )));
-                                                    },
-                                                    child: Image(
-                                                      height: 50,
-                                                      width: 50,
-                                                      image: FileImage(capturedimagepromotion),
-                                                    ),
-                                                  )
-                                                      : Image(
-                                                    width: 50,
-                                                    image: AssetImage('images/capture.png'),
-                                                  ),
+                                            IconButton(
+                                                icon: Icon(
+                                                  CupertinoIcons.photo_camera_solid,
+                                                  color: Colors.grey[700],
                                                 ),
-                                                IconButton(
-                                                    icon: Icon(
-                                                      CupertinoIcons.photo_camera_solid,
-                                                      color: Colors.grey[700],
-                                                    ),
-                                                    onPressed: () {
-                                                      _showSelectionDialog(context);
-                                                    }),
-                                              ],
-                                            ) : SizedBox(height: 50, child: DropdownButton(
+                                                onPressed: () {
+                                                  _showSelectionDialog(context);
+                                                }),
+                                          ],
+                                        ) : SizedBox(height: 50, child: DropdownButton(
                                               elevation: 0,
                                               dropdownColor: Colors.white,
                                               underline: SizedBox(),
@@ -245,40 +211,16 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                               onChanged: (newVal){
                                                 setState(() {
                                                   Selectedreason = newVal;
-                                                });
+                                                  });
                                               },
                                               items: DropDownItems,
                                               hint: Text("Select Reason",style: TextStyle(color: Colors.black),),
                                             )),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ) : SizedBox(),
+                                      ],
+                                    ),
+                                  )
                                 ],
 
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top:8.0),
-                              child: Center(
-                                child: TextButton(onPressed: ()async{
-                                  if(isSwitched == false){
-                                    var bytes = capturedimagepromotion.readAsBytesSync();
-                                    imageinbytes = 'data:image/jpeg:base64,/${base64Encode(bytes)}';
-                                  }
-                                  AddPromo.outletid = outletrequestdata.outletidpressed;
-                                  AddPromo.timesheetid = timesheetid;
-                                  AddPromo.productid = '[${promodata.productid[indexseletced]}]';
-                                  AddPromo.checkvalue = isSwitched == false ? '[1]' : '[0]';
-                                  AddPromo.reason = isSwitched == false ? '[$imageinbytes]' :'[\"$Selectedreason\"]';
-                                  await addPromotion();
-                                },
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all(pink)),
-                                    child: Text("SAVE",style: TextStyle(color:orange),)
-                                ),
                               ),
                             ),
                           ],
@@ -461,7 +403,7 @@ class PreveiwScreen extends StatelessWidget {
     );
   }
 }
-var imageinbytes;
+
 class SubmitButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

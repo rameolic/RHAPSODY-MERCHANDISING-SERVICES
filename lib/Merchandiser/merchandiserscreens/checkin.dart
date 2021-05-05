@@ -12,6 +12,8 @@ import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
 import'package:merchandising/api/customer_activites_api/competition_details.dart';
+import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+
 class CheckIn extends StatelessWidget {
 
   bool isApiCallProcess = false;
@@ -268,6 +270,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             await getPlanogram();
                                             await getShareofshelf();
                                             await getCompetition();
+                                            await getPromoDetails();
                                             setState(() {
                                               isApiCallProcess = false;
                                             });

@@ -64,9 +64,9 @@ class _StoreDetailsState extends State<StoreDetails> {
             ],
           ),
         ),
-        // drawer: Drawer(
-        //   child: Menu(),
-        // ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
         body: Stack(
           children: [
             BackGround(),

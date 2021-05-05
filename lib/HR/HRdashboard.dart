@@ -1,6 +1,3 @@
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:merchandising/ProgressHUD.dart';
@@ -189,223 +186,183 @@ class _HRdashboardState extends State<HRdashboard> {
                               borderRadius: BorderRadius.circular(10.0),
                               color: containerscolor,
                             ),
-                            child: SingleChildScrollView(
-                              reverse: true,
-                              child: Column(
-                                children: [
-                                  Text("Attendance Summary",style: TextStyle(fontSize: 16),),
-                                  SizedBox(height: 10,),
-                                  Table(
-                                    border: TableBorder.symmetric(
-                                      inside: BorderSide(color: Colors.grey),
-                                    ),
-                                    columnWidths: {
-                                      0: FractionColumnWidth(.3),
-                                    },
-                                    children: [
-                                      TableRow(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 14.0),
-                                            child: Center(
-                                              child: FittedBox(
-                                                fit: BoxFit.fitWidth,
-                                                child: Text(
-                                                  "Employees",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.emptotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    '  Total  ',maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.emppresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "Present",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.empabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    " Absent",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      TableRow(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Center(
-                                              child: FittedBox(
-                                                fit: BoxFit.fitWidth,
-                                                child: Text(
-                                                  "Field\nManagers",textAlign: TextAlign.center,maxLines: 2,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.fmtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    '  Total  ',maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.fmpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "Present",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.fmabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "Absent",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      TableRow(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 14.0),
-                                            child: Center(
-                                              child: FittedBox(
-                                                fit: BoxFit.fitWidth,
-                                                child: Text(
-                                                  "Merchandisers",maxLines: 1,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.merchtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),
-                                                SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "  Total  ",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.merchpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "Present",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(
-                                                  '${HRdashboarddata.merchabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
-                                                ),SizedBox(height: 3,),
-                                                FittedBox(
-                                                  fit: BoxFit.fitWidth,
-                                                  child: Text(
-                                                    "Absent",maxLines: 1,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                            child: Column(
+                              children: [
+                                Text("Attendance Summary",style: TextStyle(fontSize: 16),),
+                                SizedBox(height: 10,),
+                                Table(
+                                  border: TableBorder.symmetric(
+                                    inside: BorderSide(color: Colors.grey),
                                   ),
-                                ],
-                              ),
+                                  columnWidths: {
+                                    0: FractionColumnWidth(.35),
+                                  },
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 14.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Employees",style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.emptotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                'Total',style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.emppresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Present",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.empabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Absent",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Field\nManagers",style: TextStyle(fontSize: 12),textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.fmtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Total",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.fmpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Present",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.fmabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Absent",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 14.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Merchandisers",style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.merchtotal}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Total",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.merchpresent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Present",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                '${HRdashboarddata.merchabsent}',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Absent",style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                           Column(

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 import 'package:merchandising/api/FMapi/timesheetdelete.dart';
+import 'package:merchandising/Fieldmanager/addoutlets.dart';
 
 
 class WeeklyJourneyListBuilder extends StatefulWidget {
@@ -125,10 +126,10 @@ class _State extends State<WeeklyJourneyListBuilder> {
                                                                     setState(() {
                                                                       isApiCallProcess = false;
                                                                     });
-                                                                    // Navigator.push(context,
-                                                                    //     MaterialPageRoute(builder: (
-                                                                    //         BuildContext context) =>
-                                                                    //         AddOutlets()));
+                                                                    Navigator.push(context,
+                                                                        MaterialPageRoute(builder: (
+                                                                            BuildContext context) =>
+                                                                            AddOutlets()));
                                                                   },
                                                                   child: Container(
                                                                     height: 40,

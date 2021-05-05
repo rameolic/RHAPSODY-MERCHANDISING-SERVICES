@@ -92,6 +92,7 @@ class _DashBoardState extends State<DashBoard> {
                   for(int u =0;u<gettodayjp.status.length;u++){
                     if(gettodayjp.status[u]=="working"){
                       workingid = gettodayjp.id[u];
+                      print(workingid);
                       print(gettodayjp.id[u]);
                       chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
                       chekinoutlet.checkinoutletname = gettodayjp.storenames[u];

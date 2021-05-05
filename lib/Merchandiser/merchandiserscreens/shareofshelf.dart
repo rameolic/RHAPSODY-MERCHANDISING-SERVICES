@@ -3,9 +3,10 @@ import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'Customers Activities.dart';
 import 'MenuContent.dart';
+import'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/add_shareofshelfapi.dart';
+
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/api/customer_activites_api/add_shareofshelfapi.dart';
-import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
 
 
 
@@ -66,27 +67,21 @@ class _ShareShelfState extends State<ShareShelf> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
-            Row(
-              children: [
-                Icon(Icons.menu),
-                SizedBox(width: 25,),
-                Text(
-                  'Share of Shelf',
-                  style: TextStyle(color: orange),
-                ),
-              ],
+            Text(
+              'Share of Shelf',
+              style: TextStyle(color: orange),
             ),
             Spacer(),
             SubmitButton(
               ontap: ()async{
+
                 AddShareData.brandid = ShareData.brandid;
                 AddShareData.outletid = outletrequestdata.outletidpressed;
-                AddShareData.timesheetid = '332';//timesheetid.id;
+                AddShareData.timesheetid = checkinoutdata.checkid;
                 AddShareData.totalshare = ShareData.total;
                 AddShareData.share = ShareData.share;
                 AddShareData.target = ShareData.target;
@@ -94,44 +89,40 @@ class _ShareShelfState extends State<ShareShelf> {
                 for(int i=0;i<productlist.length;i++){
                   AddShareData.actual.add(actual[i].text);
                 }
+
                 await addShareofshelfdata();
+
                 print(AddShareData.outletid);
                 print(AddShareData.brandid);
                 print(AddShareData.timesheetid);
                 print(AddShareData.actual);
+
                 if(validateform()==true)
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              CustomerActivities()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            CustomerActivities()));
               },
             ),
           ],
         ),
       ),
-      // drawer: Drawer(
-      //   child: Menu(),
-      // ),
+      drawer: Drawer(
+        child: Menu(),
+      ),
       body: Stack(
         children: [
           BackGround(),
-          Column(
-            children: [
-              OutletDetails(),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(10.0,0,10,0),
-                  child: new Column(
-                    children: <Widget>[
-                      _createSearchView(),
-                      //SizedBox(height: 10.0,),
-                      _firstSearch ? _createListView() : _performSearch(),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            margin: EdgeInsets.fromLTRB(10.0,10,10,0),
+            child: new Column(
+              children: <Widget>[
+                _createSearchView(),
+                SizedBox(height: 10.0,),
+                _firstSearch ? _createListView() : _performSearch(),
+              ],
+            ),
           ),
 
         ],
@@ -173,7 +164,7 @@ class _ShareShelfState extends State<ShareShelf> {
               actual.add(TextEditingController());
               return Container(
                 width:double.infinity,
-                margin: EdgeInsets.only(top:10.0),
+                margin: EdgeInsets.only(top:10.0,right: 10.0,left: 10.0),
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
@@ -183,10 +174,12 @@ class _ShareShelfState extends State<ShareShelf> {
                 child: Column(
                   crossAxisAlignment:CrossAxisAlignment.start,
 
+
                   children: [
                     Text('Brand:  ${productlist[index]}',
                         style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold
                         )),
+                    SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -194,31 +187,29 @@ class _ShareShelfState extends State<ShareShelf> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SizedBox(height: 10,),
-                            Text("Total : ${total[index]} meters",style: TextStyle(
-                                fontSize: 15.0,
+                            Text("Total: ${total[index]} meters",style: TextStyle(
+                                fontSize: 15.0,fontWeight: FontWeight.bold
                             )),
-                            SizedBox(height: 10,),
-                            Text("Share : ${share[index]} meters",style: TextStyle(
-                              fontSize: 15.0,
+                            SizedBox(height: 15,),
+                            Text("Target: ${target[index]} %",style: TextStyle(
+                                fontSize: 15.0,fontWeight: FontWeight.bold
                             )),
-                            SizedBox(height: 10,),
-                            Text("Target : ${target[index]}%",style: TextStyle(
-                                fontSize: 15.0,
+                            SizedBox(height: 15,),
+                            Text("Share: ${share[index]} %",style: TextStyle(
+                                fontSize: 15.0,fontWeight: FontWeight.bold
                             )),
-
                           ],
                         ),
                         Column(
                           children: [
-                            Text("actual share",style: TextStyle(
+                            Text("Actual",style: TextStyle(fontWeight: FontWeight.bold,
                                 fontSize: 15.0),),
                             Container(
                               decoration: BoxDecoration(
                                 color:Colors.white,
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              width: 80,
+                              width: 60,
                               height: 40,
                               padding: EdgeInsets.all(10.0),
                               margin:EdgeInsets.all(10.0),
@@ -237,7 +228,7 @@ class _ShareShelfState extends State<ShareShelf> {
                                         : null,
                                     decoration:
                                     new InputDecoration(
-                                      contentPadding: EdgeInsets.only(left: 20),
+                                      //contentPadding: ,
                                       isCollapsed: true,
                                       border: InputBorder.none,
                                       focusColor: orange,
@@ -275,8 +266,8 @@ class _ShareShelfState extends State<ShareShelf> {
       var item = productlist[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
-        int index = productlist.indexOf(item);
 
+        int index = productlist.indexOf(item);
         _filtertotal.add(total[index]);
         _filetrtarget.add(target[index]);
         _filteractual.add(actual[index]);
@@ -310,7 +301,7 @@ class _ShareShelfState extends State<ShareShelf> {
                 Text('Brand:  ${_filterList[index]}',
                     style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold
                     )),
-
+                SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -322,11 +313,11 @@ class _ShareShelfState extends State<ShareShelf> {
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
                         SizedBox(height: 15,),
-                        Text("Target: ${_filetrtarget[index]}%",style: TextStyle(
+                        Text("Target: ${_filetrtarget[index]} %",style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
                         SizedBox(height: 15,),
-                        Text("Share: ${share[index]}%",style: TextStyle(
+                        Text("Share: ${share[index]} %",style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
 

@@ -22,9 +22,9 @@ class _MyAttendanceState extends State<MyAttendance> {
           style: TextStyle(color: orange),
         ),
       ),
-      // drawer: Drawer(
-      //   child: Menu(),
-      // ),
+      drawer: Drawer(
+        child: Menu(),
+      ),
       body: Stack(
         children: [
           BackGround(),

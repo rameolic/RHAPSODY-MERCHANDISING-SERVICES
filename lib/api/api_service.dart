@@ -75,6 +75,12 @@ Uri AddTaskList = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_task");
 Uri GetTaskDetails = Uri.parse("https://rms2.rhapsody.ae/api/outlet_task_details");
 Uri stockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_product_details");
 Uri addexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry");
+Uri AddPlanogram = Uri.parse("https://rms2.rhapsody.ae/api/add_planogram");
+Uri AddShareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/add_share_of_shelf");
+Uri MercViewUpdtPromo = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_view_updated_promotion__details");
+Uri MercAddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_add_promotion__details");
+Uri PromoDetails = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_promotion_details");
+
 var currenttimesheetid;
 var fieldmanagernameofcurrentmerch;
 var fieldmanagerofcurrentmerch;

@@ -238,9 +238,9 @@ class MappedOutlets extends StatelessWidget {
         iconTheme: IconThemeData(color: orange),
         title: Text("Mapped outlets",style: TextStyle(color: orange),),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

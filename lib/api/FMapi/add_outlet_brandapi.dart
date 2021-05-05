@@ -18,8 +18,7 @@ Future addbrandmap() async{
     'myfile' : '${brandmap.myfile}'
 
   };
-  print(jsonEncode(storedata));
-  http.Response ouletbrandmap = await http.post(Addoutletbrandmap,
+  /*http.Response ouletbrandmap = await http.post(Addoutletbrandmap,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -27,6 +26,6 @@ Future addbrandmap() async{
     },
     body: jsonEncode(storedata),
   );
-print(ouletbrandmap.body);
+print(ouletbrandmap.body);*/
   print("Add Stores Done");
 }

@@ -47,9 +47,9 @@ class _leavestatusPageState extends State<leavestatusPage> {
             ],
           ),
         ),
-        // drawer: Drawer(
-        //   child: Menu(),
-        // ),
+        drawer: Drawer(
+          child: Menu(),
+        ),
         body: Stack(children: [
           BackGround(),
             ListView.builder(

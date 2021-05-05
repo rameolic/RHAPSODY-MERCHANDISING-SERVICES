@@ -15,8 +15,8 @@ class AddShareData{
 
 Future addShareofshelfdata() async{
   Map addshare = {
-    'outlet_id' : '${AddShareData.outletid}',
-    'timesheet_id' : '${AddShareData.timesheetid}',
+    'outlet_id' : currentoutletid,
+    'timesheet_id' : currenttimesheetid,
     'brand_id' : '${AddShareData.brandid}',
     'total_share' : '${AddShareData.totalshare}',
     'share' : '${AddShareData.share}',
@@ -32,7 +32,4 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
-
-  print("Add Share of Shelf Done");
-  print(addshare);
 }

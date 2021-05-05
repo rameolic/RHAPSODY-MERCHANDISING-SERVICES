@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Promotion%20Check.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
@@ -8,6 +9,7 @@ import 'expiry_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
 import 'outletdetailes.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'package:merchandising/api/api_service.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -662,6 +664,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                               expiryinfo) {
                                             SubmitCheckout();
                                             sendtaskresponse();
+                                            workingid != null ? workingid= null:workingid=workingid;
                                             checkedoutlet.checkoutlet = true;
                                             Navigator.pushReplacement(
                                                 context,
@@ -720,7 +723,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
           } else {
             Flushbar(
               messageText: Text(
-                "press ok in Check List to Continue",
+                "please check every item in the checklist",
                 style: TextStyle(color: iconscolor),
               ),
               backgroundColor: pink,
