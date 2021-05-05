@@ -18,21 +18,22 @@ Future addplanogramdata
   Map addvisibility = {
     "outlet_id" : currentoutletid,
     "timesheet_id" : currenttimesheetid,
-    "outlet_products_mapping_id": '${PlanoDetails.opm}',
-    "brand_id" : '${PlanoDetails.brandid}',
-    "brand_name" : '${PlanoDetails.brandname}',
-    "plano_image" : '${PlanoDetails.imageurl}',
-    "before_image" : '${PlanoDetails.beforeimage}',
-    "after_image" : '${PlanoDetails.afterimage}',
+    "outlet_products_mapping_id": PlanoDetails.opm,
+    "brand_id" : PlanoDetails.brandid,
+    "brand_name" : PlanoDetails.brandname,
+    "plano_image" : PlanoDetails.image,
+    "before_image" : PlanoDetails.beforeimage,
+    "after_image" : PlanoDetails.afterimage,
   };
-  // http.Response availresponse = await http.post(AddVisibility,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-  //   },
-  //   body: jsonEncode(addvisibility),
-  // );
-  print(addvisibility);
+  print(jsonEncode(addvisibility));
+  http.Response availresponse = await http.post(AddPlanogram,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(addvisibility),
+  );
+  print(availresponse.body);
 
 }

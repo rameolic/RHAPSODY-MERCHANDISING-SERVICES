@@ -146,9 +146,11 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         icon: CupertinoIcons.doc_checkmark_fill,
                         chartext: 'Planogram',
                         tap: () {
-                          for (int i = 0;
-                              i < PlanoDetails.brandname.length;
-                              i++) {
+                          beforeimages=[];
+                          afterimages=[];
+                          beforeimagesencode=[];
+                          afterimagesencode=[];
+                          for (int i = 0; i < PlanoDetails.brandname.length; i++) {
                             beforeimages.add(File('dummy.txt'));
                             afterimages.add(File('dummy.txt'));
                             beforeimagesencode.add('dummy.txt');
