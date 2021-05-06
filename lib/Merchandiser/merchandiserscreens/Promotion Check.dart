@@ -7,7 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:photo_view/photo_view.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 import 'package:merchandising/model/camera.dart';
+import 'package:merchandising/api/customer_activites_api/add_promotionapi.dart';
 import 'package:camera/camera.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
@@ -17,17 +19,22 @@ String Selectedreason;
 var selectedbrand;
 //int selectedindex;
 var selectedcategory;
+
 class PromotionCheck extends StatefulWidget {
   @override
   _PromotionCheckState createState() => _PromotionCheckState();
 }
 
 var selectedproduct;
-List DropDownItems  = PromoData.productname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
-
+List DropDownItems = PromoData.productname.toSet().toList().map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 
 class _PromotionCheckState extends State<PromotionCheck> {
-  bool isSwitched=false;
+  bool isSwitched = false;
   GlobalKey<FormState> keyone = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -99,11 +106,13 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                 children: [
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
-                                    margin: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
+                                    margin:
+                                        EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                                     width: double.infinity,
                                     decoration: new BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10.0)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
                                     child: DropdownButton(
                                       underline: SizedBox(),
                                       elevation: 0,
@@ -135,11 +144,16 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                   //   child: Text("Category : $selectedcategory",style: TextStyle(color: orange,fontSize: 16),),
                                   // ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left:10.0),
+                                    padding: const EdgeInsets.only(left: 10.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Available ?",style: TextStyle(color: orange,fontSize: 16),),
+                                        Text(
+                                          "Available ?",
+                                          style: TextStyle(
+                                              color: orange, fontSize: 16),
+                                        ),
                                         SizedBox(
                                           width: 70,
                                           child: Switch(
@@ -147,7 +161,7 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                             onChanged: (value) {
                                               setState(() {
                                                 isSwitched = value;
-                                                });
+                                              });
                                             },
                                             inactiveTrackColor: Colors.green,
                                             activeColor: Colors.red,
@@ -157,76 +171,112 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left:10.0),
+                                    padding: const EdgeInsets.only(left: 10.0),
                                     child: Row(
                                       children: [
-                                        Text(isSwitched != true?"Capture Image :":"Reason :",style: TextStyle(color: orange,fontSize: 16),),
+                                        Text(
+                                          isSwitched != true
+                                              ? "Capture Image :"
+                                              : "Reason :",
+                                          style: TextStyle(
+                                              color: orange, fontSize: 16),
+                                        ),
                                         Spacer(),
-                                        isSwitched != true? Row(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.all(10),
-                                              child:
-                                              // ignore: unrelated_type_equality_checks
-                                              capturedimagepromotion.toString() !=
-                                                  'File: \'dummy.txt\''
-                                                  ? GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (BuildContext context) =>
-                                                              PreveiwScreen(
-                                                                input: capturedimagepromotion,
-                                                              )));
-                                                },
-                                                child: Image(
-                                                  height: 50,
-                                                  width: 50,
-                                                  image: FileImage(capturedimagepromotion),
-                                                ),
+                                        isSwitched != true
+                                            ? Row(
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.all(10),
+                                                    child:
+                                                        // ignore: unrelated_type_equality_checks
+                                                        capturedimagepromotion
+                                                                    .toString() !=
+                                                                'File: \'dummy.txt\''
+                                                            ? GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (BuildContext context) => PreveiwScreen(
+                                                                                input: capturedimagepromotion,
+                                                                              )));
+                                                                },
+                                                                child: Image(
+                                                                  height: 50,
+                                                                  width: 50,
+                                                                  image: FileImage(
+                                                                      capturedimagepromotion),
+                                                                ),
+                                                              )
+                                                            : Image(
+                                                                width: 50,
+                                                                image: AssetImage(
+                                                                    'images/capture.png'),
+                                                              ),
+                                                  ),
+                                                  IconButton(
+                                                      icon: Icon(
+                                                        CupertinoIcons
+                                                            .photo_camera_solid,
+                                                        color: Colors.grey[700],
+                                                      ),
+                                                      onPressed: () {
+                                                        _showSelectionDialog(
+                                                            context);
+                                                      }),
+                                                ],
                                               )
-                                                  : Image(
-                                                width: 50,
-                                                image: AssetImage('images/capture.png'),
-                                              ),
-                                            ),
-                                            IconButton(
-                                                icon: Icon(
-                                                  CupertinoIcons.photo_camera_solid,
-                                                  color: Colors.grey[700],
-                                                ),
-                                                onPressed: () {
-                                                  _showSelectionDialog(context);
-                                                }),
-                                          ],
-                                        ) : SizedBox(height: 50, child: DropdownButton(
-                                              elevation: 0,
-                                              dropdownColor: Colors.white,
-                                              underline: SizedBox(),
-                                              //isExpanded: true,
-                                              iconEnabledColor: orange,
-                                              iconSize: 35.0,
-                                              value: Selectedreason,
-                                              onChanged: (newVal){
-                                                setState(() {
-                                                  Selectedreason = newVal;
-                                                  });
-                                              },
-                                              items: DropDownItems,
-                                              hint: Text("Select Reason",style: TextStyle(color: Colors.black),),
-                                            )),
+                                            : SizedBox(
+                                                height: 50,
+                                                child: DropdownButton(
+                                                  elevation: 0,
+                                                  dropdownColor: Colors.white,
+                                                  underline: SizedBox(),
+                                                  //isExpanded: true,
+                                                  iconEnabledColor: orange,
+                                                  iconSize: 35.0,
+                                                  value: Selectedreason,
+                                                  onChanged: (newVal) {
+                                                    setState(() {
+                                                      Selectedreason = newVal;
+                                                    });
+                                                  },
+                                                  items: DropDownItems,
+                                                  hint: Text(
+                                                    "Select Reason",
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                )),
                                       ],
                                     ),
                                   )
                                 ],
-
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
+                    TextButton(
+                        onPressed: ()async {
+                        AddPromo.productid = [];
+                        AddPromo.reason = [];
+                        AddPromo.checkvalue = [];
+                        AddPromo.productid.add(PromoData.productid[PromoData.productname.indexOf(selectedproduct)]);
+                        AddPromo.checkvalue.add(isSwitched != true ?1 : 0);
+                        var imagebytes = capturedimagepromotion.readAsBytesSync();
+                        AddPromo.reason.add(isSwitched != true ?
+                        'data:image/jpeg;base64,${base64Encode(imagebytes)}'
+                            : '$Selectedreason');
+                        await addPromotion();
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(pink)),
+                        child: Text(
+                          "SAVE",
+                          style: TextStyle(color: orange),
+                        ))
                   ],
                 ),
               ),
@@ -271,7 +321,7 @@ Future<void> _showSelectionDialog(BuildContext context) {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      Selectedscreen ="PromotionCheck";
+                      Selectedscreen = "PromotionCheck";
                       WidgetsFlutterBinding.ensureInitialized();
 
                       // Obtain a list of the available cameras on the device.
@@ -283,8 +333,7 @@ Future<void> _showSelectionDialog(BuildContext context) {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  TakePictureScreen(
-                                  )));
+                                  TakePictureScreen()));
                     },
                     child: Container(
                       color: Colors.white,
@@ -354,7 +403,6 @@ Future<void> _showSelectionDialog(BuildContext context) {
       });
 }
 
-
 class PreveiwScreen extends StatelessWidget {
   PreveiwScreen({@required this.input});
   File input;
@@ -373,12 +421,12 @@ class PreveiwScreen extends StatelessWidget {
               width: double.infinity,
               child: PhotoView(
                   loadingBuilder: (context, event) => Center(
-                    child: Container(
-                      width: 40.0,
-                      height: 40.0,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
                   imageProvider: FileImage(input)),
             ),
           ),
@@ -388,14 +436,14 @@ class PreveiwScreen extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton(
                   backgroundColor: pink,
-                  child: Icon(Icons.check,size: 35,color: orange),
-                  onPressed:(){
+                  child: Icon(Icons.check, size: 35, color: orange),
+                  onPressed: () {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (BuildContext context) => PromotionCheck()));
-                  }
-              ),
+                            builder: (BuildContext context) =>
+                                PromotionCheck()));
+                  }),
             ),
           )
         ],

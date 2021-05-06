@@ -82,12 +82,14 @@ class _ShareShelfState extends State<ShareShelf> {
                 AddShareData.brandid = ShareData.brandid;
                 AddShareData.outletid = outletrequestdata.outletidpressed;
                 AddShareData.timesheetid = checkinoutdata.checkid;
-                AddShareData.totalshare = ShareData.total;
-                AddShareData.share = ShareData.share;
+                AddShareData.totalshare = ['6'];//ShareData.total;
+                AddShareData.share = ['4.5'];//ShareData.share;
                 AddShareData.target = ShareData.target;
                 AddShareData.actual=[];
                 for(int i=0;i<productlist.length;i++){
-                  AddShareData.actual.add(actual[i].text);
+                 AddShareData.actual.add(actual[i].text);
+
+
                 }
 
                 await addShareofshelfdata();
@@ -96,6 +98,7 @@ class _ShareShelfState extends State<ShareShelf> {
                 print(AddShareData.brandid);
                 print(AddShareData.timesheetid);
                 print(AddShareData.actual);
+                print('target is: ${AddShareData.target}');
 
                 if(validateform()==true)
                 Navigator.pushReplacement(
@@ -184,7 +187,7 @@ class _ShareShelfState extends State<ShareShelf> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("Total: ${total[index]} meters",style: TextStyle(
+                        Text("Total: ${total[index]}",style: TextStyle(
                             fontSize: 15.0
                         )),
                         SizedBox(height: 10,),

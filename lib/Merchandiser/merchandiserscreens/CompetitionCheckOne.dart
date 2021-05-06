@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
 import 'CompetitonCheckTwo.dart';
 import 'MenuContent.dart';
+import 'dart:convert';
 import '../../Constants.dart';
 import 'package:photo_view/photo_view.dart';
 import 'dart:io';
@@ -45,6 +46,7 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
             Spacer(),
             SubmitButton(
               onpress: () async{
+                var imagesbytes =capturedimage.readAsBytesSync();
                 if (validateform() == true) {
                   if (selectcompanydropdown != null &&
                       selectpromotiondropdown != null &&
@@ -56,6 +58,8 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                     AddCompData.promotype = selectpromotiondropdown;
                     AddCompData.mrp = mrp.text;
                     AddCompData.sellingprice = sellingprice.text;
+                    AddCompData.promodesc =promodescptn;
+                    AddCompData.captureimg ='data:image/jpeg;base64,${base64Encode(imagesbytes)}';
 
                     await addCompetition();
 
@@ -170,15 +174,38 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: DropdownSelectPromotion()),
-                              promodescptn != null ? Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                padding: EdgeInsets.only(left:10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Text(promodescptn),
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: DropdownButton(
+                                      underline: SizedBox(),
+                                      elevation: 0,
+                                      dropdownColor: Colors.white,
+                                      isExpanded: true,
+                                      iconEnabledColor: orange,
+                                      iconSize: 35.0,
+                                      value: selectpromotiondropdown,
+                                      onChanged: (newVal) {
+                                        setState(() {
+                                          selectpromotiondropdown = newVal;
+                                          promodescptn =  competitiondata.descrptn[competitiondata.promotion.indexOf(newVal)];
+                                        });
+
+                                      },
+                                      items: competitiondata.promotion.toSet().toList().map((String val) {
+                                        return new DropdownMenuItem<String>(
+                                          value: val,
+                                          child: new Text(val),
+                                        );
+                                      }).toList(),
+                                      hint: Text(
+                                        "Select Promotion Type",
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ),
+                                  ),),
+                              promodescptn != null ? Padding(
+                                padding: const EdgeInsets.only(left:10.0,top:10.0),
+                                child: Text('Promotion Description : $promodescptn',style: TextStyle(color: orange),),
                               ):SizedBox(),
                               Container(
                                 margin: EdgeInsets.only(top: 10.0),
@@ -463,13 +490,13 @@ Future<void> _showSelectionDialog(BuildContext context) {
 
 
 
+var promodescptn;
 class DropdownSelectCompany extends StatefulWidget {
   @override
   _DropdownSelectCompanyState createState() => _DropdownSelectCompanyState();
 }
 
 String selectcompanydropdown;
-var promodescptn;
 
 class _DropdownSelectCompanyState extends State<DropdownSelectCompany> {
   static List DropDownItems =  competitiondata.company.toSet().toList().map((String val) {
@@ -550,48 +577,11 @@ class _DropdownSelectBrandState extends State<DropdownSelectBrand> {
   }
 }
 
-class DropdownSelectPromotion extends StatefulWidget {
-  @override
-  _DropdownSelectPromotionState createState() =>
-      _DropdownSelectPromotionState();
-}
+
 
 String selectpromotiondropdown;
 
-class _DropdownSelectPromotionState extends State<DropdownSelectPromotion> {
-  static List DropDownItems =  competitiondata.promotion.toSet().toList().map((String val) {
-    return new DropdownMenuItem<String>(
-      value: val,
-      child: new Text(val),
-    );
-  }).toList();
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: DropdownButton(
-        underline: SizedBox(),
-        elevation: 0,
-        dropdownColor: Colors.white,
-        isExpanded: true,
-        iconEnabledColor: orange,
-        iconSize: 35.0,
-        value: selectpromotiondropdown,
-        onChanged: (newVal) {
-          setState(() {
-            selectpromotiondropdown = newVal;
-          });
-        },
-        items: DropDownItems,
-        hint: Text(
-          "Select Promotion Type",
-          style: TextStyle(color: Colors.grey),
-        ),
-      ),
-    );
-  }
-}
 
 class SubmitButton extends StatelessWidget {
   SubmitButton({@required this.onpress});

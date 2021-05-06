@@ -15,14 +15,15 @@ class AddShareData{
 
 Future addShareofshelfdata() async{
   Map addshare = {
-    'outlet_id' : '${AddShareData.outletid}',
-    'timesheet_id' : '${AddShareData.timesheetid}',
-    'brand_id' : '${AddShareData.brandid}',
-    'total_share' : '${AddShareData.totalshare}',
-    'share' : '${AddShareData.share}',
-    'target' : '${AddShareData.target}',
-    'actual' : '${AddShareData.actual}',
+    'outlet_id' : currentoutletid,
+    'timesheet_id' : currenttimesheetid,
+    'brand_id' :AddShareData.brandid,
+    'total_share' : AddShareData.totalshare,
+    'share' : AddShareData.share,
+    'target' : AddShareData.target,
+    'actual' : AddShareData.actual,
    };
+  print(jsonEncode(addshare));
   http.Response shareresponse = await http.post(AddShareofshelf,
     headers: {
       'Content-Type': 'application/json',
@@ -32,7 +33,4 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
-
-  print("Add Share of Shelf Done");
-  print(addshare);
 }
