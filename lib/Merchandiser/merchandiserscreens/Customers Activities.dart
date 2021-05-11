@@ -129,8 +129,12 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         chartext: 'Share of Shelf',
                         tap: () {
                           actualpercent=[];
-                          for (int i = 0; i < ShareData.share.length; i++) {
+                          totalshare=[];
+                          totalshelf = [];
+                          for (int i = 0; i < ShareData.target.length; i++) {
                             actualpercent.add(0.0);
+                            totalshare.add(0.0);
+                            totalshelf.add(0.0);
                           }
                           Navigator.of(context).push(
                             MaterialPageRoute(

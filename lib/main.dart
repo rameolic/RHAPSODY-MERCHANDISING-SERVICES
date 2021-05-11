@@ -1,4 +1,4 @@
-
+import 'api/HRapi/empdetailsforreportapi.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 
 import 'model/database.dart';
@@ -37,7 +37,8 @@ Future<void> main() async {
       await DBRequestdaily();
       await getLocation();
       await callfrequently();
-       getempdetails();
+      getempdetails();
+      getempdetailsforreport();
       getstockexpiryproducts();
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',

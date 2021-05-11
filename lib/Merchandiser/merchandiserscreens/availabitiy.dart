@@ -14,7 +14,8 @@ String Selectedtype = "SKU";
 
 String selecttype;
 
-
+List<int> shuffledchecklist=Avaiablity.checkvalue;
+List<String>shuffledreasons=Avaiablity.reason;
 List<String> categories = Distintcategory;
 List<String> Brands  = Distintbrands;
 String Selectedcategory;
@@ -27,6 +28,15 @@ class AvailabilityScreen extends StatefulWidget {
 }
 
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
+  // @override
+  //  Void initState() {
+  //   super.initState();
+  //   bool value =  shuffledchecklist[defaulflist.indexOf(widget.item)] == 1 ? false:true;
+  //  // bool value = outofStockitems.contains(widget.item) == true ? true : false;
+  //   setState(() {
+  //     isSwitched = value;
+  //   });
+  // }
 
   List<bool> isSelected;
   var _searchview = new TextEditingController();
@@ -112,6 +122,8 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       if(Avaiablity.category[i] == Selectedcategory){
                                         print(Avaiablity.productname[i]);
                                         InputList.add(Avaiablity.productname[i]);
+                                        shuffledchecklist.add(Avaiablity.checkvalue[i]);
+                                        shuffledreasons.add(Avaiablity.reason[i]);
                                       }
                                     }
                                   }else{
@@ -120,6 +132,8 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
                                         print(Avaiablity.productname[i]);
                                         InputList.add(Avaiablity.productname[i]);
+                                        shuffledchecklist.add(Avaiablity.checkvalue[i]);
+                                        shuffledreasons.add(Avaiablity.reason[i]);
                                       }
                                     }
                                   }
@@ -261,7 +275,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
               ),
               child: SingleChildScrollView(
                 child: new ListView.builder(
-                  shrinkWrap: true,
+                    shrinkWrap: true,
                     itemCount: InputList.length,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
@@ -275,19 +289,19 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                               width: MediaQuery.of(context).size.width/2.1,
                               decoration: index != InputList.length-1 ? BoxDecoration(
 
-                                border: Border(
-                                  right: BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),
-                                  bottom:BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),
-                                )
+                                  border: Border(
+                                    right: BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                    bottom:BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                  )
                               ):BoxDecoration(
-                                border: Border(
-                                  right: BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),)
+                                  border: Border(
+                                    right: BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),)
                               ),
                               child: Align(
                                 alignment: Alignment.center,
@@ -299,7 +313,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                               ),
                             ),
                             Container(
-                              height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
+                                height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
                                 decoration:index != InputList.length-1 ? BoxDecoration(
                                   border: Border(
                                     bottom:BorderSide( //                   <--- left side
@@ -307,10 +321,56 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                     ),
                                   ),):BoxDecoration(
                                 ),
-                                child: ToggleSwitch(
-                                  item: InputList[index],
-                                ))
-                          ],
+                                child:Row(
+                                  children: [
+                                    Container(
+                                      width: 70,
+                                      margin: EdgeInsets.only(right:5.0),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide( //                   <--- left side
+                                            color: Colors.black,
+                                          ),),),
+                                      child: Switch(
+                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 1 ? false:true,
+                                        // value: isSwitched,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isSwitched = value;
+                                            isSwitched == true ? shuffledchecklist[defaulflist.indexOf(InputList[index])]=0 : shuffledchecklist[defaulflist.indexOf(InputList[index])]=1;
+                                            isSwitched == true ? Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])]=0 : Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])]=1;
+                                            print(Avaiablity.checkvalue);
+                                            //isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
+                                          });
+                                        },
+                                        inactiveTrackColor: Colors.green,
+                                        activeColor: Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child:  Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 0 ? DropdownButton(
+                                          elevation: 0,
+                                          dropdownColor: Colors.white,
+                                          isExpanded: true,
+                                          iconEnabledColor: orange,
+                                          iconSize: 35.0,
+                                          value:  reasons[Avaiablity.productname.indexOf(InputList[index])] =="" ?null:reasons[Avaiablity.productname.indexOf(InputList[index])],
+                                          onChanged: (newVal){
+                                            setState(() {
+                                              selectedreason = newVal;
+                                              reasons[defaulflist.indexOf(InputList[index])] = newVal;
+                                              Avaiablity.reason[Avaiablity.productname.indexOf(InputList[index])]=newVal;
+                                            });
+                                          },
+                                          items: DropDownItems,
+                                          hint: Text( Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]==''?"Select Reason":"${ Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]}",style: TextStyle(color: Colors.black),),
+                                        ) : SizedBox()
+                                    ),
+                                  ],
+                                )
+                            )],
                         ),
                       );
                     }),
@@ -334,104 +394,154 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
   }
 
   Widget _createFilteredListView() {
-    return new Flexible(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
-              decoration: BoxDecoration(
-                color: orange,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    topRight: Radius.circular(10.0)),
-              ),
-              height: 40.0,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left:20),
-                    child: Text(
-                      "Item/Description",
-                      style:
-                      TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right:20.0),
-                    child: Text(
-                      " Avl",
-                      style:
-                      TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 10.0, left: 10, right: 10),
+            decoration: BoxDecoration(
+              color: orange,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0)),
             ),
-            Container(
+            height: 40.0,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left:20),
+                  child: Text(
+                    "Item/Description",
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right:20.0),
+                  child: Text(
+                    " Avl",
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.all(5.0),
               margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
               decoration: BoxDecoration(
                 color: pink,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
               ),
-              child: new ListView.builder(
-                 shrinkWrap: true,
-                  itemCount: _filterList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width/2,
-                            decoration: index != _filterList.length-1 ? BoxDecoration(
-                                border: Border(
-                                  right: BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),
-                                  bottom:BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),
+              child: SingleChildScrollView(
+                child: new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _filterList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width/2.1,
+                              decoration: index != _filterList.length-1 ? BoxDecoration(
+
+                                  border: Border(
+                                    right: BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                    bottom:BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                  )
+                              ):BoxDecoration(
+                                  border: Border(
+                                    right: BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),)
+                              ),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${_filterList[index]}',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 16.0),
+                                ),
+                              ),
+                            ),
+                            Container(
+                                height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
+                                decoration:index != _filterList.length-1 ? BoxDecoration(
+                                  border: Border(
+                                    bottom:BorderSide( //                   <--- left side
+                                      color: Colors.black,
+                                    ),
+                                  ),):BoxDecoration(
+                                ),
+                                child:Row(
+                                  children: [
+                                    Container(
+                                      width: 70,
+                                      margin: EdgeInsets.only(right:5.0),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          right: BorderSide( //                   <--- left side
+                                            color: Colors.black,
+                                          ),),),
+                                      child: Switch(
+                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])] == 1 ? false:true,
+                                        // value: isSwitched,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            isSwitched = value;
+                                            isSwitched == true ? shuffledchecklist[defaulflist.indexOf(_filterList[index])]=0 : shuffledchecklist[defaulflist.indexOf(_filterList[index])]=1;
+
+                                            isSwitched == true ? Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])]=0 : Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])]=1;
+                                            //isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
+                                          });
+                                        },
+                                        inactiveTrackColor: Colors.green,
+                                        activeColor: Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        height: 50,
+                                        width: 100,
+                                        child: Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])] == 0 ? DropdownButton(
+                                          elevation: 0,
+                                          dropdownColor: Colors.white,
+                                          isExpanded: true,
+                                          iconEnabledColor: orange,
+                                          iconSize: 35.0,
+                                          value:reasons[Avaiablity.productname.indexOf(_filterList[index])] =="" ?null:reasons[Avaiablity.productname.indexOf(_filterList[index])],
+                                          onChanged: (newVal){
+                                            setState(() {
+                                              selectedreason = newVal;
+                                              reasons[defaulflist.indexOf(_filterList[index])] = newVal;
+                                              Avaiablity.reason[Avaiablity.productname.indexOf(_filterList[index])]=newVal;
+                                            });
+                                          },
+                                          items: DropDownItems,
+                                          hint: Text(Avaiablity.reason[ Avaiablity.productname.indexOf(_filterList[index])]==''?"Select Reason":"${Avaiablity.reason[ Avaiablity.productname.indexOf(_filterList[index])]}",style: TextStyle(color: Colors.black),),
+                                        ) : SizedBox()
+                                    ),
+                                  ],
                                 )
-                            ):BoxDecoration(
-                                border: Border(
-                                  right: BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),)
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                '${_filterList[index]}',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 16.0),
-                              ),
-                            ),
-                          ),
-                          Container(
-                              height: 50, //width: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.25)),
-                              decoration:index != _filterList.length-1 ? BoxDecoration(
-                                border: Border(
-                                  bottom:BorderSide( //                   <--- left side
-                                    color: Colors.black,
-                                  ),
-                                ),):BoxDecoration(
-                              ),
-                              child: ToggleSwitch(
-                                item: _filterList[index],
-                              )),
-                        ],
-                      ),
-                    );
-                  }),
+                            )],
+                        ),
+                      );
+                    }),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -447,26 +557,14 @@ class SubmitButton extends StatelessWidget {
         AddAvail.categoryname=[];
         AddAvail.productname=[];
         AddAvail.productid = [];
-        AddAvail.reason = reasons;
+        AddAvail.reason = [];
         AddAvail.checkvalue = [];
-        // for(int i=0;i<Avaiablity.productid.length;i++){
-        //   // AddAvail.brandname.add("\"${Avaiablity.brand[i]}\"");
-        //   // AddAvail.categoryname.add("\"${Avaiablity.category[i]}\"");
-        //   // AddAvail.productname.add("\"${Avaiablity.productname[i]}\"");
-        //  // ignore: unrelated_type_equality_checks
-        //   if(reasons != ""){
-        //     AddAvail.reason.add("${reasons[i]}");
-        //   }else{
-        //     AddAvail.reason.add(',');
-        //   }
-        // }
-
         AddAvail.brandname =Avaiablity.brand;
         AddAvail.categoryname=Avaiablity.category;
         AddAvail.productname=Avaiablity.productname;
         AddAvail.productid = Avaiablity.productid;
-        AddAvail.reason = reasons;
-        AddAvail.checkvalue = outofStockitems;
+        AddAvail.reason = Avaiablity.reason;
+        AddAvail.checkvalue = Avaiablity.checkvalue;
         await addAvailability();
         Navigator.pushReplacement(
             context,
@@ -489,77 +587,80 @@ class SubmitButton extends StatelessWidget {
   }
 }
 
+String selectedreason;
+List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock","Not Listed"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
 
-class ToggleSwitch extends StatefulWidget {
-  ToggleSwitch({this.item});
-   final item;
-  @override
-  _ToggleSwitchState createState() => _ToggleSwitchState();
-}
-
-class _ToggleSwitchState extends State<ToggleSwitch> {
-  String selectedreason;
-  List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
-
-   bool isSwitched;
-  @override
-   Void initState() {
-    super.initState();
-    bool value = outofStockitems.contains(widget.item) == true ? true : false;
-    setState(() {
-      isSwitched = value;
-    });
-  }
- // bool isSwitched = false;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 70,
-          margin: EdgeInsets.only(right:5.0),
-          decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide( //                   <--- left side
-                color: Colors.black,
-              ),),),
-          child: Switch(
-            value: isSwitched,
-            onChanged: (value) {
-              setState(() {
-                isSwitched = value;
-                isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
-                print(outofStockitems);
-              });
-            },
-            inactiveTrackColor: Colors.green,
-            activeColor: Colors.red,
-          ),
-        ),
-        SizedBox(
-          height: 50,
-          width: 100,
-          child: isSwitched == true ? DropdownButton(
-            elevation: 0,
-            dropdownColor: Colors.white,
-            isExpanded: true,
-            iconEnabledColor: orange,
-            iconSize: 35.0,
-            value: selectedreason,
-            onChanged: (newVal){
-              setState(() {
-                selectedreason = newVal;
-                reasons[Avaiablity.productname.indexOf(widget.item)] = newVal;
-              });
-            },
-            items: DropDownItems,
-            hint: Text("Select Reason",style: TextStyle(color: Colors.black),),
-          ) : SizedBox()
-        ),
-      ],
-    );
-  }
-}
+bool isSwitched;
+// class TogglseSwitch extends StatefulWidget {
+//   ToggleSwitch({this.item});
+//    final item;
+//   @override
+//   _ToggleSwitchState createState() => _ToggleSwitchState();
+// }
+//
+// class _ToggleSwitchState extends State<ToggleSwitch> {
+//
+//   @override
+//    Void initState() {
+//     super.initState();
+//     bool value =  shuffledchecklist[defaulflist.indexOf(widget.item)] == 1 ? false:true;
+//    // bool value = outofStockitems.contains(widget.item) == true ? true : false;
+//     setState(() {
+//       isSwitched = value;
+//     });
+//   }
+//  // bool isSwitched = false;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         Container(
+//           width: 70,
+//           margin: EdgeInsets.only(right:5.0),
+//           decoration: BoxDecoration(
+//             border: Border(
+//               right: BorderSide( //                   <--- left side
+//                 color: Colors.black,
+//               ),),),
+//           child: Switch(
+//             value: isSwitched,
+//             onChanged: (value) {
+//               setState(() {
+//                 isSwitched = value;
+//                 isSwitched == true ? shuffledchecklist[defaulflist.indexOf(widget.item)]=0 : Avaiablity.checkvalue[defaulflist.indexOf(widget.item)]=1;
+//
+//                 //isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
+//                 print(outofStockitems);
+//               });
+//             },
+//             inactiveTrackColor: Colors.green,
+//             activeColor: Colors.red,
+//           ),
+//         ),
+//         SizedBox(
+//           height: 50,
+//           width: 100,
+//           child: isSwitched == true ? DropdownButton(
+//             elevation: 0,
+//             dropdownColor: Colors.white,
+//             isExpanded: true,
+//             iconEnabledColor: orange,
+//             iconSize: 35.0,
+//             value: selectedreason,
+//             onChanged: (newVal){
+//               setState(() {
+//                 selectedreason = newVal;
+//                 reasons[Avaiablity.productname.indexOf(widget.item)] = newVal;
+//               });
+//             },
+//             items: DropDownItems,
+//             hint: Text(shuffledreasons[defaulflist.indexOf(widget.item)]==''?"Select Reason":"${shuffledreasons[defaulflist.indexOf(widget.item)]}",style: TextStyle(color: Colors.black),),
+//           ) : SizedBox()
+//         ),
+//       ],
+//     );
+//   }
+// }
 List<String>reasons=[];
 
 List<int> outofStockitems = [];

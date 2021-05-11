@@ -174,10 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                                         if (userroleid == 6) {
                                           var DBMresult = await DBRequestmonthly();
                                           var DBDresult = await DBRequestdaily();
-                                          print('here1');
                                           await getLocation();
                                           await callfrequently();
-                                          print('here 2');
                                           await getempdetails();
                                           getstockexpiryproducts();
                                            getempdetailsforreport();

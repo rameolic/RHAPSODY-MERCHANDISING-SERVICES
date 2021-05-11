@@ -15,6 +15,11 @@ class Myprofile extends StatefulWidget {
 }
 
 class _MyprofileState extends State<Myprofile> {
+  @override
+  void initState() {
+    ischatscreen = 0;
+    print('chatscreen fromprofile = $ischatscreen');
+  }
   TextEditingController currentpasswordcontroller = TextEditingController();
   TextEditingController newpasswordcontroller = TextEditingController();
   TextEditingController newpasswordv2controller = TextEditingController();

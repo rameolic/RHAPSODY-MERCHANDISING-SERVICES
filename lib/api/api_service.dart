@@ -81,6 +81,8 @@ Uri MercViewUpdtPromo = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_vie
 Uri MercAddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_add_promotion__details");
 Uri PromoDetails = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_promotion_details");
 
+int ischatscreen;
+bool newmsgavaiable = false;
 var currenttimesheetid;
 var fieldmanagernameofcurrentmerch;
 var fieldmanagerofcurrentmerch;

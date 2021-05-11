@@ -10,6 +10,7 @@ import 'package:merchandising/api/api_service.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/model/notifications.dart';
 final menuitemscolor = Colors.black54;
 
 class DrawerHeaderinfo extends StatelessWidget {
@@ -135,7 +136,12 @@ class Menu extends StatelessWidget {
             title: 'Notifications',
             icon: Icons.notifications,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => NotificationsScreen()));
+          },
         ),
         ListTile(
           title: MenuElements(

@@ -17,7 +17,7 @@ class selected {
   static int index;
 }
 List<int>checkvaluevisibility =[];
-List<String> listitems = VisibilityData.productname;
+List<String> listitems = VisibilityData.categoryname;
 List<File> images = [];
 
 class VisibilityOne extends StatefulWidget {
@@ -118,7 +118,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                 focusColor: orange,
-                hintText: 'Search by Product Name',
+                hintText: 'Search by Brand Name',
                 hintStyle: TextStyle(color: orange),
                 border: InputBorder.none,
                 icon: Icon(
@@ -146,7 +146,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
     return new Flexible(
       child: new ListView.builder(
           shrinkWrap: true,
-          itemCount: listitems.length,
+          itemCount: VisibilityData.categoryname.length,
           itemBuilder: (BuildContext context, int index) {
             return new Container(
               padding: EdgeInsets.all(10.00),
@@ -190,10 +190,10 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width/1.7,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:10.0),
                           child: new Text(
-                            "${listitems[index]}",
+                            "${VisibilityData.categoryname[index]}",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -227,8 +227,8 @@ class _VisibilityOneState extends State<VisibilityOne> {
 
   Widget _performSearch() {
     _filterList = [];
-    for (int i = 0; i < listitems.length; i++) {
-      var item = listitems[i];
+    for (int i = 0; i < VisibilityData.categoryname.length; i++) {
+      var item = VisibilityData.categoryname[i];
 
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);

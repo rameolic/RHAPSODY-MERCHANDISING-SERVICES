@@ -20,15 +20,18 @@ Future<void> getPlanogram() async {
     PlanoDetails.beforeimage = [];
     PlanoDetails.afterimage = [];
     PlanoDetails.brandname = [];
+    PlanoDetails.categoryname = [];
     print('Planogram Details done');
     String planobody = PlanoResponse.body;
     var decodeddata = jsonDecode(planobody);
     for (int u = 0; u< decodeddata['data'].length; u++) {
       PlanoDetails.image.add('${decodeddata['data'][u]['planogram_img']}');
-      PlanoDetails.imageurl.add('https://rms2.rhapsody.ae/product_image/${decodeddata['data'][u]['planogram_img']}');
+      //PlanoDetails.imageurl.add('https://rms2.rhapsody.ae/plano_image/${decodeddata['data'][u]['planogram_img']}');
+      PlanoDetails.imageurl.add("https://rms2.rhapsody.ae/planogram_image/1619431232.tang_planogram.png");
       PlanoDetails.brandname.add(decodeddata['data'][u]['brand_name']);
       PlanoDetails.opm.add(decodeddata['data'][u]['opm']);
       PlanoDetails.brandid.add(decodeddata['data'][u]['BID']);
+      PlanoDetails.categoryname.add(decodeddata['data'][u]['c_name']);
     }
 
 
@@ -43,6 +46,7 @@ class PlanoDetails{
   static List<String> beforeimage = [];
   static List<String> afterimage = [];
   static List<String> brandname = [];
+  static List<String> categoryname = [];
   static List<String> image = [];
   static List<int> opm = [];
   static List<int> brandid = [];

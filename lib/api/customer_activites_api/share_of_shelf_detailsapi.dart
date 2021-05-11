@@ -17,9 +17,10 @@ Future<void> getShareofshelf() async {
   if (shareresponse.statusCode == 200) {
     print(body);
     ShareData.brandname = [];
+    ShareData.categoryname = [];
     ShareData.brandid = [];
-    ShareData.share = [];
-    ShareData.total = [];
+    ShareData.share = ['4.5','3','3.5','2.5'];
+    ShareData.total = ['6','5','4','5.4'];
     ShareData.target = [];
     ShareData.actual = [];
 
@@ -30,6 +31,7 @@ Future<void> getShareofshelf() async {
     for (int u = 0; u< decodeddata['data'].length; u++) {
 
       ShareData.brandname.add(decodeddata['data'][u]['b_name']);
+      ShareData.categoryname.add(decodeddata['data'][u]['c_name']);
       ShareData.brandid.add(decodeddata['data'][u]['b_id']);
       ShareData.share.add(decodeddata['data'][u]['share']);
       ShareData.target.add(decodeddata['data'][u]['target']);
@@ -44,6 +46,7 @@ Future<void> getShareofshelf() async {
 
 class ShareData{
   static List<String> brandname = [];
+  static List<String> categoryname = [];
   static List<String> share = [];
   static List<String> total=[];
   static List<String> target=[];

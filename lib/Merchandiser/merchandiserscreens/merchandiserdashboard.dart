@@ -43,8 +43,14 @@ class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
 }
-@override
+
 class _DashBoardState extends State<DashBoard> {
+  @override
+  void initState() {
+    ischatscreen = 0;
+    print("chatscreen from dshbrd: $ischatscreen");
+    //super.initState();
+  }
   bool isApiCallProcess = false;
   bool pressAttentionMTB = false;
   bool pressAttentionTODAY = true;
@@ -615,6 +621,8 @@ class _DashBoardState extends State<DashBoard> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
+                          ischatscreen =1;
+                          newmsgavaiable = false;
                           chat.receiver = fieldmanagerofcurrentmerch;
                         });
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
@@ -627,13 +635,20 @@ class _DashBoardState extends State<DashBoard> {
                           borderRadius: BorderRadius.circular(10.0),
                           color: containerscolor,
                         ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          child: Stack(
                             children: [
-                              Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
-                              Text("HQ Communication",textAlign: TextAlign.center,),
-
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
+                                  Text("HQ Communication",textAlign: TextAlign.center,),
+                                ],
+                              ),
+                              newmsgavaiable ? Align(
+                                alignment: Alignment.topRight,
+                                child: Icon(CupertinoIcons.bell_solid,color: Colors.red,size: 20,),
+                              ) : SizedBox(),
                             ],
                           ),
                       ),

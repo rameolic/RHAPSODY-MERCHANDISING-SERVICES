@@ -5,12 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/main.dart';
-
-
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/model/notifications.dart';
 class chat{
   static String receiver;
 }
-
+bool firstopen=true;
 //receiver sender
 String receiver = currentuser.roleid ==  5 ? chat.receiver : "Emp5906";
 
@@ -63,6 +63,17 @@ class _ChatScreenState extends State<ChatScreen> {
                             final messagetext = message.data()['text'];
                             final messagesender = message.data()['sender'];
                             final time = message.data()['time'];
+                            print("chatscreen : $ischatscreen");
+                            if(ischatscreen == 0 && firstopen==false&& messagesender != '${DBrequestdata.receivedempid}'){
+                              newmsgavaiable=true;
+                              notification.add('New message from $fieldmanagernameofcurrentmerch');
+                              notitime.add('${DateFormat("h:mma").format(DateTime.now())}');
+                              notimsg.add(messagetext);
+                            }
+                            if(firstopen){
+                              firstopen = false;
+                            }
+                            ischatscreen == 0 ? newmsgavaiable = true : newmsgavaiable = false;
                             final messageWidget =
                             messagesender == '${DBrequestdata.receivedempid}' ?
                             Row(

@@ -751,7 +751,17 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                       },
                       backgroundColor: orange,
                       elevation: 10.0,
-                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,),
+                      child: Stack(
+                        children: [
+                          Center(child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,)),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Icon(CupertinoIcons.bell_solid,color: Colors.red,size:20,)),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
