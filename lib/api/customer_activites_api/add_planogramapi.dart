@@ -7,8 +7,7 @@ class AddPlanoData{
   static var outletid;
   static var timesheetid;
   static List<dynamic> outletpdtmapid=[];
-  static List<dynamic> brandid=[];
-  static List<dynamic> brandname=[];
+  static List<dynamic> categoryid=[2];
   static List<dynamic> planoimage=[];
   static List<dynamic> beforeimage = [];
   static List<dynamic> afterimage = [];
@@ -21,9 +20,8 @@ Future addPlanogramdata() async{
     "outlet_id" : AddPlanoData.outletid,
     "timesheet_id" : AddPlanoData.timesheetid,
     "outlet_products_mapping_id" : AddPlanoData.outletpdtmapid,
-    "brand_id" : AddPlanoData.brandid,
-    "brand_name" : AddPlanoData.brandname,
     "category_name": AddPlanoData.categoryname,
+    "category_id":AddPlanoData.categoryid,
     "plano_image" : AddPlanoData.planoimage,
     "before_image" : AddPlanoData.beforeimage,
     "after_image" : AddPlanoData.afterimage,
@@ -40,6 +38,6 @@ Future addPlanogramdata() async{
   print(jsonEncode(addplano));
   print(planoresponse.body);
 
-  // print("Add Planogram Done");
+  print("Add Planogram Done");
 
 }

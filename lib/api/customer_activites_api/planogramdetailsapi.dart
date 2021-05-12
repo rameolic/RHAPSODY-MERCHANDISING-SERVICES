@@ -21,6 +21,8 @@ Future<void> getPlanogram() async {
     PlanoDetails.afterimage = [];
     PlanoDetails.brandname = [];
     PlanoDetails.categoryname = [];
+    PlanoDetails.categoryid = [];
+
     print('Planogram Details done');
     String planobody = PlanoResponse.body;
     var decodeddata = jsonDecode(planobody);
@@ -32,6 +34,8 @@ Future<void> getPlanogram() async {
       PlanoDetails.opm.add(decodeddata['data'][u]['opm']);
       PlanoDetails.brandid.add(decodeddata['data'][u]['BID']);
       PlanoDetails.categoryname.add(decodeddata['data'][u]['c_name']);
+      PlanoDetails.categoryid.add(decodeddata['data'][u]['c_id']);
+
     }
 
 
@@ -50,6 +54,7 @@ class PlanoDetails{
   static List<String> image = [];
   static List<int> opm = [];
   static List<int> brandid = [];
+  static List<int> categoryid = [];
 }
 
 

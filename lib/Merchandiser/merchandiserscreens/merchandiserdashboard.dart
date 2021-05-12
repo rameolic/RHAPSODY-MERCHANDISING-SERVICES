@@ -94,6 +94,7 @@ class _DashBoardState extends State<DashBoard> {
                   print(gettodayjp.checkintime);
                   print(gettodayjp.checkouttime);
                   print(gettodayjp.status);
+                  workingid=null;
 
                   for(int u =0;u<gettodayjp.status.length;u++){
                     if(gettodayjp.status[u]=="working"){

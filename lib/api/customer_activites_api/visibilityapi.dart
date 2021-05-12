@@ -38,10 +38,13 @@ Future<void> getVisibility() async {
       VisibilityData.productid.add(decodeddata['data'][u]['product_id']);
       VisibilityData.mappingid = decodeddata['data'][u]['outlet_products_mapping_id'];
     }
-    await getBrandDetails();
-    VisibilityData.brandid=[];
-    for(int u = 0; u<VisibilityData.brandname.length; u++){
-      VisibilityData.brandid.add(BrandData.brandid[BrandData.brandname.indexOf(VisibilityData.brandname[u])]);
+    if(VisibilityData.brandname[0]!=null){
+      await getBrandDetails();
+      VisibilityData.brandid=[];
+      for(int u = 0; u<VisibilityData.brandname.length; u++){
+        print(VisibilityData.brandname[u]);
+        VisibilityData.brandid.add(BrandData.brandid[BrandData.brandname.indexOf(VisibilityData.brandname[u])]);
+      }
     }
   }
 

@@ -6,16 +6,19 @@ import 'Customers Activities.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
+import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'dart:io';
 import 'package:merchandising/model/camera.dart';
 import 'package:camera/camera.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/customer_activites_api/add_visibilityapi.dart';
+
 class selected {
   static int index;
 }
-List<int>checkvaluevisibility =[];
+
+List<int> checkvaluevisibility = [];
 List<String> listitems = VisibilityData.categoryname;
 List<File> images = [];
 
@@ -36,6 +39,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
     super.initState();
     listitems.sort();
   }
+
   _VisibilityOneState() {
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
@@ -54,47 +58,45 @@ class _VisibilityOneState extends State<VisibilityOne> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-    appBar: new AppBar(
-      backgroundColor: containerscolor,
-      iconTheme: IconThemeData(color: orange),
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: containerscolor,
+          iconTheme: IconThemeData(color: orange),
       title: Row(
-        children: [
-          new Text(
-            "Visibility",
-            style: TextStyle(color: orange),
-          ),
-          Spacer(),
-          SubmitButton(),
-        ],
-      ),
-    ),
-    // drawer: Drawer(
-    //   child: Menu(),
-    // ),
-    body: Stack(
-      children: [
-        BackGround(),
-        Column(
-          children: [
-            OutletDetails(),
-            Expanded(
-              child: Container(
-                child: new Column(
-                  children: <Widget>[
-                    _createSearchView(),
-                    _firstSearch ? _createListView() : _performSearch()
-                  ],
-                ),
+            children: [
+              new Text(
+                "Visibility",
+                style: TextStyle(color: orange),
               ),
+              Spacer(),
+              SubmitButton(),
+            ],
+          ),
+        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
+        body: Stack(
+          children: [
+            BackGround(),
+            Column(
+              children: [
+                OutletDetails(),
+                Expanded(
+                  child: Container(
+                    child: new Column(
+                      children: <Widget>[
+                        _createSearchView(),
+                        _firstSearch ? _createListView() : _performSearch()
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
-    ),
-      ),
-    );
+      );
   }
 
   Widget _createSearchView() {
@@ -157,7 +159,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap:(){
+                    onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
@@ -165,8 +167,9 @@ class _VisibilityOneState extends State<VisibilityOne> {
                               url: VisibilityData.imageurl[index],
                             );
                           },
-                        ),);
-            },
+                        ),
+                      );
+                    },
                     child: Container(
                       height: 120,
                       width: 80,
@@ -181,16 +184,17 @@ class _VisibilityOneState extends State<VisibilityOne> {
                           ),
                         ),
                         enableRotation: true,
-                        imageProvider: NetworkImage(VisibilityData.imageurl[index]),
+                        imageProvider:
+                            NetworkImage(VisibilityData.imageurl[index]),
                       ),
                     ),
                   ),
                   Column(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width/1.7,
+                        width: MediaQuery.of(context).size.width / 1.7,
                         child: Padding(
-                          padding: const EdgeInsets.only(left:10.0),
+                          padding: const EdgeInsets.only(left: 10.0),
                           child: new Text(
                             "${VisibilityData.categoryname[index]}",
                             style: TextStyle(
@@ -217,11 +221,15 @@ class _VisibilityOneState extends State<VisibilityOne> {
                                     style: TextStyle(fontSize: 15),
                                   ),
                                   Switch(
-                                    value: checkvaluevisibility[index]==0?true:false,
+                                    value: checkvaluevisibility[index] == 0
+                                        ? true
+                                        : false,
                                     onChanged: (value) {
                                       setState(() {
-                                        checkvaluevisibility[index] == 1 ? checkvaluevisibility[index]=0 : checkvaluevisibility[index]=1;
-                                        images[index] =File('dummy.txt');
+                                        checkvaluevisibility[index] == 1
+                                            ? checkvaluevisibility[index] = 0
+                                            : checkvaluevisibility[index] = 1;
+                                        images[index] = File('dummy.txt');
                                       });
                                     },
                                     inactiveTrackColor: orange,
@@ -236,63 +244,78 @@ class _VisibilityOneState extends State<VisibilityOne> {
                               child: Column(
                                 children: [
                                   Text(
-                                    checkvaluevisibility[index]==0 ? "Reason" : "Capture Image",
+                                    checkvaluevisibility[index] == 0
+                                        ? "Reason"
+                                        : "Capture Image",
                                     style: TextStyle(fontSize: 15),
                                   ),
-                                 checkvaluevisibility[index]==0
-                                      ?  Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 100,
-                                      child: DropdownButton(
-                                        elevation: 0,
-                                        underline: SizedBox(),
-                                        dropdownColor: Colors.white,
-                                        isExpanded: true,
-                                        iconEnabledColor: orange,
-                                        iconSize: 35.0,
-                                        value: visibilityreasons[index] == '' ?null:visibilityreasons[index],
-                                        onChanged: (newVal){
-                                          setState(() {
-                                            selectedreason = newVal;
-                                            visibilityreasons[index]=newVal;
-                                            print(visibilityreasons);
-                                          });
-                                        },
-                                        items: listofreasons,
-                                        hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
-                                      ),
-                                    ),
-                                  )
+                                  checkvaluevisibility[index] == 0
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: SizedBox(
+                                            height: 50,
+                                            width: 100,
+                                            child: DropdownButton(
+                                              elevation: 0,
+                                              underline: SizedBox(),
+                                              dropdownColor: Colors.white,
+                                              isExpanded: true,
+                                              iconEnabledColor: orange,
+                                              iconSize: 35.0,
+                                              value: visibilityreasons[index] ==
+                                                      ''
+                                                  ? null
+                                                  : visibilityreasons[index],
+                                              onChanged: (newVal) {
+                                                setState(() {
+                                                  selectedreason = newVal;
+                                                  visibilityreasons[index] =
+                                                      newVal;
+                                                  print(visibilityreasons);
+                                                });
+                                              },
+                                              items: listofreasons,
+                                              hint: Text(
+                                                "Select Reason",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ),
+                                        )
                                       : Container(
-                                    margin: EdgeInsets.all(10),
-                                    child:
-                                    // ignore: unrelated_type_equality_checks
-                                    images[index].toString() !=
-                                        'File: \'dummy.txt\''
-                                        ? GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext context) =>
-                                                    PreveiwScreen(
-                                                      input: index,
-                                                    )));
-                                      },
-                                      child: Image(
-                                        height: 50,
-                                        width: 50,
-                                        image: FileImage(
-                                            images[index]),
-                                      ),
-                                    )
-                                        : Image(
-                                      width: 50,
-                                      image: AssetImage('images/capture.png'),
-                                    ),
-                                  ),
+                                          margin: EdgeInsets.all(10),
+                                          child:
+                                              // ignore: unrelated_type_equality_checks
+                                              images[index].toString() !=
+                                                      'File: \'dummy.txt\''
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    PreveiwScreen(
+                                                                      input:
+                                                                          index,
+                                                                    )));
+                                                      },
+                                                      child: Image(
+                                                        height: 50,
+                                                        width: 50,
+                                                        image: FileImage(
+                                                            images[index]),
+                                                      ),
+                                                    )
+                                                  : Image(
+                                                      width: 50,
+                                                      image: AssetImage(
+                                                          'images/capture.png'),
+                                                    ),
+                                        ),
                                 ],
                               ),
                             ),
@@ -310,7 +333,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       size: 30,
                     ),
                     onPressed: () {
-                      Selectedscreen ="visibility";
+                      Selectedscreen = "visibility";
                       selected.index = index;
                       _showSelectionDialog(context);
                       /*Navigator.push(context,
@@ -336,10 +359,11 @@ class _VisibilityOneState extends State<VisibilityOne> {
         _filteredindex.add(i);
       }
     }
-    indexselected=_filteredindex;
+    indexselected = _filteredindex;
     return _createFilteredListView();
   }
-  List<int> indexselected=[];
+
+  List<int> indexselected = [];
   Widget _createFilteredListView() {
     return new Flexible(
       child: new ListView.builder(
@@ -356,15 +380,17 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
-                    onTap:(){
+                    onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {
                             return VeiwImage(
-                              url: VisibilityData.imageurl[indexselected[index]],
+                              url:
+                                  VisibilityData.imageurl[indexselected[index]],
                             );
                           },
-                        ),);
+                        ),
+                      );
                     },
                     child: Container(
                       height: 120,
@@ -380,16 +406,17 @@ class _VisibilityOneState extends State<VisibilityOne> {
                           ),
                         ),
                         enableRotation: true,
-                        imageProvider: NetworkImage(VisibilityData.imageurl[indexselected[index]]),
+                        imageProvider: NetworkImage(
+                            VisibilityData.imageurl[indexselected[index]]),
                       ),
                     ),
                   ),
                   Column(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width/1.7,
+                        width: MediaQuery.of(context).size.width / 1.7,
                         child: Padding(
-                          padding: const EdgeInsets.only(left:10.0),
+                          padding: const EdgeInsets.only(left: 10.0),
                           child: new Text(
                             "${VisibilityData.categoryname[indexselected[index]]}",
                             style: TextStyle(
@@ -416,11 +443,22 @@ class _VisibilityOneState extends State<VisibilityOne> {
                                     style: TextStyle(fontSize: 15),
                                   ),
                                   Switch(
-                                    value: checkvaluevisibility[indexselected[index]]==0?true:false,
+                                    value: checkvaluevisibility[
+                                                indexselected[index]] ==
+                                            0
+                                        ? true
+                                        : false,
                                     onChanged: (value) {
                                       setState(() {
-                                        checkvaluevisibility[indexselected[index]] == 1 ? checkvaluevisibility[indexselected[index]]=0 : checkvaluevisibility[indexselected[index]]=1;
-                                        images[indexselected[index]] =File('dummy.txt');
+                                        checkvaluevisibility[
+                                                    indexselected[index]] ==
+                                                1
+                                            ? checkvaluevisibility[
+                                                indexselected[index]] = 0
+                                            : checkvaluevisibility[
+                                                indexselected[index]] = 1;
+                                        images[indexselected[index]] =
+                                            File('dummy.txt');
                                       });
                                     },
                                     inactiveTrackColor: orange,
@@ -435,63 +473,87 @@ class _VisibilityOneState extends State<VisibilityOne> {
                               child: Column(
                                 children: [
                                   Text(
-                                    checkvaluevisibility[indexselected[index]]==0 ? "Reason" : "Capture Image",
+                                    checkvaluevisibility[
+                                                indexselected[index]] ==
+                                            0
+                                        ? "Reason"
+                                        : "Capture Image",
                                     style: TextStyle(fontSize: 15),
                                   ),
-                                  checkvaluevisibility[indexselected[index]]==0
-                                      ?  Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 100,
-                                      child: DropdownButton(
-                                        elevation: 0,
-                                        underline: SizedBox(),
-                                        dropdownColor: Colors.white,
-                                        isExpanded: true,
-                                        iconEnabledColor: orange,
-                                        iconSize: 35.0,
-                                        value: visibilityreasons[indexselected[index]] == '' ?null:visibilityreasons[indexselected[index]],
-                                        onChanged: (newVal){
-                                          setState(() {
-                                            selectedreason = newVal;
-                                            visibilityreasons[indexselected[index]]=newVal;
-                                            print(visibilityreasons);
-                                          });
-                                        },
-                                        items: listofreasons,
-                                        hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
-                                      ),
-                                    ),
-                                  )
+                                  checkvaluevisibility[indexselected[index]] ==
+                                          0
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: SizedBox(
+                                            height: 50,
+                                            width: 100,
+                                            child: DropdownButton(
+                                              elevation: 0,
+                                              underline: SizedBox(),
+                                              dropdownColor: Colors.white,
+                                              isExpanded: true,
+                                              iconEnabledColor: orange,
+                                              iconSize: 35.0,
+                                              value: visibilityreasons[
+                                                          indexselected[
+                                                              index]] ==
+                                                      ''
+                                                  ? null
+                                                  : visibilityreasons[
+                                                      indexselected[index]],
+                                              onChanged: (newVal) {
+                                                setState(() {
+                                                  selectedreason = newVal;
+                                                  visibilityreasons[
+                                                      indexselected[
+                                                          index]] = newVal;
+                                                  print(visibilityreasons);
+                                                });
+                                              },
+                                              items: listofreasons,
+                                              hint: Text(
+                                                "Select Reason",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ),
+                                        )
                                       : Container(
-                                    margin: EdgeInsets.all(10),
-                                    child:
-                                    // ignore: unrelated_type_equality_checks
-                                    images[indexselected[index]].toString() !=
-                                        'File: \'dummy.txt\''
-                                        ? GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext context) =>
-                                                    PreveiwScreen(
-                                                      input: index,
-                                                    )));
-                                      },
-                                      child: Image(
-                                        height: 50,
-                                        width: 50,
-                                        image: FileImage(
-                                            images[indexselected[index]]),
-                                      ),
-                                    )
-                                        : Image(
-                                      width: 50,
-                                      image: AssetImage('images/capture.png'),
-                                    ),
-                                  ),
+                                          margin: EdgeInsets.all(10),
+                                          child:
+                                              // ignore: unrelated_type_equality_checks
+                                              images[indexselected[index]]
+                                                          .toString() !=
+                                                      'File: \'dummy.txt\''
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    PreveiwScreen(
+                                                                      input:
+                                                                          index,
+                                                                    )));
+                                                      },
+                                                      child: Image(
+                                                        height: 50,
+                                                        width: 50,
+                                                        image: FileImage(images[
+                                                            indexselected[
+                                                                index]]),
+                                                      ),
+                                                    )
+                                                  : Image(
+                                                      width: 50,
+                                                      image: AssetImage(
+                                                          'images/capture.png'),
+                                                    ),
+                                        ),
                                 ],
                               ),
                             ),
@@ -509,7 +571,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       size: 30,
                     ),
                     onPressed: () {
-                      Selectedscreen ="visibility";
+                      Selectedscreen = "visibility";
                       selected.index = indexselected[index];
                       _showSelectionDialog(context);
                       /*Navigator.push(context,
@@ -524,8 +586,18 @@ class _VisibilityOneState extends State<VisibilityOne> {
   }
 }
 
-List<String>visibilityreasons=[];
-List listofreasons =  ["Item Expired","Pending Delivery","Out Of Stock","Not listed"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+List<String> visibilityreasons = [];
+List listofreasons = [
+  "Item Expired",
+  "Pending Delivery",
+  "Out Of Stock",
+  "Not listed"
+].map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 var selectedreason;
 
 class SubmitButton extends StatelessWidget {
@@ -539,7 +611,7 @@ class SubmitButton extends StatelessWidget {
         //   AddVisiData.productname.add('\"${VisibilityData.productname[i]}\"');
         // }
         AddVisiData.brandname = VisibilityData.brandname;
-        AddVisiData.categoryname=VisibilityData.categoryname;
+        AddVisiData.categoryname = VisibilityData.categoryname;
         AddVisiData.productname = VisibilityData.productname;
         AddVisiData.outletid = outletrequestdata.outletidpressed;
         AddVisiData.timesheetid = checkinoutdata.checkid;
@@ -547,7 +619,7 @@ class SubmitButton extends StatelessWidget {
         AddVisiData.brandid = VisibilityData.brandid;
         AddVisiData.brandname = VisibilityData.brandname;
         AddVisiData.categoryname = VisibilityData.categoryname;
-        AddVisiData.productname =VisibilityData.productname;
+        AddVisiData.productname = VisibilityData.productname;
         AddVisiData.reason = visibilityreasons;
         AddVisiData.outletpdtmap = VisibilityData.mappingid;
         AddVisiData.checkvalue = checkvaluevisibility;
@@ -617,8 +689,7 @@ Future<void> _showSelectionDialog(BuildContext context) {
                           context,
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  TakePictureScreen(
-                                  )));
+                                  TakePictureScreen()));
                     },
                     child: Container(
                       color: Colors.white,
@@ -722,15 +793,15 @@ class PreveiwScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: FloatingActionButton(
-                backgroundColor: pink,
-                child: Icon(Icons.check,size: 35,color: orange),
-                onPressed:(){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => VisibilityOne()));
-                }
-              ),
+                  backgroundColor: pink,
+                  child: Icon(Icons.check, size: 35, color: orange),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                VisibilityOne()));
+                  }),
             ),
           )
         ],
@@ -738,7 +809,6 @@ class PreveiwScreen extends StatelessWidget {
     );
   }
 }
-
 
 class VeiwImage extends StatelessWidget {
   VeiwImage({this.url});
@@ -752,8 +822,7 @@ class VeiwImage extends StatelessWidget {
             child: Container(
               width: 40.0,
               height: 40.0,
-              child: CircularProgressIndicator(
-              ),
+              child: CircularProgressIndicator(),
             ),
           ),
           imageProvider: NetworkImage(
@@ -762,19 +831,21 @@ class VeiwImage extends StatelessWidget {
         ),
         SafeArea(
           child: Padding(
-            padding: const EdgeInsets.only(left :15.0),
+            padding: const EdgeInsets.only(left: 15.0),
             child: Align(
               alignment: Alignment.topLeft,
               child: FloatingActionButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              VisibilityOne()));
+                          builder: (BuildContext context) => VisibilityOne()));
                 },
                 backgroundColor: Colors.black,
-                child: Icon(Icons.arrow_back,color: orange,),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: orange,
+                ),
               ),
             ),
           ),

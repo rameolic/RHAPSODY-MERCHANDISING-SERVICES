@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/customer_activites_api/add_planogramapi.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -9,7 +11,8 @@ import 'package:flutter/rendering.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers Activities.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
 import 'package:merchandising/api/customer_activites_api/addplanogram.dart';
-String url = "https://rms2.rhapsody.ae/product_image/${PlanoDetails.imageurl.toString()}";
+//String url = "https://rms2.rhapsody.ae/planogram_images/${PlanoDetails.imageurl.toString()}";
+String url = "https://rms2.rhapsody.ae/planogram_image/1619431232.tang_planogram.png";
 
 
 String ontap;
@@ -25,7 +28,7 @@ class PlanogramCheckPhase1 extends StatefulWidget {
 }
 
 class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
-  List<String> planolist =PlanoDetails.brandname;
+  List<String> planolist =PlanoDetails.categoryname;
 
   var _searchview = new TextEditingController();
   bool _firstSearch = true;
@@ -72,9 +75,27 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
             Spacer(),
             SubmitButton(
               onpress: ()async{
-                PlanoDetails.afterimage = afterimagesencode;
-                PlanoDetails.beforeimage = beforeimagesencode;
-                await addplanogramdata();
+                AddPlanoData.beforeimage = beforeimagesencode;
+                AddPlanoData.afterimage = afterimagesencode;
+                AddPlanoData.outletid = currentoutletid;
+                AddPlanoData.timesheetid = currenttimesheetid;
+                AddPlanoData.outletpdtmapid = PlanoDetails.opm;
+                AddPlanoData.categoryname = PlanoDetails.categoryname;
+                AddPlanoData.planoimage = PlanoDetails.imageurl;
+               AddPlanoData.categoryid = PlanoDetails.categoryid;
+
+
+                //PlanoDetails.beforeimage = beforeimagesencode;
+                //PlanoDetails.afterimage = afterimagesencode;
+
+                print('Category Name: ${AddPlanoData.categoryname}');
+                print('OPM id: ${AddPlanoData.outletpdtmapid}');
+
+
+                await addPlanogramdata();
+
+
+
                 {Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -125,7 +146,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
           focusColor: orange,
-          hintText: 'Search by brand name/Code',
+          hintText: 'Search by Category name',
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
@@ -138,17 +159,17 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
     return new Flexible(
       child: new  ListView.builder(
           shrinkWrap: true,
-          itemCount: planolist.length,
+          itemCount: PlanoDetails.categoryname.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(color: pink,borderRadius: BorderRadius.circular(10)),
               height: MediaQuery.of(context).size.height/4,
-             // margin: EdgeInsets.only(top:5),
+              margin: EdgeInsets.only(top:5),
               padding: EdgeInsets.fromLTRB(10.0,10,10,0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Brand Name : ${planolist[index]}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                  Text("Category Name : ${PlanoDetails.categoryname[index]}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                   Table(
                     columnWidths: {
                       0: FractionColumnWidth(.34),
@@ -315,8 +336,8 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
   Widget _performSearch() {
     _filterList = [];
 
-    for (int i = 0; i <planolist.length; i++) {
-      var item = planolist[i];
+    for (int i = 0; i <PlanoDetails.categoryname.length; i++) {
+      var item = PlanoDetails.categoryname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
 
