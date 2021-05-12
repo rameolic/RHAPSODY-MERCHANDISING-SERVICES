@@ -28,14 +28,14 @@ Future addVisibilitydata() async{
     'reason' : AddVisiData.reason
   };
   print(jsonEncode(addvisibility));
-  http.Response availresponse = await http.post(AddVisibility,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(addvisibility),
-  );
-  print(availresponse.body);
+  // http.Response availresponse = await http.post(AddVisibility,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(addvisibility),
+  // );
+  // print(availresponse.body);
 
 }

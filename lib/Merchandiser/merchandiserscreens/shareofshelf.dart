@@ -8,6 +8,8 @@ import'package:merchandising/api/customer_activites_api/add_shareofshelfapi.dart
 
 import 'package:merchandising/api/api_service.dart';
 
+
+
 List <double> totalshare =[];
 List <double> totalshelf =[];
 List <double> actualpercent =[];
@@ -19,12 +21,13 @@ class ShareShelf extends StatefulWidget {
 class _ShareShelfState extends State<ShareShelf> {
   GlobalKey<FormState> soskey = GlobalKey<FormState>();
 
-
-  List<TextEditingController> actual = [];
   List<TextEditingController> share = [];
   List<TextEditingController> total = [];
+  List<TextEditingController> actual = [];
   List<String> productlist = ShareData.categoryname;
+
   List<String> target = ShareData.target;
+
 
 
 
@@ -36,8 +39,8 @@ class _ShareShelfState extends State<ShareShelf> {
   List<String> _filetrtarget;
   List<String> _filtertotal;
   List<String> _filtershare;
-
-  List<TextEditingController> _filteractual = [];
+ List<String>_filtertarget;
+ List<String> _filteractual = [];
   // List<String> _filteractual;
 
 
@@ -89,35 +92,27 @@ class _ShareShelfState extends State<ShareShelf> {
               Spacer(),
               SubmitButton(
                 ontap: ()async{
-
-                  AddShareData.brandid = ShareData.brandid;
-                  AddShareData.outletid = outletrequestdata.outletidpressed;
-                  AddShareData.timesheetid = checkinoutdata.checkid;
-                  AddShareData.totalshare = ['6','5','4','5.4'];//ShareData.total;
-                  AddShareData.categoryname = ShareData.categoryname;
-                  AddShareData.share = ['4.5','3','3.5','2.5'];//ShareData.share;
-                  AddShareData.target = ShareData.target;
-                  AddShareData.actual=[];
-                  for(int i=0;i<productlist.length;i++){
-                   AddShareData.actual.add(actual[i].text);
-
-
+                  if(validateform()==true){
+                    AddShareData.totalshare=[];
+                    AddShareData.share=[];
+                    for(int i=0;i<productlist.length;i++){
+                      AddShareData.totalshare.add(total[i].text);
+                      AddShareData.share.add(share[i].text);
+                    }
+                    AddShareData.brandid = ShareData.brandid;
+                    AddShareData.outletid = outletrequestdata.outletidpressed;
+                    AddShareData.timesheetid = checkinoutdata.checkid;
+                    AddShareData.categoryname = ShareData.categoryname;
+                    AddShareData.target = ShareData.target;
+                    AddShareData.actual=AddShareData.totalshare;
+                    AddShareData.share=AddShareData.share;
+                    await addShareofshelfdata();
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CustomerActivities()));
                   }
-
-                  await addShareofshelfdata();
-                  print(AddShareData.categoryname);
-                  print(AddShareData.outletid);
-                  print(AddShareData.brandid);
-                  print(AddShareData.timesheetid);
-                  print(AddShareData.actual);
-                  print('target is: ${AddShareData.target}');
-
-                  if(validateform()==true)
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              CustomerActivities()));
                 },
               ),
             ],
@@ -170,7 +165,7 @@ class _ShareShelfState extends State<ShareShelf> {
   }
   Widget _createListView() {
     return new Flexible(
-      child: new Form(
+      child: new   Form(
         key: soskey,
         child: ListView.builder(
            // physics: NeverScrollableScrollPhysics(),
@@ -178,6 +173,8 @@ class _ShareShelfState extends State<ShareShelf> {
             itemCount:target.length,
             itemBuilder: (BuildContext context, int index) {
               actual.add(TextEditingController());
+              total.add(TextEditingController());
+              share.add(TextEditingController());
               return Container(
                 width:double.infinity,
                 margin: EdgeInsets.only(top:10.0),
@@ -189,54 +186,20 @@ class _ShareShelfState extends State<ShareShelf> {
 
                 child: Column(
                   crossAxisAlignment:CrossAxisAlignment.start,
+
+
                   children: [
-                    Text('Category :${ShareData.categoryname[index]}',
+                    Text('${ShareData.categoryname[index]}',
                         style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
                         )),
-                    SizedBox(height: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        SizedBox(height: 10,),
                         Text("Target: ${target[index]} %",style: TextStyle(
                             fontSize: 15.0
                         )),
-                        SizedBox(height: 10,),
-
-                        Container(
-                          decoration: BoxDecoration(
-                            color:Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                          margin:EdgeInsets.only(top:10.0),
-                          child: Center(
-                            child: Center(
-                              child: TextFormField(
-                                onChanged: (value){},
-                                keyboardType: TextInputType.number,
-                                controller: total[index],
-                                cursorColor: grey,
-                                validator: (input) => !input
-                                    .isNotEmpty
-                                    ? "total should not be empty"
-                                    : null,
-                                decoration:
-                                new InputDecoration(
-                                  //contentPadding: ,
-                                  isCollapsed: true,
-                                  border: InputBorder.none,
-                                  focusColor: orange,
-                                  hintText: "Total Shelf in meters",
-                                  hintStyle: TextStyle(
-                                    color: grey,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         Container(
                           decoration: BoxDecoration(
                             color:Colors.white,
@@ -248,6 +211,50 @@ class _ShareShelfState extends State<ShareShelf> {
                             child: Center(
                               child: TextFormField(
                                 onChanged: (value){
+                                  totalshelf[index]=double.parse(value);
+                                  // ignore: unrelated_type_equality_check
+                                },
+                                keyboardType:
+                                TextInputType.number,
+
+                                controller: total[index],
+                                cursorColor: grey,
+                                validator: (input) => !input
+                                    .isNotEmpty
+                                    ? "Total should not be empty"
+                                    : null,
+                                decoration:
+                                new InputDecoration(
+                                  //contentPadding: ,
+                                  isCollapsed: true,
+                                  border: InputBorder.none,
+                                  focusColor: orange,
+                                  hintText: "Total in meters",
+                                  hintStyle: TextStyle(
+                                    color: grey,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+                        Container(
+                          decoration: BoxDecoration(
+                            color:Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                          margin:EdgeInsets.only(top:10.0),
+                          child: Center(
+                            child: Center(
+                              child: TextFormField(
+                                onChanged: (value){
+                                  setState(() {
+                                    totalshare[index]=double.parse(value);
+                                  });
                                 },
                                 keyboardType:
                                 TextInputType.number,
@@ -264,7 +271,7 @@ class _ShareShelfState extends State<ShareShelf> {
                                   isCollapsed: true,
                                   border: InputBorder.none,
                                   focusColor: orange,
-                                  hintText: "Share of ${ShareData.categoryname[index]} in meters",
+                                  hintText: "Share in meters",
                                   hintStyle: TextStyle(
                                     color: grey,
                                     fontSize: 16.0,
@@ -274,7 +281,8 @@ class _ShareShelfState extends State<ShareShelf> {
                             ),
                           ),
                         ),
-                        Container(
+
+                        totalshare[index] == 0.0 ?SizedBox():Container(
                           decoration: BoxDecoration(
                             color:Colors.white,
                             borderRadius: BorderRadius.circular(10.0),
@@ -341,24 +349,15 @@ class _ShareShelfState extends State<ShareShelf> {
   Widget _performSearch() {
     _filterList = [];
     _filtertotal = [];
-    _filetrtarget = [];
+    _filtertarget = [];
     _filteractual = [];
     _filtershare = [];
     _filteractual = [];
-
     for (int i = 0; i <ShareData.categoryname.length; i++) {
       var item = ShareData.categoryname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
-
         int index = ShareData.categoryname.indexOf(item);
-        _filtertotal.add(total[index].text);
-        _filetrtarget.add(target[index]);
-        _filteractual.add(actual[index]);
-        _filtershare.add(share[index].text);
-        _filteractual.add(actual[index]);
-
-
       }
     }
     return _createFilteredListView();
@@ -407,7 +406,7 @@ class _ShareShelfState extends State<ShareShelf> {
                             fontSize: 15.0,
                         )),
                         SizedBox(height: 15,),
-                        Text("Actual: ${_filteractual[index].text}",style: TextStyle(fontSize: 15),)
+                        Text("Actual: ${_filteractual[index]}",style: TextStyle(fontSize: 15),)
 
 
                       ],

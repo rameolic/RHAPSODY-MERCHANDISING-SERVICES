@@ -101,6 +101,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         icon: CupertinoIcons.eye_solid,
                         chartext: 'Visibility',
                         tap: () {
+                          images=[];
+                          visibilityreasons=[];
+                          checkvaluevisibility=[];
                           for (int i = 0;
                               i < VisibilityData.productname.length;
                               i++) {
@@ -108,7 +111,7 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                             visibilityreasons.add('');
                             checkvaluevisibility.add(1);
                           }
-                          print(images.length);
+                          print(visibilityreasons);
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) {

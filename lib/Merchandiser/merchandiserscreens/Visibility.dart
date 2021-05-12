@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import '../../Constants.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'MenuContent.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
@@ -31,12 +30,12 @@ class _VisibilityOneState extends State<VisibilityOne> {
   bool _firstSearch = true;
   String _query = "";
   List<String> _filterList;
+  List<int> _filteredindex;
   @override
   void initState() {
     super.initState();
     listitems.sort();
   }
-
   _VisibilityOneState() {
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
@@ -200,9 +199,109 @@ class _VisibilityOneState extends State<VisibilityOne> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      VisibilitySwitchOne(
-                        indexrunning: index,
-                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              height: 80,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Is Available",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Switch(
+                                    value: checkvaluevisibility[index]==0?true:false,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        checkvaluevisibility[index] == 1 ? checkvaluevisibility[index]=0 : checkvaluevisibility[index]=1;
+                                        images[index] =File('dummy.txt');
+                                      });
+                                    },
+                                    inactiveTrackColor: orange,
+                                    activeColor: Colors.red,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              height: 88,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    checkvaluevisibility[index]==0 ? "Reason" : "Capture Image",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                 checkvaluevisibility[index]==0
+                                      ?  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 100,
+                                      child: DropdownButton(
+                                        elevation: 0,
+                                        underline: SizedBox(),
+                                        dropdownColor: Colors.white,
+                                        isExpanded: true,
+                                        iconEnabledColor: orange,
+                                        iconSize: 35.0,
+                                        value: visibilityreasons[index] == '' ?null:visibilityreasons[index],
+                                        onChanged: (newVal){
+                                          setState(() {
+                                            selectedreason = newVal;
+                                            visibilityreasons[index]=newVal;
+                                            print(visibilityreasons);
+                                          });
+                                        },
+                                        items: listofreasons,
+                                        hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
+                                      ),
+                                    ),
+                                  )
+                                      : Container(
+                                    margin: EdgeInsets.all(10),
+                                    child:
+                                    // ignore: unrelated_type_equality_checks
+                                    images[index].toString() !=
+                                        'File: \'dummy.txt\''
+                                        ? GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    PreveiwScreen(
+                                                      input: index,
+                                                    )));
+                                      },
+                                      child: Image(
+                                        height: 50,
+                                        width: 50,
+                                        image: FileImage(
+                                            images[index]),
+                                      ),
+                                    )
+                                        : Image(
+                                      width: 50,
+                                      image: AssetImage('images/capture.png'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                   IconButton(
@@ -227,16 +326,20 @@ class _VisibilityOneState extends State<VisibilityOne> {
 
   Widget _performSearch() {
     _filterList = [];
+    _filteredindex = [];
+
     for (int i = 0; i < VisibilityData.categoryname.length; i++) {
       var item = VisibilityData.categoryname[i];
 
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
+        _filteredindex.add(i);
       }
     }
+    indexselected=_filteredindex;
     return _createFilteredListView();
   }
-
+  List<int> indexselected=[];
   Widget _createFilteredListView() {
     return new Flexible(
       child: new ListView.builder(
@@ -258,7 +361,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                         MaterialPageRoute(
                           builder: (context) {
                             return VeiwImage(
-                              url: VisibilityData.imageurl[index],
+                              url: VisibilityData.imageurl[indexselected[index]],
                             );
                           },
                         ),);
@@ -277,21 +380,127 @@ class _VisibilityOneState extends State<VisibilityOne> {
                           ),
                         ),
                         enableRotation: true,
-                        imageProvider: NetworkImage(VisibilityData.imageurl[index]),
+                        imageProvider: NetworkImage(VisibilityData.imageurl[indexselected[index]]),
                       ),
                     ),
                   ),
                   Column(
                     children: [
-                      new Text(
-                        "${_filterList[index]}",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.7,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:10.0),
+                          child: new Text(
+                            "${VisibilityData.categoryname[indexselected[index]]}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10),
-                      VisibilitySwitchOne(
-                        indexrunning: index,
-                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.8,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              height: 80,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Is Available",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Switch(
+                                    value: checkvaluevisibility[indexselected[index]]==0?true:false,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        checkvaluevisibility[indexselected[index]] == 1 ? checkvaluevisibility[indexselected[index]]=0 : checkvaluevisibility[indexselected[index]]=1;
+                                        images[indexselected[index]] =File('dummy.txt');
+                                      });
+                                    },
+                                    inactiveTrackColor: orange,
+                                    activeColor: Colors.red,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Spacer(),
+                            SizedBox(
+                              height: 88,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    checkvaluevisibility[indexselected[index]]==0 ? "Reason" : "Capture Image",
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  checkvaluevisibility[indexselected[index]]==0
+                                      ?  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: SizedBox(
+                                      height: 50,
+                                      width: 100,
+                                      child: DropdownButton(
+                                        elevation: 0,
+                                        underline: SizedBox(),
+                                        dropdownColor: Colors.white,
+                                        isExpanded: true,
+                                        iconEnabledColor: orange,
+                                        iconSize: 35.0,
+                                        value: visibilityreasons[indexselected[index]] == '' ?null:visibilityreasons[indexselected[index]],
+                                        onChanged: (newVal){
+                                          setState(() {
+                                            selectedreason = newVal;
+                                            visibilityreasons[indexselected[index]]=newVal;
+                                            print(visibilityreasons);
+                                          });
+                                        },
+                                        items: listofreasons,
+                                        hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
+                                      ),
+                                    ),
+                                  )
+                                      : Container(
+                                    margin: EdgeInsets.all(10),
+                                    child:
+                                    // ignore: unrelated_type_equality_checks
+                                    images[indexselected[index]].toString() !=
+                                        'File: \'dummy.txt\''
+                                        ? GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext context) =>
+                                                    PreveiwScreen(
+                                                      input: index,
+                                                    )));
+                                      },
+                                      child: Image(
+                                        height: 50,
+                                        width: 50,
+                                        image: FileImage(
+                                            images[indexselected[index]]),
+                                      ),
+                                    )
+                                        : Image(
+                                      width: 50,
+                                      image: AssetImage('images/capture.png'),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                   IconButton(
@@ -301,7 +510,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     ),
                     onPressed: () {
                       Selectedscreen ="visibility";
-                      selected.index = index;
+                      selected.index = indexselected[index];
                       _showSelectionDialog(context);
                       /*Navigator.push(context,
                               MaterialPageRoute(builder: (BuildContext context) => OpenCamera()));*/
@@ -315,145 +524,9 @@ class _VisibilityOneState extends State<VisibilityOne> {
   }
 }
 
-class VisibilitySwitchOne extends StatefulWidget {
-  final int indexrunning;
-
-  VisibilitySwitchOne({@required this.indexrunning});
-  @override
-  _VisibilitySwitchOneState createState() => _VisibilitySwitchOneState();
-}
-
-class _VisibilitySwitchOneState extends State<VisibilitySwitchOne> {
-  bool isSwitched = false;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 1.8,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 10,
-          ),
-          SizedBox(
-            height: 80,
-            child: Column(
-              children: [
-                Text(
-                  "Is Available",
-                  style: TextStyle(fontSize: 15),
-                ),
-                Switch(
-                  value: checkvaluevisibility[widget.indexrunning]==0?true:false,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      isSwitched == true ? checkvaluevisibility[widget.indexrunning] = 0  : checkvaluevisibility[widget.indexrunning]=1;
-                      images[widget.indexrunning] =File('dummy.txt');
-                      print(checkvaluevisibility);
-                    });
-                  },
-                  inactiveTrackColor: orange,
-                  activeColor: Colors.red,
-                ),
-              ],
-            ),
-          ),
-          Spacer(),
-          SizedBox(
-            height: 88,
-            child: Column(
-              children: [
-                Text(
-                  checkvaluevisibility[widget.indexrunning]==0 ? "Reason" : "Capture Image",
-                  style: TextStyle(fontSize: 15),
-                ),
-                checkvaluevisibility[widget.indexrunning]==0
-                    ? ReasonDropdown(
-                  item: widget.indexrunning,
-                )
-                    : Container(
-                        margin: EdgeInsets.all(10),
-                        child:
-                            // ignore: unrelated_type_equality_checks
-                            images[widget.indexrunning].toString() !=
-                                    'File: \'dummy.txt\''
-                                ? GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  PreveiwScreen(
-                                                    input: widget.indexrunning,
-                                                  )));
-                                    },
-                                    child: Image(
-                                      height: 50,
-                                      width: 50,
-                                      image: FileImage(
-                                          images[widget.indexrunning]),
-                                    ),
-                                  )
-                                : Image(
-                                    width: 50,
-                                    image: AssetImage('images/capture.png'),
-                                  ),
-                      ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-    );
-  }
-}
 List<String>visibilityreasons=[];
-class ReasonDropdown extends StatefulWidget {
-  ReasonDropdown({this.item});
-  final item;
-  @override
-  _ReasonDropdownState createState() => _ReasonDropdownState();
-}
-
-List listofreasons =  ["Item Expired","Pending Delivery","Out Of Stock"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+List listofreasons =  ["Item Expired","Pending Delivery","Out Of Stock","Not listed"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
 var selectedreason;
-
-class _ReasonDropdownState extends State<ReasonDropdown> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top:8.0),
-      child: SizedBox(
-        height: 50,
-        width: 100,
-        child: DropdownButton(
-          elevation: 0,
-          underline: SizedBox(),
-          dropdownColor: Colors.white,
-          isExpanded: true,
-          iconEnabledColor: orange,
-          iconSize: 35.0,
-          value: selectedreason,
-          onChanged: (newVal){
-            setState(() {
-              selectedreason = newVal;
-              visibilityreasons[widget.item]=newVal;
-              print(visibilityreasons);
-            });
-            },
-          items: listofreasons,
-          hint: Text("Select Reason",style: TextStyle(color: Colors.black,fontSize: 14),),
-        ),
-      ),
-    );
-  }
-}
 
 class SubmitButton extends StatelessWidget {
   @override

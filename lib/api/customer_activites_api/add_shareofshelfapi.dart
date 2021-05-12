@@ -21,10 +21,11 @@ Future addShareofshelfdata() async{
     'category_name' : AddShareData.categoryname,
     'brand_id' : AddShareData.brandid,
     'total_share' : AddShareData.totalshare,
-    'share' : AddShareData.share,
+    'share' : AddShareData.totalshare,
     'target' : AddShareData.target,
     'actual' : AddShareData.actual,
    };
+  print(jsonEncode(addshare));
   http.Response shareresponse = await http.post(AddShareofshelf,
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +35,4 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
-
-  print("Add Share of Shelf Done");
-  print(addshare);
 }
