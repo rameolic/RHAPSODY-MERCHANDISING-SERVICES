@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import '../../Constants.dart';
+import '../../ProgressHUD.dart';
+import '../../api/customer_activites_api/add_visibilityapi.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:file_picker/file_picker.dart';
@@ -29,7 +31,6 @@ class VisibilityOne extends StatefulWidget {
 
 class _VisibilityOneState extends State<VisibilityOne> {
   var _searchview = new TextEditingController();
-
   bool _firstSearch = true;
   String _query = "";
   List<String> _filterList;
@@ -55,7 +56,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
       }
     });
   }
-
+  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +70,49 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 style: TextStyle(color: orange),
               ),
               Spacer(),
-              SubmitButton(),
+              GestureDetector(
+                onTap: () async {
+                  setState(() {
+                    isApiCallProcess =true;
+                  });
+                  // for(int i=0;i<VisibilityData.productname.length;i++){
+                  //   AddVisiData.brandname.add('\"${VisibilityData.brandname[i]}\"');
+                  //   AddVisiData.categoryname.add('\"${VisibilityData.categoryname[i]}\"');
+                  //   AddVisiData.productname.add('\"${VisibilityData.productname[i]}\"');
+                  // }
+                  // AddVisiData.brandname = VisibilityData.brandname;
+                  AddVisiData.outletid = outletrequestdata.outletidpressed;
+                  AddVisiData.timesheetid = checkinoutdata.checkid;
+                  AddVisiData.productid = VisibilityData.productid;
+                  AddVisiData.brandid = VisibilityData.brandid;
+                  AddVisiData.categoryname = VisibilityData.categoryname;
+                  AddVisiData.productname = VisibilityData.productname;
+                  AddVisiData.reason = visibilityreasons;
+                  AddVisiData.outletpdtmap = VisibilityData.mappingid;
+                  AddVisiData.checkvalue = checkvaluevisibility;
+                  AddVisiData.categoryid = VisibilityData.categoryid;
+                  await addVisibilitydata();
+                  setState(() {
+                    isApiCallProcess =false;
+                  });
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => CustomerActivities()));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10.00),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xffFFDBC1),
+                    borderRadius: BorderRadius.circular(10.00),
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.black, fontSize: 15),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -79,20 +122,24 @@ class _VisibilityOneState extends State<VisibilityOne> {
         body: Stack(
           children: [
             BackGround(),
-            Column(
-              children: [
-                OutletDetails(),
-                Expanded(
-                  child: Container(
-                    child: new Column(
-                      children: <Widget>[
-                        _createSearchView(),
-                        _firstSearch ? _createListView() : _performSearch()
-                      ],
+            ProgressHUD(
+              opacity: 0.3,
+              inAsyncCall: isApiCallProcess,
+              child: Column(
+                children: [
+                  OutletDetails(),
+                  Expanded(
+                    child: Container(
+                      child: new Column(
+                        children: <Widget>[
+                          _createSearchView(),
+                          _firstSearch ? _createListView() : _performSearch()
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
@@ -602,50 +649,7 @@ List listofreasons = [
 }).toList();
 var selectedreason;
 
-class SubmitButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        // for(int i=0;i<VisibilityData.productname.length;i++){
-        //   AddVisiData.brandname.add('\"${VisibilityData.brandname[i]}\"');
-        //   AddVisiData.categoryname.add('\"${VisibilityData.categoryname[i]}\"');
-        //   AddVisiData.productname.add('\"${VisibilityData.productname[i]}\"');
-        // }
-       // AddVisiData.brandname = VisibilityData.brandname;
-        AddVisiData.categoryname = VisibilityData.categoryname;
-        AddVisiData.productname = VisibilityData.productname;
-        AddVisiData.outletid = outletrequestdata.outletidpressed;
-        AddVisiData.timesheetid = checkinoutdata.checkid;
-        AddVisiData.productid = VisibilityData.productid;
-        AddVisiData.brandid = VisibilityData.brandid;
-        //AddVisiData.brandname = VisibilityData.brandname;
-        AddVisiData.categoryname = VisibilityData.categoryname;
-        AddVisiData.productname = VisibilityData.productname;
-        AddVisiData.reason = visibilityreasons;
-        AddVisiData.outletpdtmap = VisibilityData.mappingid;
-        AddVisiData.checkvalue = checkvaluevisibility;
-        await addVisibilitydata();
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => CustomerActivities()));
-      },
-      child: Container(
-        margin: EdgeInsets.only(right: 10.00),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: Color(0xffFFDBC1),
-          borderRadius: BorderRadius.circular(10.00),
-        ),
-        child: Text(
-          'Submit',
-          style: TextStyle(color: Colors.black, fontSize: 15),
-        ),
-      ),
-    );
-  }
-}
+
 
 Future<void> _showSelectionDialog(BuildContext context) {
   FilePickerResult _file;

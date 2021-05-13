@@ -3,6 +3,7 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/customer_activites_api/add_planogramapi.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
+import '../../ProgressHUD.dart';
 import 'MenuContent.dart';
 import 'package:merchandising/model/camera.dart';
 import 'package:photo_view/photo_view.dart';
@@ -60,6 +61,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
       }
     });
   }
+  bool isApicallProcess = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +77,9 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
             Spacer(),
             SubmitButton(
               onpress: ()async{
+                setState(() {
+                  isApicallProcess = true;
+                });
                 AddPlanoData.beforeimage = beforeimagesencode;
                 AddPlanoData.afterimage = afterimagesencode;
                 AddPlanoData.outletid = currentoutletid;
@@ -83,19 +88,10 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                 AddPlanoData.categoryname = PlanoDetails.categoryname;
                 AddPlanoData.planoimage = PlanoDetails.imageurl;
                AddPlanoData.categoryid = PlanoDetails.categoryid;
-
-
-                //PlanoDetails.beforeimage = beforeimagesencode;
-                //PlanoDetails.afterimage = afterimagesencode;
-
-                print('Category Name: ${AddPlanoData.categoryname}');
-                print('OPM id: ${AddPlanoData.outletpdtmapid}');
-
-
                 await addPlanogramdata();
-
-
-
+                setState(() {
+                  isApicallProcess = false;
+                });
                 {Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -112,22 +108,26 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
       body: Stack(
         children: [
           BackGround(),
-          Column(
-            children: [
-              OutletDetails(),
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(10.0,0,10,0),
-                  child: new Column(
-                    children: <Widget>[
-                      _createSearchView(),
-                      SizedBox(height: 10.0,),
-                      _firstSearch ? _createListView() : _performSearch(),
-                    ],
+          ProgressHUD(
+            opacity: 0.3,
+            inAsyncCall: isApicallProcess,
+            child: Column(
+              children: [
+                OutletDetails(),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10.0,0,10,0),
+                    child: new Column(
+                      children: <Widget>[
+                        _createSearchView(),
+                        SizedBox(height: 10.0,),
+                        _firstSearch ? _createListView() : _performSearch(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

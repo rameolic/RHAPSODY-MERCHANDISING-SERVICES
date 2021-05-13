@@ -7,7 +7,7 @@ class AddVisiData {
   static int timesheetid;
   static List<int> productid = [];
   static List<int> brandid = [];
-  static List<dynamic> categoryid = [];
+  static List<int> categoryid = [];
   static List<dynamic> categoryname = [];
   static List<dynamic> productname = [];
   static List<int> checkvalue = [];
@@ -20,10 +20,8 @@ Future addVisibilitydata() async {
     'outlet_id': currentoutletid,
     'timesheet_id': currenttimesheetid,
     'outlet_products_mapping_id': AddVisiData.outletpdtmap,
-
     'category_id': AddVisiData.categoryid,
     'category_name': AddVisiData.categoryname,
-
     'check_value': AddVisiData.checkvalue,
     'reason': AddVisiData.reason
   };

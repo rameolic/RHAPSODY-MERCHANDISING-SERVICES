@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
+import '../../ProgressHUD.dart';
 import 'Customers Activities.dart';
 import 'MenuContent.dart';
 import'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
@@ -66,7 +67,7 @@ class _ShareShelfState extends State<ShareShelf> {
       }
     });
   }
-
+  bool isApicallProcess = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -91,6 +92,9 @@ class _ShareShelfState extends State<ShareShelf> {
               SubmitButton(
                 ontap: ()async{
                   if(validateform()==true){
+                    setState(() {
+                      isApicallProcess = true;
+                    });
                     AddShareData.totalshare=[];
                     AddShareData.share=[];
                     for(int i=0;i<productlist.length;i++){
@@ -106,6 +110,9 @@ class _ShareShelfState extends State<ShareShelf> {
                     AddShareData.actual=AddShareData.totalshare;
                     AddShareData.share=AddShareData.share;
                     await addShareofshelfdata();
+                    setState(() {
+                      isApicallProcess = false;
+                    });
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -123,17 +130,21 @@ class _ShareShelfState extends State<ShareShelf> {
         body: Stack(
           children: [
             BackGround(),
-            Container(
-              child: new Column(
-                children: <Widget>[
-                  OutletDetails(),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(10.0,0,10,0),
-                    child: _createSearchView(),
-                  ),
-                  //SizedBox(height: 10.0,),
-                  _firstSearch ? _createListView() : _performSearch(),
-                ],
+            ProgressHUD(
+              opacity: 0.3,
+              inAsyncCall: isApicallProcess,
+              child: Container(
+                child: new Column(
+                  children: <Widget>[
+                    OutletDetails(),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10.0,0,10,0),
+                      child: _createSearchView(),
+                    ),
+                    //SizedBox(height: 10.0,),
+                    _firstSearch ? _createListView() : _performSearch(),
+                  ],
+                ),
               ),
             ),
 
