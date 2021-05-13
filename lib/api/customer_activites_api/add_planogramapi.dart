@@ -7,7 +7,7 @@ class AddPlanoData{
   static var outletid;
   static var timesheetid;
   static List<dynamic> outletpdtmapid=[];
-  static List<dynamic> categoryid=[2];
+  static List<dynamic> categoryid=[];
   static List<dynamic> planoimage=[];
   static List<dynamic> beforeimage = [];
   static List<dynamic> afterimage = [];

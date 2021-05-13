@@ -87,6 +87,7 @@ var currenttimesheetid;
 var fieldmanagernameofcurrentmerch;
 var fieldmanagerofcurrentmerch;
 var currentmerchid;
+bool alreadycheckedin =false;
 class loggedin{
   static var email;
   static var password;

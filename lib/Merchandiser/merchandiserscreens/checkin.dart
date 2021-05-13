@@ -270,7 +270,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             await getPlanogram();
                                             await getShareofshelf();
                                             await getCompetition();
-                                            await getPromoDetails();
+                                            await getPromotionDetails();
                                             setState(() {
                                               isApiCallProcess = false;
                                             });

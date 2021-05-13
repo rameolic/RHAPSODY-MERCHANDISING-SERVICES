@@ -322,7 +322,7 @@ class _State extends State<JourneyListBuilder> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () async{
-              if(gettodayjp.status[index] == 'done'){
+              if(gettodayjp.status[index] == 'done'|| gettodayjp.status[index] == 'working'){
                 alreadycheckedin = true;
               }
                     setState(() {

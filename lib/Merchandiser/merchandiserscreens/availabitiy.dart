@@ -267,6 +267,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
           ),
           Flexible(
             child: Container(
+              height: MediaQuery.of(context).size.height/1.8,
               padding: EdgeInsets.all(5.0),
               margin: EdgeInsets.only(left: 10.0,right: 10.0,bottom: 10.0),
               decoration: BoxDecoration(
@@ -286,7 +287,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                           children: [
                             Container(
                               height: 50,
-                              width: MediaQuery.of(context).size.width/2.1,
+                              width: MediaQuery.of(context).size.width/2.2,
                               decoration: index != InputList.length-1 ? BoxDecoration(
 
                                   border: Border(
@@ -332,7 +333,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                             color: Colors.black,
                                           ),),),
                                       child: Switch(
-                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 1 ? false:true,
+                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 0 ? true:false,
                                         // value: isSwitched,
                                         onChanged: (value) {
                                           setState(() {
@@ -350,12 +351,13 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                     SizedBox(
                                         height: 50,
                                         width: 100,
-                                        child:  Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 0 ? DropdownButton(
+                                        child:  Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 1 ?  SizedBox():DropdownButton(
                                           elevation: 0,
                                           dropdownColor: Colors.white,
                                           isExpanded: true,
                                           iconEnabledColor: orange,
                                           iconSize: 35.0,
+                                          underline: SizedBox(),
                                           value:  reasons[Avaiablity.productname.indexOf(InputList[index])] =="" ?null:reasons[Avaiablity.productname.indexOf(InputList[index])],
                                           onChanged: (newVal){
                                             setState(() {
@@ -366,7 +368,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                           },
                                           items: DropDownItems,
                                           hint: Text( Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]==''?"Select Reason":"${ Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]}",style: TextStyle(color: Colors.black),),
-                                        ) : SizedBox()
+                                        ) ,
                                     ),
                                   ],
                                 )
@@ -450,7 +452,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                           children: [
                             Container(
                               height: 50,
-                              width: MediaQuery.of(context).size.width/2.1,
+                              width: MediaQuery.of(context).size.width/2.2,
                               decoration: index != _filterList.length-1 ? BoxDecoration(
 
                                   border: Border(
@@ -468,7 +470,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                     ),)
                               ),
                               child: Align(
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
                                 child: Text(
                                   '${_filterList[index]}',
                                   textAlign: TextAlign.left,

@@ -20,11 +20,12 @@ Future<void> getVisibility() async {
     VisibilityData.productid = [];
     VisibilityData.brandid = [];
     VisibilityData.productname = [];
-    VisibilityData.brandname = [];
+    VisibilityData.categoryid = [];
     VisibilityData.categoryname = [];
     VisibilityData.isavailable = [];
     VisibilityData.reason = [];
     VisibilityData.imageurl = [];
+    VisibilityData.mappingid ;
 
     print('Visibility done');
 
@@ -33,19 +34,16 @@ Future<void> getVisibility() async {
     for (int u = 0; u< decodeddata['data'].length; u++) {
       VisibilityData.productname.add(decodeddata['data'][u]['p_name']);
       VisibilityData.imageurl.add('https://rms2.rhapsody.ae/product_image/${decodeddata['data'][u]['Image_url']}');
-      VisibilityData.brandname.add(decodeddata['data'][u]['b_name']);
-      VisibilityData.categoryname.add(decodeddata['data'][u]['c_name']);
+      VisibilityData.categoryid.add(decodeddata['data'][u]['c_id']);
+      VisibilityData.categoryname.add(decodeddata['data'][u]['category_name']);
       VisibilityData.productid.add(decodeddata['data'][u]['product_id']);
-      VisibilityData.mappingid = decodeddata['data'][u]['outlet_products_mapping_id'];
+      VisibilityData.mappingid=decodeddata['data'][u]['opm'];
     }
-    if(VisibilityData.brandname[0]!=null){
-      await getBrandDetails();
-      VisibilityData.brandid=[];
-      for(int u = 0; u<VisibilityData.brandname.length; u++){
-        print(VisibilityData.brandname[u]);
-        VisibilityData.brandid.add(BrandData.brandid[BrandData.brandname.indexOf(VisibilityData.brandname[u])]);
-      }
-    }
+    await getBrandDetails();
+    // VisibilityData.brandid=[];
+    // for(int u = 0; u<VisibilityData.categoryid.length; u++){
+    //   //VisibilityData.brandid.add(BrandData.brandid[BrandData.brandname.indexOf(VisibilityData.categoryid[u])]);
+    // }
   }
 
 }
@@ -56,7 +54,7 @@ class VisibilityData{
   static List<int> productid=[];
   static List<int> brandid=[];
   static List<String> productname=[];
-  static List<String> brandname = [];
+  static List<int> categoryid = [];
   static List<String> categoryname = [];
   static List<int> isavailable=[];
   static List<String> reason=[];

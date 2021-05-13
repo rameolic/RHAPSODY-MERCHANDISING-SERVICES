@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
-Future<void> getPromoDetails() async {
+Future<void> getPromotionDetails() async {
   Map DBrequestData = {
     'emp_id': '${DBrequestdata.receivedempid}'
   };

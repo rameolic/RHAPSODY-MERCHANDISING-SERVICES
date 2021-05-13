@@ -160,7 +160,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) {
                             return VeiwImage(
@@ -189,143 +189,145 @@ class _VisibilityOneState extends State<VisibilityOne> {
                       ),
                     ),
                   ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.7,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10.0),
-                          child: new Text(
-                            "${VisibilityData.categoryname[index]}",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.8,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10.0),
+                            child: new Text(
+                              "${VisibilityData.categoryname[index]}",
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.8,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 80,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Is Available",
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Switch(
-                                    value: checkvaluevisibility[index] == 0
-                                        ? true
-                                        : false,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        checkvaluevisibility[index] == 1
-                                            ? checkvaluevisibility[index] = 0
-                                            : checkvaluevisibility[index] = 1;
-                                        images[index] = File('dummy.txt');
-                                      });
-                                    },
-                                    inactiveTrackColor: orange,
-                                    activeColor: Colors.red,
-                                  ),
-                                ],
+                        SizedBox(height: 10),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.8,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 10,
                               ),
-                            ),
-                            Spacer(),
-                            SizedBox(
-                              height: 88,
-                              child: Column(
-                                children: [
-                                  Text(
+                              SizedBox(
+                                height: 80,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "Is Available",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                    Switch(
+                                      value: checkvaluevisibility[index] == 0
+                                          ? true
+                                          : false,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          checkvaluevisibility[index] == 1
+                                              ? checkvaluevisibility[index] = 0
+                                              : checkvaluevisibility[index] = 1;
+                                          images[index] = File('dummy.txt');
+                                        });
+                                      },
+                                      inactiveTrackColor: orange,
+                                      activeColor: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              SizedBox(
+                                height: 88,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      checkvaluevisibility[index] == 0
+                                          ? "Reason"
+                                          : "Capture Image",
+                                      style: TextStyle(fontSize: 15),
+                                    ),
                                     checkvaluevisibility[index] == 0
-                                        ? "Reason"
-                                        : "Capture Image",
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  checkvaluevisibility[index] == 0
-                                      ? Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: SizedBox(
-                                            height: 50,
-                                            width: 100,
-                                            child: DropdownButton(
-                                              elevation: 0,
-                                              underline: SizedBox(),
-                                              dropdownColor: Colors.white,
-                                              isExpanded: true,
-                                              iconEnabledColor: orange,
-                                              iconSize: 35.0,
-                                              value: visibilityreasons[index] ==
-                                                      ''
-                                                  ? null
-                                                  : visibilityreasons[index],
-                                              onChanged: (newVal) {
-                                                setState(() {
-                                                  selectedreason = newVal;
-                                                  visibilityreasons[index] =
-                                                      newVal;
-                                                  print(visibilityreasons);
-                                                });
-                                              },
-                                              items: listofreasons,
-                                              hint: Text(
-                                                "Select Reason",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14),
+                                        ? Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: SizedBox(
+                                              height: 50,
+                                              width: 100,
+                                              child: DropdownButton(
+                                                elevation: 0,
+                                                underline: SizedBox(),
+                                                dropdownColor: Colors.white,
+                                                isExpanded: true,
+                                                iconEnabledColor: orange,
+                                                iconSize: 35.0,
+                                                value: visibilityreasons[index] ==
+                                                        ''
+                                                    ? null
+                                                    : visibilityreasons[index],
+                                                onChanged: (newVal) {
+                                                  setState(() {
+                                                    selectedreason = newVal;
+                                                    visibilityreasons[index] =
+                                                        newVal;
+                                                    print(visibilityreasons);
+                                                  });
+                                                },
+                                                items: listofreasons,
+                                                hint: Text(
+                                                  "Select Reason",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        )
-                                      : Container(
-                                          margin: EdgeInsets.all(10),
-                                          child:
-                                              // ignore: unrelated_type_equality_checks
-                                              images[index].toString() !=
-                                                      'File: \'dummy.txt\''
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (BuildContext
-                                                                        context) =>
-                                                                    PreveiwScreen(
-                                                                      input:
-                                                                          index,
-                                                                    )));
-                                                      },
-                                                      child: Image(
-                                                        height: 50,
+                                          )
+                                        : Container(
+                                            margin: EdgeInsets.all(10),
+                                            child:
+                                                // ignore: unrelated_type_equality_checks
+                                                images[index].toString() !=
+                                                        'File: \'dummy.txt\''
+                                                    ? GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (BuildContext
+                                                                          context) =>
+                                                                      PreveiwScreen(
+                                                                        input:
+                                                                            index,
+                                                                      )));
+                                                        },
+                                                        child: Image(
+                                                          height: 50,
+                                                          width: 50,
+                                                          image: FileImage(
+                                                              images[index]),
+                                                        ),
+                                                      )
+                                                    : Image(
                                                         width: 50,
-                                                        image: FileImage(
-                                                            images[index]),
+                                                        image: AssetImage(
+                                                            'images/capture.png'),
                                                       ),
-                                                    )
-                                                  : Image(
-                                                      width: 50,
-                                                      image: AssetImage(
-                                                          'images/capture.png'),
-                                                    ),
-                                        ),
-                                ],
+                                          ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   IconButton(
                     icon: Icon(
@@ -381,7 +383,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) {
                             return VeiwImage(
@@ -530,7 +532,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                                                       'File: \'dummy.txt\''
                                                   ? GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(
+                                                        Navigator.pushReplacement(
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: (BuildContext
@@ -610,14 +612,14 @@ class SubmitButton extends StatelessWidget {
         //   AddVisiData.categoryname.add('\"${VisibilityData.categoryname[i]}\"');
         //   AddVisiData.productname.add('\"${VisibilityData.productname[i]}\"');
         // }
-        AddVisiData.brandname = VisibilityData.brandname;
+       // AddVisiData.brandname = VisibilityData.brandname;
         AddVisiData.categoryname = VisibilityData.categoryname;
         AddVisiData.productname = VisibilityData.productname;
         AddVisiData.outletid = outletrequestdata.outletidpressed;
         AddVisiData.timesheetid = checkinoutdata.checkid;
         AddVisiData.productid = VisibilityData.productid;
         AddVisiData.brandid = VisibilityData.brandid;
-        AddVisiData.brandname = VisibilityData.brandname;
+        //AddVisiData.brandname = VisibilityData.brandname;
         AddVisiData.categoryname = VisibilityData.categoryname;
         AddVisiData.productname = VisibilityData.productname;
         AddVisiData.reason = visibilityreasons;
@@ -796,7 +798,7 @@ class PreveiwScreen extends StatelessWidget {
                   backgroundColor: pink,
                   child: Icon(Icons.check, size: 35, color: orange),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
@@ -836,7 +838,7 @@ class VeiwImage extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => VisibilityOne()));

@@ -97,10 +97,11 @@ class _ShareShelfState extends State<ShareShelf> {
                       AddShareData.totalshare.add(total[i].text);
                       AddShareData.share.add(share[i].text);
                     }
-                    AddShareData.brandid = ShareData.brandid;
+                    //AddShareData.brandid = ShareData.brandid;
                     AddShareData.outletid = outletrequestdata.outletidpressed;
                     AddShareData.timesheetid = checkinoutdata.checkid;
                     AddShareData.categoryname = ShareData.categoryname;
+                    AddShareData.categoryid =ShareData.categoryid;
                     AddShareData.target = ShareData.target;
                     AddShareData.actual=AddShareData.totalshare;
                     AddShareData.share=AddShareData.share;
@@ -123,11 +124,14 @@ class _ShareShelfState extends State<ShareShelf> {
           children: [
             BackGround(),
             Container(
-              margin: EdgeInsets.fromLTRB(10.0,10,10,0),
               child: new Column(
                 children: <Widget>[
-                  _createSearchView(),
-                  SizedBox(height: 10.0,),
+                  OutletDetails(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10.0,0,10,0),
+                    child: _createSearchView(),
+                  ),
+                  //SizedBox(height: 10.0,),
                   _firstSearch ? _createListView() : _performSearch(),
                 ],
               ),
@@ -162,184 +166,187 @@ class _ShareShelfState extends State<ShareShelf> {
     );
   }
   Widget _createListView() {
-    return new Flexible(
-      child: new   Form(
-        key: soskey,
-        child: ListView.builder(
-          // physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount:target.length,
-            itemBuilder: (BuildContext context, int index) {
-              actual.add(TextEditingController());
-              total.add(TextEditingController());
-              share.add(TextEditingController());
-              return Container(
-                width:double.infinity,
-                margin: EdgeInsets.only(top:10.0),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: pink,
-                ),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(10.0,0,10,0),
+      child: new Flexible(
+        child: new Form(
+          key: soskey,
+          child: ListView.builder(
+            // physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount:target.length,
+              itemBuilder: (BuildContext context, int index) {
+                actual.add(TextEditingController());
+                total.add(TextEditingController());
+                share.add(TextEditingController());
+                return Container(
+                  width:double.infinity,
+                  margin: EdgeInsets.only(top:10.0),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: pink,
+                  ),
 
-                child: Column(
-                  crossAxisAlignment:CrossAxisAlignment.start,
+                  child: Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
 
 
-                  children: [
-                    Text('${ShareData.categoryname[index]}',
-                        style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
-                        )),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(height: 10,),
-                        Text("Target: ${target[index]} %",style: TextStyle(
-                            fontSize: 15.0
-                        )),
-                        Container(
-                          decoration: BoxDecoration(
-                            color:Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                          margin:EdgeInsets.only(top:10.0),
-                          child: Center(
+                    children: [
+                      Text('${ShareData.categoryname[index]}',
+                          style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
+                          )),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(height: 10,),
+                          Text("Target: ${target[index]} %",style: TextStyle(
+                              fontSize: 15.0
+                          )),
+                          Container(
+                            decoration: BoxDecoration(
+                              color:Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(10.0),
+                            margin:EdgeInsets.only(top:10.0),
                             child: Center(
-                              child: TextFormField(
-                                onChanged: (value){
-                                  totalshelf[index]=double.parse(value);
-                                  // ignore: unrelated_type_equality_check
-                                },
-                                keyboardType:
-                                TextInputType.number,
+                              child: Center(
+                                child: TextFormField(
+                                  onChanged: (value){
+                                    totalshelf[index]=double.parse(value);
+                                    // ignore: unrelated_type_equality_check
+                                  },
+                                  keyboardType:
+                                  TextInputType.number,
 
-                                controller: total[index],
-                                cursorColor: grey,
-                                validator: (input) => !input
-                                    .isNotEmpty
-                                    ? "Total should not be empty"
-                                    : null,
-                                decoration:
-                                new InputDecoration(
-                                  //contentPadding: ,
-                                  isCollapsed: true,
-                                  border: InputBorder.none,
-                                  focusColor: orange,
-                                  hintText: "Total in meters",
-                                  hintStyle: TextStyle(
-                                    color: grey,
-                                    fontSize: 16.0,
+                                  controller: total[index],
+                                  cursorColor: grey,
+                                  validator: (input) => !input
+                                      .isNotEmpty
+                                      ? "Total should not be empty"
+                                      : null,
+                                  decoration:
+                                  new InputDecoration(
+                                    //contentPadding: ,
+                                    isCollapsed: true,
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Total in meters",
+                                    hintStyle: TextStyle(
+                                      color: grey,
+                                      fontSize: 16.0,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
 
-                        Container(
-                          decoration: BoxDecoration(
-                            color:Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                          margin:EdgeInsets.only(top:10.0),
-                          child: Center(
-                            child: Center(
-                              child: TextFormField(
-                                onChanged: (value){
-                                  setState(() {
-                                    totalshare[index]=double.parse(value);
-                                  });
-                                },
-                                keyboardType:
-                                TextInputType.number,
-
-                                controller: share[index],
-                                cursorColor: grey,
-                                validator: (input) => !input
-                                    .isNotEmpty
-                                    ? "Share should not be empty"
-                                    : null,
-                                decoration:
-                                new InputDecoration(
-                                  //contentPadding: ,
-                                  isCollapsed: true,
-                                  border: InputBorder.none,
-                                  focusColor: orange,
-                                  hintText: "Share in meters",
-                                  hintStyle: TextStyle(
-                                    color: grey,
-                                    fontSize: 16.0,
-                                  ),
-                                ),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color:Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                          ),
-                        ),
-
-                        totalshare[index] == 0.0 ?SizedBox():Container(
-                          decoration: BoxDecoration(
-                            color:Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                          margin:EdgeInsets.only(top:10.0),
-                          child: Center(
+                            padding: EdgeInsets.all(10.0),
+                            margin:EdgeInsets.only(top:10.0),
                             child: Center(
-                              child: TextFormField(
-                                onChanged: (value){
-                                  // ignore: unrelated_type_equality_checks
-                                  if(double.parse(value) <= double.parse(share[index].text)){
+                              child: Center(
+                                child: TextFormField(
+                                  onChanged: (value){
                                     setState(() {
-                                      actualpercent[index] = (double.parse(value)/double.parse(share[index].text))*100;
+                                      totalshare[index]=double.parse(value);
                                     });
-                                  }else{
-                                    setState(() {
-                                      actualpercent[index] = 101;
-                                    });
-                                  }
-                                },
-                                keyboardType:
-                                TextInputType.number,
+                                  },
+                                  keyboardType:
+                                  TextInputType.number,
 
-                                controller: actual[index],
-                                cursorColor: grey,
-                                validator: (input) => !input
-                                    .isNotEmpty
-                                    ? "actual should not be empty"
-                                    : null,
-                                decoration:
-                                new InputDecoration(
-                                  //contentPadding: ,
-                                  isCollapsed: true,
-                                  border: InputBorder.none,
-                                  focusColor: orange,
-                                  hintText: "Actual in meters",
-                                  hintStyle: TextStyle(
-                                    color: grey,
-                                    fontSize: 16.0,
+                                  controller: share[index],
+                                  cursorColor: grey,
+                                  validator: (input) => !input
+                                      .isNotEmpty
+                                      ? "Share should not be empty"
+                                      : null,
+                                  decoration:
+                                  new InputDecoration(
+                                    //contentPadding: ,
+                                    isCollapsed: true,
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Share in meters",
+                                    hintStyle: TextStyle(
+                                      color: grey,
+                                      fontSize: 16.0,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        SizedBox(height: 10),
-                        actualpercent[index]<100?Text("Actual Percent: ${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.red),):
+                          totalshare[index] == 0.0 ?SizedBox():Container(
+                            decoration: BoxDecoration(
+                              color:Colors.white,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: EdgeInsets.all(10.0),
+                            margin:EdgeInsets.only(top:10.0),
+                            child: Center(
+                              child: Center(
+                                child: TextFormField(
+                                  onChanged: (value){
+                                    // ignore: unrelated_type_equality_checks
+                                    if(double.parse(value) <= double.parse(share[index].text)){
+                                      setState(() {
+                                        actualpercent[index] = (double.parse(value)/double.parse(share[index].text))*100;
+                                      });
+                                    }else{
+                                      setState(() {
+                                        actualpercent[index] = 101;
+                                      });
+                                    }
+                                  },
+                                  keyboardType:
+                                  TextInputType.number,
 
-                        actualpercent[index] == 101 ?Text("Actual Percent : actual cannot be greater than share",style: TextStyle(color: Colors.red),):Text("Actual Percent : "
-                            "${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.green),),
-                      ],
-                    ),
-                  ],
-                ),
+                                  controller: actual[index],
+                                  cursorColor: grey,
+                                  validator: (input) => !input
+                                      .isNotEmpty
+                                      ? "actual should not be empty"
+                                      : null,
+                                  decoration:
+                                  new InputDecoration(
+                                    //contentPadding: ,
+                                    isCollapsed: true,
+                                    border: InputBorder.none,
+                                    focusColor: orange,
+                                    hintText: "Actual in meters",
+                                    hintStyle: TextStyle(
+                                      color: grey,
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
 
-              );
-            }),
+                          SizedBox(height: 10),
+                          actualpercent[index]<100?Text("Actual Percent: ${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.red),):
+
+                          actualpercent[index] == 101 ?Text("Actual Percent : actual cannot be greater than share",style: TextStyle(color: Colors.red),):Text("Actual Percent : "
+                              "${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.green),),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                );
+              }),
+        ),
       ),
     );
   }
@@ -371,183 +378,186 @@ class _ShareShelfState extends State<ShareShelf> {
   }
 
   Widget _createFilteredListView() {
-    return new ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount:_filterList.length,
-        itemBuilder: (BuildContext context, int index) {
-          _filtertotal.add(TextEditingController());
-          _filtershare.add(TextEditingController());
-          _filteractual.add(TextEditingController());
-          return Container(
-            width:double.infinity,
-            margin: EdgeInsets.only(top:10.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: pink,
-            ),
+    return Padding(
+      padding: EdgeInsets.fromLTRB(10.0,0,10,0),
+      child: new ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount:_filterList.length,
+          itemBuilder: (BuildContext context, int index) {
+            _filtertotal.add(TextEditingController());
+            _filtershare.add(TextEditingController());
+            _filteractual.add(TextEditingController());
+            return Container(
+              width:double.infinity,
+              margin: EdgeInsets.only(top:10.0),
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: pink,
+              ),
 
-            child: Column(
-              crossAxisAlignment:CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment:CrossAxisAlignment.start,
 
 
-              children: [
-                Text('Category :${_filterList[index]}',
-                    style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
-                    )),
-                SizedBox(height: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(height: 10,),
-                    Text("Target: ${_filtertarget[index]} %",style: TextStyle(
-                        fontSize: 15.0
-                    )),
-                    Container(
-                      decoration: BoxDecoration(
-                        color:Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: EdgeInsets.all(10.0),
-                      margin:EdgeInsets.only(top:10.0),
-                      child: Center(
+                children: [
+                  Text('Category :${_filterList[index]}',
+                      style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold,color: orange
+                      )),
+                  SizedBox(height: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(height: 10,),
+                      Text("Target: ${_filtertarget[index]} %",style: TextStyle(
+                          fontSize: 15.0
+                      )),
+                      Container(
+                        decoration: BoxDecoration(
+                          color:Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: EdgeInsets.all(10.0),
+                        margin:EdgeInsets.only(top:10.0),
                         child: Center(
-                          child: TextFormField(
-                            onChanged: (value){
-                              totalshelf[index]=double.parse(value);
-                              // ignore: unrelated_type_equality_check
-                            },
-                            keyboardType:
-                            TextInputType.number,
+                          child: Center(
+                            child: TextFormField(
+                              onChanged: (value){
+                                totalshelf[index]=double.parse(value);
+                                // ignore: unrelated_type_equality_check
+                              },
+                              keyboardType:
+                              TextInputType.number,
 
-                            controller: _filtertotal[index],
-                            cursorColor: grey,
-                            validator: (input) => !input
-                                .isNotEmpty
-                                ? "Total should not be empty"
-                                : null,
-                            decoration:
-                            new InputDecoration(
-                              //contentPadding: ,
-                              isCollapsed: true,
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Total in meters",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                              controller: _filtertotal[index],
+                              cursorColor: grey,
+                              validator: (input) => !input
+                                  .isNotEmpty
+                                  ? "Total should not be empty"
+                                  : null,
+                              decoration:
+                              new InputDecoration(
+                                //contentPadding: ,
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Total in meters",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
 
-                    Container(
-                      decoration: BoxDecoration(
-                        color:Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: EdgeInsets.all(10.0),
-                      margin:EdgeInsets.only(top:10.0),
-                      child: Center(
-                        child: Center(
-                          child: TextFormField(
-                            onChanged: (value){
-                              setState(() {
-                                totalshare[index]=double.parse(value);
-                              });
-                            },
-                            keyboardType:
-                            TextInputType.number,
-
-                            controller: _filtershare[index],
-                            cursorColor: grey,
-                            validator: (input) => !input
-                                .isNotEmpty
-                                ? "Share should not be empty"
-                                : null,
-                            decoration:
-                            new InputDecoration(
-                              //contentPadding: ,
-                              isCollapsed: true,
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Share in meters",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
-                              ),
-                            ),
-                          ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color:Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                      ),
-                    ),
-
-
-                    totalshare[index] == 0.0 ?SizedBox():Container(
-                      decoration: BoxDecoration(
-                        color:Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      padding: EdgeInsets.all(10.0),
-                      margin:EdgeInsets.only(top:10.0),
-                      child: Center(
+                        padding: EdgeInsets.all(10.0),
+                        margin:EdgeInsets.only(top:10.0),
                         child: Center(
-                          child: TextFormField(
-                            onChanged: (value){
-                              // ignore: unrelated_type_equality_checks
-                              if(double.parse(value) <= double.parse(_filtershare[index].text)){
+                          child: Center(
+                            child: TextFormField(
+                              onChanged: (value){
                                 setState(() {
-                                  actualpercent[index] = (double.parse(value)/double.parse(_filtershare[index].text))*100;
+                                  totalshare[index]=double.parse(value);
                                 });
-                              }else{
-                                setState(() {
-                                  actualpercent[index] = 101;
-                                });
-                              }
-                            },
-                            keyboardType:
-                            TextInputType.number,
+                              },
+                              keyboardType:
+                              TextInputType.number,
 
-                            controller: actual[index],
-                            cursorColor: grey,
-                            validator: (input) => !input
-                                .isNotEmpty
-                                ? "actual should not be empty"
-                                : null,
-                            decoration:
-                            new InputDecoration(
-                              //contentPadding: ,
-                              isCollapsed: true,
-                              border: InputBorder.none,
-                              focusColor: orange,
-                              hintText: "Actual in meters",
-                              hintStyle: TextStyle(
-                                color: grey,
-                                fontSize: 16.0,
+                              controller: _filtershare[index],
+                              cursorColor: grey,
+                              validator: (input) => !input
+                                  .isNotEmpty
+                                  ? "Share should not be empty"
+                                  : null,
+                              decoration:
+                              new InputDecoration(
+                                //contentPadding: ,
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Share in meters",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
 
-                    SizedBox(height: 10),
-                    actualpercent[index]<100?Text("Actual Percent: ${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.red),):
 
-                    actualpercent[index] == 101 ?Text("Actual Percent : actual cannot be greater than share",style: TextStyle(color: Colors.red),):Text("Actual Percent : "
-                        "${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.green),),
-                  ],
-                ),
-              ],
-            ),
+                      totalshare[index] == 0.0 ?SizedBox():Container(
+                        decoration: BoxDecoration(
+                          color:Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        padding: EdgeInsets.all(10.0),
+                        margin:EdgeInsets.only(top:10.0),
+                        child: Center(
+                          child: Center(
+                            child: TextFormField(
+                              onChanged: (value){
+                                // ignore: unrelated_type_equality_checks
+                                if(double.parse(value) <= double.parse(_filtershare[index].text)){
+                                  setState(() {
+                                    actualpercent[index] = (double.parse(value)/double.parse(_filtershare[index].text))*100;
+                                  });
+                                }else{
+                                  setState(() {
+                                    actualpercent[index] = 101;
+                                  });
+                                }
+                              },
+                              keyboardType:
+                              TextInputType.number,
 
-          );
-        });
+                              controller: actual[index],
+                              cursorColor: grey,
+                              validator: (input) => !input
+                                  .isNotEmpty
+                                  ? "actual should not be empty"
+                                  : null,
+                              decoration:
+                              new InputDecoration(
+                                //contentPadding: ,
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                focusColor: orange,
+                                hintText: "Actual in meters",
+                                hintStyle: TextStyle(
+                                  color: grey,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 10),
+                      actualpercent[index]<100?Text("Actual Percent: ${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.red),):
+
+                      actualpercent[index] == 101 ?Text("Actual Percent : actual cannot be greater than share",style: TextStyle(color: Colors.red),):Text("Actual Percent : "
+                          "${actualpercent[index].toStringAsFixed(2)}%",style: TextStyle(color: Colors.green),),
+                    ],
+                  ),
+                ],
+              ),
+
+            );
+          }),
+    );
   }
   bool validateform() {
     final form = soskey.currentState;

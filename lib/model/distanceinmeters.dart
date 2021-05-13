@@ -15,7 +15,7 @@ distinmeters() {
     gettodayjp.distanceinmeters.add(dist/1000);
   }
   print(gettodayjp.distanceinmeters);
-  marker();
+  //marker();
   distinmetersforskipjp();
   }
 distinmetersforskipjp() {

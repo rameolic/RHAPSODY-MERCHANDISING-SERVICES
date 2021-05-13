@@ -186,7 +186,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                               Text("Target",style: TextStyle(fontWeight: FontWeight.bold),),
                               GestureDetector(
                                 onTap: (){
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
@@ -572,7 +572,7 @@ class VeiwImage extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: FloatingActionButton(
                 onPressed: (){
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>

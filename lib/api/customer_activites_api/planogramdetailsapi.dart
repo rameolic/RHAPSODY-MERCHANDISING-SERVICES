@@ -33,7 +33,7 @@ Future<void> getPlanogram() async {
       PlanoDetails.brandname.add(decodeddata['data'][u]['brand_name']);
       PlanoDetails.opm.add(decodeddata['data'][u]['opm']);
       PlanoDetails.brandid.add(decodeddata['data'][u]['BID']);
-      PlanoDetails.categoryname.add(decodeddata['data'][u]['c_name']);
+      PlanoDetails.categoryname.add(decodeddata['data'][u]['category_name']);
       PlanoDetails.categoryid.add(decodeddata['data'][u]['c_id']);
 
     }

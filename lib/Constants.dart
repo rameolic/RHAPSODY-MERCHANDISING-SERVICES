@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'main.dart';
 import 'package:merchandising/api/api_service.dart';
-bool alreadycheckedin = false;
+//bool alreadycheckedin = false;
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
 final transparentwhite = Colors.white.withOpacity(0.18);
@@ -131,9 +132,12 @@ class Containerblock extends StatelessWidget {
                 numbertext,style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 10),
-              Text(
-                chartext,
-                textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  chartext,
+                  textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                ),
               ),
             ],
           ),

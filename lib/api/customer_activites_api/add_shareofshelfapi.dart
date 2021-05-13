@@ -5,7 +5,7 @@ import 'package:merchandising/api/api_service.dart';
 class AddShareData{
   static var outletid;
   static var timesheetid;
-  static List<dynamic> brandid=[];
+  static List<dynamic> categoryid=[];
   static List<dynamic> categoryname=[];
   static List<dynamic> totalshare=[];
   static List<dynamic> share=[];
@@ -19,13 +19,12 @@ Future addShareofshelfdata() async{
     'outlet_id' : AddShareData.outletid,
     'timesheet_id' : AddShareData.timesheetid,
     'category_name' : AddShareData.categoryname,
-    'brand_id' : AddShareData.brandid,
+    'category_id' : AddShareData.categoryid,
     'total_share' : AddShareData.totalshare,
-    'share' : AddShareData.totalshare,
+    'share' : AddShareData.share,
     'target' : AddShareData.target,
     'actual' : AddShareData.actual,
    };
-  print(jsonEncode(addshare));
   http.Response shareresponse = await http.post(AddShareofshelf,
     headers: {
       'Content-Type': 'application/json',
@@ -35,4 +34,7 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
+
+  print("Add Share of Shelf Done");
+  print(addshare);
 }

@@ -27,7 +27,7 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
-import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
+import 'package:merchandising/model/chatscreen.dart';
 Future callfrequently()async{
   await getJourneyPlan();
   await getskippedJourneyPlan();
@@ -442,7 +442,7 @@ class _DashBoardState extends State<DashBoard> {
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
-                      chartext: 'Scheduled Visits',
+                      chartext: ' Scheduled \nVisits',
                       icon: CupertinoIcons.phone_circle_fill,
                       color: Colors.green,
                     ),
@@ -456,14 +456,14 @@ class _DashBoardState extends State<DashBoard> {
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
-                      chartext: 'Scheduled\nVisits Done',
+                      chartext: ' Scheduled \nVisits Done',
                       icon:CupertinoIcons.check_mark_circled_solid,
                       color: Colors.green,
                     ),
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}': '${DBResponsedatadaily.UnShedulevisitsDone}',
-                      chartext: 'unScheduled Visits Done',
+                      chartext: 'unScheduled\nVisits Done',
                       icon: CupertinoIcons.checkmark_seal_fill,
                       color: Colors.red,
                     ),

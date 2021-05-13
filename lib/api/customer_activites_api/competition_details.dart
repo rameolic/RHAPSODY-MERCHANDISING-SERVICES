@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../api_service.dart';
+import 'package:merchandising/api/api_service.dart';
 
 Future<void> getCompetition() async {
   Map body = {
-    "time_sheet_id" : "$currenttimesheetid"
+    "time_sheet_id" : currenttimesheetid,
   };
   http.Response competitionresponse = await http.post(CompetitionDetails,
     headers: {
