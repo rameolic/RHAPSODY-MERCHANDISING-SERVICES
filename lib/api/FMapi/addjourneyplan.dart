@@ -42,7 +42,7 @@ class addschdulejp{
 Future addschdulejourneypaln() async{
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy');
-  final String thisyear = formatter.format(now);
+  final int thisyear = int.parse(formatter.format(now));
   Map body = {
     "emp_id": addschdulejp.empid,
     "month": addschdulejp.month,
@@ -50,19 +50,19 @@ Future addschdulejourneypaln() async{
     "year": thisyear,
     "outlet_id": addschdulejp.outletid
   };
-  print(body);
-  http.Response response = await http.post(schdulejp,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(body),
-  );
-  print(response.body);
-  if(response.statusCode == 200){
-    return true;
-  }else{
-    return  false;
-  }
+  print(jsonEncode(body));
+  // http.Response response = await http.post(schdulejp,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(body),
+  // );
+  // print(response.body);
+  // if(response.statusCode == 200){
+  //   return true;
+  // }else{
+  //   return  false;
+  // }
 }

@@ -349,7 +349,7 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                                                     addschdulejp.month = u+1;
                                                   }}
                                                 for(int u=0;u<selectedweekday.length;u++){
-                                                  addschdulejp.days.add("\"${weekdays[selectedweekday[u]]}\"");
+                                                  addschdulejp.days.add("${weekdays[selectedweekday[u]]}");
                                                 }
                                                 setState(() {
                                                   isApiCallProcess = true;
