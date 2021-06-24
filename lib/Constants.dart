@@ -3,7 +3,13 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'main.dart';
-import 'package:merchandising/api/api_service.dart';
+import 'api/api_service.dart';
+import'package:merchandising/Fieldmanager/ViewPDF.dart';
+import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'api/FMapi/nbl_detailsapi.dart';
+
+String nblfile;
 //bool alreadycheckedin = false;
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
@@ -163,7 +169,8 @@ class EmpInfo extends StatelessWidget {
               else if(currentuser.roleid == 6)
                 Text('-Merchandiser',
                   style: TextStyle(fontSize: 8.0, color: orange),)
-              else Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
+              else if(currentuser.roleid == 3)Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
+              else Text('- Client',style: TextStyle(fontSize: 8.0, color: orange),)
             ],
           ),
         ),
@@ -175,3 +182,71 @@ class EmpInfo extends StatelessWidget {
 
 
 
+
+class NBlFloatingButton extends StatefulWidget {
+  @override
+  _NBlFloatingButtonState createState() => _NBlFloatingButtonState();
+}
+
+class _NBlFloatingButtonState extends State<NBlFloatingButton> {
+  Offset count=Offset(20.0,20.0);
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+        left : count.dx,
+        top  : count.dy ,
+        child : Draggable(
+            feedback: Container(
+                child : FloatingActionButton(
+                  onPressed: (){},
+                  child: Text("NBL",style: TextStyle(color: pink),),
+                  backgroundColor: grey,)
+            ),
+            child: FloatingActionButton(child: Text("NBL",style: TextStyle(color: pink),),
+              onPressed: (){
+                showDialog(
+                    context: context,
+                    builder: (_) => StatefulBuilder(
+                        builder: (context, setState) {
+                          return AlertDialog(
+                            backgroundColor: alertboxcolor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            content: Builder(
+                              builder: (context) {
+                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  //margin: EdgeInsets.all(10.0),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Text('NBL',style: TextStyle(color: orange,fontSize: 20),),
+                                        Divider(color: Colors.black,thickness: 0.8,),
+                                        NBLDetData.fileurl.isNotEmpty ?
+                                        SfPdfViewer.network(
+                                            "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}"
+                                        ):Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("NBL not found"),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }));
+              },
+              backgroundColor: orange,),
+            childWhenDragging: Container(),
+            onDragEnd: (details){
+              setState(() {
+                count = details.offset;
+              });
+            }));
+  }
+}

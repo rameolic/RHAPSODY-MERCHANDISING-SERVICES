@@ -40,16 +40,22 @@ class _leavestatusPageState extends State<leavestatusPage> {
           iconTheme: IconThemeData(color: orange),
           title: Row(
             children: [
-              Text(
-                'Leave status',
-                style: TextStyle(color: orange),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Leave status',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
               ),
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(children: [
           BackGround(),
             ListView.builder(
@@ -272,18 +278,20 @@ class _LeaveRequestState extends State<LeaveRequest> {
         appBar: AppBar(
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
-          title: Row(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Leave Request',
                 style: TextStyle(color: orange),
               ),
+              EmpInfo()
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

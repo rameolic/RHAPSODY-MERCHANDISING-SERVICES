@@ -11,6 +11,8 @@ class AddShareData{
   static List<dynamic> share=[];
   static List<dynamic> target = [];
   static List<dynamic> actual = [];
+  static List<dynamic> actualpercent = [];
+  static List<String> reason = [];
 
 }
 
@@ -19,12 +21,15 @@ Future addShareofshelfdata() async{
     'outlet_id' : AddShareData.outletid,
     'timesheet_id' : AddShareData.timesheetid,
     'category_name' : AddShareData.categoryname,
+    'outlet_products_mapping_id': comid,
     'category_id' : AddShareData.categoryid,
     'total_share' : AddShareData.totalshare,
     'share' : AddShareData.share,
     'target' : AddShareData.target,
-    'actual' : AddShareData.actual,
+    'actual' : AddShareData.actualpercent,
+    "reason" : AddShareData.reason,
    };
+  print(jsonEncode(addshare));
   http.Response shareresponse = await http.post(AddShareofshelf,
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +39,4 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
-
-  print("Add Share of Shelf Done");
-  print(addshare);
 }

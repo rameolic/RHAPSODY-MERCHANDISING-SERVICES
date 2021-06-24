@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
+import 'package:merchandising/ProgressHUD.dart';
 import 'CompetitonCheckTwo.dart';
 import 'MenuContent.dart';
 import 'dart:convert';
@@ -16,7 +17,14 @@ import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart
 import'package:merchandising/api/api_service.dart';
 
 
-
+TextEditingController itemname = TextEditingController();
+TextEditingController promtdescp = TextEditingController();
+TextEditingController mrp = TextEditingController();
+TextEditingController sellingprice = TextEditingController();
+TextEditingController company = TextEditingController();
+TextEditingController category = TextEditingController();
+TextEditingController promotion = TextEditingController();
+TextEditingController promodscrptn = TextEditingController();
 File capturedimage = File('dummy.txt');
 class CompetitionCheckOne extends StatefulWidget {
   @override
@@ -25,16 +33,15 @@ class CompetitionCheckOne extends StatefulWidget {
 
 class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
   GlobalKey<FormState> products = GlobalKey<FormState>();
-  TextEditingController itemname = TextEditingController();
-  TextEditingController promtdescp = TextEditingController();
-  TextEditingController mrp = TextEditingController();
-  TextEditingController sellingprice = TextEditingController();
+
 
   GlobalKey<FormState> keyone = GlobalKey<FormState>();
+  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
         title: Row(
@@ -46,42 +53,31 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
             Spacer(),
             SubmitButton(
               onpress: () async{
+                setState(() {
+                  isApiCallProcess = true;
+                });
                 var imagesbytes =capturedimage.readAsBytesSync();
                 if (validateform() == true) {
-                  if (selectcompanydropdown != null &&
-                      selectpromotiondropdown != null &&
-                      selectbranddropdown != null) {
                     AddCompData.timesheetid = currenttimesheetid;
-                    AddCompData.companyname = selectcompanydropdown;
-                    AddCompData.brandname = selectbranddropdown;
+                    AddCompData.companyname = company.text;
+                    AddCompData.brandname = category.text;
                     AddCompData.itemname = itemname.text;
-                    AddCompData.promotype = selectpromotiondropdown;
+                    AddCompData.promotype = promotion.text;
                     AddCompData.mrp = mrp.text;
                     AddCompData.sellingprice = sellingprice.text;
-                    AddCompData.promodesc =promodescptn;
+                    AddCompData.promodesc =promodscrptn.text;
                     AddCompData.captureimg ='data:image/jpeg;base64,${base64Encode(imagesbytes)}';
-
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
                     await addCompetition();
-
-                    print(itemname.text);
-                    print(promtdescp.text);
-                    print(mrp.text);
-                    print(sellingprice.text);
-                    print(selectcompanydropdown);
-                    print(selectpromotiondropdown);
-                    print(selectbranddropdown);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 CustomerActivities()));
                   }
-                  else Flushbar(
-                      message: selectcompanydropdown==null?"select company should not be null"
-                          :selectpromotiondropdown==null?"select promotion should not be null":"select Brand name should not be null "
-                  )..show(context);
                 }
-              },
             ),
           ],
         ),
@@ -92,222 +88,264 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
       body: Stack(
         children: [
           BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutletDetails(),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.all(10),
-                  child: Form(
-                    key: keyone,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          height: 30,
-                          width: 120,
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                            color: orange,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0)),
+          ProgressHUD(
+            opacity: 0.3,
+            inAsyncCall: isApiCallProcess,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  OutletDetails(),
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.all(10),
+                    child: Form(
+                      key: keyone,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            height: 30,
+                            width: 120,
+                            margin: EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              color: orange,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10.0),
+                                  topRight: Radius.circular(10.0)),
+                            ),
+                            child: Center(
+                                child: Text(
+                                  "Competitor Info",
+                                  style: TextStyle(color: Colors.white),
+                                )),
                           ),
-                          child: Center(
-                              child: Text(
-                                "Competitor Info",
-                                style: TextStyle(color: Colors.white),
-                              )),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(10.00),
-                          decoration: BoxDecoration(
-                              color: pink, borderRadius: BorderRadius.circular(10.0)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(left:10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: DropdownSelectCompany(),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(top: 10.0),
+                          Container(
+                            padding: EdgeInsets.all(10.00),
+                            decoration: BoxDecoration(
+                                color: pink, borderRadius: BorderRadius.circular(10.0)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  //margin: EdgeInsets.only(top: 10.0),
                                   padding: EdgeInsets.only(left:10.0),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  child: DropdownSelectBrand()),
-                              Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                padding: EdgeInsets.only(left:10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: TextFormField(
-                                  controller: itemname,
-                                  cursorColor: grey,
-                                  validator: (input) =>
-                                  !input.isNotEmpty ? "Item should not be empty" : null,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusColor: orange,
-                                    hintText: "Item Name",
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(top: 10.0),
-                                  padding: EdgeInsets.only(left:10.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: DropdownButton(
-                                      underline: SizedBox(),
-                                      elevation: 0,
-                                      dropdownColor: Colors.white,
-                                      isExpanded: true,
-                                      iconEnabledColor: orange,
-                                      iconSize: 35.0,
-                                      value: selectpromotiondropdown,
-                                      onChanged: (newVal) {
-                                        setState(() {
-                                          selectpromotiondropdown = newVal;
-                                          promodescptn =  competitiondata.descrptn[competitiondata.promotion.indexOf(newVal)];
-                                        });
-
-                                      },
-                                      items: competitiondata.promotion.toSet().toList().map((String val) {
-                                        return new DropdownMenuItem<String>(
-                                          value: val,
-                                          child: new Text(val),
-                                        );
-                                      }).toList(),
-                                      hint: Text(
-                                        "Select Promotion Type",
-                                        style: TextStyle(color: Colors.grey),
+                                  child: TextFormField(
+                                    controller: company,
+                                    cursorColor: grey,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "Company Name should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Company Name",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
                                       ),
                                     ),
-                                  ),),
-                              promodescptn != null ? Padding(
-                                padding: const EdgeInsets.only(left:10.0,top:10.0),
-                                child: Text('Promotion Description : $promodescptn',style: TextStyle(color: orange),),
-                              ):SizedBox(),
-                              Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                padding: EdgeInsets.only(left:10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                 ),
-                                child: TextFormField(
-                                  controller: mrp,
-                                  cursorColor: grey,
-                                  validator: (input) =>
-                                  !input.isNotEmpty ? "MRP should not be empty" : null,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusColor: orange,
-                                    hintText: "Enter MRP Here",
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: category,
+                                    cursorColor: grey,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "Category Name should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Category Name",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 10.0),
-                                padding: EdgeInsets.only(left:10.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: TextFormField(
-                                  controller: sellingprice,
-                                  cursorColor: grey,
-                                  validator: (input) => !input.isNotEmpty
-                                      ? "Selling Price should not be empty"
-                                      : null,
-                                  decoration: new InputDecoration(
-                                    border: InputBorder.none,
-                                    focusColor: orange,
-                                    hintText: "Enter Selling Price Here",
-                                    hintStyle: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15.0,
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: itemname,
+                                    cursorColor: grey,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "Item should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Item Name",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left:10.0),
-                                child: Row(
-                                  children: [
-                                    Text("Capture Image"),
-                                    Spacer(),
-                                    Container(
-                                      margin: EdgeInsets.all(10),
-                                      child:
-                                      // ignore: unrelated_type_equality_checks
-                                      capturedimage.toString() !=
-                                          'File: \'dummy.txt\''
-                                          ? GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (BuildContext context) =>
-                                                      PreveiwScreen(
-                                                        input: capturedimage,
-                                                      )));
-                                        },
-                                        child: Image(
-                                          height: 50,
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: promotion,
+                                    cursorColor: grey,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "Promotion Type should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Promotion Type",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: promodscrptn,
+                                    cursorColor: grey,
+                                    maxLines: 3,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "Promotion Description should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Promotion Description",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: mrp,
+                                    cursorColor: grey,
+                                    validator: (input) =>
+                                    !input.isNotEmpty ? "regular price should not be empty" : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Enter Regular Price",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 10.0),
+                                  padding: EdgeInsets.only(left:10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: TextFormField(
+                                    controller: sellingprice,
+                                    cursorColor: grey,
+                                    validator: (input) => !input.isNotEmpty
+                                        ? "Selling Price should not be empty"
+                                        : null,
+                                    decoration: new InputDecoration(
+                                      border: InputBorder.none,
+                                      focusColor: orange,
+                                      hintText: "Enter Selling Price Here",
+                                      hintStyle: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 15.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left:10.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Capture Image"),
+                                      Spacer(),
+                                      Container(
+                                        margin: EdgeInsets.all(10),
+                                        child:
+                                        // ignore: unrelated_type_equality_checks
+                                        capturedimage.toString() !=
+                                            'File: \'dummy.txt\''
+                                            ? GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext context) =>
+                                                        PreveiwScreen(
+                                                          input: capturedimage,
+                                                        )));
+                                          },
+                                          child: Image(
+                                            height: 50,
+                                            width: 50,
+                                            image: FileImage(capturedimage),
+                                          ),
+                                        )
+                                            : Image(
                                           width: 50,
-                                          image: FileImage(capturedimage),
+                                          image: AssetImage('images/capture.png'),
                                         ),
-                                      )
-                                          : Image(
-                                        width: 50,
-                                        image: AssetImage('images/capture.png'),
                                       ),
-                                    ),
-                                    IconButton(
-                                        icon: Icon(
-                                          CupertinoIcons.photo_camera_solid,
-                                          color: Colors.grey[700],
-                                        ),
-                                        onPressed: () {
-                                          _showSelectionDialog(context);
-                                        }),
-                                  ],
+                                      IconButton(
+                                          icon: Icon(
+                                            CupertinoIcons.photo_camera_solid,
+                                            color: Colors.grey[700],
+                                          ),
+                                          onPressed: () {
+                                            _showSelectionDialog(context);
+                                          }),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          NBlFloatingButton(),
         ],
       ),
     );

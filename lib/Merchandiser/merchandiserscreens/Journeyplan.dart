@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -14,6 +16,28 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart'
 import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyjp.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyskipjp.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyvisitjp.dart';
+
+import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'Customers Activities.dart';
+import 'package:merchandising/model/Location_service.dart';
+import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/competition_details.dart';
+import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/api/FMapi/outlet%20brand%20mappingapi.dart';
+import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
+import'package:merchandising/api/myattendanceapi.dart';
+
+import 'package:merchandising/api/avaiablityapi.dart';
+import'package:intl/intl.dart';
+List<String>breakspl =[];
+int ssi;
+var spltsidco;
+var jtimeidco;
+bool jptimecal = false;
+
+
 
 
 class JourneyPlan extends StatefulWidget {
@@ -32,10 +56,23 @@ class _JourneyPlanState extends State<JourneyPlan> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: containerscolor,
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+            onTap: (){
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder:
+                          (BuildContext context) =>
+                          DashBoard()));
+            },
+            child: Icon(CupertinoIcons.back,size: 30,)),
+
         iconTheme: IconThemeData(color: orange),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -48,6 +85,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
             ),
             GestureDetector(
                 onTap:(){
+                  nearestoutletindex = null;
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -76,9 +114,9 @@ class _JourneyPlanState extends State<JourneyPlan> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -279,26 +317,32 @@ class JourneyPlanHeader extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           color: containercolor),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(icon, color: textcolor),
-          SizedBox(
-            width: 2,
-          ),
-          Text(
-            chartext,
-            style: TextStyle(
-              fontSize: 12,
-              color: textcolor,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(icon, color: textcolor),
+            SizedBox(
+              width: 2,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+            Text(
+              chartext,
+              style: TextStyle(
+                fontSize: 12,
+                color: textcolor,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+List<String>journeydone=[];
+List<int> jtimeidss=[];
 
 class JourneyListBuilder extends StatefulWidget {
   @override
@@ -320,37 +364,167 @@ class _State extends State<JourneyListBuilder> {
     ListView.builder(
         itemCount:gettodayjp.storenames.length,
         itemBuilder: (BuildContext context, int index) {
+           ssi=index;
+
           return GestureDetector(
             onTap: () async{
-              if(gettodayjp.status[index] == 'done'|| gettodayjp.status[index] == 'working'){
-                alreadycheckedin = true;
+              for(int i=0;i<gettodayjp.status.length;i++){
+                journeydone.add("");
+                jtimeidss.add(0);
+
               }
-                    setState(() {
-                      isApiCallProcess = true;
-                    });
+              journeydone[ssi]=gettodayjp.status[index];
+              print(journeydone[ssi]);
+              if(gettodayjp.status[index] == 'done'){
+                print("entered if");
+                print("JP Check in:${gettodayjp.checkintime[index]}");
+
+                print("JP Check out:${gettodayjp.checkouttime[index]}");
+                showDialog(
+                    context: context,
+                    builder: (_) =>  StatefulBuilder(
+                        builder: (context, setState) {
+                          return ProgressHUD(
+                              inAsyncCall: isApiCallProcess,
+                              opacity: 0.3,
+                              child: AlertDialog(
+                                backgroundColor: alertboxcolor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                content: Builder(
+                                  builder: (context) {
+                                    // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                    return Container(
+                                      child: SizedBox(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Alert",
+                                              style: TextStyle(
+                                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                                "It seems you have already finished this Outlet\nDo you want to do Split Shift?",
+                                                style: TextStyle(fontSize: 13.6)),
+                                            SizedBox(
+                                              height: 10.00,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async{
+                                                    print("Split Tapped");
+                                                    setState(() {
+                                                      jptimecal = true;
+                                                    });
+                                                    currenttimesheetid=gettodayjp.id[index];
+
+                                                    var timeofsci = DateTime.now();
+                                                    splitbreak.type="Split Shift";
+                                                    currenttimesheetid=gettodayjp.id[index];
+                                                    spltsidco=currenttimesheetid;
+                                                    splitbreak.citime=DateFormat('HH:mm:ss').format(timeofsci);
+                                                    splitbreak.cotime ="";
+                                                    splitbreak.jtimeid ="";
+
+                                                    outletrequestdata.outletidpressed =
+                                                    gettodayjp.outletids[index];
+                                                    print(outletrequestdata.outletidpressed);
+                                                    currentoutletid=gettodayjp.outletids[index];
+
+                                                    setState(() {
+                                                      isApiCallProcess=true;
+                                                    });
+
+
+                                                    await merchbreak();
+                                                    await getTotalJnyTime();
+                                                    //jtimeidco=TotalJnyTime.id[index];
+                                                    // jtimeidss[selindexjid]=TotalJnyTime.id[index];
+                                                    // print(jtimeidss[selindexjid]);
+                                                    getTaskList();
+                                                    getVisibility();
+                                                    getcompinfo();
+                                                    getPlanogram();
+                                                    getCompetition();
+                                                    getPromotionDetails();
+                                                    await getAvaiablitity();
+                                                    await getShareofshelf();
+                                                    getmappedoutlets();
+                                                    await outletwhencheckin();
+                                                    await getmyattandance();
+                                                    if(noattendance.noatt=="attadded"){
+                                                      print("Attendance added:${noattendance.noatt}");
+                                                    }
+                                                    else{
+                                                      await addattendence();
+                                                    }
+
+
+                                                    setState(() {
+                                                      isApiCallProcess=false;
+                                                    });
+                                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
+                                                  },
+                                                  child: Container(
+                                                    height: 40,
+                                                    width: 70,
+                                                    decoration: BoxDecoration(
+                                                      color:orange,
+                                                      borderRadius: BorderRadius.circular(5),
+                                                    ),
+                                                    margin: EdgeInsets.only(right: 10.00),
+                                                    child: Center(child: Text("YES")),
+                                                  ),
+                                                ),
+
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ));
+                        }));
+
+              }
+
+              else {
+                print("entered else");
+                setState(() {
+                               isApiCallProcess = true;
+                             });
                      outletrequestdata.outletidpressed =
                         gettodayjp.outletids[index];
                     checkinoutdata.checkid = gettodayjp.id[index];
                     currenttimesheetid = gettodayjp.id[index];
                     currentoutletid = gettodayjp.outletids[index];
                     var data = await outletwhencheckin();
-                    if (data != null) {
-                      await Navigator.push(
+                  if (data != null) {
+                      await Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               // ignore: non_constant_identifier_names
                               builder: (BuildContextcontext) => OutLet()));
 
+
+
                       setState(() {
                         isApiCallProcess = false;
                       });
-                    } else {
+                    }
+                    else {
                       setState(() {
                         isApiCallProcess = false;
                       });
                     }
                     print(checkinoutdata.checkid);
-                },
+                }},
             child: Container(
               margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
               padding: EdgeInsets.all(10.0),

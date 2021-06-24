@@ -6,13 +6,20 @@ import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:merchandising/ProgressHUD.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
-import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 import 'package:file_picker/file_picker.dart';
+import 'category_map.dart';
 import 'dart:convert';
+import 'package:merchandising/api/FMapi/add_categoryapi.dart';
 import 'dart:io';
 import 'package:merchandising/api/FMapi/add_outlet_brandapi.dart';
+import 'package:merchandising/api/FMapi/category_detailsapi.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
+import 'package:merchandising/api/FMapi/add_planoapi.dart';
+import 'package:merchandising/api/FMapi/add_shareofshelfapi.dart';
 
+int filefor;
+List<String>image=[" "];
 List outletlist = outletdata.outletname.map((String val) {return new DropdownMenuItem<String>(
   value: val,
   child: new Text(val),
@@ -21,7 +28,7 @@ List outletlist = outletdata.outletname.map((String val) {return new DropdownMen
 String selectedoutlets;
 
 List<int> selectbrands;
-List brandlist = BrandData.brandname.map((String val) {
+List brandlist = Category.name.map((String val) {
   return new DropdownMenuItem<String>(
     value: val,
     child: new Text(val),
@@ -34,19 +41,19 @@ class EditBrandstoOutlet extends StatefulWidget {
 }
 
 class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
-  bool isApiCallProcess = false;
   FilePickerResult _file;
-  Future getFile() async {
+  Future getFile()async{
     FilePickerResult file = await FilePicker.platform.pickFiles();
     setState(() {
       _file = file;
+      pickedfile.name[filefor] = file.names.toString();
     });
     return _file;
   }
+  bool isApiCallProcess = false;
 
-  List<TextEditingController> shelf = [];
   List<TextEditingController> target = [];
-  List<String>image = [];
+
 
 
   GlobalKey<FormState> brandkey = GlobalKey<FormState>();
@@ -69,14 +76,20 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
           appBar: AppBar(
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
-            title: Text(
-              'Edit Brands to Outlets',
-              style: TextStyle(color: orange),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Add Activities',
+                  style: TextStyle(color: orange),
+                ),
+                EmpInfo()
+              ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),
@@ -113,6 +126,7 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                               isExpanded: true,
                             ),
                           ),
+                          SelectClient(),
                           Container(
                             margin: EdgeInsets.only(top: 5, bottom: 5),
                             width: double.infinity,
@@ -124,16 +138,20 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                               underline: SizedBox(),
                               items: brandlist,
                               selectedItems: selectbrands,
-                              hint: Padding(
-                                padding: const EdgeInsets.only(left:10.0),
-                                child: Text("Select Brands"),
-                              ),
-                              searchHint: "Select Brands",
+                              hint: Text("Select Categories"),
+                              searchHint: "Select Categories",
                               onChanged: (value) {
                                 setState(() {
+                                  print(value);
                                   selectbrands = value;
                                   print(selectbrands);
                                 });
+                                pickedfile.name=[];
+                                pickedfile.bytes=[];
+                                for(int i=0;i<selectbrands.length;i++){
+                                  pickedfile.name.add("");
+                                  pickedfile.bytes.add("");
+                                }
                               },
                               closeButton: (selectedItems) {
                                 return (selectedItems.isNotEmpty
@@ -151,7 +169,6 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                                 shrinkWrap: true,
                                 itemCount: selectbrands.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  shelf.add(TextEditingController());
                                   target.add(TextEditingController());
                                   return Container(
                                       padding: EdgeInsets.all(10.0),
@@ -168,13 +185,13 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                                               children: [
                                                 Padding(
                                                   padding: const EdgeInsets.only(left:8.0),
-                                                  child: Text("Brand:",style: TextStyle(
+                                                  child: Text("Category:",style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),),
                                                 ),
                                                 SizedBox(width: 5),
                                                 Text(
-                                                  '${BrandData.brandname[selectbrands[index]]}',
+                                                  '${Category.name[selectbrands[index]]}',
                                                 ),
                                               ],
                                             ),
@@ -182,34 +199,7 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                                           Container(
                                             height: 40.0,
                                             width: double.infinity,
-                                            margin: EdgeInsets.only(bottom:10.0,top: 10.0),
-                                            padding: EdgeInsets.only(left: 10.0),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              color: pink,
-                                            ),
-                                            child: TextFormField(
-                                              keyboardType: TextInputType.number,
-                                              controller: shelf[index],
-                                              cursorColor: grey,
-                                              validator: (input) => !input.isNotEmpty
-                                                  ? "shelf should not be empty"
-                                                  : null,
-                                              decoration: new InputDecoration(
-                                                border: InputBorder.none,
-                                                focusColor: orange,
-                                                hintText: "Shelf size in meters",
-                                                hintStyle: TextStyle(
-                                                  color: grey,
-                                                  fontSize: 16.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            height: 40.0,
-                                            width: double.infinity,
-                                            margin: EdgeInsets.only(bottom:10.0),
+                                            margin: EdgeInsets.only(top: 10.0,bottom:10.0),
                                             padding: EdgeInsets.only(left: 10.0),
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(10),
@@ -225,9 +215,9 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                                               decoration: new InputDecoration(
                                                 border: InputBorder.none,
                                                 focusColor: orange,
-                                                hintText: "Minimum Target required in percentage",
+                                                hintText: "Minimum Target for share of shelf",
                                                 hintStyle: TextStyle(
-                                                  color: grey,
+                                                  color: Colors.black26,
                                                   fontSize: 16.0,
                                                 ),
                                               ),
@@ -235,52 +225,101 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
                                           ),
                                           Row(
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:8.0),
-                                                child: Text(
-                                                  "Upload Image",
-                                                  style: TextStyle(fontSize: 14.0),
-                                                ),
+                                              Column(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left:8.0),
+                                                    child: Text(
+                                                      "Upload Planogram Image",
+                                                      style: TextStyle(fontSize: 14.0),
+                                                    ),
+                                                  ),
+
+                                                ],
                                               ),
                                               Spacer(),
                                               GestureDetector(
                                                   onTap: () async {
+                                                    filefor = index;
                                                     FilePickerResult picked = await getFile();
                                                     if (picked != null) {
                                                       File file = File(picked.files.single.path);
-                                                      var imagebytes = file.readAsBytesSync();
-                                                      image[selectbrands[index]] = base64Encode(imagebytes);
+                                                      var image = file.readAsBytesSync();
+                                                      pickedfile.bytes[index]= base64Encode(image);
+                                                      print(pickedfile.bytes[index]);
+                                                      //image[selectbrands[index]] = base64Encode(imagebytes);
                                                     }
                                                   },
 
                                                   child: Icon(CupertinoIcons.folder_badge_plus)),
                                             ],
                                           ),
+                                          pickedfile.name[index] != "" ?
+                                          Center(child: Text(pickedfile.name[index]))
+                                              :SizedBox()
                                         ],
                                       ));
                                 }),
                           ) : SizedBox(),
 
                           TextButton(onPressed: ()async{
-                            if(validateform()==true)
+                            if(validateform()==true){
                               setState(() {
                                 isApiCallProcess = true;
                               });
-                            for(int u=0;u<selectbrands.length;u++){
-                            brandmap.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
-                            // brandmap.brandid = BrandData.brandid[BrandData.brandname[selectbrands[u]]];
-
-                            }
-                            await addbrandmap();
-                            setState(() {
-                              isApiCallProcess = false;
-                            });
-                            Navigator.push(
+                              brandmap.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
+                              currentoutletid = brandmap.outletid;
+                              print("outlet id: is $currentoutletid");
+                              await getmappedoutlets();
+                              CategoryOutletmap.outletid=outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
+                              AddShareData.outletid = CategoryOutletmap.outletid;
+                              CategoryOutletmap.clientid= 'Emp${dropdownclient.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                              CategoryOutletmap.categoryid=[];
+                              for(int u=0;u<selectbrands.length;u++){
+                                print('${Category.name[selectbrands[u]]} : ${mapping.categoryname.contains(Category.name[selectbrands[u]])}');
+                                if(mapping.categoryname.contains(Category.name[selectbrands[u]]) != true){
+                                  CategoryOutletmap.categoryid.add(Category.id[selectbrands[u]]);
+                                }
+                              }
+                              if(CategoryOutletmap.categoryid.length>0){
+                                await addcategoryoutletmap();
+                                await getmappedoutlets();
+                              }
+                              int i =0;
+                              AddPlanooutlet.outletpdtmapid=[];
+                              AddPlanooutlet.planoimg=[];
+                              AddShareData.target=[];
+                              AddPlanooutlet.cid=[];
+                              for(int u=0;u<selectbrands.length;u++){
+                                print('loop no : $u');
+                                if(mapping.outletid[u]== brandmap.outletid){
+                                  print("cat: ${mapping.outletid[u]}");
+                                  print(mapping.opmid[mapping.categoryname.indexOf(Category.name[selectbrands[i]])]);
+                                  AddPlanooutlet.cid.add(Category.id[selectbrands[u]]);
+                                  AddPlanooutlet.outletpdtmapid.add(mapping.opmid[mapping.categoryname.indexOf(Category.name[selectbrands[i]])]);
+                                  AddPlanooutlet.planoimg.add('data:image/jpeg;base64,${pickedfile.bytes[i]}');
+                                  AddShareData.target.add(int.parse(target[i].text));
+                                  i++;
+                                }
+                              }
+                              AddPlanooutlet.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
+                              await addplanooutletmap();
+                              AddShareData.categories = AddPlanooutlet.cid;
+                              AddShareData.mappingid = AddPlanooutlet.outletpdtmapid;
+                              await addShareofshelffm();
+                              currentoutletid = null;
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                              Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (BuildContext context) =>
+                                      builder: (BuildContext
+                                      context) =>
                                           Products()));
+                            }
                             },
+
                             style: ButtonStyle(
                                 backgroundColor:
                                 MaterialStateProperty.all(orange)),
@@ -309,3 +348,7 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
   }
 }
 
+class pickedfile{
+  static List<String> name=[];
+  static List<dynamic> bytes=[];
+}

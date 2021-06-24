@@ -8,6 +8,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart'
 import 'package:merchandising/api/FMapi/add_brandapi.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import'package:merchandising/api/FMapi/add_weekoff_api.dart';
+import 'package:merchandising/api/FMapi/week_off_detailsapi.dart';
 
 
 class AddWeekOff extends StatefulWidget {
@@ -47,9 +48,9 @@ class _AddWeekOffState extends State<AddWeekOff> {
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),
@@ -79,6 +80,7 @@ class _AddWeekOffState extends State<AddWeekOff> {
                               Addweekoff.year = dropdownyear;
 
                               await addweekoff();
+                              await getWeekoffdetails();
                               {
                                 Navigator.push(
                                     context,

@@ -2,11 +2,13 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/Fieldmanager/products.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/FMapi/add_categoryapi.dart';
-
+import 'package:merchandising/api/FMapi/category_detailsapi.dart';
+import 'add_product.dart';
 
 class CategoryofProducts extends StatefulWidget {
   @override
@@ -43,9 +45,9 @@ class _CategoryofProductsState extends State<CategoryofProducts> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children:[
           BackGround(),
@@ -87,7 +89,6 @@ class _CategoryofProductsState extends State<CategoryofProducts> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 80),
 
                       TextButton(onPressed: ()async{
                         if (validateform() == true)
@@ -97,16 +98,26 @@ class _CategoryofProductsState extends State<CategoryofProducts> {
                         CategorytoAdd.name = typecategory.text;
 
                         await addcategory();
-
+                       // await getCategoryDetails();
+                        DropDownItemscategory = Category.name.map((String val) {
+                          return new DropdownMenuItem<String>(
+                            value: val,
+                            child: new Text(val),
+                          );
+                        }).toList();
                         setState(() {
                           isApiCallProcess = false;
                         });
 
-                         { Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      FieldManagerDashBoard()));}
+
+                        // if(typecategory.text!=null){
+                        typecategory.clear();
+                          Flushbar(
+                            message: "Category has been added",
+                            duration: Duration(seconds: 4),
+                          )..show(context);
+                        // }
+
 
                                       },
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(orange)),

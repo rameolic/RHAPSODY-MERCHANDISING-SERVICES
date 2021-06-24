@@ -3,10 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:geocoder/geocoder.dart';
 import 'distanceinmeters.dart';
-
+import 'package:location_permissions/location_permissions.dart';
 double lat;
 double long;
 String currentlocation;
+var splittime = checkinoutdata.checkintime;
 class Location {
   double latitude;
   double longitude;
@@ -24,6 +25,8 @@ class Location {
 }
 
  getLocation() async {
+   PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
+   print('permission : $permission');
   Location location = Location();
   await location.getCurrentLocation();
   lat = location.latitude;
@@ -47,6 +50,7 @@ class getaddress {
 void SubmitCheckin() {
   address();
 
+
   var now = DateTime.now();
   print(now);
   Future.delayed(
@@ -58,15 +62,12 @@ void SubmitCheckin() {
   });
 }
 
-void SubmitCheckout() {
-  address();
+void SubmitCheckout() async {
+  await address();
   var now = DateTime.now();
-  Future.delayed(
-      const Duration(seconds: 5), () {
     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
     checkinoutdata.checkoutlocation = getaddress.currentaddress;
-    checkout();
-  });
+    await checkout();
 }
 
 // ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}

@@ -42,27 +42,27 @@ class addschdulejp{
 Future addschdulejourneypaln() async{
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy');
-  final int thisyear = int.parse(formatter.format(now));
+  final String thisyear = formatter.format(now);
   Map body = {
-    "emp_id": addschdulejp.empid,
+    "emp_id": '${addschdulejp.empid}',
     "month": addschdulejp.month,
     "days": addschdulejp.days,
     "year": thisyear,
     "outlet_id": addschdulejp.outletid
   };
   print(jsonEncode(body));
-  // http.Response response = await http.post(schdulejp,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-  //   },
-  //   body: jsonEncode(body),
-  // );
-  // print(response.body);
-  // if(response.statusCode == 200){
-  //   return true;
-  // }else{
-  //   return  false;
-  // }
+  http.Response response = await http.post(schdulejp,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(body),
+  );
+  print(response.body);
+  if(response.statusCode == 200){
+    return true;
+  }else{
+    return  false;
+  }
 }

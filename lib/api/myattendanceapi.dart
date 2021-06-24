@@ -13,6 +13,7 @@ Future getmyattandance() async{
     'emp_id': '${DBrequestdata.receivedempid}',
     'month': '$todaydate',
   };
+
   http.Response Attendancedetails = await http.post(Attendance,
     headers: {
       'Content-Type': 'application/json',
@@ -21,6 +22,7 @@ Future getmyattandance() async{
     },
     body: jsonEncode(empattenddata),
   );
+  print(jsonEncode(empattenddata));
 
   if (Attendancedetails.statusCode == 200){
     print("get Attendance Done");
@@ -38,13 +40,17 @@ Future getmyattandance() async{
       if(result == '1' ){
         presentlist.date.add(decodedattendance['data'][u]['date']);
         presentlist.checkin.add(decodedattendance['data'][u]['checkin_time']);
-        presentlist.checkout.add(
-            decodedattendance['data'][u]['checkout_time'] == null
+        presentlist.checkout.add(decodedattendance['data'][u]['checkout_time'] == null
         ?'-'
         :decodedattendance['data'][u]['checkout_time']);
       }else{
         absentlist.date.add(decodedattendance['data'][u]['date']);
         absentlist.approvedby.add(decodedattendance['data'][u]['leave_approved_by']);
+      }
+      if(decodedattendance['data'][u]['date']==todaydate) {
+        print(decodedattendance['data'][u]['date']);
+        print("${todaydate}");
+        noattendance.noatt="attadded";
       }
     }
     print(presentlist.date);
@@ -68,4 +74,8 @@ class presentlist {
 class absentlist{
   static List<dynamic> date= [];
   static List<dynamic> approvedby= [];
+}
+
+class noattendance{
+  static String noatt;
 }

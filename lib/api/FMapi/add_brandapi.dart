@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
+import 'brand_detailsapi.dart';
 class BrandDetails{
   static var brandname;
   static var fieldmanagerempid;
@@ -15,7 +16,7 @@ Future addbranddetails() async{
     'sales_manager_id' : '${BrandDetails.salesempid}',
     'client_id' : '${BrandDetails.clientempid}',
   };
-  print(branddata);
+  print(jsonEncode(branddata));
   http.Response brand = await http.post(AddBrand,
     headers: {
       'Content-Type': 'application/json',
@@ -25,8 +26,9 @@ Future addbranddetails() async{
     body: jsonEncode(branddata),
   );
   print(brand.body);
-
-  print("Add Brands Done");
+  if(brand.statusCode == 200){
+    await getBrandDetails();
+  }
 }
 
 

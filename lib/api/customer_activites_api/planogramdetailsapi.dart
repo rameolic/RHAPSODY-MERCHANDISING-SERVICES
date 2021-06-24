@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
+import 'dart:async';
+import 'dart:io';
+
 
 Future<void> getPlanogram() async {
   Map body = {
@@ -26,19 +30,39 @@ Future<void> getPlanogram() async {
     print('Planogram Details done');
     String planobody = PlanoResponse.body;
     var decodeddata = jsonDecode(planobody);
-    for (int u = 0; u< decodeddata['data'].length; u++) {
-      PlanoDetails.image.add('${decodeddata['data'][u]['planogram_img']}');
-      //PlanoDetails.imageurl.add('https://rms2.rhapsody.ae/plano_image/${decodeddata['data'][u]['planogram_img']}');
-      PlanoDetails.imageurl.add("https://rms2.rhapsody.ae/planogram_image/1619431232.tang_planogram.png");
-      PlanoDetails.brandname.add(decodeddata['data'][u]['brand_name']);
-      PlanoDetails.opm.add(decodeddata['data'][u]['opm']);
-      PlanoDetails.brandid.add(decodeddata['data'][u]['BID']);
-      PlanoDetails.categoryname.add(decodeddata['data'][u]['category_name']);
-      PlanoDetails.categoryid.add(decodeddata['data'][u]['c_id']);
+    if(decodeddata['data'].length==0){
+      print("No Data");
+      PlanoDetails.nodata = "nodata";
+      print(PlanoDetails.nodata);
 
     }
+    for (int u = 0; u< decodeddata['data'].length; u++) {
+      if(decodeddata['data'][u]['category_name'] != null){
+        PlanoDetails.image.add('${decodeddata['data'][u]['planogram_img']}');
+        PlanoDetails.imageurl.add("https://rms2.rhapsody.ae/planogram_image/${decodeddata['data'][u]['planogram_img']}");
+        PlanoDetails.beforeimage.add("https://rms2.rhapsody.ae/planogram_image/${decodeddata['data'][u]['before_image']}");
+        PlanoDetails.afterimage.add("https://rms2.rhapsody.ae/planogram_image/${decodeddata['data'][u]['after_image']}");
+        PlanoDetails.brandname.add(decodeddata['data'][u]['brand_name']);
+        PlanoDetails.opm.add(decodeddata['data'][u]['opm']);
+        PlanoDetails.brandid.add(decodeddata['data'][u]['BID']);
+        PlanoDetails.categoryname.add(decodeddata['data'][u]['category_name']);
+        PlanoDetails.categoryid.add(decodeddata['data'][u]['c_id']);
 
-
+        if(decodeddata['data'][u]['before_image']==null){
+          PlanoDetails.isavail=null;
+        }
+      }
+    }
+    beforeimages=[];
+    afterimages=[];
+    beforeimagesencode=[];
+    afterimagesencode=[];
+    for (int i = 0; i < PlanoDetails.brandname.length; i++) {
+      beforeimages.add(File('dummy.txt'));
+      afterimages.add(File('dummy.txt'));
+      beforeimagesencode.add('dummy.txt');
+      afterimagesencode.add('dummy.txt');
+    }
   }
 
 }
@@ -55,6 +79,8 @@ class PlanoDetails{
   static List<int> opm = [];
   static List<int> brandid = [];
   static List<int> categoryid = [];
+  static List<String> isavail =[];
+  static var nodata;
 }
 
 

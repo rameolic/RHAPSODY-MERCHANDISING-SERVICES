@@ -64,9 +64,9 @@ class _StoreDetailsState extends State<StoreDetails> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),
@@ -81,25 +81,25 @@ class _StoreDetailsState extends State<StoreDetails> {
               ),
             ),
 
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: FloatingActionButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                AddStores()));
-                  },
-                  backgroundColor: pink,
-                  elevation: 8.0,
-                  child: Icon(Icons.add,color: orange,),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomRight,
+            //   child: Container(
+            //     margin: EdgeInsets.all(15.0),
+            //     child: FloatingActionButton(
+            //       onPressed: (){
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (BuildContext
+            //                 context) =>
+            //                     AddStores()));
+            //       },
+            //       backgroundColor: pink,
+            //       elevation: 8.0,
+            //       child: Icon(Icons.add,color: orange,),
+            //     ),
+            //   ),
+            // ),
 
           ],
         ),
@@ -119,7 +119,7 @@ class _StoreDetailsState extends State<StoreDetails> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
           focusColor: orange,
-          hintText: 'Search by Storename/Code',
+          hintText: 'Search by Store Name/Code',
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
@@ -151,11 +151,11 @@ class _StoreDetailsState extends State<StoreDetails> {
                         style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
-                    SizedBox(height: 5),
-                    Text("Store Code : ${storesdata.storecode[index]}",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        )),
+                    //SizedBox(height: 5),
+                    // Text("Store Code : ${storesdata.storecode[index]}",
+                    //     style: TextStyle(
+                    //       fontSize: 14.0,
+                    //     )),
                     SizedBox(height: 5),
                     Text('Contact Number : ${storesdata.storecontnum[index]}',
                         style: TextStyle(
@@ -212,11 +212,11 @@ class _StoreDetailsState extends State<StoreDetails> {
                         style: TextStyle(
                             fontSize: 15.0,fontWeight: FontWeight.bold
                         )),
-                    SizedBox(height: 5),
-                    Text("Store Code : ${_filterCode[index]}",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                        )),
+                    // SizedBox(height: 5),
+                    // Text("Store Code : ${_filterCode[index]}",
+                    //     style: TextStyle(
+                    //       fontSize: 14.0,
+                    //     )),
                     SizedBox(height: 5),
                     Text('Contact Number : ${_filterContact[index]}',
                         style: TextStyle(

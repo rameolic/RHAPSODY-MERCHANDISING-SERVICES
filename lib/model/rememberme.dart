@@ -38,3 +38,4 @@ addcheckintime() async{
   prefs.setString('checkintime', "${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
   print("checkintimeadded");
 }
+

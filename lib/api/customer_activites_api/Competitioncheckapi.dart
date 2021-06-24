@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:merchandising/main.dart';
 import '../api_service.dart';
 
 Future<void> getcompinfo() async {
@@ -21,6 +22,14 @@ Future<void> getcompinfo() async {
       competitiondata.brand.add(decodeddata['data'][u]['brand_name']);
       competitiondata.promotion.add(decodeddata['data'][u]['promotion_type']);
       competitiondata.descrptn.add(decodeddata['data'][u]['promotion_description']);
+
+      if(decodeddata['data'][u]['capture_image']!=null && currentuser.roleid == 5){
+        competitiondata.cptcmy.add(decodeddata['data'][u]['company_name']);
+        competitiondata.cptmrp.add(decodeddata['data'][u]['mrp']);
+        competitiondata.cptsellprice.add(decodeddata['data'][u]['selling_price']);
+        competitiondata.cptimg.add(decodeddata['data'][u]['capture_image']);
+        competitiondata.cptbrand.add(decodeddata['data'][u]['brand_name']);
+      }
     }
     print(competitiondata.company);
   }
@@ -33,6 +42,12 @@ class competitiondata{
   static List<String> brand=[];
   static List<String> promotion=[];
   static List<String> descrptn=[];
+
+  static List<String> cptcmy=[];
+  static List<String> cptbrand=[];
+  static List<String> cptimg=[];
+  static List<int> cptmrp=[];
+  static List<int> cptsellprice=[];
 }
 
 

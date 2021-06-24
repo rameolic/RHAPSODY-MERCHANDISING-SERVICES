@@ -8,6 +8,8 @@ import 'package:merchandising/api/HRapi/addemployeeapi.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/HR/addreport.dart';
 import 'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'package:flushbar/flushbar.dart';
+import 'dart:async';
 
 class AddempPhase3 extends StatefulWidget {
   @override
@@ -209,13 +211,27 @@ class _AddempPhase3State extends State<AddempPhase3> {
                                   setState(() {
                                     isApiCallProcess =false;
                                   });
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder:
-                                              // ignore: non_constant_identifier_names
-                                              (BuildContextcontext) =>
-                                                  HRdashboard()));
+
+                                  Flushbar(
+                                    messageText: Text(
+                                      "Employee has been added",
+                                      style: TextStyle(color: iconscolor),
+                                    ),
+                                    backgroundColor: pink,
+                                    duration: Duration(seconds: 3),
+                                  )..show(context);
+
+                                  Timer(Duration(seconds: 4), () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder:
+                                            // ignore: non_constant_identifier_names
+                                                (BuildContextcontext) =>
+                                                HRdashboard()));
+
+                                  });
+
                                 }
 
                               },

@@ -7,9 +7,15 @@ import 'package:merchandising/main.dart';
 import 'package:merchandising/api/holidays.dart';
 import 'package:merchandising/api/HRapi/addholiday.dart';
 import 'package:intl/intl.dart';
+import 'package:flushbar/flushbar.dart';
+import 'dart:async';
 
+class HoliDays extends StatefulWidget {
+  @override
+  _HoliDaysState createState() => _HoliDaysState();
+}
 
-class HoliDays extends StatelessWidget {
+class _HoliDaysState extends State<HoliDays> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +91,7 @@ class HoliDays extends StatelessWidget {
               margin: EdgeInsets.all(15.0),
               child: FloatingActionButton(
                 onPressed: (){
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -105,9 +112,15 @@ class HoliDays extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class AddHoliday extends StatelessWidget {
+class AddHoliday extends StatefulWidget {
 
+  @override
+  _AddHolidayState createState() => _AddHolidayState();
+}
+
+class _AddHolidayState extends State<AddHoliday> {
   TextEditingController descriptioncontroller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,13 +190,26 @@ class AddHoliday extends StatelessWidget {
                       onTap: (){
                         addholidays.description = descriptioncontroller.text;
                         addholiday();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext
-                                context) =>
-                                    HRdashboard()));
-                      },
+                        Flushbar(
+                            messageText: Text(
+                              "Holiday has been added",
+                              style: TextStyle(color: iconscolor),
+                            ),
+                            backgroundColor: pink,
+                            duration: Duration(seconds: 3),
+                          )..show(context);
+
+                        Timer(Duration(seconds: 4), () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext
+                                  context) =>
+                                      HRdashboard()));
+
+                        });
+
+                        },
                       child: Container(
                         margin: EdgeInsets.only(top: 10),
                         padding: EdgeInsets.all(10),

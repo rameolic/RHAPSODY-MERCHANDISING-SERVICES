@@ -6,7 +6,7 @@ import '../api_service.dart';
 class AddPlanoData{
   static var outletid;
   static var timesheetid;
-  static List<dynamic> outletpdtmapid=[];
+  static var outletpdtmapid;
   static List<dynamic> categoryid=[];
   static List<dynamic> planoimage=[];
   static List<dynamic> beforeimage = [];
@@ -19,7 +19,7 @@ Future addPlanogramdata() async{
   Map addplano = {
     "outlet_id" : AddPlanoData.outletid,
     "timesheet_id" : AddPlanoData.timesheetid,
-    "outlet_products_mapping_id" : AddPlanoData.outletpdtmapid,
+    "outlet_products_mapping_id" : comid,
     "category_name": AddPlanoData.categoryname,
     "category_id":AddPlanoData.categoryid,
     "plano_image" : AddPlanoData.planoimage,

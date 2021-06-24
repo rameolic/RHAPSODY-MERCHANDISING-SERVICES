@@ -11,7 +11,10 @@ import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/model/notifications.dart';
+import'package:merchandising/api/noti_detapi.dart';
 final menuitemscolor = Colors.black54;
+List<bool> changecoloricon =[];
+List<Icon> listoficon =[];
 
 class DrawerHeaderinfo extends StatelessWidget {
   @override
@@ -76,7 +79,12 @@ class MenuElements extends StatelessWidget {
   }
 }
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
+  @override
+  _MenuState createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -134,13 +142,20 @@ class Menu extends StatelessWidget {
         ListTile(
           title: MenuElements(
             title: 'Notifications',
-            icon: Icons.notifications,
+            icon: Icons.notifications_on,
+
+
           ),
           onTap: () {
+            for(int i=0;i<NotiDetData.title.length;i++){
+              changecoloricon.add(false);
+              listoficon.add(Icon(Icons.check,color: Colors.black54,));
+
+            }
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (BuildContext context) => NotificationsScreen()));
+                    builder: (BuildContext context) => NotificationDetails()));
           },
         ),
         ListTile(
@@ -172,7 +187,7 @@ class Menu extends StatelessWidget {
         // ),
         ListTile(
           title: MenuElements(
-            title: 'Log out',
+            title: 'Log Out',
             icon: Icons.logout,
           ),
           onTap: () {

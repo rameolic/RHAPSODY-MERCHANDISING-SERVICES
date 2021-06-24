@@ -10,9 +10,12 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Maps_Veiw.dart';
 
 distinmeters() {
   gettodayjp.distanceinmeters = [];
+  gettodayjp.sortdistnce = [];
   for(int u=0;u<gettodayjp.outletlat.length;u++){
     double dist = Geolocator.distanceBetween(lat, long, double.parse(gettodayjp.outletlat[u]), double.parse(gettodayjp.outletlong[u]));
     gettodayjp.distanceinmeters.add(dist/1000);
+    double sort = Geolocator.distanceBetween(lat, long, double.parse(gettodayjp.outletlat[u]), double.parse(gettodayjp.outletlong[u]));
+    gettodayjp.sortdistnce.add(sort/1000);
   }
   print(gettodayjp.distanceinmeters);
   //marker();

@@ -20,15 +20,13 @@ Future<void> getCategoryDetails() async {
     Category.id = [];
 
     for(int u=0;u<decodededcategory['data'].length;u++) {
-
       dynamic categoryname = decodededcategory['data'][u]['category_name'];
       Category.name.add(categoryname);
       var categoryid = decodededcategory['data'][u]['id'];
       Category.id.add(categoryid);
-
-
     }
   }
+  print(Category.name);
   if(CDResponse.statusCode != 200){
     print(CDResponse.statusCode);
   }

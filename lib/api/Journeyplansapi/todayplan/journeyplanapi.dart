@@ -34,6 +34,7 @@ Future<void> getJourneyPlan() async {
     gettodayjp.checkintime=[];
     gettodayjp.status=[];
     for(int u=0;u<decodeJPData['data'].length;u++){
+
       dynamic storename = decodeJPData['data'][u]['store_name'];
       gettodayjp.storenames.add(storename);
       dynamic storecode = decodeJPData['data'][u]['store_code'];
@@ -74,7 +75,6 @@ Future<void> getJourneyPlan() async {
         gettodayjp.status.add('pending');
       }
     }
-    distinmeters();
   }
   else{
     print(JPresponse.statusCode);
@@ -92,7 +92,9 @@ class gettodayjp{
   static List<dynamic> outletcountry=[];
   static List<dynamic> id=[];
   static List<dynamic> contactnumbers=[];
-  static List<dynamic> distanceinmeters=[];
+  static List<double> distanceinmeters=[];
+
+  static List<double> sortdistnce=[];
   static List<int> isscheduled=[];
   static List<dynamic> checkintime=[];
   static List<dynamic> checkouttime=[];

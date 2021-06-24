@@ -4,26 +4,22 @@ import 'package:merchandising/api/api_service.dart';
 
 class AddShareData{
   static var outletid;
-  static var timesheetid;
-  static List<dynamic> brandid=[];
-  static List<dynamic> totalshare=[];
-  static List<dynamic> share=[];
-  static List<dynamic> target = [];
-  static List<dynamic> actual = [];
+  static List<int> target = [];
+  static List<dynamic> categories = [];
+  static List<int> mappingid = [];
 
 }
 
-Future addShareofshelfdata() async{
-  Map addshare = {
-    'outlet_id' : currentoutletid,
-    'timesheet_id' : currenttimesheetid,
-    'brand_id' : '${AddShareData.brandid}',
-    'total_share' : '${AddShareData.totalshare}',
-    'share' : '${AddShareData.share}',
-    'target' : '${AddShareData.target}',
-    'actual' : '${AddShareData.actual}',
-   };
-  http.Response shareresponse = await http.post(AddShareofshelf,
+addShareofshelffm() async{
+  Map addshare =
+  {
+    "mapping_id" : AddShareData.mappingid,
+    "outlet_id" : AddShareData.outletid,
+    "category_id" : AddShareData.categories,
+    "target" : AddShareData.target
+  };
+  print(jsonEncode(addshare));
+  http.Response shareresponse = await http.post(addoutletshareofshelf,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -32,4 +28,10 @@ Future addShareofshelfdata() async{
     body: jsonEncode(addshare),
   );
   print(shareresponse.body);
+
+}
+
+addplanogramfm() async{
+
+
 }

@@ -4,20 +4,62 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
-import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
+
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/api/FMapi/addjourneyplan.dart';
 import 'package:intl/intl.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
-import 'package:merchandising/api/timesheetmonthly.dart';
+import 'package:merchandising/api/api_service.dart';
+
 import 'package:merchandising/Merchandiser/merchandiserscreens/weeklyjpwidgets/weeklyjp.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/Fieldmanager/add_week_off.dart';
 import 'package:merchandising/api/FMapi/week_off_detailsapi.dart';
 import 'fmmapwidget.dart';
+import'package:merchandising/api/timesheetapi.dart';
+import'package:merchandising/Merchandiser/merchandiserscreens/Customers Activities.dart';
+import'package:merchandising/api/avaiablityapi.dart';
+import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
+import'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
+import 'package:flutter/material.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/main.dart';
+import '../Constants.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/api/FMapi/timesheetdelete.dart';
+import 'package:merchandising/Fieldmanager/addoutlets.dart';
+import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
+import 'package:merchandising/api/avaiablityapi.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/Fieldmanager/fmcustomeractivites.dart';
+import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
+import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/competition_details.dart';
+import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/Fieldmanager/addjp.dart';
+import 'package:merchandising/clients/reports.dart';
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
+import 'package:merchandising/api/clientapi/clientpromodetailes.dart';
+
 var selectedweekoff;
+List outlets = outletdata.outletname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+bool isApiCallProcess = false;
+bool sundaytapped = false;
+bool mondaytapped = false;
+bool tuesdaytapped = false;
+bool wednesdaytapped = false;
+bool thursdaytapped = false;
+bool fridaytapped = false;
+bool saturdaytapped = false;
 class AddJourneyPlan extends StatefulWidget {
   @override
   _AddJourneyPlanState createState() => _AddJourneyPlanState();
@@ -26,7 +68,6 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
   List merchandisers = merchnamelist.firstname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
   String selectedmerchandiser;
   List <int>selectedoutlets;
-  List outlets = outletdata.outletname.map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
   bool pressschdlue = false;
   bool pressunschdle = true;
   bool isApiCallProcess = false;
@@ -77,15 +118,47 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                     ),
                   ),
                   body: TabBarView(
-                    //physics: NeverScrollableScrollPhysics(),
-                    // controller: _controller,
                       children: [
                         ListView.builder(
-                          // physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: merchnamelist.firstname.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
+                                onDoubleTap: ()async{
+                                  jpempid = merchnamelist.employeeid[index];
+                                   currenttimesheetid = getweeklyjp.timeid[index];
+                                    currentoutletid= getweeklyjp.outletid[index];
+
+
+                                  // currenttimesheetid=1107;
+                                  // outletrequestdata.outletidpressed = 63;
+                                  setState(() {
+                                    isApiCallProcess = true;
+                                  });
+                                  await outletwhencheckin();
+                                  await getJourneyPlanweekly();
+                                  await getPromotionDetails();
+                                  await getAvaiablitity();
+                                  await getVisibility();
+                                  await getPlanogram();
+                                  await getShareofshelf();
+                                  await getcompinfo();
+                                  await getTaskList();
+
+                                  setState(() {
+                                    isApiCallProcess = false;
+                                  });
+
+                                  print('time sheet id:${getweeklyjp.timeid[index]}');
+                                  print('outlet id: ${ getweeklyjp.outletid[index]}');
+
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext
+                                          context) =>
+                                              CustomerActivities()));
+                                  },
                                 onTap:()async{
                                   print(merchnamelist.employeeid[index]);
                                   jpempid = merchnamelist.employeeid[index];
@@ -276,7 +349,7 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                                         isExpanded: true,
                                       ),
                                     ),
-                                    Row(
+                                    selectedweekoff != null ? Row(
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -284,7 +357,7 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                                         ),
                                         Spacer(),
                                       ],
-                                    ),
+                                    ):SizedBox(),
                                     Container(
                                       margin: EdgeInsets.only(top: 5,bottom: 5),
                                       width: double.infinity,
@@ -355,6 +428,7 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                                                   isApiCallProcess = true;
                                                 });
                                                 await addschdulejourneypaln();
+
                                                 setState(() {
                                                   isApiCallProcess = false;
                                                 });
@@ -588,7 +662,7 @@ class _schedulejpState extends State<schedulejp> {
 
 var currentname;
 var currentid;
-var weekoffon = "noweekoff";
+var weekoffon = "No Week Off";
 class journeyplanDetails extends StatefulWidget {
   @override
   _journeyplanDetailsState createState() => _journeyplanDetailsState();
@@ -597,106 +671,1548 @@ class journeyplanDetails extends StatefulWidget {
 class _journeyplanDetailsState extends State<journeyplanDetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: pink,
-        iconTheme: IconThemeData(color: orange),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Journey Plan Details",style: TextStyle(color: orange),),
-                EmpInfo()
-              ],
-            ),
-            GestureDetector(
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext
-                        context) =>
-                            MapVeiw()));
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.00),
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: orange,
-                  borderRadius: BorderRadius.circular(10.00),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      CupertinoIcons.location_solid,
-                      size: 15,color: Colors.white,
-                    ),
-                    SizedBox(width: 5,),
-                    Text("Map",style: TextStyle(fontSize: 15,color: Colors.white),),
-                  ],
-                ),
+    return ProgressHUD(
+      opacity: 0.3,
+      inAsyncCall: isApiCallProcess,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: pink,
+          iconTheme: IconThemeData(color: orange),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Journey Plan Details",style: TextStyle(color: orange),),
+                  EmpInfo()
+                ],
               ),
-            )
-          ],
-        ),
-      ),
-      body: Stack(
-        children: [
-          BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10.00),
-                  padding: EdgeInsets.all(10.00),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext
+                          context) =>
+                              MapVeiw()));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10.00),
+                  padding: EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
+                    color: orange,
                     borderRadius: BorderRadius.circular(10.00),
-                    color:containerscolor,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(currentname,
-                          style: TextStyle(fontSize: 16,)),
-                      Row(
-                        children: [
-                          Text(
-                            "Merchandiser ID :",
-                            style: TextStyle(fontSize: 16,),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(currentid,
-                              style: TextStyle(fontSize: 16,))
-                        ],
+                      Icon(
+                        CupertinoIcons.location_solid,
+                        size: 15,color: Colors.white,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "Week off :",
-                            style: TextStyle(fontSize: 16,),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(weekoffon,
-                              style: TextStyle(fontSize: 16,))
-                        ],
-                      ),
+                      SizedBox(width: 5,),
+                      Text("Map",style: TextStyle(fontSize: 15,color: Colors.white),),
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,0,10,0),
-                  child: WeeklyJourneyListBuilder(),
-                ),
-              ],
-            ),
+              )
+            ],
           ),
-        ],
+        ),
+        body: Stack(
+          children: [
+            BackGround(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(10.00),
+                    padding: EdgeInsets.all(10.00),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.00),
+                      color:containerscolor,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(currentname,
+                            style: TextStyle(fontSize: 16,)),
+                        Row(
+                          children: [
+                            Text(
+                              "Merchandiser ID :",
+                              style: TextStyle(fontSize: 16,),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(currentid,
+                                style: TextStyle(fontSize: 16,))
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Week off :",
+                              style: TextStyle(fontSize: 16,),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(weekoffon,
+                                style: TextStyle(fontSize: 16,))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0,0,10,0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 5.0,right: 5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.00),
+                              color:containerscolor,
+                            ),
+                            child: Column(mainAxisSize: MainAxisSize.min, children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            sundaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            print(getweeklyjp.sundaystorenames);
+                                            setState(() {
+                                              sundaytapped == true ? sundaytapped = false : sundaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Sunday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  sundaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.sundayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.sundayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.sundayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              print(getweeklyjp.sundayid[index]);
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.sundayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.sundaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.sundaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.sundayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.sundaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            mondaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              mondaytapped == true ? mondaytapped = false : mondaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Monday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  mondaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.mondayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.mondayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.mondayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.mondayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.mondaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.mondaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.mondayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.mondaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            tuesdaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              tuesdaytapped == true ? tuesdaytapped = false : tuesdaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Tuesday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  tuesdaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.tuesdayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.tuesdayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.tuesdayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.tuesdayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.tuesdaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.tuesdaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.tuesdayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.tuesdaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            wednesdaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              wednesdaytapped == true ? wednesdaytapped = false : wednesdaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Wednesday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  wednesdaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.wednesdayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.wednesdayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.wednesdayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.wednesdayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.wednesdaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.wednesdaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.wednesdayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.wednesdaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            thursdaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              thursdaytapped == true ? thursdaytapped = false : thursdaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Thursday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  thursdaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.thrusdayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.thrusdayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.thrusdayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.thrusdayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.thrusdaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.thrusdaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.thrusdayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.thrusdaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            fridaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              fridaytapped == true ? fridaytapped = false : fridaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Friday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  fridaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.fridayaddress.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.fridayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.fridayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.fridayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.fridaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.fridaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.fridayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.fridaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          icon: Icon(
+                                            saturdaytapped == true
+                                                ? CupertinoIcons.arrowtriangle_down_fill
+                                                : CupertinoIcons.arrowtriangle_right_fill,
+                                            color: orange,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              saturdaytapped == true ? saturdaytapped = false : saturdaytapped = true;
+                                            });
+                                          }),
+                                      Text(
+                                        "Saturday",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                  saturdaytapped == true
+                                      ? ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: getweeklyjp.saturdaystorenames.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return GestureDetector(
+                                          onTap: ()async{
+                                            if(currentuser.roleid == 5){
+                                              setState(() {
+                                                isApiCallProcess = true;
+                                              });
+                                              print('timesheet id : ${getweeklyjp.saturdayid[index]} ');
+                                              currenttimesheetid = getweeklyjp.saturdayid[index];
+                                              currentoutletid =  getweeklyjp.outletid[index];
+                                              getTaskList();
+                                              getAvaiablitity();
+                                              getVisibility();
+                                              getCompetition();
+                                              getPlanogram();
+                                              getShareofshelf();
+                                              Addedstockdataforclient();
+                                              await getCompetition();
+                                              await clientpromodata();
+                                              setState(() {
+                                                isApiCallProcess = false;
+                                              });
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (BuildContextcontext) =>
+                                                          ClientsReports()));
+                                            }
+                                          },
+                                          onLongPress: (){
+                                            if(currentuser.roleid ==5){
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (_) =>StatefulBuilder(
+                                                      builder: (context, setState) {
+                                                        return ProgressHUD(
+                                                            inAsyncCall: isApiCallProcess,
+                                                            opacity: 0.3,
+                                                            child: AlertDialog(
+                                                              backgroundColor: alertboxcolor,
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10.0))),
+                                                              content: Builder(
+                                                                builder: (context) {
+                                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                  return Container(
+                                                                    child: SizedBox(
+                                                                      child: Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        crossAxisAlignment: CrossAxisAlignment
+                                                                            .start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Alert",
+                                                                            style: TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.bold),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 15.00,
+                                                                          ),
+                                                                          Text(
+                                                                              "Are you sure do you want to Delete this TimeSheet?",
+                                                                              style: TextStyle(fontSize: 14)),
+                                                                          SizedBox(
+                                                                            height: 25.00,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment: MainAxisAlignment
+                                                                                .center,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = true;
+                                                                                  });
+                                                                                  timesheetiddel = getweeklyjp.saturdayid[index];
+                                                                                  await deletetimesheet();
+                                                                                  //updateoutlet.outletedit = true;
+                                                                                  setState(() {
+                                                                                    isApiCallProcess = false;
+                                                                                  });
+                                                                                  Navigator.pushReplacement(context,
+                                                                                      MaterialPageRoute(builder: (
+                                                                                          BuildContext context) =>
+                                                                                          AddJourneyPlan()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 40,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius: BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  margin: EdgeInsets.only(
+                                                                                      right: 10.00),
+                                                                                  child: Center(child: Text("yes")),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ));
+                                                      }));
+                                            }
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                                            padding: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(10))),
+                                            height: 80,
+                                            width: double.infinity,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        '[${getweeklyjp.saturdaystorecodes[index]}]',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        '${getweeklyjp.saturdaystorenames[index]}',
+                                                        style: TextStyle(
+                                                            fontSize: 15.0,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Text('${getweeklyjp.saturdayaddress[index]}',
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                    )),
+                                                Spacer(),
+                                                Table(
+                                                  children: [
+                                                    TableRow(children: [
+                                                      Text('Contact Number :',
+                                                          style: TextStyle(
+                                                            fontSize: 13.0,
+                                                          )),
+                                                      Text(
+                                                          '${getweeklyjp.saturdaycontactnumbers[index]}',
+                                                          style: TextStyle(color: orange)),
+                                                    ]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                      : SizedBox()
+                                ],
+                              ),
+                            ]),
+                          ),
+                          SizedBox(height: 10,),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -391,7 +391,7 @@ class _HRdashboardState extends State<HRdashboard> {
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Text('${HRdashboarddata.leaveresponsetotal}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                      Text("Total Leave request's",textAlign: TextAlign.center,),
+                                      Text("Total Leave Request's",textAlign: TextAlign.center,),
                                     ],
                                   ),
                                 ),),
@@ -580,7 +580,7 @@ class _HRdashboardState extends State<HRdashboard> {
                                 children: [
                                   Text("Apply Leave"),
                                   Text('${HRdashboarddata.leavebalance}',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                  Text("Total available Leave's"),
+                                  Text("Total Available Leave's"),
                                 ],
                               ),
                             ),
@@ -607,7 +607,7 @@ class _HRdashboardState extends State<HRdashboard> {
                             ),
                             Spacer(flex: 2),
                             Text(
-                              'Welcome to the new merchendiser\ninterface of RMS. '
+                              'Welcome to the new HR\ninterface of RMS. '
                                   'Hope to have a\ngreat day ahead!',
                               style: new TextStyle(fontSize: 15
                               ),

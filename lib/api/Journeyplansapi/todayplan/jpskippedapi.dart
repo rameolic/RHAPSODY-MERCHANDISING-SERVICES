@@ -71,5 +71,5 @@ class todayskipjplist{
   static List<dynamic> outletcountry=[];
   static List<dynamic> id=[];
   static List<dynamic> contactnumbers=[];
-  static List<dynamic> distanceinmeters=[];
+  static List<double> distanceinmeters=[];
 }

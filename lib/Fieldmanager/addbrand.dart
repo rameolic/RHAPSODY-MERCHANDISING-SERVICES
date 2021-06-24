@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/Fieldmanager/products.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
+import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/FMapi/add_brandapi.dart';
+import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 
 
 class AddBrand extends StatefulWidget {
@@ -18,6 +21,7 @@ class _AddBrandState extends State<AddBrand> {
   GlobalKey<FormState> products = GlobalKey<FormState>();
   // ignore: non_constant_identifier_names
   //String brands;
+  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -52,101 +56,101 @@ class _AddBrandState extends State<AddBrand> {
           body: Stack(
             children: [
               BackGround(),
-              SingleChildScrollView(
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: pink,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Form(
-                      key: products,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10.0, top: 10.0),
-                            padding: EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            child: TextFormField(
-                              controller: brandname,
-                              cursorColor: grey,
-                              validator: (input) => !input.isNotEmpty
-                                  ? "Brand Name  should not be empty"
-                                  : null,
-                              decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                focusColor: orange,
-                                hintText: "Brand Name",
-                                hintStyle: TextStyle(
-                                  color: grey,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          SelectClient(),
-                          SelectFieldManager(),
-                          SelectSalesManager(),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () async{
-                                if (validateform() == true) {
-                                  setState(() {
-                                    isApiCallProcess = true;
-                                  });
-                                  BrandDetails.brandname = brandname.text;
-                                  BrandDetails.clientempid  =
-                                  'Emp${dropdownclient.replaceAll(new RegExp(r'[^0-9]'), '')}';
-
-                                  BrandDetails.fieldmanagerempid =
-                                  'RMS${dropdownfieldmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
-
-                                  BrandDetails.salesempid =
-                                  'Emp${dropdownsalesmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
-
-                                  await addbranddetails();
-
-                                  setState(() {
-                                    isApiCallProcess = false;
-                                  });
-
-                                  if( dropdownclient!= null && dropdownsalesmanager!= null && dropdownfieldmanager!= null){
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                FieldManagerDashBoard()));
-                                  }
-                                  else Flushbar(
-                                    message: dropdownclient== null?"Client cannot be empty":dropdownfieldmanager== null?
-                                    "Field Manager cannot be empty":"Sales Manager cannot be empty",
-                                    duration:  Duration(seconds: 3),
-                                  )..show(context);
-                                }
-
-
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(bottom: 10, top: 10),
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: orange,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text('ADD'),
-                              ),
-                            ),
-                          ),
-                        ],
+              ProgressHUD(
+                inAsyncCall: isApiCallProcess,
+                opacity: 0.3,
+                child: SingleChildScrollView(
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: pink,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ),
-                  ))
+                      child: Form(
+                        key: products,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10.0, top: 10.0),
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: TextFormField(
+                                controller: brandname,
+                                cursorColor: grey,
+                                validator: (input) => !input.isNotEmpty
+                                    ? "Brand Name  should not be empty"
+                                    : null,
+                                decoration: new InputDecoration(
+                                  border: InputBorder.none,
+                                  focusColor: orange,
+                                  hintText: "Brand Name",
+                                  hintStyle: TextStyle(
+                                    color: grey,
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SelectClient(),
+                            SelectFieldManager(),
+                            SelectSalesManager(),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () async{
+                                  if (validateform() == true) {
+                                    setState(() {
+                                      isApiCallProcess = true;
+                                    });
+                                    BrandDetails.brandname = brandname.text;
+                                    BrandDetails.clientempid  =
+                                    'Emp${dropdownclient.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                                    BrandDetails.fieldmanagerempid =
+                                    'RMS${dropdownfieldmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                                    BrandDetails.salesempid =
+                                    'Emp${dropdownsalesmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                                    await addbranddetails();
+                                    setState(() {
+                                      isApiCallProcess = false;
+                                    });
+
+                                    if( dropdownclient!= null && dropdownsalesmanager!= null && dropdownfieldmanager!= null){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Products()));
+                                    }
+                                    else Flushbar(
+                                      message: dropdownclient== null?"Client cannot be empty":dropdownfieldmanager== null?
+                                      "Field Manager cannot be empty":"Sales Manager cannot be empty",
+                                      duration:  Duration(seconds: 3),
+                                    )..show(context);
+                                  }
+
+
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 10, top: 10),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: orange,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Text('ADD'),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
+              )
             ],
           )),
     );

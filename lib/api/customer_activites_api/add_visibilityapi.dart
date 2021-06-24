@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../api_service.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Visibility.dart';
 
 class AddVisiData {
   static int outletid;
@@ -12,6 +13,9 @@ class AddVisiData {
   static List<dynamic> productname = [];
   static List<int> checkvalue = [];
   static List<String> reason = [];
+  static List<String> area = [];
+  static List<String> sos = [];
+  static List<String> poi = [];
   static var outletpdtmap;
 }
 
@@ -23,7 +27,10 @@ Future addVisibilitydata() async {
     'category_id': AddVisiData.categoryid,
     'category_name': AddVisiData.categoryname,
     'check_value': AddVisiData.checkvalue,
-    'reason': AddVisiData.reason
+    'reason': AddVisiData.reason,
+    "g_area" : AddVisiData.area,
+    "main_aisle" :  AddVisiData.sos,
+    "pois" :  AddVisiData.poi
   };
   print(jsonEncode(addvisibility));
   http.Response availresponse = await http.post(

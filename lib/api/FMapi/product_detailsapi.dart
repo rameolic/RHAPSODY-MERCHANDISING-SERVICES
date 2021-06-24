@@ -66,6 +66,7 @@ Future<void> getProductDetails() async {
 
       dynamic imageurl = '${decodededproducts['data'][u]['Image_url']}';
       productlist.imageurl.add(imageurl);
+      productlist.productid.add(decodededproducts['data'][u]['product_id']);
     }
     print("products : ${productlist.sku}");
   }
@@ -85,6 +86,7 @@ class productlist {
   static List<int> piecepercartoon = [];
   static List<int> priceperpiece = [];
   static List<int> brandid = [];
+  static List<int> productid = [];
   static List<String> clientid = [];
   static List<String> productcategory = [];
   static List<String> imageurl = [];

@@ -62,9 +62,9 @@ class _OutLetState extends State<OutLet> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
@@ -86,6 +86,7 @@ class _OutLetState extends State<OutLet> {
                           child: GoogleMap(
                             zoomControlsEnabled: false,
                             zoomGesturesEnabled: true,
+                            myLocationButtonEnabled: false,
                             markers:Set<Marker>.of(_markers),
                             initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong)), zoom: 15),
                           ),

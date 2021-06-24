@@ -1,3 +1,4 @@
+import 'package:merchandising/api/FMapi/outlet%20brand%20mappingapi.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/ProgressHUD.dart';
@@ -13,14 +14,23 @@ import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
 import'package:merchandising/api/customer_activites_api/competition_details.dart';
 import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
+import'package:merchandising/api/myattendanceapi.dart';
 
-class CheckIn extends StatelessWidget {
+class CheckIn extends StatefulWidget {
 
+  @override
+  _CheckInState createState() => _CheckInState();
+}
+
+class _CheckInState extends State<CheckIn> {
   bool isApiCallProcess = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         print(chekinoutlet.currentdistance);
         if(chekinoutlet.currentdistance > 300 ){
           showDialog(
@@ -49,7 +59,7 @@ class CheckIn extends StatelessWidget {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                  "It seems that you are not at the customer location.\nDo you want to do force check-in?",
+                                  "It seems that you are not at the customer location.\nDo you want to do Force CheckIn?",
                                   style: TextStyle(fontSize: 13.6)),
                               SizedBox(
                                 height: 10.00,
@@ -88,10 +98,26 @@ class CheckIn extends StatelessWidget {
                 ));
               }));
         } else {
-           getTaskList();
+          setState(() {
+            isApiCallProcess = true;
+          });
+          getTaskList();
+          getVisibility();
+          getcompinfo();
+          getPlanogram();
+          getCompetition();
+          getPromotionDetails();
+          getNBLdetails();
+          await getAvaiablitity();
+          await getShareofshelf();
+          addattendence();
+
            if(alreadycheckedin == false){
              SubmitCheckin();
            }
+          setState(() {
+            isApiCallProcess = false;
+          });
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
             return CustomerActivities();
           }), (Route<dynamic> route) => false);
@@ -151,7 +177,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Force check-In",
+                                  "Force Check-In",
                                   style: TextStyle(
                                       fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
@@ -247,7 +273,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             width: 10,
                                           ),
                                           Text(
-                                            "others",
+                                            "Others",
                                             style: TextStyle(fontSize: 16),
                                           ),
                                         ],
@@ -258,19 +284,37 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                       child: GestureDetector(
                                         onTap: ()async{
                                           if (gpsnotworking == true) {
+                                            forcecheck.reason="GPS not working";
+
+                                            await addforeccheckin();
+
                                             setState(() {
                                               isApiCallProcess = true;
                                             });
+
                                             await getTaskList();
                                             print("gps not working");
                                             if(alreadycheckedin == false){SubmitCheckin();}
-                                            await Avaiablitity();
-                                            await getVisibility();
-                                            await getcompinfo();
-                                            await getPlanogram();
+                                            getTaskList();
+                                            getVisibility();
+                                            getcompinfo();
+                                            getPlanogram();
+                                            getCompetition();
+                                            getPromotionDetails();
+                                            getNBLdetails();
+                                            await getAvaiablitity();
                                             await getShareofshelf();
-                                            await getCompetition();
-                                            await getPromotionDetails();
+                                            await getmappedoutlets();
+
+                                            await getmyattandance();
+                                            if(noattendance.noatt=="attadded"){
+                                              print("Attendance added:${noattendance.noatt}");
+                                            }
+                                            else{
+                                              await addattendence();
+                                            }
+
+
                                             setState(() {
                                               isApiCallProcess = false;
                                             });
@@ -280,14 +324,35 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                           }
                                           else {
                                             if(geolocation == true){
+                                              forcecheck.reason="Geolocation was wrong";
+
+                                              await addforeccheckin();
                                               setState(() {
                                                 isApiCallProcess = true;
                                               });
-                                              await getTaskList();
+                                              getTaskList();
+                                              getVisibility();
+                                              getcompinfo();
+                                              getPlanogram();
+                                              getCompetition();
+                                              getPromotionDetails();
+                                              getNBLdetails();
+                                              await getAvaiablitity();
+                                              await getShareofshelf();
+                                              getmappedoutlets();
+                                              await getmyattandance();
+                                              if(noattendance.noatt=="attadded"){
+                                                print("Attendance added:${noattendance.noatt}");
+                                              }
+                                              else{
+                                                await addattendence();
+                                              }
+
                                               if(alreadycheckedin == false){SubmitCheckin();}
                                               setState(() {
                                                 isApiCallProcess = false;
                                               });
+
                                               print("geo Location was wrong");
                                               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
                                                 return CustomerActivities();
@@ -295,11 +360,33 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             }
                                             else {
                                               if(others == true){
+                                                forcecheck.reason="Others";
+
+                                                await addforeccheckin();
                                                 setState(() {
                                                   isApiCallProcess = true;
                                                 });
-                                                await getTaskList();
-                                                if(alreadycheckedin == false){SubmitCheckin();}
+                                                getTaskList();
+                                                getVisibility();
+                                                getcompinfo();
+                                                getPlanogram();
+                                                getCompetition();
+                                                getPromotionDetails();
+                                                await getAvaiablitity();
+                                                await getShareofshelf();
+                                                getNBLdetails();
+                                                getmappedoutlets();
+                                                await getmyattandance();
+                                                if(noattendance.noatt=="attadded"){
+                                                  print("Attendance added:${noattendance.noatt}");
+                                                }
+                                                else{
+                                                  await addattendence();
+                                                }
+
+                                                if(alreadycheckedin == false){
+                                                  SubmitCheckin();
+                                                }
                                                 setState(() {
                                                   isApiCallProcess = false;
                                                 });
@@ -309,7 +396,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                                 }), (Route<dynamic> route) => false);
                                               }
                                               else{
-                                                null ;
+                                                null;
                                               }
                                             }
                                           }
@@ -322,7 +409,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             borderRadius: BorderRadius.circular(5),
                                           ),
                                           margin: EdgeInsets.only(right: 10.00),
-                                          child: Center(child: Text("submit",style: TextStyle(color: Colors.white),)),
+                                          child: Center(child: Text("Submit",style: TextStyle(color: Colors.white),)),
                                         ),
                                       ),
                                     ),

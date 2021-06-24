@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -40,16 +41,22 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
           iconTheme: IconThemeData(color: orange),
           title: Row(
             children: [
-              Text(
-                'Leave Response',
-                style: TextStyle(color: orange),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Leave Response',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
               ),
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(children: [
           BackGround(),
           ListView.builder(

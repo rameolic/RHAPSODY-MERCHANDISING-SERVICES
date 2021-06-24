@@ -13,36 +13,55 @@ import 'MenuContent.dart';
 import 'package:intl/intl.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/database.dart';
+
 var productname = "select from the above";
 var packtype = 'Regular';
-List<String>selectedList=[];
+var range = 'Regular';
+List<String> selectedList = [];
 String selecttype;
 String SelectedPeriod;
 String selectpack;
- List selecttypelist  = ["SKU","ZREP","BAR CODE(CS)","BAR CODE(BS)","BAR CODE(PS)"].map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
- List copack_regular  = ["Co-Pack","Regular"].map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
-List period  = ["P1","P2","P3","P4","P5","P6","P7","P8","P9","P10","P11","P12","P13","P14"].map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+List selecttypelist =
+    ["SKU", "ZREP","Product Name","Barcode"].map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 String selectcode;
- List barcodescs  = Expiry.barcode_cs.toSet().toList().map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
- List barcodesps  = Expiry.barcode_ps.toSet().toList().map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
- List barcodesbs  = Expiry.barcode_bs.toSet().toList().map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
- List zrep  = Expiry.zrepcodes.toSet().toList().map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
- List sku  = Expiry.sku.toSet().toList().map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
+List productdetails = Expiry.productdetails.toSet().toList().map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
+List barcode = Expiry.barcode.toSet().toList().map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
+List zrep = Expiry.zrepcodes.toSet().toList().map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
+List sku = Expiry.sku.toSet().toList().map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 
- List inputlist  = selectedList.map((String val)
-{return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
-
+List inputlist = selectedList.map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 
 TextEditingController remarks = TextEditingController();
-
 
 class ExpiryReport extends StatefulWidget {
   @override
@@ -53,330 +72,367 @@ class _ExpiryReportState extends State<ExpiryReport> {
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: ProgressHUD(
-        inAsyncCall: isApiCallProcess,
-        opacity: 0.3,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: containerscolor,
-            iconTheme: IconThemeData(color: orange),
-            title: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Expiry Details',
-                      style: TextStyle(color: orange),
-                    ),
-                    EmpInfo()
-                  ],
-                ),
-                Spacer(),
-                SubmitButton(),
-              ],
-            ),
-          ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
-
-          body: Stack(
+    return ProgressHUD(
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: containerscolor,
+          iconTheme: IconThemeData(color: orange),
+          title: Row(
             children: [
-              BackGround(),
-              DefaultTabController(
-                length: 2, // lengt0h of tabs
-                initialIndex: 0,
-                child:Scaffold(
-                  backgroundColor: Colors.transparent,
-                  appBar: PreferredSize(
-                    preferredSize: Size.fromHeight(kToolbarHeight),
-                    child: Container(
-                      margin: EdgeInsets.fromLTRB(10,10,10,0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white,
-                      ),
-                      child: TabBar(
-                        //    controller: _controller,
-                        labelColor: orange,
-                        unselectedLabelColor: Colors.black,
-                        indicatorColor: orange,
-                        tabs: [
-                          Tab(text: 'Add Expiry Data'),
-                          Tab(text: 'Added Expiry Data'),
-                        ],
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Expiry Details',
+                    style: TextStyle(color: orange),
+                  ),
+                  EmpInfo()
+                ],
+              ),
+              Spacer(),
+              GestureDetector(
+                onTap: () async{
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  for(int u=0; u<addedproductid.length;u++){
+                    productid = addedproductid[u];
+                    pricepc = addedpriceperitem[u];
+                    expirypc = addeditemscount[u];
+                    pcexpirydate = addedexpirydate[u];
+                    exposureqntypc = addedexposurequnatity[u];
+                    remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
+                    await addexpiryproducts();
+                  }
+                  setState(() {
+                    isApiCallProcess = false;
+                  });
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => CustomerActivities()));
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 10.00),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xffFFDBC1),
+                    borderRadius: BorderRadius.circular(10.00),
+                  ),
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.black, fontSize: 15),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
+
+        body: Stack(
+          children: [
+            BackGround(),
+            DefaultTabController(
+              length: 2, // lengt0h of tabs
+              initialIndex: 0,
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(kToolbarHeight),
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
+                    ),
+                    child: TabBar(
+                      //    controller: _controller,
+                      labelColor: orange,
+                      unselectedLabelColor: Colors.black,
+                      indicatorColor: orange,
+                      tabs: [
+                        Tab(text: 'Add Expiry Data'),
+                        Tab(text: 'Added Expiry Data'),
+                      ],
                     ),
                   ),
-                  body: TabBarView(
+                ),
+                body: TabBarView(
                     //physics: NeverScrollableScrollPhysics(),
                     // controller: _controller,
-                      children: [
-                        SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Container(
-                                //height: 700,
-                                padding: EdgeInsets.all(10),
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: pink,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(top:10.0),
-                                      padding: EdgeInsets.only(left:10.0),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                                      child: DropdownButton(
-                                        elevation: 0,
-                                        dropdownColor: Colors.white,
-                                        isExpanded: true,
-                                        underline: Container(color: Colors.transparent),
-                                        iconEnabledColor: orange,
-                                        iconSize: 35.0,
-                                        value: selecttype,
-                                        onChanged: (newVal){
-                                          setState(() {
-                                            selecttype = newVal;
-                                            selectcode = null;
-                                            if(newVal == 'BAR CODE(CS)'){
-                                              inputlist = barcodescs;
-                                            }else if(newVal == 'BAR CODE(BS)'){
-                                              inputlist= barcodesbs;
-                                            }else if(newVal == 'BAR CODE(PS)'){
-                                              inputlist= barcodesps;
-                                            }else if(newVal == 'ZREP'){
-                                              inputlist= zrep;
-                                            }else{
-                                              inputlist = sku;
-                                            }
-                                          });
-                                        },
-                                        items: selecttypelist,
-                                        hint: Text("Filter By ",style: TextStyle(color: Colors.grey),),
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top:10.0),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                                      child: SearchableDropdown.single(
-                                        underline: SizedBox(),
-                                        items: inputlist,
-                                        value: selectcode,
-                                        hint: "Select Product",
-                                        searchHint: "Select Product",
-                                        onChanged: (value) {
-                                          if(value != null){
-                                            setState(() {
-                                              isApiCallProcess = true;
-                                            });
-                                            if(inputlist == barcodescs){
-                                              productname =  Expiry.sku[Expiry.barcode_cs.indexOf(value)];
-                                              print(productname);
-                                            }else if(inputlist == barcodesbs){
-                                              productname =  Expiry.sku[Expiry.barcode_bs.indexOf(value)];
-                                              print(productname);
-                                            }else if(inputlist == barcodesps){
-                                              productname =  Expiry.sku[Expiry.barcode_ps.indexOf(value)];
-                                              print(productname);
-                                            }else if(inputlist == zrep){
-                                              productname =  Expiry.sku[Expiry.zrepcodes.indexOf(value)];
-                                              print(productname);
-                                            }else{
-                                              productname =  value;
-                                              print(productname);
-                                            }
-                                            setState(() {
-                                              selectcode = value;
-                                              isApiCallProcess = false;
-                                            });
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              //height: 700,
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: pink,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10.0),
+                                    padding: EdgeInsets.only(left: 10.0),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    child: DropdownButton(
+                                      elevation: 0,
+                                      dropdownColor: Colors.white,
+                                      isExpanded: true,
+                                      underline: SizedBox(),
+                                      iconEnabledColor: orange,
+                                      iconSize: 35.0,
+                                      value: selecttype,
+                                      onChanged: (newVal) {
+                                        setState(() {
+                                          selecttype = newVal;
+                                          if (newVal == 'Barcode') {
+                                            inputlist = barcode;
+                                          } else
+                                            if (newVal == 'Product Name') {
+                                            inputlist = productdetails;
+                                          } else if (newVal == 'ZREP') {
+                                            inputlist = zrep;
+                                          } else {
+                                            inputlist = sku;
                                           }
-                                        },
-                                        isExpanded: true,
-                                        iconEnabledColor: orange,
-                                        iconSize: 25.0,
+                                        });
+                                      },
+                                      items: selecttypelist,
+                                      hint: Text(
+                                        "Filter By ",
+                                        style: TextStyle(color: Colors.grey),
                                       ),
                                     ),
-                                    Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text("Product : ",style: TextStyle(color: orange),),
-                                              Flexible(child: Text(productname,maxLines: 3,style: TextStyle(color: orange),)),
-                                            ],
-                                          ),
-                                        ),
-                                        // Padding(
-                                        //   padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-                                        //   child: Row(
-                                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        //     children: [
-                                        //       Text("Price per piece",style: TextStyle(color: orange),),
-                                        //       Text("$priceperpiece \$",style: TextStyle(color: orange),),
-                                        //     ],
-                                        //   ),
-                                        // ),
-                                        Container(
-                                          margin: EdgeInsets.only(top:10.0),
-                                          padding: EdgeInsets.only(left:10.0),
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                                          child: DropdownButton(
-                                            elevation: 0,
-                                            dropdownColor: Colors.white,
-                                            isExpanded: true,
-                                            underline: Container(color: Colors.transparent),
-                                            iconEnabledColor: orange,
-                                            iconSize: 35.0,
-                                            value: selectpack,
-                                            onChanged: (newVal){
-                                              setState(() {
-                                                selectpack = newVal;
-                                              });
-                                            },
-                                            items: copack_regular,
-                                            hint: Text("Select Pack ",style: TextStyle(color: Colors.grey),),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top:10.0),
-                                      padding: EdgeInsets.only(left:10.0),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
-                                      child: DropdownButton(
-                                        elevation: 0,
-                                        dropdownColor: Colors.white,
-                                        isExpanded: true,
-                                        underline: Container(color: Colors.transparent),
-                                        iconEnabledColor: orange,
-                                        iconSize: 35.0,
-                                        value: SelectedPeriod,
-                                        onChanged: (newVal){
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10.0),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                    child: SearchableDropdown.single(
+                                      underline: SizedBox(),
+                                      items: inputlist,
+                                      value: selectcode,
+                                      hint: "Select Product",
+                                      searchHint: "Select Product",
+                                      onChanged: (value) {
+                                        if (value != null) {
                                           setState(() {
-                                            SelectedPeriod = newVal;
+                                            isApiCallProcess = true;
                                           });
-                                        },
-                                        items: period,
-                                        hint: Text("select period",style: TextStyle(color: Colors.grey),),
-                                      ),
+                                          if (inputlist == barcode) {
+                                            productname = Expiry.productdetails[Expiry
+                                                .barcode
+                                                .indexOf(value)];
+                                            print(productname);
+                                          } else
+                                            if (inputlist ==
+                                              sku) {
+                                            productname = Expiry.productdetails[Expiry.sku.indexOf(value)];
+                                            packtype = Expiry.type[Expiry.sku.indexOf(value)];
+                                            range = Expiry.range[Expiry.sku.indexOf(value)];
+                                            print(productname);
+                                          } else if (inputlist == zrep) {
+                                            productname = Expiry.productdetails[Expiry.zrepcodes.indexOf(value)];
+                                            packtype = Expiry.type[Expiry.zrepcodes.indexOf(value)];
+                                            range = Expiry.range[Expiry.zrepcodes.indexOf(value)];
+                                            print(productname);
+                                          } else {
+                                            productname = value;
+                                            packtype = Expiry.type[Expiry.productdetails.indexOf(value)];
+                                            range = Expiry.range[Expiry.productdetails.indexOf(value)];
+                                          }
+                                          setState(() {
+                                            selectcode = value;
+                                            isApiCallProcess = false;
+                                          });
+                                        }
+                                      },
+                                      isExpanded: true,
+                                      iconEnabledColor: orange,
+                                      iconSize: 25.0,
                                     ),
-                                    EndDate(),
-                                    Peice(),
-                                    /*Expanded(
-                            child: DefaultTabController(
-                              length: 3, // length of tabs
-                              initialIndex: 0,
-                              child:Scaffold(
-                                backgroundColor: Colors.transparent,
-                                appBar: PreferredSize(
-                                  preferredSize: Size.fromHeight(kToolbarHeight),
-                                  child: Container(
-                                        margin: EdgeInsets.fromLTRB(0, 10.0, 0.0, 0),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                          color: Colors.white,
-                                        ),
-                                        child: TabBar(
-                                      //    controller: _controller,
-                                          labelColor: orange,
-                                          unselectedLabelColor: Colors.black,
-                                          indicatorColor: orange,
-                                          tabs: [
-                                            Tab(text: 'Piece'),
-                                            Tab(text: 'Box'),
-                                            Tab(text: 'Cotton'),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10.0, left: 5.0, right: 5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Product : ",
+                                              style: TextStyle(color: orange),
+                                            ),
+                                            Flexible(
+                                                child: Text(
+                                              productname,
+                                              maxLines: 3,
+                                              style: TextStyle(color: orange),
+                                            )),
                                           ],
                                         ),
                                       ),
-                                ),
-                                body: TabBarView(
-                                  //physics: NeverScrollableScrollPhysics(),
-                                   // controller: _controller,
-                                    children: [
-                                      Peice(),
-                                      Box(),
-                                      Cases(),
-                                    ]),
-                              ),
-                              ),
-                          ),*/
-                                    Container(
-                                      margin: EdgeInsets.only(top: 10.0),
-                                      padding: EdgeInsets.only(left:10.0),
+                                      packtype == null ? SizedBox()
+                                          :Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10.0, left: 5.0, right: 5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "type : ",
+                                              style: TextStyle(color: orange),
+                                            ),
+                                            Flexible(
+                                                child: Text(
+                                                  packtype,
+                                                  maxLines: 3,
+                                                  style: TextStyle(color: orange),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.only(
+                                      //       top: 10.0, left: 5.0, right: 5.0),
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceBetween,
+                                      //     children: [
+                                      //       Text(
+                                      //         "range : ",
+                                      //         style: TextStyle(color: orange),
+                                      //       ),
+                                      //       Flexible(
+                                      //           child: Text(
+                                      //             range,
+                                      //             maxLines: 3,
+                                      //             style: TextStyle(color: orange),
+                                      //           )),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                  EndDate(),
+                                  Peice(),
+                                  /*Expanded(
+                          child: DefaultTabController(
+                            length: 3, // length of tabs
+                            initialIndex: 0,
+                            child:Scaffold(
+                              backgroundColor: Colors.transparent,
+                              appBar: PreferredSize(
+                                preferredSize: Size.fromHeight(kToolbarHeight),
+                                child: Container(
+                                      margin: EdgeInsets.fromLTRB(0, 10.0, 0.0, 0),
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
                                         color: Colors.white,
                                       ),
-                                      child: TextFormField(
-                                        controller: remarks,
-                                        cursorColor: grey,
-                                        validator: (input) => !input.isNotEmpty
-                                            ? "Department should not be empty"
-                                            : null,
-                                        decoration: new InputDecoration(
-                                          border: InputBorder.none,
-                                          focusColor: orange,
-                                          hintText: "remarks if any*",
-                                          hintStyle: TextStyle(
-                                            color: grey,
-                                            fontSize: 16.0,
-                                          ),
+                                      child: TabBar(
+                                    //    controller: _controller,
+                                        labelColor: orange,
+                                        unselectedLabelColor: Colors.black,
+                                        indicatorColor: orange,
+                                        tabs: [
+                                          Tab(text: 'Piece'),
+                                          Tab(text: 'Box'),
+                                          Tab(text: 'Cotton'),
+                                        ],
+                                      ),
+                                    ),
+                              ),
+                              body: TabBarView(
+                                //physics: NeverScrollableScrollPhysics(),
+                                 // controller: _controller,
+                                  children: [
+                                    Peice(),
+                                    Box(),
+                                    Cases(),
+                                  ]),
+                            ),
+                            ),
+                        ),*/
+                                  Container(
+                                    margin: EdgeInsets.only(top: 10.0),
+                                    padding: EdgeInsets.only(left: 10.0),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    child: TextFormField(
+                                      controller: remarks,
+                                      cursorColor: grey,
+                                      validator: (input) => !input.isNotEmpty
+                                          ? "Department should not be empty"
+                                          : null,
+                                      decoration: new InputDecoration(
+                                        border: InputBorder.none,
+                                        focusColor: orange,
+                                        hintText: "Remarks",
+                                        hintStyle: TextStyle(
+                                          color: grey,
+                                          fontSize: 16.0,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              TextButton(onPressed: ()async{
-                                if(SelectedPeriod != null && selecttype!= null && selectcode!= null && packtype != null && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
-                                  print("correct");
-                                  Storecode = outletid;
-                                  productid = Expiry.id[Expiry.sku.indexOf(productname)];
-                                  packtypeselected=packtype;
-                                  expirypc = expirypeciescount.text ;
-                                  pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0] ;
-                                  periodchoosed = SelectedPeriod;
-                                  exposureqntypc = quantity.text == "" ? 0: quantity.text;
-                                  pricepc = peiceprice.text== "" ? 0: peiceprice.text;
-                                  expirycs = cottonexpirypeciescount.text == "" ? 0: cottonexpirypeciescount.text;
-                                  csexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
-                                  exposureqntycs = cottonquantity.text== "" ? 0: cottonquantity.text;
-                                  pricecs = cottonprice.text== "" ? 0: cottonprice.text;
-                                  expirybs = expiryBoxcount.text== "" ? 0: expiryBoxcount.text;
-                                  bsexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
-                                  exposureqntybs = boxquantity.text== "" ? 0: boxquantity.text;
-                                  pricebs = boxprice.text== "" ? 0: boxprice.text;
-                                  filledby = '${DBrequestdata.receivedempid}';
-                                  remarksifany = remarks.text== "" ? 0: remarks.text;
-                                  if(Estimatedvalue == null && Estimatedboxvalue == null && Estimatedvaluecotton == null){
-                                    Flushbar(
-                                      message: "please fill atleast one of the three forms",
-                                      duration: Duration(seconds: 3),
-                                    )..show(context);
-                                  }else{
-                                    setState(() {
-                                      isApiCallProcess= true;
-                                    });
-                                    await addexpiryproducts();
+                            ),
+                            TextButton(
+                                onPressed: () async {
+                                  if (selectcode != null  && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
+                                    print("correct");
+                                    Storecode = outletid;
+                                    productid = Expiry.id[Expiry.productdetails.indexOf(productname)];
+                                    expirypc = expirypeciescount.text;
+                                    pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
+                                    periodchoosed = SelectedPeriod;
+                                    exposureqntypc = quantity.text == "" ? 0 : quantity.text;
+                                    pricepc = peiceprice.text == "" ? 0 : peiceprice.text;
+                                    filledby = '${DBrequestdata.receivedempid}';
+                                    remarksifany =
+                                        remarks.text == "" ? 0 : remarks.text;
+                                    if (Estimatedvalue == null) {
+                                      Flushbar(
+                                        message:
+                                            "please fill atleast one of the three forms",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                    } else {
+                                      setState(() {
+                                        isApiCallProcess = true;
+                                      });
+                                      //await addexpiryproducts();
+                                      addedproductid.add(productid);
+                                      addedproductname.add('${Expiry.zrepcodes[Expiry.productdetails.indexOf(productname)]}-$productname');
+                                      addedexpirydate.add("${ DateFormat("yyyy-MM-dd").format(ENDdate)}");
+                                      addeditemscount.add(int.parse(expirypeciescount.text));
+                                      addedexposurequnatity.add(int.parse(quantity.text));
+                                      addedpriceperitem.add(int.parse(peiceprice.text));
+                                      addedremarks.add(remarks.text==null?"":remarks.text);
 
-                                      addedsku.add('${Expiry.zrepcodes[Expiry.sku.indexOf(productname)]}-$productname');
-                                      addedexpirydate.add("${DateFormat.yMd().format(ENDdate)}");
-                                      addeditemscount.add(expirypeciescount.text);
-                                      addeditemscount;
-                                      addedexpirydate;
-                                      SelectedPeriod = null;
                                       productname = "select from the above";
                                       selectcode = null;
                                       selecttype = null;
@@ -384,76 +440,52 @@ class _ExpiryReportState extends State<ExpiryReport> {
                                       expirypeciescount.clear();
                                       quantity.clear();
                                       peiceprice.clear();
-                                      cottonexpirypeciescount.clear();
-                                      cottonquantity.clear();
-                                      cottonprice.clear();
-                                      expiryBoxcount.clear();
-                                      boxquantity.clear();
-                                      boxprice.clear();
                                       remarks.clear();
                                       setState(() {
-                                        isApiCallProcess= false;
+                                        isApiCallProcess = false;
                                       });
                                       Flushbar(
                                         message: "data updated sucessfully",
                                         duration: Duration(seconds: 3),
                                       )..show(context);
                                     }
-                                }else{
-                                  Flushbar(
-                                    message: SelectedPeriod == null ? "Please select period" :selectcode==null ?"Selected item should not be null ":packtype== null? "PLease Select Pack":selecttype==null?"Select type should not be null":"please select a vaild product Expiry date",
-                                    duration: Duration(seconds: 3),
-                                  )..show(context);
-                                }
-
-                              }, style: ButtonStyle(
-                                  backgroundColor:
-                                  MaterialStateProperty.all(pink)),
-                                  child: Text("SAVE",style: TextStyle(color:orange),))
-                            ],
-                          ),
+                                  } else {
+                                    Flushbar(
+                                      message:selectcode == null
+                                              ? "please Select Product should not be null "
+                                                      : "please select a vaild product Expiry date",
+                                      duration: Duration(seconds: 3),
+                                    )..show(context);
+                                  }
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(pink)),
+                                child: Text(
+                                  "SAVE",
+                                  style: TextStyle(color: orange),
+                                ))
+                          ],
                         ),
-                        Addedexpirydata(),
-                      ]),
-                ),
+                      ),
+                      Addedexpirydata(),
+                    ]),
               ),
-            ],
-          ),
+            ),
+            NBlFloatingButton(),
+          ],
         ),
       ),
     );
   }
 }
 
-class SubmitButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => CustomerActivities()));
-      },
-      child: Container(
-        margin: EdgeInsets.only(right: 10.00),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: Color(0xffFFDBC1),
-          borderRadius: BorderRadius.circular(10.00),
-        ),
-        child: Text(
-          'Submit',
-          style: TextStyle(color: Colors.black, fontSize: 15),
-        ),
-      ),
-    );
-  }
-}
+
 
 DateTime tomoroww = DateTime.now().add(Duration(days: 1));
 
 DateTime ENDdate = DateTime.now().add(Duration(days: 1));
+
 class EndDate extends StatefulWidget {
   @override
   _EndDateState createState() => _EndDateState();
@@ -492,7 +524,8 @@ class _EndDateState extends State<EndDate> {
     return Container(
       margin: EdgeInsets.only(top: 10.0),
       padding: EdgeInsets.only(left: 10.0),
-      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10.0)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
       child: Row(
         children: [
           Text(
@@ -518,14 +551,15 @@ class Peice extends StatefulWidget {
   @override
   _PeiceState createState() => _PeiceState();
 }
+
 double priceperpiece;
 double Estimatedvalue;
 double Estimatedquantityvalue;
 TextEditingController quantity = TextEditingController();
 TextEditingController expirypeciescount = TextEditingController();
 TextEditingController peiceprice = TextEditingController();
-class _PeiceState extends State<Peice> {
 
+class _PeiceState extends State<Peice> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -533,29 +567,31 @@ class _PeiceState extends State<Peice> {
       children: [
         Container(
           margin: EdgeInsets.only(top: 10.0),
-          padding: EdgeInsets.only(left:10.0),
+          padding: EdgeInsets.only(left: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
           child: TextFormField(
             controller: peiceprice,
-            onChanged: (value){
+            onChanged: (value) {
               setState(() {
                 priceperpiece = double.parse(peiceprice.text);
 
-                expirypeciescount.text != null ? Estimatedvalue = double.parse(expirypeciescount.text)*priceperpiece :print("");
+                expirypeciescount.text != null
+                    ? Estimatedvalue =
+                        double.parse(expirypeciescount.text) * priceperpiece
+                    : print("");
               });
             },
             cursorColor: grey,
             keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
+            validator: (input) =>
+                !input.isNotEmpty ? "Department should not be empty" : null,
             decoration: new InputDecoration(
               border: InputBorder.none,
               focusColor: orange,
-              hintText: "Enter price for each piece",
+              hintText: "Enter Price Per Piece",
               hintStyle: TextStyle(
                 color: grey,
                 fontSize: 16.0,
@@ -565,27 +601,27 @@ class _PeiceState extends State<Peice> {
         ),
         Container(
           margin: EdgeInsets.only(top: 10.0),
-          padding: EdgeInsets.only(left:10.0),
+          padding: EdgeInsets.only(left: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
           child: TextFormField(
             controller: expirypeciescount,
-            onChanged: (value){
+            onChanged: (value) {
               setState(() {
-                Estimatedvalue = double.parse(expirypeciescount.text)*priceperpiece;
+                Estimatedvalue =
+                    double.parse(expirypeciescount.text) * priceperpiece;
               });
             },
             cursorColor: grey,
             keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
+            validator: (input) =>
+                !input.isNotEmpty ? "should not be empty" : null,
             decoration: new InputDecoration(
               border: InputBorder.none,
               focusColor: orange,
-              hintText: "pieces count that are near to expiry",
+              hintText: "Near Expiry Pieces Count",
               hintStyle: TextStyle(
                 color: grey,
                 fontSize: 16.0,
@@ -595,37 +631,43 @@ class _PeiceState extends State<Peice> {
         ),
         //expirypeciescount.text == null ?SizedBox(height: 10,) :
         Padding(
-          padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0,bottom: 10.0),
-          child:Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Estimated Expiry Value",style: TextStyle(color: orange),),
-              Text("$Estimatedvalue AED",style: TextStyle(color: orange),),
-            ],
-          )
-        ),
+            padding: const EdgeInsets.only(
+                top: 10.0, left: 5.0, right: 5.0, bottom: 10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Estimated Expiry Value",
+                  style: TextStyle(color: orange),
+                ),
+                Text(
+                  "$Estimatedvalue AED",
+                  style: TextStyle(color: orange),
+                ),
+              ],
+            )),
         Container(
-          padding: EdgeInsets.only(left:10.0),
+          padding: EdgeInsets.only(left: 10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
           child: TextFormField(
             controller: quantity,
-            onChanged: (value){
+            onChanged: (value) {
               setState(() {
-                Estimatedquantityvalue = double.parse(quantity.text)*priceperpiece;
+                Estimatedquantityvalue =
+                    double.parse(quantity.text) * priceperpiece;
               });
             },
             cursorColor: grey,
             keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
+            validator: (input) =>
+                !input.isNotEmpty ? "Department should not be empty" : null,
             decoration: new InputDecoration(
               border: InputBorder.none,
               focusColor: orange,
-              hintText: "Exposure quantity for peices",
+              hintText: "Exposure Quantity",
               hintStyle: TextStyle(
                 color: grey,
                 fontSize: 16.0,
@@ -635,293 +677,25 @@ class _PeiceState extends State<Peice> {
         ),
         //quantity.text == null ?SizedBox() :
         Padding(
-          padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-          child:Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Estimated quantity Value",style: TextStyle(color: orange),),
-              Text("$Estimatedquantityvalue AED",style: TextStyle(color: orange),),
-            ],
-          )
-        ),
+            padding: const EdgeInsets.only(top: 10.0, left: 5.0, right: 5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Estimated Quantity Value",
+                  style: TextStyle(color: orange),
+                ),
+                Text(
+                  "$Estimatedquantityvalue AED",
+                  style: TextStyle(color: orange),
+                ),
+              ],
+            )),
       ],
     );
   }
 }
 
-class Box extends StatefulWidget {
-  @override
-  _BoxState createState() => _BoxState();
-}
-double priceperbox;
-double Estimatedboxvalue;
-double Estimatedboxquantityvalue;
-TextEditingController boxquantity = TextEditingController();
-TextEditingController expiryBoxcount = TextEditingController();
-TextEditingController boxprice = TextEditingController();
-class _BoxState extends State<Box> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 10.0),
-          padding: EdgeInsets.only(left:10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
-          child: TextFormField(
-            controller: boxprice,
-            onChanged: (value){
-              setState(() {
-                priceperbox = double.parse(boxprice.text);
-
-                expiryBoxcount.text != null ? Estimatedboxvalue = double.parse(expiryBoxcount.text)*priceperbox :print("");
-              });
-            },
-            cursorColor: grey,
-            keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
-            decoration: new InputDecoration(
-              border: InputBorder.none,
-              focusColor: orange,
-              hintText: "Enter price for each piece",
-              hintStyle: TextStyle(
-                color: grey,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10.0),
-          padding: EdgeInsets.only(left:10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
-          child: TextFormField(
-            controller: expiryBoxcount,
-            onChanged: (value){
-              setState(() {
-                Estimatedboxvalue = double.parse(expiryBoxcount.text)*priceperbox;
-              });
-            },
-            cursorColor: grey,
-            keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
-            decoration: new InputDecoration(
-              border: InputBorder.none,
-              focusColor: orange,
-              hintText: "pieces count that are near to expiry",
-              hintStyle: TextStyle(
-                color: grey,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-        //expirypeciescount.text == null ?SizedBox(height: 10,) :
-        Padding(
-            padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0,bottom: 10.0),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Estimated Expiry Value",style: TextStyle(color: orange),),
-                Text("$Estimatedboxvalue AED",style: TextStyle(color: orange),),
-              ],
-            )
-        ),
-        Container(
-          padding: EdgeInsets.only(left:10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
-          child: TextFormField(
-            controller: boxquantity,
-            onChanged: (value){
-              setState(() {
-                Estimatedboxquantityvalue = double.parse(boxquantity.text)*priceperbox;
-              });
-            },
-            cursorColor: grey,
-            keyboardType: TextInputType.number,
-            validator: (input) => !input.isNotEmpty
-                ? "Department should not be empty"
-                : null,
-            decoration: new InputDecoration(
-              border: InputBorder.none,
-              focusColor: orange,
-              hintText: "Exposure quantity for peices",
-              hintStyle: TextStyle(
-                color: grey,
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-        //quantity.text == null ?SizedBox() :
-        Padding(
-            padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Estimated quantity Value",style: TextStyle(color: orange),),
-                Text("$Estimatedboxquantityvalue AED",style: TextStyle(color: orange),),
-              ],
-            )
-        ),
-      ],
-    );
-  }
-}
-
-class Cases extends StatefulWidget {
-  @override
-  _CasesState createState() => _CasesState();
-}
-double pricepercotton;
-double Estimatedvaluecotton;
-double Estimatedcottonquantityvalue;
-TextEditingController cottonquantity = TextEditingController();
-TextEditingController cottonexpirypeciescount = TextEditingController();
-TextEditingController cottonprice = TextEditingController();
-class _CasesState extends State<Cases> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Container(
-        margin: EdgeInsets.only(top: 10.0),
-        padding: EdgeInsets.only(left:10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: TextFormField(
-          controller: cottonprice,
-          onChanged: (value){
-            setState(() {
-              pricepercotton = double.parse(cottonprice.text);
-
-              cottonexpirypeciescount.text != null ? Estimatedvaluecotton = double.parse(cottonexpirypeciescount.text)*pricepercotton :print("");
-            });
-          },
-          cursorColor: grey,
-          keyboardType: TextInputType.number,
-          validator: (input) => !input.isNotEmpty
-              ? "Department should not be empty"
-              : null,
-          decoration: new InputDecoration(
-            border: InputBorder.none,
-            focusColor: orange,
-            hintText: "Enter price for each cotton",
-            hintStyle: TextStyle(
-              color: grey,
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(top: 10.0),
-        padding: EdgeInsets.only(left:10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: TextFormField(
-          controller: cottonexpirypeciescount,
-          onChanged: (value){
-            setState(() {
-              Estimatedvaluecotton = double.parse(cottonexpirypeciescount.text)*pricepercotton;
-            });
-          },
-          cursorColor: grey,
-          keyboardType: TextInputType.number,
-          validator: (input) => !input.isNotEmpty
-              ? "Department should not be empty"
-              : null,
-          decoration: new InputDecoration(
-            border: InputBorder.none,
-            focusColor: orange,
-            hintText: "Cotton's count that are near to expiry",
-            hintStyle: TextStyle(
-              color: grey,
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-      ),
-      //expirypeciescount.text == null ?SizedBox(height: 10,) :
-      Padding(
-        padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0,bottom: 10.0),
-        child:Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Estimated Expiry Value",style: TextStyle(color: orange),),
-            Text("$Estimatedvaluecotton AED",style: TextStyle(color: orange),),
-          ],
-        )
-      ),
-      Container(
-        padding: EdgeInsets.only(left:10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: TextFormField(
-          controller: cottonquantity,
-          onChanged: (value){
-            setState(() {
-              Estimatedcottonquantityvalue = double.parse(cottonquantity.text)*pricepercotton;
-            });
-          },
-          cursorColor: grey,
-          keyboardType: TextInputType.number,
-          validator: (input) => !input.isNotEmpty
-              ? "Department should not be empty"
-              : null,
-          decoration: new InputDecoration(
-            border: InputBorder.none,
-            focusColor: orange,
-            hintText: "Exposure quantity for cotton's",
-            hintStyle: TextStyle(
-              color: grey,
-              fontSize: 16.0,
-            ),
-          ),
-        ),
-      ),
-      //quantity.text == null ?SizedBox() :
-      Padding(
-        padding: const EdgeInsets.only(top:10.0,left: 5.0,right: 5.0),
-        child:Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Estimated quantity Value",style: TextStyle(color: orange),),
-            Text("$Estimatedcottonquantityvalue AED",style: TextStyle(color: orange),),
-          ],
-      ),
-    )
-    ],
-    );
-  }
-}
-List<dynamic> addedsku =[];
-List<dynamic> addedexpirydate =[];
-List<dynamic> addeditemscount =[];
 
 class Addedexpirydata extends StatefulWidget {
   @override
@@ -940,20 +714,18 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
   List<String> _filterList;
 
   List<String> _filteredexpiryList;
-  List<double> _filteredeitemsList;
+  List<int> _filteredeitemsList;
 
   @override
   void initState() {
     super.initState();
-    inputlist =  addedsku;
+    inputlist = addedproductname;
     inputlist.sort();
   }
 
   _AddedexpirydataState() {
-
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
-
         setState(() {
           _firstSearch = true;
           _query = "";
@@ -972,18 +744,21 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
     return Column(
       children: <Widget>[
         _createSearchView(),
-        SizedBox(height: 10.0,),
+        SizedBox(
+          height: 10.0,
+        ),
         _firstSearch ? _createListView() : _performSearch(),
       ],
     );
   }
+
   Widget _createSearchView() {
     return new Container(
-      margin: EdgeInsets.fromLTRB(10.0,10,10,0),
-      padding: EdgeInsets.only(left: 20.0,right: 20.0),
+      margin: EdgeInsets.fromLTRB(10.0, 10, 10, 0),
+      padding: EdgeInsets.only(left: 20.0, right: 20.0),
       width: double.infinity,
-      decoration: BoxDecoration(color: pink,
-          borderRadius: BorderRadius.circular(10.0)),
+      decoration:
+          BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10.0)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -991,92 +766,209 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
             child: new TextField(
               style: TextStyle(color: orange),
               controller: _searchview,
-              cursorColor:orange,
+              cursorColor: orange,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                 focusColor: orange,
-                hintText: 'Search by sku/Zrep',
+                hintText: 'Search by SKU/ZREP',
                 hintStyle: TextStyle(color: orange),
                 border: InputBorder.none,
                 isCollapsed: true,
-                icon: Icon(CupertinoIcons.search,color: orange,),
+                icon: Icon(
+                  CupertinoIcons.search,
+                  color: orange,
+                ),
               ),
             ),
           ),
           GestureDetector(
-              onTap: (){
+              onTap: () {
                 _searchview.clear();
               },
-              child: Icon(CupertinoIcons.clear_circled_solid,color: orange,))
+              child: Icon(
+                CupertinoIcons.clear_circled_solid,
+                color: orange,
+              ))
         ],
       ),
     );
   }
+
   Widget _createListView() {
     return new Flexible(
       child: new ListView.builder(
-          itemCount: addedsku.length,
+          itemCount: addedproductid.length,
           itemBuilder: (BuildContext context, int index) {
-            return Container(
-              margin: EdgeInsets.fromLTRB(10,0,10,10),
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        child: FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            '${addedsku[index]}',
-                            maxLines: 1,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
+            return GestureDetector(
+              onLongPress: (){
+                showDialog(
+                    context: context,
+                    builder: (_) => StatefulBuilder(
+                        builder: (context, setState) {
+                          return AlertDialog(
+                            backgroundColor: alertboxcolor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(
+                                    Radius.circular(10.0))),
+                            content: Builder(
+                              builder: (context) {
+                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('Delete ?',style: TextStyle(color: orange,fontSize: 20),),
+                                    Divider(color: Colors.black,thickness: 0.8,),
+                                    Text("Do you want to remove these enteries ?",textAlign: TextAlign.center,),
+                                    SizedBox(height: 10,),
+                                    Text("Note* if you want to send the data regarding this product, you need to add the Entries again before submitting the data",textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize:10),),
+                                    SizedBox(height: 5,),
+                                    Center(
+                                      child: GestureDetector(
+                                        onTap: () async{
+                                          print(index);
+                                          setState(() {
+                                            addedproductname.removeAt(index);
+                                            addedproductid.removeAt(index);
+                                            addedexpirydate.removeAt(index);
+                                            addeditemscount.removeAt(index);
+                                            addedexposurequnatity.removeAt(index);
+                                            addedremarks.removeAt(index);
+                                            addedpriceperitem.removeAt(index);
+                                          });
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => ExpiryReport()));
+
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 70,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          child: Center(child: Text('YES',style: TextStyle(color: Colors.white))),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                        }));
+              },
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              '${addedproductname[index]}',
+                              maxLines: 1,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: orange),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text('Expiry Date :',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(addedexpirydate[index]),
-                    ],
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text('Items Count:',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          )),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(addeditemscount[index].toString()),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('Product ID:',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(addedproductid[index].toString()),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('Expiry Date :',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(addedexpirydate[index]),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('price :',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${addedpriceperitem[index]} AED'),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('No of Items:',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(addeditemscount[index].toString()),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text('Exposure Quantity:',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(addedexposurequnatity[index].toString()),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    addedremarks[index] != "" ?Row(
+                      children: [
+                        Text('Remarks:',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                            )),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(addedremarks[index].toString()),
+                      ],
+                    ): SizedBox(),
+                  ],
+                ),
               ),
             );
-          }
-      ),
+          }),
     );
   }
 
@@ -1084,12 +976,12 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
     _filterList = [];
     _filteredexpiryList = [];
     _filteredeitemsList = [];
-    for (int i = 0; i <addedsku.length; i++) {
-      var item = addedsku[i];
+    for (int i = 0; i < addedproductname.length; i++) {
+      var item = addedproductname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
-        _filteredexpiryList.add(addedexpirydate[addedsku.indexOf(item)]);
-        _filteredeitemsList.add(addeditemscount[addedsku.indexOf(item)]);
+        _filteredexpiryList.add(addedexpirydate[addedproductname.indexOf(item)]);
+        _filteredeitemsList.add(addeditemscount[addedproductname.indexOf(item)]);
       }
     }
     return _createFilteredListView();
@@ -1101,15 +993,12 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
           itemCount: _filteredeitemsList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              margin: EdgeInsets.fromLTRB(10,0,10,10),
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -1123,7 +1012,9 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
                             maxLines: 1,
                             textAlign: TextAlign.left,
                             style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                color: orange),
                           ),
                         ),
                       ),
@@ -1158,14 +1049,15 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
                 ],
               ),
             );
-          }
-      ),
+          }),
     );
   }
 }
 
-
-
-
-
-
+List<String> addedproductname = [];
+List<int> addedpriceperitem = [];
+List<String> addedexpirydate = [];
+List<int> addeditemscount = [];
+List<int> addedexposurequnatity = [];
+List<String> addedremarks = [];
+List<int> addedproductid = [];

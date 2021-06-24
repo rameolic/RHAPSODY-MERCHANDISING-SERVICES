@@ -131,7 +131,7 @@ class _EmployeeDetailesState extends State<EmployeeDetailes> {
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                 focusColor: orange,
-                hintText: 'Search by name or EmpID',
+                hintText: 'Search by Emp name or Emp ID',
                 hintStyle: TextStyle(color: orange),
                 border: InputBorder.none,
                 icon: Icon(CupertinoIcons.search,color: orange,),
@@ -437,8 +437,8 @@ class AddEmployee extends StatefulWidget {
 
 class _AddEmployeeState extends State<AddEmployee> {
   // ignore: non_constant_identifier_names
-  String Selectedcountry;
-  String selectedcountrycode;
+  String Selectedcountry = updatedata.employee == true ? employeedata.nationality:null ;
+  String selectedcountrycode = updatedata.employee == true ? employeedata.codes:null ;
   int designationdropdown = 0;
   TextEditingController firstname = updatedata.employee == true ? TextEditingController(text: employeedata.firstname):TextEditingController();
   TextEditingController middlename = updatedata.employee == true ? TextEditingController(text: employeedata.middlename):TextEditingController();

@@ -11,14 +11,14 @@ class brandmap{
 
 Future addbrandmap() async{
   Map storedata = {
-    'outlet_id' : '${brandmap.outletid}',
-    'brand_id' : '${brandmap.brandid}',
-    'shelf' : '${brandmap.shelf}',
-    'target' : '${brandmap.target}',
-    'myfile' : '${brandmap.myfile}'
-
+    'outlet_id' : brandmap.outletid,
+    'brand_id' : brandmap.brandid,
+    'shelf' : brandmap.shelf,
+    'target' : brandmap.target,
+    'myfile' : brandmap.myfile
   };
-  /*http.Response ouletbrandmap = await http.post(Addoutletbrandmap,
+  print(jsonEncode(storedata));
+  http.Response ouletbrandmap = await http.post(Addoutletbrandmap,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -26,6 +26,5 @@ Future addbrandmap() async{
     },
     body: jsonEncode(storedata),
   );
-print(ouletbrandmap.body);*/
-  print("Add Stores Done");
+print(ouletbrandmap.body);
 }

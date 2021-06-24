@@ -45,6 +45,10 @@ Future getTimeSheetdaily() async {
       TimeSheetdatadaily.checkintime.add(checkintime);
       dynamic checkouttime = decodeData['data'][u]['checkout_time'];
       TimeSheetdatadaily.checkouttime.add(checkouttime);
+
+      dynamic timesheetid = decodeData['data'][u]['id'];
+      TimeSheetdatadaily.tsid.add(timesheetid);
+
     }
 
   }
@@ -58,4 +62,11 @@ class TimeSheetdatadaily{
   static List<dynamic> outletname=[];
   static List<dynamic> checkintime=[];
   static List<dynamic> checkouttime=[];
+  static List<dynamic> tsid =[];
+}
+class TimeSheetspdatadaily{
+  static List<dynamic> outletname=[];
+  static List<dynamic> checkintime=[];
+  static List<dynamic> checkouttime=[];
+
 }

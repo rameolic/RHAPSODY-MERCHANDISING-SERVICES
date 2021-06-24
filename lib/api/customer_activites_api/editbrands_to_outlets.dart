@@ -272,10 +272,10 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
 
                             for(int u=0;u<selectbrands.length;u++){
                             brandmap.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
-                            brandmap.brandid = BrandData.brandid[selectbrands[u]];
-                            brandmap.shelf = shelf[u].text;
-                            brandmap.target = target[u].text;
-                            brandmap.myfile = image[selectbrands[u]];
+                            brandmap.brandid.add(BrandData.brandid[selectbrands[u]]);
+                            brandmap.shelf.add(shelf[u].text);
+                            brandmap.target.add(target[u].text);
+                            brandmap.myfile.add(image[selectbrands[u]]);
 
                             }
                             await addbrandmap();

@@ -65,9 +65,9 @@ class _WeekOffDataState extends State<WeekOffData> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),

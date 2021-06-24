@@ -51,7 +51,13 @@ class _ProductDetailsState extends State<ProductDetails> {
         appBar: AppBar(
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
-          title: Text("Product Details",style: TextStyle(color: orange),),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Product Details",style: TextStyle(color: orange),),
+              EmpInfo(),
+            ],
+          ),
         ),
         // drawer: Drawer(
         //   child: Menu(),
@@ -70,25 +76,25 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
 
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: FloatingActionButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                AddProduct()));
-                  },
-                  backgroundColor: pink,
-                  elevation: 8.0,
-                  child: Icon(Icons.add,color: orange,),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomRight,
+            //   child: Container(
+            //     margin: EdgeInsets.all(15.0),
+            //     child: FloatingActionButton(
+            //       onPressed: (){
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (BuildContext
+            //                 context) =>
+            //                     AddProduct()));
+            //       },
+            //       backgroundColor: pink,
+            //       elevation: 8.0,
+            //       child: Icon(Icons.add,color: orange,),
+            //     ),
+            //   ),
+            // ),
 
           ],
         ),
@@ -108,7 +114,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
           focusColor: orange,
-          hintText: 'Search by Brand Name/Code',
+          hintText: 'Search by Product Name/Code',
           hintStyle: TextStyle(color: orange),
           border: InputBorder.none,
           icon: Icon(CupertinoIcons.search,color: orange,),
@@ -123,7 +129,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return new Flexible(
       child: new  ListView.builder(
           shrinkWrap: true,
-          itemCount:productlist.sku.length,
+          itemCount:productlist.productname.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: (){
@@ -253,11 +259,17 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       appBar: AppBar(
         backgroundColor: pink,
         iconTheme: IconThemeData(color: orange),
-        title: Text("Product Details",style: TextStyle(color: orange),),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Product Details",style: TextStyle(color: orange),),
+            EmpInfo(),
+          ],
+        ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
 
       body: Stack(
         children: [
@@ -282,10 +294,11 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     SizedBox(height: 5),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text("Product Name:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
                         SizedBox(width: 10),
-                        Text(productlist.productname[position].toString(),style: TextStyle(fontSize: 15.0),),
+                        SingleChildScrollView(child: Text(productlist.productname[position].toString(),style: TextStyle(fontSize: 15.0),)),
                       ],
                     ),
                     SizedBox(height: 5),
@@ -362,31 +375,31 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     ),
                     SizedBox(height: 15),
 
-                    Row(
-                      children: [
-                        Text("Image:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        VeiwImage()));
-                          },
-                          child: Container(
-                            width: 60,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: orange,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(child: Text("Veiw",style: TextStyle(color: Colors.white),)),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Text("Image:",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.0),),
+                    //     Spacer(),
+                    //     GestureDetector(
+                    //       onTap: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (BuildContext context) =>
+                    //                     VeiwImage()));
+                    //       },
+                    //       child: Container(
+                    //         width: 60,
+                    //         padding: EdgeInsets.all(10),
+                    //         decoration: BoxDecoration(
+                    //           color: orange,
+                    //           borderRadius: BorderRadius.circular(10),
+                    //         ),
+                    //         child: Center(child: Text("Veiw",style: TextStyle(color: Colors.white),)),
+                    //       ),
+                    //     ),
+                    //     SizedBox(width: 10),
+                    //   ],
+                    // ),
                   ],
                 ),
               )

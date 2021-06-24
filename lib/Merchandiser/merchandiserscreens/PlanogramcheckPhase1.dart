@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/customer_activites_api/add_planogramapi.dart';
 import '../../Constants.dart';
@@ -36,6 +37,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
   String _query = "";
   List<String> productdata;
   List<String> _filterList;
+  List<int> _filterindex;
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: containerscolor,
+          automaticallyImplyLeading: false,
         iconTheme: IconThemeData(color: orange),
         title: Row(
           children: [
@@ -84,9 +87,9 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                 AddPlanoData.afterimage = afterimagesencode;
                 AddPlanoData.outletid = currentoutletid;
                 AddPlanoData.timesheetid = currenttimesheetid;
-                AddPlanoData.outletpdtmapid = PlanoDetails.opm;
+                //AddPlanoData.outletpdtmapid = PlanoDetails.opm;
                 AddPlanoData.categoryname = PlanoDetails.categoryname;
-                AddPlanoData.planoimage = PlanoDetails.imageurl;
+                AddPlanoData.planoimage = PlanoDetails.image;
                AddPlanoData.categoryid = PlanoDetails.categoryid;
                 await addPlanogramdata();
                 setState(() {
@@ -129,6 +132,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
               ],
             ),
           ),
+          NBlFloatingButton(),
         ],
       ),
     );
@@ -163,60 +167,29 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(color: pink,borderRadius: BorderRadius.circular(10)),
-              height: MediaQuery.of(context).size.height/4,
-              margin: EdgeInsets.only(top:5),
-              padding: EdgeInsets.fromLTRB(10.0,10,10,0),
+              //height: MediaQuery.of(context).size.height/4,
+              margin: EdgeInsets.only(bottom:10),
+              padding: EdgeInsets.fromLTRB(10.0,10,10,10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Category Name : ${PlanoDetails.categoryname[index]}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                  Padding(
+                    padding: const EdgeInsets.only(left:10.0),
+                    child: Text("${PlanoDetails.categoryname[index]}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: orange),),
+                  ),
                   Table(
                     columnWidths: {
-                      0: FractionColumnWidth(.34),
-                      1: FractionColumnWidth(.33),
-                      2: FractionColumnWidth(.33),
+                      0: FractionColumnWidth(.45),
+                      1: FractionColumnWidth(.45),
+
 
                     },
                     children: [
                       TableRow(
                         children: [
+
                           Column(
-                            children: [
-                              SizedBox(height: 15.0,),
-                              Text("Target",style: TextStyle(fontWeight: FontWeight.bold),),
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              VeiwImage(
-                                                url: PlanoDetails.imageurl[index],
-                                              )));
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.fromLTRB(0,14.0,0.0,0.0),
-                                  height: 100,
-                                  width: 100,
-                                  child: PhotoView(
-                                    loadingBuilder: (context, event) => Center(
-                                      child: Container(
-                                        width: 40.0,
-                                        height: 40.0,
-                                        child: CircularProgressIndicator(
-                                          backgroundColor:orange
-                                        ),
-                                      ),
-                                    ),
-                                    imageProvider: NetworkImage(
-                                      PlanoDetails.imageurl[index],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
+
                             children: [
                               SizedBox(height: 10.0,),
                               Row(
@@ -269,6 +242,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                               ),
                             ],
                           ),
+
                           Column(
                             children: [
                               SizedBox(height: 10.0,),
@@ -279,6 +253,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                     onTap: (){
                                       Selectedscreen = "planogram";
                                       ontap = 'after';
+                                      selectedindex = index;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -335,92 +310,76 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
 
   Widget _performSearch() {
     _filterList = [];
-
+    _filterindex=[];
     for (int i = 0; i <PlanoDetails.categoryname.length; i++) {
       var item = PlanoDetails.categoryname[i];
       if (item.toLowerCase().contains(_query.toLowerCase())) {
         _filterList.add(item);
-
+        _filterindex.add(i);
       }
     }
     return _createFilteredListView();
   }
 
   Widget _createFilteredListView() {
-    return new Flexible(
-      child: new ListView.builder(
+    return Flexible(
+      child: new  ListView.builder(
           shrinkWrap: true,
           itemCount: _filterList.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
               decoration: BoxDecoration(color: pink,borderRadius: BorderRadius.circular(10)),
-              height: MediaQuery.of(context).size.height/4,
-              margin: EdgeInsets.all(10.0),
-              padding: EdgeInsets.all(10.0),
+              //height: MediaQuery.of(context).size.height/4,
+              margin: EdgeInsets.only(bottom:10),
+              padding: EdgeInsets.fromLTRB(10.0,10,10,10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${_filterList[index]}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                  Padding(
+                    padding: const EdgeInsets.only(left:10.0),
+                    child: Text("${PlanoDetails.categoryname[_filterindex[index]]}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: orange),),
+                  ),
                   Table(
                     columnWidths: {
-                      0: FractionColumnWidth(.3),
-                      1: FractionColumnWidth(.35),
-                      2: FractionColumnWidth(.35),
+                      0: FractionColumnWidth(.45),
+                      1: FractionColumnWidth(.45),
+
 
                     },
                     children: [
-
                       TableRow(
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(10.0,60.0,10.0,10.0),
-                                height: 80,
-                                child: PhotoView(
-                                  loadingBuilder: (context, event) => Center(
-                                    child: Container(
-                                      width: 40.0,
-                                      height: 40.0,
-                                      child: CircularProgressIndicator(
 
-                                      ),
-                                    ),
-                                  ),
-                                  imageProvider: NetworkImage(
-                                    url,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                           Column(
                             children: [
+                              SizedBox(height: 10.0,),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton(icon:Icon(CupertinoIcons.photo_camera_solid,), onPressed: (){
-                                    ontap = 'before';
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TakePictureScreen(
-                                                )));
-                                  }),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Selectedscreen = "planogram";
+                                      ontap = 'before';
+                                      selectedindex = _filterindex[index];
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  TakePictureScreen(
+                                                  )));
+                                    },
+                                    child:Icon(CupertinoIcons.photo_camera_solid,) ,
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: Text("Before",style: TextStyle(fontWeight: FontWeight.bold),),
                                   ),
                                 ],
                               ),
-
-
-
                               Container(
-
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: beforeimages[index].toString() !=
+                                child: beforeimages[_filterindex[index]].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -429,22 +388,16 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: beforeimages[index],
+                                                  input: beforeimages[_filterindex[index]],
                                                 )));
                                   },
-                                  child: SizedBox(
-                                    width: 80,
-
-                                    child: FittedBox(
-                                      fit: BoxFit.cover,
-                                      child: Image(
-                                        image: FileImage(beforeimages[index]),
-                                      ),
-                                    ),
+                                  child: Image(
+                                    height: 100,
+                                    image: FileImage(beforeimages[_filterindex[index]]),
                                   ),
                                 )
                                     : Image(
-                                  width: 80,
+                                  height: 100,
                                   image: AssetImage('images/capture.png'),
                                 ),
                               ),
@@ -452,31 +405,34 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                           ),
                           Column(
                             children: [
+                              SizedBox(height: 10.0,),
                               Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  IconButton(icon:Icon(CupertinoIcons.photo_camera_solid,), onPressed: (){
-                                    ontap = 'after';
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TakePictureScreen(
-                                                )));
-                                  }),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Selectedscreen = "planogram";
+                                      ontap = 'after';
+                                      selectedindex = _filterindex[index];
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  TakePictureScreen(
+                                                  )));
+                                    },
+                                    child:Icon(CupertinoIcons.photo_camera_solid,) ,
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 10.0),
                                     child: Text("After",style: TextStyle(fontWeight: FontWeight.bold),),
                                   ),
                                 ],
                               ),
-
-
-
                               Container(
-
                                 margin:EdgeInsets.only(top:10),
                                 // ignore: unrelated_type_equality_checks
-                                child: beforeimages[index].toString() !=
+                                child: afterimages[_filterindex[index]].toString() !=
                                     'File: \'dummy.txt\''
                                     ? GestureDetector(
                                   onTap: () {
@@ -485,22 +441,17 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 PreveiwScreen(
-                                                  input: afterimages[index],
+                                                  input: afterimages[_filterindex[index]],
                                                 )));
                                   },
-                                  child: SizedBox(
-                                    width: 80,
-
-                                    child: FittedBox(
-                                      fit: BoxFit.cover,
-                                      child: Image(
-                                        image: FileImage(afterimages[index]),
-                                      ),
-                                    ),
+                                  child: Image(
+                                    height: 100,
+                                    image: FileImage(afterimages[_filterindex[index]]),
                                   ),
                                 )
                                     : Image(
-                                  width: 80,
+                                  width:100,
+
                                   image: AssetImage('images/capture.png'),
                                 ),
                               ),
@@ -508,9 +459,6 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                           ),
                         ],
                       ),
-
-
-
                     ],
                   ),
                 ],

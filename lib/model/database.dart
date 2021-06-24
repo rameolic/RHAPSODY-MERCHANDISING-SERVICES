@@ -1,41 +1,12 @@
 import 'package:merchandising/Merchandiser/merchandiserscreens/expiry_report.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:mysql1/mysql1.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-class databse{
-  static var settings = new ConnectionSettings(
-      host: 'mars.us-win.bisend.com',
-      port: 3306,
-      user: 'testmobileapp',
-      password: 'TestMobileApp@2021',
-      db: 'testmobileapp'
-  );
-}
+import 'package:merchandising/Merchandiser/merchandiserscreens/expiry_report.dart';
+
 List<dynamic>addedproductid=[];
-getaddedsku()async{
-  var conn = await MySqlConnection.connect(databse.settings);
-  var receiveddata = await conn.query("select product_id,near_expiry_in_pc,pc_expiry_date from stock_expiry where action_to_be_filled_by_cde = '$currentmerchid';");
-  print(receiveddata);
-  if(receiveddata!=null){
-    for(int i = 0; i < receiveddata.length; i++){
-      addedproductid.add(receiveddata.toList()[i]["product_id"]);
-      print(addedproductid);
-      addeditemscount.add(receiveddata.toList()[i]["near_expiry_in_pc"]);
-      addedexpirydate.add(DateFormat.yMd().format(receiveddata.toList()[i]["pc_expiry_date"]));
-    }
-    print(addedexpirydate);
-    for(int i = 0; i < addedproductid.length; i++){
-      print(i);
-      if(Expiry.id.contains(addedproductid[i])){
-        int index = Expiry.id.indexOf(addedproductid[i]);
-        addedsku.add('${Expiry.zrepcodes[index]}-${Expiry.sku[index]}');
-      }
-    }
-  }
-  print(addedsku);
-}
+
 
 // getproducts()async{
 //   var conn = await MySqlConnection.connect(databse.settings);
@@ -65,9 +36,11 @@ class Expiry{
   static List<int>id=[];
   static List<String>zrepcodes=[];
   static List<String>sku=[];
-  static List<String>barcode_cs=[];
-  static List<String>barcode_bs=[];
-  static List<String>barcode_ps=[];
+  static List<String>barcodes=[];
+  static List<String>productdetails=[];
+  static List<String>type=[];
+  static List<String>range=[];
+  static List<String>barcode=[];
 }
 
 // AddData()async{
@@ -112,35 +85,29 @@ Future getstockexpiryproducts() async{
     var decodebrands = jsonDecode(brand);
     for(int u=0;u<decodebrands['data'].length;u++) {
       Expiry.id.add(decodebrands['data'][u]["id"]);
-      Expiry.zrepcodes.add(decodebrands['data'][u]["zrep"]);
-      Expiry.sku.add(decodebrands['data'][u]["material_description"]);
-      Expiry.barcode_bs.add(decodebrands['data'][u]["barcode_bs"]);
-      Expiry.barcode_cs.add(decodebrands['data'][u]["barcode_cs"]);
-      Expiry.barcode_ps.add(decodebrands['data'][u]["barcode_pc"]);
+      Expiry.zrepcodes.add(decodebrands['data'][u]["zrep_code"].toString());
+      Expiry.sku.add(decodebrands['data'][u]["sku"]);
+      Expiry.productdetails.add(decodebrands['data'][u]["product_name"]);
+      Expiry.barcode.add(decodebrands['data'][u]["barcode"].toString());
+      Expiry.type.add(decodebrands['data'][u]["type"]);
+      Expiry.range.add(decodebrands['data'][u]["range"]);
     }
+    // print(Expiry.barcode);
   }
 }
 
 Future addexpiryproducts() async{
   Map stockdata = {
-    "customer_outlet_id": "$Storecode",
-    "product_id": "$productid",
-    "copack_regular": "$packtypeselected",
-    "near_expiry_in_pc": "$expirypc",
-    "price_pc":"$pricepc",
-    "pc_expiry_date": "$pcexpirydate",
-    "period": "$periodchoosed",
-    "exposure_qty_will_expire_in_pc": "$exposureqntypc",
-    "price_cs": "0",
-    "cs_expiry_date": "$pcexpirydate",
-    "bs_expiry_date": "$pcexpirydate",
-    "near_expiry_in_bs": "0",
-    "price_bs": "0",
-    "exposure_expiry_in_cs": "0",
-    "exposure_expiry_in_bs": "0",
-    "action_to_be_filled_by_cde": "${DBrequestdata.receivedempid}",
-    "client_id": "0"
+    "timesheet_id" : currenttimesheetid,
+    //'outlet_products_mapping_id': comid,
+    "product_id": productid,
+    "piece_price" :  pricepc,
+    "near_expiry"  :  expirypc,
+    "expiry_date" : pcexpirydate,
+    "exposure_qty"  : exposureqntypc,
+    "remarks" : remarksifany
   };
+  print(jsonEncode(stockdata));
   http.Response Response = await http.post(addexpiryDetails,
     headers: {
       'Content-Type': 'application/json',
@@ -152,38 +119,28 @@ Future addexpiryproducts() async{
   print(Response.body);
   }
 //
-// Future getaddedexpiryproducts() async{
-//   http.Response Response = await http.post(stockexpiryDetails,
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Accept': 'application/json',
-//       'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-//     },
-//   );
-//   if (Response.statusCode == 200){
-//     String brand = Response.body;
-//     var decodebrands = jsonDecode(brand);
-//     for(int u=0;u<decodebrands['data'].length;u++) {
-//       addedproductid.add(decodebrands['data'][u]["id"]);
-//       addeditemscount.add(decodebrands['data'][u]["zrep"]);
-//       Expiry.sku.add(decodebrands['data'][u]["material_description"]);
-//       Expiry.barcode_bs.add(decodebrands['data'][u]["barcode_bs"]);
-//       Expiry.barcode_cs.add(decodebrands['data'][u]["barcode_cs"]);
-//       Expiry.barcode_ps.add(decodebrands['data'][u]["barcode_pc"]);
-//     }
-//     for(int i = 0; i < decodebrands['data'].length; i++){
-//       addedproductid.add(receiveddata.toList()[i]["product_id"]);
-//       print(addedproductid);
-//       addeditemscount.add(receiveddata.toList()[i]["near_expiry_in_pc"]);
-//       addedexpirydate.add(DateFormat.yMd().format(receiveddata.toList()[i]["pc_expiry_date"]));
-//     }
-//     print(addedexpirydate);
-//     for(int i = 0; i < addedproductid.length; i++){
-//       print(i);
-//       if(Expiry.id.contains(addedproductid[i])){
-//         int index = Expiry.id.indexOf(addedproductid[i]);
-//         addedsku.add('${Expiry.zrepcodes[index]}-${Expiry.sku[index]}');
-//       }
-//     }
-//   }
-//   }
+Future getaddedexpiryproducts() async {
+  Map stockdata = {
+    "merchandiser_id": "${DBrequestdata.receivedempid}",
+  };
+  print(jsonEncode(stockdata));
+  http.Response productsresponse = await http.post(addedstockexpiryDetails,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(stockdata),
+  );
+  print('added products:${productsresponse.body}');
+  if (productsresponse.statusCode == 200) {
+    String data = productsresponse.body;
+    var decodeData = jsonDecode(data);
+    for (int u = 0; u < decodeData['data'].length; u++) {
+      addedproductname.add(decodeData['data'][u]["product_name"]);
+      addedexpirydate.add(decodeData['data'][u]["expiry_date"]);
+      addeditemscount.add(decodeData['data'][u]["near_expiry"]);
+    }
+    print(addedexpirydate);
+  }
+}

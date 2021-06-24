@@ -17,14 +17,20 @@ class _MyAttendanceState extends State<MyAttendance> {
       appBar: AppBar(
         backgroundColor: containerscolor,
         iconTheme: IconThemeData(color: orange),
-        title: Text(
-          "My Attendance",
-          style: TextStyle(color: orange),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "My Attendance",
+              style: TextStyle(color: orange),
+            ),
+            EmpInfo()
+          ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),

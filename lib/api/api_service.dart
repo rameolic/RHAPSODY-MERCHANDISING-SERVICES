@@ -6,6 +6,9 @@ import 'package:merchandising/main.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
+bool splitsf = false;
+
+int comid;
 
 Uri deltimesheet = Uri.parse("https://rms2.rhapsody.ae/api/delete_journeyplan");
 Uri ShareofshelfDetails = Uri.parse("https://rms2.rhapsody.ae/api/share_of_shelf_details");
@@ -74,12 +77,37 @@ Uri Weekoffdetails = Uri.parse("https://rms2.rhapsody.ae/api/week_off_details");
 Uri AddWeekoff = Uri.parse("https://rms2.rhapsody.ae/api/add_week_off");
 Uri AddTaskList = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_task");
 Uri GetTaskDetails = Uri.parse("https://rms2.rhapsody.ae/api/outlet_task_details");
-Uri stockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_product_details");
-Uri addexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry");
+Uri stockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_product_details_new");
+Uri addedstockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_expiry_details_new");
+Uri addexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
 Uri AddShareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/add_share_of_shelf");
 Uri MercViewUpdtPromo = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_view_updated_promotion__details");
 Uri MercAddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_add_promotion__details");
 Uri PromoDetails = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_promotion_details");
+Uri AddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_promotion");
+Uri AddPlanoFM = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outlet_planogram");
+Uri AddOutletMap = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outlet_category_mapping");
+Uri AddBrandOMap = Uri.parse("https://rms2.rhapsody.ae/api/outlet_brand_mapping_details");
+Uri addoutletshareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outlet_shareofself");
+Uri clientpromodataurl = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_promotion_check_details");
+Uri NBLDetailsFM = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_outlet_nbl_details");
+Uri clientoutletsurl = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_details");
+Uri clientexpiryinfo = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_stock_expirey_details");
+Uri delcategorymapping = Uri.parse("https://rms2.rhapsody.ae/api/delete_outlet_products_mapping");
+Uri FMAddNBL = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outlet_nbl");
+Uri deactCL =Uri.parse("https://rms2.rhapsody.ae/api/de_active_outlet_task");
+Uri actCL =Uri.parse("https://rms2.rhapsody.ae/api/active_outlet_task");
+Uri MercBreak = Uri.parse("https://rms2.rhapsody.ae/api/outlet_journey_check_in_out");
+Uri NotiDet = Uri.parse("https://rms2.rhapsody.ae/api/view_notification_details");
+Uri NotiViewAll = Uri.parse("https://rms2.rhapsody.ae/api/make_notification_all_viewed");
+Uri RelieverDet = Uri.parse("https://rms2.rhapsody.ae/api/view_reliver_details");
+Uri searchReliever = Uri.parse("https://rms2.rhapsody.ae/api/search_reliver");
+Uri AddReliever = Uri.parse("https://rms2.rhapsody.ae/api/add_reliver");
+Uri NotiViewed = Uri.parse("https://rms2.rhapsody.ae/api/make_notification_viewed");
+Uri TotalJnryTime = Uri.parse("https://rms2.rhapsody.ae/api/outlet_journey_time_details");
+Uri ForceCIReason = Uri.parse("https://rms2.rhapsody.ae/api/add_force_checkin");
+Uri Uploadfile = Uri.parse("https://rms2.rhapsody.ae/api/add_excel_report");
+Uri downloadfile = Uri.parse("https://rms2.rhapsody.ae/api/excel_report_details");
 
 int ischatscreen;
 bool newmsgavaiable = false;
@@ -88,6 +116,24 @@ var fieldmanagernameofcurrentmerch;
 var fieldmanagerofcurrentmerch;
 var currentmerchid;
 bool alreadycheckedin =false;
+bool fromloginscreen =false;
+
+String greetingMessage(){
+
+  var timeNow = DateTime.now().hour;
+
+  if (timeNow <= 12) {
+    return 'Good Morning';
+  } else if ((timeNow > 12) && (timeNow <= 16)) {
+    return 'Good Afternoon';
+  } else if ((timeNow > 16) && (timeNow < 20)) {
+    return 'Good Evening';
+  } else {
+    return 'Greetings';
+  }
+}
+
+
 class loggedin{
   static var email;
   static var password;
@@ -251,9 +297,13 @@ class chekinoutlet{
 }
 
 
-Future outletwhencheckin() async { 
+Future outletwhencheckin() async {
+
   var outletid = outletrequestdata.outletidpressed;
   chartoutletid.outlet = outletrequestdata.outletidpressed;
+
+
+
   Map ODrequestDataforcheckin = {
     "emp_id": "${DBrequestdata.receivedempid}",
     'outlet_id': '$outletid',
@@ -307,6 +357,7 @@ void addattendence() async {
     },
   );
   print(cicoresponse.body);
+  print("Attendance In Done");
 }
 
 void checkin() async {
@@ -426,12 +477,13 @@ Future changepassword() async{
     print(jsonDecode(changedpasswordresponse.body));
   }
 }
-var Selectedoutletatcheckin = 273 ;
+// var Selectedoutletatcheckin = 273 ;
 Future getTaskList() async{
   Map taskbody =
   {
-    "outlet_id" : "${outletrequestdata.outletidpressed}"
+    "outlet_id" : currentoutletid,
   };
+  print(jsonEncode(taskbody));
   http.Response response = await http.post(taskdetailes,
     headers: {
       'Content-Type': 'application/json',
@@ -444,29 +496,28 @@ Future getTaskList() async{
   if(response.statusCode==200){
     task.list=[];
     task.id=[];
+    task.iscompleted=[];
     String data = response.body;
     var decodeODData = jsonDecode(data);
     for(int i=0; i<decodeODData['data'].length;i++){
     task.list.add(decodeODData['data'][i]['task_list']);
     task.id.add(decodeODData['data'][i]['id']);
+    task.iscompleted.add(decodeODData['data'][i]['is_completed']);
     }
-    task.iscompleted=[];
-    for(int i=0;i<task.id.length;i++){
-      task.iscompleted.add(1);
-    };
   }
-  print(task.list);
+  print('task data : ${task.list}');
 }
 
 Future sendtaskresponse() async{
 
   Map taskbody =
   {
-    "timesheet_id" : "${outletrequestdata.outletidpressed}",
+    "timesheet_id" : currenttimesheetid,
     "task_id" : task.id,
     "is_completed" : task.iscompleted,
+    "img_url":task.imgurl,
   };
-  print(taskbody);
+  print(jsonEncode(taskbody));
   http.Response response = await http.post(taskresponse,
     headers: {
       'Content-Type': 'application/json',
@@ -486,4 +537,120 @@ class task{
   static List<String>list=[];
   static List<int>id=[];
   static List<int>iscompleted=[];
+  static List<String> imgurl =[];
+}
+
+
+Future merchbreak() async{
+
+
+  Map breaktime =
+  {
+    "type" : splitbreak.type,
+    "timesheet_id" : currenttimesheetid,
+    "checkin_time" : splitbreak.citime,
+    "checkout_time" : splitbreak.cotime,
+    "journey_time_id" : splitbreak.jtimeid,
+  };
+  print(jsonEncode(breaktime));
+  http.Response response = await http.post(MercBreak,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(breaktime),
+  );
+  print(response.body);
+}
+
+class splitbreak{
+  static var type;
+  static var citime;
+  static var cotime;
+  static var jtimeid;
+}
+
+
+
+Future<void> getTotalJnyTime() async {
+  Map DBrequestData = {
+    'timesheet_id': currenttimesheetid,
+  };
+  print("TSid Tapped:${DBrequestData}");
+  http.Response SDResponse = await http.post(TotalJnryTime,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(DBrequestData),
+  );
+
+  if (SDResponse.statusCode == 200){
+    print("get Total Journey Plan Done");
+    String stores = SDResponse.body;
+    var decodestores = jsonDecode(stores);
+
+    TotalJnyTime.id = [];
+    TotalJnyTime.checkin=[];
+    TotalJnyTime.checkout=[];
+
+    for(int u=0;u<decodestores['data'].length;u++) {
+      selectJTID=u;
+
+      if(decodestores['data'][u]['type']=="Split Shift")
+      {
+        TotalJnyTime.id.add(decodestores['data'][u]['id']);
+        TotalJnyTime.checkin.add(decodestores['data'][u]['checkin_time']);
+        TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
+      }
+
+
+    }
+  }
+
+  if(SDResponse.statusCode != 200){
+    print(SDResponse.statusCode);
+  }
+}
+
+class TotalJnyTime {
+  static List<int> id = [];
+  static List<String> checkin =[];
+  static List<String> checkout=[];
+  static List<String> type=[];
+
+}
+
+int selectJTID;
+
+
+Future addforeccheckin() async{
+
+
+  Map forceci =
+  {
+    "time_sheet_id" :currenttimesheetid,
+    "checkin_type" : "force",
+    "reason" : forcecheck.reason,
+
+  };
+  print(jsonEncode(forceci));
+  http.Response response = await http.post(ForceCIReason,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(forceci),
+  );
+  print(response.body);
+}
+
+class forcecheck{
+  static var id;
+  static var checktype;
+  static var reason;
+
 }

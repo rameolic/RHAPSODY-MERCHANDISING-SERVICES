@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
+import 'package:merchandising/Fieldmanager/products.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/add_brandapi.dart';
 import 'package:merchandising/api/FMapi/category_detailsapi.dart';
@@ -11,7 +12,8 @@ import 'dart:io';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/api/FMapi/addproduct_api.dart';
-import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/FMapi/product_detailsapi.dart';
+
 import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
 import 'package:merchandising/Fieldmanager/add_category.dart';
 
@@ -80,7 +82,7 @@ class _AddProductState extends State<AddProduct> {
                 BackGround(),
                 SingleChildScrollView(
                   child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    //padding: EdgeInsets.all(5.0),
                     margin: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(color: pink,
                     borderRadius: BorderRadius.circular(10.0)),
@@ -89,8 +91,24 @@ class _AddProductState extends State<AddProduct> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right:15.0,bottom: 10.0,top: 10.0),
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CategoryofProducts()));
+
+                              },
+                              child: Text("Add Category ?",
+                                style: TextStyle(color: orange,fontSize: 14.0),),
+                            ),
+                          ),
+                          SelectCategory(),
                           Container(
-                            margin: EdgeInsets.all(10.0),
+                            margin: EdgeInsets.fromLTRB(10.0,0,10,10),
                             padding: EdgeInsets.only(left: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -100,7 +118,7 @@ class _AddProductState extends State<AddProduct> {
                               keyboardType: TextInputType.number,
                               controller: sku,
                               cursorColor: grey,
-                              validator: (input) => input.length >12
+                              validator: (input) => input.length <12
                                   ? "SKU should be more than 12 characters"
                                   : null,
                               decoration: new InputDecoration(
@@ -131,7 +149,7 @@ class _AddProductState extends State<AddProduct> {
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 focusColor: orange,
-                                hintText: "Enter product name",
+                                hintText: "Enter Product Name",
                                 hintStyle: TextStyle(
                                   color: grey,
                                   fontSize: 16.0,
@@ -158,7 +176,7 @@ class _AddProductState extends State<AddProduct> {
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 focusColor: orange,
-                                hintText: "Enter piece per cartoon name",
+                                hintText: "Enter Price Per Carton",
                                 hintStyle: TextStyle(
                                   color: grey,
                                   fontSize: 16.0,
@@ -223,7 +241,7 @@ class _AddProductState extends State<AddProduct> {
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 focusColor: orange,
-                                hintText: "Enter zrep code",
+                                hintText: "Enter ZREP Code",
                                 hintStyle: TextStyle(
                                   color: grey,
                                   fontSize: 16.0,
@@ -232,25 +250,8 @@ class _AddProductState extends State<AddProduct> {
                             ),
                           ),
                           SelectType(),
-                          SelectCategory(),
-                          Padding(
-                            padding: const EdgeInsets.only(right:12.0),
-                            child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CategoryofProducts()));
-
-                              },
-                              child: Text("Add Category?",
-                                style: TextStyle(color: orange,fontSize: 14.0),),
-                            ),
-                          ),
-
                           Container(
-                            margin: EdgeInsets.all(10.0),
+                            margin: EdgeInsets.fromLTRB(10.0,0.0,10.0,10.0),
                             padding: EdgeInsets.only(left: 10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -266,7 +267,7 @@ class _AddProductState extends State<AddProduct> {
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 focusColor: orange,
-                                hintText: "Enter price per piece",
+                                hintText: "Enter Price Per Piece",
                                 hintStyle: TextStyle(
                                   color: grey,
                                   fontSize: 16.0,
@@ -304,7 +305,7 @@ class _AddProductState extends State<AddProduct> {
                             alignment: Alignment.bottomCenter,
                             child: TextButton(
                                 onPressed: () async {
-                                  if (validateform() == true) {
+                                  if (validateform() == true && dropdownbrandname != null && dropdownclient!= null && dropdowncategory!= null && dropdownrange != null && dropdowntype != null)  {
                                     setState(() {
                                       isApiCallProcess = true;
                                     });
@@ -321,29 +322,17 @@ class _AddProductState extends State<AddProduct> {
                                     Product.imageurl = 'data:image/jpeg;base64,/$image';
 
                                     await addproduct();
+                                    await getProductDetails();
 
                                     setState(() {
                                       isApiCallProcess = false;
                                     });
-
-                                    print(Product.sku);
-                                    print(Product.name);
-                                    print(Product.type);
-                                    print(Product.range);
-                                    print(Product.zrepcode);
-                                    print(Product.piecepercartoon);
-                                    print(Product.priceperpiece);
-                                    print(Product.brandname);
-                                    print(Product.clientid);
-                                    print(Product.category);
-                                    print(Product.imageurl);
-
                                     {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  FieldManagerDashBoard()));
+                                                  Products()));
                                     }
                                   } else
                                     Flushbar(
@@ -491,7 +480,7 @@ class SelectType extends StatefulWidget {
 
 class _SelectTypeState extends State<SelectType> {
   static List DropDownItems =
-      ["Regular", "Promo", "NPI", "LE-SLCI"].map((String val) {
+      ["Regular", "Promo", "NPI"].map((String val) {
     return new DropdownMenuItem<String>(
       value: val,
       child: new Text(val),
@@ -535,14 +524,14 @@ class SelectCategory extends StatefulWidget {
   @override
   _SelectCategoryState createState() => _SelectCategoryState();
 }
-
+ List DropDownItemscategory = Category.name.map((String val) {
+  return new DropdownMenuItem<String>(
+    value: val,
+    child: new Text(val),
+  );
+}).toList();
 class _SelectCategoryState extends State<SelectCategory> {
-  static List DropDownItems = Category.name.map((String val) {
-    return new DropdownMenuItem<String>(
-      value: val,
-      child: new Text(val),
-    );
-  }).toList();
+
 
   @override
   Widget build(BuildContext context) {
@@ -565,7 +554,7 @@ class _SelectCategoryState extends State<SelectCategory> {
             dropdowncategory = newVal;
           });
         },
-        items: DropDownItems,
+        items: DropDownItemscategory,
         hint: Text(
           "Select Category",
           style: TextStyle(color: Colors.grey),
@@ -587,7 +576,6 @@ class _SelectRangeState extends State<SelectRange> {
     "minis",
     "multipacks",
     "one_plus_one",
-    "ten_twinty",
     "others"
   ].map((String val) {
     return new DropdownMenuItem<String>(

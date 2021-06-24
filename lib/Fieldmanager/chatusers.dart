@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
-import 'package:merchandising/model/chatscreen.dart';
-
-
-
+//import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
+import'package:merchandising/model/chatscreen.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/model/goupchatscreen.dart';
 class ChatUsers extends StatefulWidget {
   @override
   _ChatUsersState createState() => _ChatUsersState();
@@ -27,15 +27,35 @@ class _ChatUsersState extends State<ChatUsers> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
-      ),
+      // drawer: Drawer(
+      //   child: Menu(),
+      // ),
       body: Stack(
         children: [
           BackGround(),
           Column(
             children: [
               SizedBox(height: 10.0,),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        // ignore: non_constant_identifier_names
+                          builder: (BuildContextcontext) => FmGroupChatScreen()));
+                },
+                child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    margin: EdgeInsets.fromLTRB(10.0,0,10,10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    width: double.infinity,
+                    child: Text('Field managers Group Chat',
+                        style: TextStyle(
+                            fontSize: 16.0,color: orange
+                        ))),
+              ),
               ListView.builder(
                 // physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -46,6 +66,7 @@ class _ChatUsersState extends State<ChatUsers> {
                         setState(() {
                           chat.receiver = merchnamelist.employeeid[index];
                         });
+                        fieldmanagernameofcurrentmerch = merchnamelist.name[index];
                         print(merchnamelist.employeeid[index]);
                         Navigator.push(
                             context,

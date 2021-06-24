@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Visibility.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,11 +14,11 @@ import 'package:flutter/rendering.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/CompetitionCheckOne.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Promotion Check.dart';
-
 import 'dart:convert';
 import 'dart:io';
-
-
+import'package:merchandising/Merchandiser/merchandiserscreens/upload_live_pic.dart';
+bool takepicplano=false;
+bool takepicCL=false;
 class TakePictureScreen extends StatefulWidget {
   @override
   _TakePictureScreenState createState() => _TakePictureScreenState();
@@ -102,12 +103,27 @@ class _TakePictureScreenState extends State {
                         _cameraControlWidget(context),
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        VisibilityOne(
-                                        )));
+                            if(Selectedscreen == "visibility"){
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
+                            }
+                            if(Selectedscreen == "competitioncheck"){
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => CompetitionCheckOne()));
+                            }
+                            if(Selectedscreen == "PromotionCheck"){
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => PromotionCheck()));
+                            }
+                            if(Selectedscreen == "planogram"){
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
+                            }
+
+                            if(Selectedscreen == "checklistimage"){
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
+                            }
                           },
                           child: SizedBox(
                               width:84,
@@ -216,7 +232,7 @@ class _TakePictureScreenState extends State {
       await controller.takePicture(path);
       imagetaken = path;
       File finalimage = await drawTextOnImage();
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => PreviewScreen(
@@ -274,7 +290,7 @@ class _PreviewScreenState extends State<PreviewScreen>{
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: IconButton(icon: Icon(Icons.close,color: Colors.white,size: 30,),onPressed: (){
-                    Navigator.push(context,
+                    Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (BuildContext context) => TakePictureScreen()));
                   }),
                 ),
@@ -286,34 +302,50 @@ class _PreviewScreenState extends State<PreviewScreen>{
           child: Icon(Icons.send,color: orange,),
           backgroundColor: pink,
           onPressed: (){
+
             if(Selectedscreen == "visibility"){
               images[selected.index]=widget.imgPath;
               var imagebytes = widget.imgPath.readAsBytesSync();
               visibilityreasons[selected.index] = 'data:image/jpeg;base64,${base64Encode(imagebytes)}';
               print(visibilityreasons);
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => VisibilityOne()));
             }
             if(Selectedscreen == "competitioncheck"){
               capturedimage = widget.imgPath;
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => CompetitionCheckOne()));
             }
             if(Selectedscreen == "PromotionCheck"){
               capturedimagepromotion = widget.imgPath;
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => PromotionCheck()));
             }
             if(Selectedscreen == "planogram"){
+              setState(() {
+                takepicplano=true;
+                // takepicCL=true;
+              });
               var imagebytes = widget.imgPath.readAsBytesSync();
               ontap == 'before'?
               beforeimages[selectedindex] = widget.imgPath:afterimages[selectedindex]= widget.imgPath;
               ontap == 'before'?
               beforeimagesencode[selectedindex] = 'data:image/jpeg;base64,${base64Encode(imagebytes)}':afterimagesencode[selectedindex]= 'data:image/jpeg;base64,${base64Encode(imagebytes)}';
-              Navigator.push(context,
+              Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (BuildContext context) => PlanogramCheckPhase1()));
             }
-            },
+
+            if(Selectedscreen == "checklistimage"){
+              setState(() {
+                takepicCL=true;
+              });
+              var imgbyts = widget.imgPath.readAsBytesSync();
+              imagescl[selectindexcl]  = widget.imgPath;
+              encodeimagecl[selectindexcl]='data:image/jpeg;base64,${base64Encode(imgbyts)}';
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => UploadLivePhoto()));
+            }
+          },
         ),
       ),
     );

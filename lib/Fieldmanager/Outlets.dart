@@ -69,9 +69,9 @@ class _OuletsState extends State<Oulets> {
             ],
           ),
         ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
+        // drawer: Drawer(
+        //   child: Menu(),
+        // ),
         body: Stack(
           children: [
             BackGround(),
@@ -85,25 +85,25 @@ class _OuletsState extends State<Oulets> {
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: FloatingActionButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                AddOutlets()));
-                  },
-                  backgroundColor: pink,
-                  elevation: 8.0,
-                  child: Icon(Icons.add,color: orange,),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomRight,
+            //   child: Container(
+            //     margin: EdgeInsets.all(15.0),
+            //     child: FloatingActionButton(
+            //       onPressed: (){
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (BuildContext
+            //                 context) =>
+            //                     AddOutlets()));
+            //       },
+            //       backgroundColor: pink,
+            //       elevation: 8.0,
+            //       child: Icon(Icons.add,color: orange,),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -78,10 +78,17 @@ Future<void> getJourneyPlanweekly() async {
     getweeklyjp.fridayid=[];
     getweeklyjp.saturdayid=[];
 
+    getweeklyjp.timeid = [];
+    getweeklyjp.outletid = [];
+
     print('journey plan weekly done');
     String JPdata = JPresponse.body;
     var decodeJPData = jsonDecode(JPdata);
     for (int u = 0; u < decodeJPData['data'].length; u++) {
+
+      getweeklyjp.timeid.add(decodeJPData['data'][u]['id']);
+      getweeklyjp.outletid.add(decodeJPData['data'][u]['outlet_id']);
+
       dynamic storename = decodeJPData['data'][u]['store_name'];
 
       if (decodeJPData['data'][u]['day'] == null
@@ -460,4 +467,7 @@ class getweeklyjp {
   static List<int> thrusdayid   = [];
   static List<int> fridayid   = [];
   static List<int> saturdayid   = [];
+
+  static List<dynamic> timeid = [];
+  static List<dynamic> outletid = [];
 }

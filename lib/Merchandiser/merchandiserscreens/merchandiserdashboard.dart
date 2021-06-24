@@ -1,8 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers Activities.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,27 +28,90 @@ import 'Journeyplan.dart';
 import 'package:merchandising/model/distanceinmeters.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'package:merchandising/model/chatscreen.dart';
-Future callfrequently()async{
-  await getJourneyPlan();
-  await getskippedJourneyPlan();
-  await getvisitedJourneyPlan();
-  await getJourneyPlanweekly();
-  await getSkipJourneyPlanweekly();
-  await getVisitJourneyPlanweekly();
-  await distinmeters();
-}
 
+import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
+import'package:merchandising/api/customer_activites_api/competition_details.dart';
+import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/api/avaiablityapi.dart';
+import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
+import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
+
+
+import 'package:location_permissions/location_permissions.dart';
+import 'package:merchandising/model/Location_service.dart';
+import'package:merchandising/Fieldmanager/ViewPDF.dart';
+import'package:merchandising/api/FMapi/nbl_detailsapi.dart';
+import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
+
+Future callfrequently()async{
+   getJourneyPlan();
+   getskippedJourneyPlan();
+   getvisitedJourneyPlan();
+    getSkipJourneyPlanweekly();
+    getVisitJourneyPlanweekly();
+   await getJourneyPlanweekly();
+   PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
+   if(permission.toString() == 'PermissionStatus.granted'){
+     await distinmeters();
+   }
+}
 int workingid;
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
 }
-
 class _DashBoardState extends State<DashBoard> {
+
+
   @override
   void initState() {
     ischatscreen = 0;
     print("chatscreen from dshbrd: $ischatscreen");
+    if(fromloginscreen){
+      Future.delayed(
+          const Duration(seconds: 2), (){
+        showDialog(
+            context: context,
+            builder: (_) => StatefulBuilder(
+                builder: (context, setState) {
+                  return AlertDialog(
+                    backgroundColor: pink,//alertboxcolor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(
+                            Radius.circular(10.0))),
+                    content: Builder(
+                      builder: (context) {
+                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(greetingMessage(),style: TextStyle(color: orange,fontSize: 20),),
+                            Divider(color: Colors.black,),
+                            Text("Wish you have a great day ahead 😀",textAlign: TextAlign.center,),
+                            SizedBox(height: 5,),
+                            Text(DBrequestdata.empname,textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize: 14),),
+                            SizedBox(height: 20,),
+                            Row(
+                              children: [
+                                Spacer(),
+                                Image(
+                                  height: 30,
+                                  image: AssetImage('images/rmsLogo.png'),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }));
+      });
+      fromloginscreen = false;
+    }
     //super.initState();
   }
   bool isApiCallProcess = false;
@@ -90,33 +153,37 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
             GestureDetector(
-                onTap: () {
-                  print(gettodayjp.checkintime);
-                  print(gettodayjp.checkouttime);
-                  print(gettodayjp.status);
-                  workingid=null;
-
-                  for(int u =0;u<gettodayjp.status.length;u++){
-                    if(gettodayjp.status[u]=="working"){
-                      workingid = gettodayjp.id[u];
-                      print(workingid);
-                      print(gettodayjp.id[u]);
-                      chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
-                      chekinoutlet.checkinoutletname = gettodayjp.storenames[u];
-                      chekinoutlet.checkinarea = gettodayjp.outletarea[u];
-                      chekinoutlet.checkincity = gettodayjp.outletcity[u];
-                      chekinoutlet.checkinstate = gettodayjp.outletcountry[u];
-                      chekinoutlet.checkincountry = gettodayjp.outletcountry[u];
+                onTap: () async{
+                  PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
+                  print(permission);
+                  if(permission.toString() == 'PermissionStatus.granted'){
+                     getLocation();
+                    print(gettodayjp.checkintime);
+                    print(gettodayjp.checkouttime);
+                    print(gettodayjp.status);
+                    workingid=null;
+                    for(int u =0;u<gettodayjp.status.length;u++){
+                      if(gettodayjp.status[u]=="working"){
+                        workingid = gettodayjp.id[u];
+                        currentoutletid = gettodayjp.outletids[u];
+                        print(workingid);
+                        print(gettodayjp.id[u]);
+                        chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
+                        chekinoutlet.checkinoutletname = gettodayjp.storenames[u];
+                        chekinoutlet.checkinarea = gettodayjp.outletarea[u];
+                        chekinoutlet.checkincity = gettodayjp.outletcity[u];
+                        chekinoutlet.checkinstate = gettodayjp.outletcountry[u];
+                        chekinoutlet.checkincountry = gettodayjp.outletcountry[u];
+                      }
                     }
-                  }
-                 workingid==null? showDialog(
-                      context: context,
-                      builder: (_) => StatefulBuilder(
-                          builder: (context, setState) {
-                            return ProgressHUD(
-                              inAsyncCall: isApiCallProcess,
-                              opacity: 0.3,
-                              child: AlertDialog(
+                    workingid==null? showDialog(
+                        context: context,
+                        builder: (_) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return ProgressHUD(
+                                inAsyncCall: isApiCallProcess,
+                                opacity: 0.3,
+                                child: AlertDialog(
                                   backgroundColor: alertboxcolor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
@@ -144,8 +211,8 @@ class _DashBoardState extends State<DashBoard> {
                                                     Text('Uniform and Hygiene',style: TextStyle(fontSize: 16),),
                                                     Spacer(),
                                                     Icon(
-                                                        uniform == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                        color: uniform == true ? orange : Colors.grey,size:30 , ),
+                                                      uniform == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
+                                                      color: uniform == true ? orange : Colors.grey,size:30 , ),
                                                   ],
                                                 ),
                                                 SizedBox(height: 5,),
@@ -230,13 +297,13 @@ class _DashBoardState extends State<DashBoard> {
                                                     // ignore: unrelated_type_equality_checks
                                                     if(checkintime !=  DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()){
                                                       addcheckintime();
-                                                      addattendence();
+                                                      // addattendence();
                                                     }else{
                                                       print('checkintime already added');
                                                     }
                                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                   }
-                                                  },
+                                                },
                                                 child: Container(
                                                   height: 30,
                                                   width: 70,
@@ -266,56 +333,122 @@ class _DashBoardState extends State<DashBoard> {
                                     },
                                   ),
                                 ),
-                            );
-                          })
-                  ):showDialog(
-                      context: context,
-                      builder: (_) => StatefulBuilder(
-                      builder: (context, setState) {
-                        return ProgressHUD(
-                          inAsyncCall: isApiCallProcess,
-                          opacity: 0.3,
-                          child: AlertDialog(
-                            backgroundColor: alertboxcolor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.all(
-                                    Radius.circular(10.0))),
-                            content: Builder(
-                              builder: (context) {
-                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                return Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
-                                    Divider(color: Colors.black,thickness: 0.8,),
-                                    Text("you have unfinished outlet please finish that outlet",textAlign: TextAlign.center,),
-                                    SizedBox(height: 20,),
-                                    Center(
-                                      child: GestureDetector(
-                                        onTap: () async{
-                                          outletrequestdata.outletidpressed = workingid;
-                                          checkinoutdata.checkid = workingid;
-                                          await getTaskList();
-                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
-                                        },
-                                        child: Container(
-                                          height: 30,
-                                          width: 70,
-                                          decoration: BoxDecoration(
-                                            color: orange,borderRadius: BorderRadius.circular(5),
+                              );
+                            })
+                    ):showDialog(
+                        context: context,
+                        builder: (_) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return ProgressHUD(
+                                inAsyncCall: isApiCallProcess,
+                                opacity: 0.3,
+                                child: AlertDialog(
+                                  backgroundColor: alertboxcolor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  content: Builder(
+                                    builder: (context) {
+                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
+                                          Divider(color: Colors.black,thickness: 0.8,),
+                                          Text("you have unfinished outlet!",textAlign: TextAlign.center,),
+                                          SizedBox(height: 10,),
+                                          Text("Note* if you recently checked out please wait 2 minutes minimum to get the updated data",textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize:10),),
+                                          SizedBox(height: 5,),
+                                          Center(
+                                            child: GestureDetector(
+                                              onTap: () async{
+                                                setState(() {
+                                                  isApiCallProcess = true;
+                                                });
+                                                print("current outlet id: $currentoutletid");
+                                                outletrequestdata.outletidpressed = currentoutletid;
+                                                checkinoutdata.checkid = workingid;
+                                                currenttimesheetid = workingid;
+                                                getTaskList();
+                                                getVisibility();
+                                                getcompinfo();
+                                                getPlanogram();
+                                                getCompetition();
+                                                getNBLdetails();
+                                                getPromotionDetails();
+                                                await getAvaiablitity();
+                                                await getShareofshelf();
+                                                setState(() {
+                                                  isApiCallProcess = false;
+                                                });
+                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
+                                              },
+                                              child: Container(
+                                                height: 30,
+                                                width: 70,
+                                                decoration: BoxDecoration(
+                                                  color: orange,borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
+                                              ),
+                                            ),
                                           ),
-                                          child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      }));
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            }));
+                  }else{
+                    showDialog(
+                        context: context,
+                        builder: (_) => StatefulBuilder(
+                            builder: (context, setState) {
+                              return ProgressHUD(
+                                inAsyncCall: isApiCallProcess,
+                                opacity: 0.3,
+                                child: AlertDialog(
+                                  backgroundColor: alertboxcolor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  content: Builder(
+                                    builder: (context) {
+                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
+                                          Divider(color: Colors.black,thickness: 0.8,),
+                                          Text("Location permissions need to be granted to proceed further.",textAlign: TextAlign.center,),
+                                          SizedBox(height: 10,),
+                                          Center(
+                                            child: GestureDetector(
+                                              onTap: () async{
+                                                bool permission = await LocationPermissions().openAppSettings();
+                                                print(permission);
+                                                },
+                                              child: Container(
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                  color: orange,borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                child: Center(child: Text('Open Settings',style: TextStyle(color: Colors.white))),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            }));
+                  }
+
           },
                   child: Container(
                     padding: EdgeInsets.all(10.0),
@@ -463,7 +596,7 @@ class _DashBoardState extends State<DashBoard> {
                     Containerblock(
                       width: MediaQuery.of(context).size.width / 4.3,
                       numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}': '${DBResponsedatadaily.UnShedulevisitsDone}',
-                      chartext: 'unScheduled\nVisits Done',
+                      chartext: 'UnScheduled\nVisits Done',
                       icon: CupertinoIcons.checkmark_seal_fill,
                       color: Colors.red,
                     ),
@@ -483,6 +616,7 @@ class _DashBoardState extends State<DashBoard> {
                         timesheet.empid = DBrequestdata.receivedempid;
                           await getTimeSheetdaily();
                          await gettimesheetmonthly();
+
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -546,8 +680,8 @@ class _DashBoardState extends State<DashBoard> {
                                 children: [
                                   JourneryPlan(
                                     color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? DBResponsedatamonthly.monthPlanpercentage < 101 ?(DBResponsedatamonthly.monthPlanpercentage/100) :0.0: DBResponsedatadaily.todayPlanpercentage<101? (DBResponsedatadaily.todayPlanpercentage/100):0.0,
-                                    textpercent: pressAttentionMTB == true ? DBResponsedatamonthly.monthPlanpercentage.toString() :DBResponsedatadaily.todayPlanpercentage.toString(),
+                                    percent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) < 101 ?(int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}'))/(int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) :0.0: (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}'))<101? (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')):0.0,
+                                    textpercent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')*100).toStringAsFixed(0) :(int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')*100).toStringAsFixed(0),
                                     title: "Journey Plan\nCompletion",
                                   ),
                                   JourneryPlan(
@@ -643,7 +777,9 @@ class _DashBoardState extends State<DashBoard> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
-                                  Text("HQ Communication",textAlign: TextAlign.center,),
+                                  FittedBox(
+                                      fit:BoxFit.fitWidth,
+                                      child: Text("HQ\nCommunication",textAlign: TextAlign.center,maxLines: 2,)),
                                 ],
                               ),
                               newmsgavaiable ? Align(
@@ -690,9 +826,12 @@ class _DashBoardState extends State<DashBoard> {
                 SizedBox(
                   height: 10,
                 ),
+
+
               ],
             ),
           ),
+
         ],
       ),
     );
@@ -801,8 +940,11 @@ class ActivityPerformance extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 8.0,top: 8.0,),
-                      child: Text(
-                        "Planned",style: TextStyle(fontSize: 12),
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          "Planned",style: TextStyle(fontSize: 12),
+                        ),
                       ),
                     ),
                     Padding(
@@ -813,8 +955,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             ptotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Total",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "  Total  ",style: TextStyle(fontSize: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -827,8 +972,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             pprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Primary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              " Primary ",style: TextStyle(fontSize: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -841,8 +989,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             psecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Secondary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "Secondary",style: TextStyle(fontSize: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -855,7 +1006,7 @@ class ActivityPerformance extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 14.0,right: 8.0,),
                         child: Text(
-                          "Actual",style: TextStyle(fontSize: 12),
+                          "Actual ",style: TextStyle(fontSize: 12),
                         ),
                       ),
                     ),
@@ -865,8 +1016,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             atotal,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Total",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              "  Total  ",style: TextStyle(fontSize: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -877,8 +1031,11 @@ class ActivityPerformance extends StatelessWidget {
                           Text(
                             aprimary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            "Primary",style: TextStyle(fontSize: 10),
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              " Primary ",style: TextStyle(fontSize: 10),
+                            ),
                           ),
                         ],
                       ),
@@ -889,9 +1046,12 @@ class ActivityPerformance extends StatelessWidget {
                             Text(
                               asecondary,style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                             ),
-                           Text(
-                              "Secondary",style: TextStyle(fontSize: 10),
-                            ),
+                           FittedBox(
+                             fit: BoxFit.fitWidth,
+                             child: Text(
+                                "Secondary",style: TextStyle(fontSize: 10),
+                              ),
+                           ),
                         ],
                       ),
                     ),

@@ -22,6 +22,7 @@ Future getallempdetails() async{
     employees.rolename = [];
     employees.feildmanagers = [];
     employees.merchandisers = [];
+    employees.FMTSempid=[];
     employees.empid = [];
     for(int u=0;u<decodedempdata['data'].length;u++) {
      employees.fullname.add('${decodedempdata["data"][u]['first_name']} ${decodedempdata["data"][u]['surname']}(${decodedempdata["data"][u]['employee_id']})');
@@ -29,10 +30,12 @@ Future getallempdetails() async{
      employees.empid.add(decodedempdata["data"][u]['employee_id']);
      decodedempdata['data'][u]['role'][0]['id'] == 5 ? employees.feildmanagers.add('${decodedempdata["data"][u]['first_name']} ${decodedempdata["data"][u]['surname']}(${decodedempdata["data"][u]['employee_id']})'): null;
      decodedempdata['data'][u]['role'][0]['id'] == 6 ? employees.merchandisers.add('${decodedempdata["data"][u]['first_name']} ${decodedempdata["data"][u]['surname']}(${decodedempdata["data"][u]['employee_id']})'): null;
+     decodedempdata['data'][u]['role'][0]['id'] == 5 ? employees.FMTSempid.add(decodedempdata["data"][u]['employee_id']):null;
     }
   }
   if(EmpReport.statusCode != 200){
     print(EmpReport.statusCode);
+    print(employees.FMTSempid);
 
   }
 }
@@ -43,6 +46,7 @@ class employees {
   static List<dynamic> rolename= [];
   static List<String> feildmanagers = [];
   static List<String> merchandisers = [];
+  static List<String> FMTSempid=[];
 }
 class updatedata{
   static bool employee = false;

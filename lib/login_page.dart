@@ -9,12 +9,27 @@ import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
+import 'api/FMapi/relieverdet_api.dart';
 import 'package:merchandising/main.dart';
 import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'api/HRapi/empdetailsforreportapi.dart';
 import 'dart:async';
 import 'model/database.dart';
+import 'package:merchandising/api/FMapi/storedetailsapi.dart';
+import 'package:merchandising/api/FMapi/outletapi.dart';
+import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
+import 'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/api/FMapi/week_off_detailsapi.dart';
+import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
+import 'package:merchandising/api/FMapi/category_detailsapi.dart';
+import 'package:merchandising/api/FMapi/add_brandapi.dart';
+import 'package:merchandising/api/FMapi/product_detailsapi.dart';
+import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
+import 'package:merchandising/clients/client_dashboard.dart';
+import 'api/clientapi/outletreport.dart';
+import'package:merchandising/api/HRapi/empdetailsapi.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -58,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Theme.of(context).accentColor,
+
+         // backgroundColor: Theme.of(context).accentColor,
         body: Stack(
           children: [
             BackGround(),
@@ -169,16 +185,18 @@ class _LoginPageState extends State<LoginPage> {
                                       if (loginrequestdata.inputemail != null &&
                                           loginrequestdata.inputpassword != null) {
                                           addLogindetails();
+                                          fromloginscreen = true;
                                         int userroleid = await loginapi();
                                         currentuser.roleid = userroleid;
                                         if (userroleid == 6) {
-                                          var DBMresult = await DBRequestmonthly();
-                                          var DBDresult = await DBRequestdaily();
+                                          getempdetails();
+                                          getaddedexpiryproducts ();
+                                          getstockexpiryproducts();
+                                          getempdetailsforreport();
+                                          var DBMresult =  DBRequestmonthly();
+                                          var DBDresult =  DBRequestdaily();
                                           await getLocation();
                                           await callfrequently();
-                                          await getempdetails();
-                                          getstockexpiryproducts();
-                                           getempdetailsforreport();
                                           const period = const Duration(seconds: 600);
                                           Timer.periodic(period, (Timer t) => getLocation());
                                           const time = const Duration(seconds: 120);
@@ -191,7 +209,8 @@ class _LoginPageState extends State<LoginPage> {
                                                         (BuildContextcontext) =>
                                                             DashBoard()));
                                           }
-                                        } else if(userroleid == 3){
+                                        }
+                                        else if(userroleid == 3){
                                           await getempdetails();
                                           int result = await HRdb();
                                           if(result != null){
@@ -203,15 +222,40 @@ class _LoginPageState extends State<LoginPage> {
                                                         (BuildContextcontext) =>
                                                         HRdashboard()));
                                           }
-                                        } else if (userroleid == 5){
-                                          await getFMdb();
-                                          await getempdetails();
+                                        }
+                                        else if (userroleid == 5){
+                                          addattendence();
+                                          getFMdb();
+                                          getempdetails();
+                                          getWeekoffdetails();
+                                          getBrandDetails();
+                                          getemployeestoaddbrand();
+                                          getCategoryDetails();
+                                          getProductDetails();
+                                          getmappedoutlets();
+                                          getmyattandance();
+                                           getmerchnamelist();
+                                          getallempdetails();
+                                           getStoreDetails();
+                                          getRelieverDetails();
+                                          await getFMoutletdetails();
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder:
                                                       (BuildContextcontext) =>
                                                           FieldManagerDashBoard()));
+                                        }
+                                        else if (userroleid == 7){
+                                          await OutletsForClient();
+                                          await getallempdetails();
+                                          await getmerchnamelist();
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContextcontext) =>
+                                                          ClientDB()));
                                         }
                                         else {
                                           setState(() {

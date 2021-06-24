@@ -3,28 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:merchandising/Fieldmanager/products.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/Fieldmanager/rel_details.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/customer_activites_api/competition_details.dart';
 import 'Outlets.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/model/leaveresponse.dart';
-import 'package:merchandising/Fieldmanager/Store Details.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
+import 'package:merchandising/api/FMapi/relieverdet_api.dart';
 import 'package:merchandising/Fieldmanager/addjp.dart';
-import 'package:merchandising/api/FMapi/storedetailsapi.dart';
-import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/api/leavestakenapi.dart';
 import 'merchandiserslist.dart';
-import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'chatusers.dart';
-import 'package:merchandising/api/myattendanceapi.dart';
-import 'package:merchandising/api/FMapi/week_off_detailsapi.dart';
 import 'package:merchandising/model/myattendance.dart';
-import 'package:merchandising/Fieldmanager/fmmapveiw.dart';
-import 'package:merchandising/api/FMapi/brand_detailsapi.dart';
-import 'package:merchandising/api/FMapi/category_detailsapi.dart';
-import 'package:merchandising/api/FMapi/add_brandapi.dart';
-import 'package:merchandising/api/FMapi/product_detailsapi.dart';
+import'package:merchandising/api/noti_detapi.dart';
+
+
 
 class FieldManagerDashBoard extends StatefulWidget {
   @override
@@ -32,6 +28,53 @@ class FieldManagerDashBoard extends StatefulWidget {
 }
 
 class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
+  void initState() {
+    if(fromloginscreen){
+      Future.delayed(
+          const Duration(seconds: 2), (){
+        showDialog(
+            context: context,
+            builder: (_) => StatefulBuilder(
+                builder: (context, setState) {
+                  return AlertDialog(
+                    backgroundColor: pink,//alertboxcolor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.all(
+                            Radius.circular(10.0))),
+                    content: Builder(
+                      builder: (context) {
+                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(greetingMessage(),style: TextStyle(color: orange,fontSize: 20),),
+                            Divider(color: Colors.black,),
+                            Text("Wish you have a great day ahead 😀",textAlign: TextAlign.center,),
+                            SizedBox(height: 5,),
+                            Text(DBrequestdata.empname,textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize: 14),),
+                            SizedBox(height: 20,),
+                            Row(
+                              children: [
+                                Spacer(),
+                                Image(
+                                  height: 30,
+                                  image: AssetImage('images/rmsLogo.png'),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }));
+      });
+      fromloginscreen = false;
+    }
+    //super.initState();
+  }
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
@@ -55,8 +98,23 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                 ],
               ),
             ),
-            drawer: Drawer(
-              child: Menu(),
+            drawer: GestureDetector(
+              onTap: ()async{
+                print("Menu Tapped");
+                setState(() {
+                  isApiCallProcess=true;
+                });
+
+                await getNotificationDetails();
+                setState(() {
+                  isApiCallProcess=false;
+                });
+
+
+              },
+              child: Drawer(
+                child: Menu(),
+              ),
             ),
 
             body: Stack(
@@ -68,19 +126,21 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                       SizedBox(height: 10,),
                       GestureDetector(
                         onTap: () async{
-                          setState(() {
-                            isApiCallProcess = true;
-                          });
-                          await getmerchnamelist();
-                          setState(() {
-                            isApiCallProcess = false;
-                          });
+                          // setState(() {
+                          //   isApiCallProcess = true;
+                          // });
+                          // await getmerchnamelist();
+                          // await getFMoutletdetails();
+                          // await getWeekoffdetails();
+                          // setState(() {
+                          //   isApiCallProcess = false;
+                          // });
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (BuildContext
-                                  context) =>
-                                      JourneyplansMapVeiw()));
+                                  builder: (BuildContext context) =>
+                                      AddJourneyPlan()));
+
                         },
                         child: Container(
                           margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -91,214 +151,216 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                             borderRadius: BorderRadius.circular(10.0),
                             color: containerscolor,
                           ),
-                          child: Column(
-                            children: [
-                              Text("Performance Indicator", style: TextStyle(
-                                  fontSize: 16),),
-                              SizedBox(height: 10,),
-                              Table(
-                                border: TableBorder.symmetric(
-                                  inside: BorderSide(color: Colors.grey),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Text("Performance Indicator", style: TextStyle(
+                                    fontSize: 16),),
+                                SizedBox(height: 10,),
+                                Table(
+                                  border: TableBorder.symmetric(
+                                    inside: BorderSide(color: Colors.grey),
+                                  ),
+                                  columnWidths: {
+                                    0: FractionColumnWidth(.35),
+                                  },
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 14.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Merchandisers",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.merchtotal.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Total",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(FMdashboarddata.merchpresent.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Present",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.merchabsent.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Absent",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 14.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Total Outlets",
+                                              style: TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Total",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Pending",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 14.0),
+                                          child: Center(
+                                            child: Text(
+                                              "Today Outlets",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.totaloulets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Total",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.compoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Completed",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Text(
+                                                FMdashboarddata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Pending",
+                                                style: TextStyle(fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                columnWidths: {
-                                  0: FractionColumnWidth(.35),
-                                },
-                                children: [
-                                  TableRow(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 14.0),
-                                        child: Center(
-                                          child: Text(
-                                            "Merchandisers",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.merchtotal.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Total",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(FMdashboarddata.merchpresent.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Present",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.merchabsent.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Absent",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 14.0),
-                                        child: Center(
-                                          child: Text(
-                                            "Total Outlets",
-                                            style: TextStyle(fontSize: 12),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Total",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Completed",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Pending",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 14.0),
-                                        child: Center(
-                                          child: Text(
-                                            "Today Outlets",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.totaloulets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Total",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.compoutlets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Completed",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceEvenly,
-                                          children: [
-                                            Text(
-                                              FMdashboarddata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              "Pending",
-                                              style: TextStyle(fontSize: 10),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -306,64 +368,14 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
-                            onTap:()async{
-                              setState((){
-                                isApiCallProcess = true;
-                              });
-                              await getStoreDetails();
-                              setState((){
-                                isApiCallProcess = false;
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          StoreDetails()));
-                            },
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 3.2,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        CupertinoIcons.shopping_cart,
-                                        size: 35,
-                                        color: iconscolor,
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Stores',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 15,),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
                             onTap:() async{
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await getFMoutletdetails();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
+                              // setState(() {
+                              //   isApiCallProcess = true;
+                              // });
+                              // await getFMoutletdetails();
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -406,15 +418,15 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                           ),
                           GestureDetector(
                             onTap: ()async{
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await getmerchnamelist();
-                              await getFMoutletdetails();
-                              await getWeekoffdetails();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
+                              // setState(() {
+                              //   isApiCallProcess = true;
+                              // });
+                              // await getmerchnamelist();
+                              // await getFMoutletdetails();
+                              // await getWeekoffdetails();
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -456,6 +468,70 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               ),
                             ),
                           ),
+                          GestureDetector(
+                            onTap:()async{
+                              // // setState((){
+                              // //   isApiCallProcess = true;
+                              // // });
+                              // // await getStoreDetails();
+                              // // setState((){
+                              // //   isApiCallProcess = false;
+                              // // });
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (BuildContext context) =>
+                              //             StoreDetails()));
+                              setState(() {
+                                isApiCallProcess=true;
+                              });
+                              await getRelieverDetails();
+                              //await getmerchnamelist();
+                              setState(() {
+                                isApiCallProcess=false;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          RelieverDetails()));
+
+                            },
+                            child: Container(
+                              height: 120,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.person_add_solid,
+                                        size: 35,
+                                        color: iconscolor,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Reliever',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 15,),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
 
                         ],
                       ),
@@ -465,13 +541,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         children: [
                           GestureDetector(
                             onTap:()async{
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await getmerchnamelist();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -515,18 +585,19 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                           ),
                           GestureDetector(
                             onTap: ()async{
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await getFMoutletdetails();
-                              await getBrandDetails();
-                              await getemployeestoaddbrand();
-                              await getCategoryDetails();
-                              await getProductDetails();
-                              await getFMoutletdetails();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
+                              // setState(() {
+                              //   isApiCallProcess = true;
+                              // });
+                              // await getFMoutletdetails();
+                              // await getBrandDetails();
+                              // await getemployeestoaddbrand();
+                              // await getCategoryDetails();
+                              // await getProductDetails();
+                              // await getFMoutletdetails();
+                              // await getPromoDetails();
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (BuildContext context) => Products()));
                             },
@@ -555,7 +626,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
 
                                       SizedBox(height: 10),
                                       Text(
-                                        'Products',
+                                        'Activities',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(fontSize: 15),
                                       ),
@@ -614,7 +685,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         ],
                       ),
                       SizedBox(height: 10,),
-                      Text("My Activity", style: TextStyle(color: containerscolor,
+                      Text("My Activities", style: TextStyle(color: containerscolor,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),),
                       SizedBox(height: 5,),
@@ -623,13 +694,13 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         children: [
                           GestureDetector(
                             onTap: ()async{
-                              setState(() {
-                                isApiCallProcess =true;
-                              });
-                              await getmyattandance();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
+                              // setState(() {
+                              //   isApiCallProcess =true;
+                              // });
+                              // await getmyattandance();
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (BuildContext context) => MyAttendance()));
                             },
@@ -715,8 +786,8 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                             ),
                             Spacer(flex: 2),
                             Text(
-                              'Welcome to the new merchendiser\ninterface of RMS. '
-                                  'Hope to have a\ngreat day ahead!',
+                              'Welcome to the new field manager\ninterface of RMS.'
+                                  ' Hope you have a\ngreat day ahead!',
                               style: new TextStyle(fontSize: 15
                               ),
                             ),
@@ -735,13 +806,13 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                     margin: EdgeInsets.all(15.0),
                     child: FloatingActionButton(
                       onPressed: ()async{
-                        setState(() {
-                          isApiCallProcess = true;
-                        });
-                        await getmerchnamelist();
-                        setState(() {
-                          isApiCallProcess = false;
-                        });
+                        // setState(() {
+                        //   isApiCallProcess = true;
+                        // });
+                        // await getmerchnamelist();
+                        // setState(() {
+                        //   isApiCallProcess = false;
+                        // });
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -751,17 +822,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                       },
                       backgroundColor: orange,
                       elevation: 10.0,
-                      child: Stack(
-                        children: [
-                          Center(child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,)),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Align(
-                                alignment: Alignment.topRight,
-                                child: Icon(CupertinoIcons.bell_solid,color: Colors.red,size:20,)),
-                          )
-                        ],
-                      ),
+                      child: Icon(CupertinoIcons.chat_bubble_2_fill,color: pink,),
                     ),
                   ),
                 ),
@@ -776,3 +837,15 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
 
 
 
+/**/
+
+// TimeSheetdatadaily.timeid = currenttimesheetid;
+// print('timesheet id : ${TimeSheetdatadaily.timeid}');
+// setState(() {
+//   isApiCallProcess = true;
+// });
+// await getTimeSheetdaily();
+//
+// setState(() {
+//   isApiCallProcess = false;
+// });

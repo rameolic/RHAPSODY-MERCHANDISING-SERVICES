@@ -8,7 +8,6 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/timesheetmonthly.
 import 'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/main.dart';
 
-
 final DateTime now = DateTime.now();
 final DateFormat formatter = DateFormat('yyyy-MM-dd');
 final String todaydate = formatter.format(now);
@@ -73,51 +72,52 @@ Future<void> gettimesheetmonthly() async {
     print(decodeData['data'].length);
     print('length : ${listOfDates.length}');
     for (int u=0;u<decodeData['data'].length;u++){
+
       String date = decodeData['data'][u]['date'];
-      if(date == listOfDates[1-1]){TMmonthly.day1.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[2-1]){TMmonthly.day2.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[3-1]){TMmonthly.day3.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[4-1]){TMmonthly.day4.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[5-1]){TMmonthly.day5.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[6-1]){TMmonthly.day6.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[7-1]){TMmonthly.day7.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[8-1]){TMmonthly.day8.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[9-1]){TMmonthly.day9.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[10-1]){TMmonthly.day10.add('Outlet:${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[11-1]){TMmonthly.day11.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[12-1]){TMmonthly.day12.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[13-1]){TMmonthly.day13.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[14-1]){TMmonthly.day14.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[15-1]){TMmonthly.day15.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[16-1]){TMmonthly.day16.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[17-1]){TMmonthly.day17.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[18-1]){TMmonthly.day18.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[19-1]){TMmonthly.day19.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[20-1]){TMmonthly.day20.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[21-1]){TMmonthly.day21.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[22-1]){TMmonthly.day22.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[23-1]){TMmonthly.day23.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[24-1]){TMmonthly.day24.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[25-1]){TMmonthly.day25.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[26-1]){TMmonthly.day26.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[27-1]){TMmonthly.day27.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
-      if(date == listOfDates[28-1]){TMmonthly.day28.add('Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[1-1]){TMmonthly.day1.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[2-1]){TMmonthly.day2.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[3-1]){TMmonthly.day3.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[4-1]){TMmonthly.day4.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[5-1]){TMmonthly.day5.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[6-1]){TMmonthly.day6.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[7-1]){TMmonthly.day7.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[8-1]){TMmonthly.day8.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[9-1]){TMmonthly.day9.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[10-1]){TMmonthly.day10.add('Outlet:${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[11-1]){TMmonthly.day11.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[12-1]){TMmonthly.day12.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[13-1]){TMmonthly.day13.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[14-1]){TMmonthly.day14.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[15-1]){TMmonthly.day15.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[16-1]){TMmonthly.day16.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[17-1]){TMmonthly.day17.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[18-1]){TMmonthly.day18.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[19-1]){TMmonthly.day19.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[20-1]){TMmonthly.day20.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[21-1]){TMmonthly.day21.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[22-1]){TMmonthly.day22.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[23-1]){TMmonthly.day23.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[24-1]){TMmonthly.day24.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[25-1]){TMmonthly.day25.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[26-1]){TMmonthly.day26.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[27-1]){TMmonthly.day27.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
+      if(date == listOfDates[28-1]){TMmonthly.day28.add('Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');}
       if(listOfDates.length > 28){
         if (date == listOfDates[28]) {
           TMmonthly.day29.add(
-              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');
         }
       }
       if(listOfDates.length > 29){
         if (date == listOfDates[29]) {
           TMmonthly.day30.add(
-              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');
         }
       }
       if(listOfDates.length > 30){
         if (date == listOfDates[30]) {
           TMmonthly.day31.add(
-              'Outlet: ${decodeData['data'][u]['store_name']}\n\ncheckin:${decodeData['data'][u]['checkin_time']}\n\ncheckout:${decodeData['data'][u]['checkout_time']}');
+              'Outlet: ${decodeData['data'][u]['store_name']}\n\nCheck In:${decodeData['data'][u]['checkin_time']}\n\nCheck Out:${decodeData['data'][u]['checkout_time']}');
         }
       }
     }

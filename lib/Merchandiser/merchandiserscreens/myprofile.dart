@@ -171,19 +171,16 @@ class _MyprofileState extends State<Myprofile> {
                                 Text(myprofile.nationality),
                               ],
                             ),
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Visa Company Info :",
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(myprofile.visacompanyname),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Visa Company Info :",
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(child: Text(myprofile.visacompanyname)),
+                              ],
                             ),
                             Row(
                               children: [

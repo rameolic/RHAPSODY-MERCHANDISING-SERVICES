@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:merchandising/main.dart';
 import 'api_service.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/availabitiy.dart';
 
 
-Future<void> Avaiablitity() async {
+Future<void> getAvaiablitity() async {
   Map body = {
     "time_sheet_id" : "$currenttimesheetid"
   };
+  print(jsonEncode(body));
   http.Response response = await http.post(AvailabilityDetails,
     headers: {
       'Content-Type': 'application/json',
@@ -22,21 +25,34 @@ Future<void> Avaiablitity() async {
     Avaiablity.brand = [];
     Avaiablity.category = [];
     Avaiablity.checkvalue = [];
+    Avaiablity.zrepcode = [];
     Avaiablity.reason = [];
-    print('avaiablity done');
+    Avaiablity.oos = [];
+    Avaiablity.oosreason = [];
+    Avaiablity.insreason = [];
     String availabititybody = response.body;
     var decodeddata = jsonDecode(availabititybody);
+    if(decodeddata['data'].length==0){
+      print("No Data");
+      Avaiablity.nodata = "nodata";
+      print(Avaiablity.nodata);
+
+    }
     for (int u = 0; u< decodeddata['data'].length; u++) {
       Avaiablity.productid.add(decodeddata['data'][u]['product_id']);
       Avaiablity.brand.add(decodeddata['data'][u]['b_name']);
       Avaiablity.category.add(decodeddata['data'][u]['c_name']);
       Avaiablity.productname.add(decodeddata['data'][u]['p_name']);
-      print(decodeddata['data'][u]['is_available']);
+      //Avaiablity.zrepcode.add(decodeddata['data'][u]['zrep_code']);
+      Avaiablity.fullname.add('${decodeddata['data'][u]['p_name']} [${decodeddata['data'][u]['zrep_code']}]');
+      if(decodeddata['data'][u]['is_available']==null) {
+        Avaiablity.isavail=null;
+        // print(Avaiablity.isavail);
+      }
+      //print(decodeddata['data'][u]['is_available']);
       if(decodeddata['data'][u]['is_available'] != null){
         Avaiablity.checkvalue.add(int.parse(decodeddata['data'][u]['is_available']));
-      }else{
-        Avaiablity.checkvalue.add(0);
-      }
+      }else{Avaiablity.checkvalue.add(1);}
       Avaiablity.storedetailes.add('[${decodeddata['data'][u]['store_code']}] ${decodeddata['data'][u]['store_name']}');
       if(decodeddata['data'][u]['reason'] == null){
         Avaiablity.reason.add('');
@@ -44,9 +60,25 @@ Future<void> Avaiablitity() async {
         Avaiablity.reason.add(decodeddata['data'][u]['reason']);
       }
     }
+    reasons = [];
+    outofStockitems =[];
+    for (int i = 0; i < Avaiablity.productname.length; i++) {
+      reasons.add('');
+      outofStockitems.add(1);
+      if(currentuser.roleid ==7){
+        // ignore: unrelated_type_equality_checks
+        if('${Avaiablity.checkvalue[i]}'=='0'){
+          print('came out');
+          Avaiablity.oos.add(Avaiablity.productname[i]);
+          Avaiablity.oosreason.add(Avaiablity.reason[i]);
+        }else{
+          print('came in');
+          Avaiablity.insreason.add(Avaiablity.productname[i]);
+        }
+      }
+    }
     Distintbrands = Avaiablity.brand.toSet().toList();
     Distintcategory = Avaiablity.category.toSet().toList();
-    print("avaiability : ${Avaiablity.productname}");
   }
 }
 
@@ -59,8 +91,14 @@ class Avaiablity{
   static List<String> brand=[];
   static List<String> category=[];
   static List<int> checkvalue=[];
+  static List<int> zrepcode=[];
   static List<String> reason=[];
-
+  static List<String> fullname=[];
+  static List<String> oos=[];
+  static List<String> oosreason=[];
+  static List<String> insreason=[];
+  static List<String> isavail=[];
+  static var nodata;
 }
 
 

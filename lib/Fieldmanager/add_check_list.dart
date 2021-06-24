@@ -69,9 +69,9 @@ class _CheckListState extends State<CheckList> {
               ],
             ),
           ),
-          drawer: Drawer(
-            child: Menu(),
-          ),
+          // drawer: Drawer(
+          //   child: Menu(),
+          // ),
           body: Stack(
             children: [
               BackGround(),
@@ -136,7 +136,7 @@ class _CheckListState extends State<CheckList> {
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 focusColor: orange,
-                                hintText: "Enter Number of check list items",
+                                hintText: "Number Of Check List Items Required",
                                 hintStyle: TextStyle(
                                   color: grey,
                                   fontSize: 16.0,
@@ -172,7 +172,7 @@ class _CheckListState extends State<CheckList> {
                                         children: [
 
                                           Container(
-                                            height: 20.0,
+                                            height: 20,
                                             width: double.infinity,
                                             margin: EdgeInsets.only(bottom:10.0,top: 10.0),
                                             padding: EdgeInsets.only(left: 10.0),
@@ -181,6 +181,7 @@ class _CheckListState extends State<CheckList> {
                                               color: Colors.white,
                                             ),
                                             child: TextFormField(
+
                                               keyboardType: TextInputType.text,
                                               controller: listctrl[index],
                                               cursorColor: grey,
@@ -208,18 +209,16 @@ class _CheckListState extends State<CheckList> {
                                 setState(() {
                                   isApiCallProcess = true;
                                 });
-                                Checklistdata.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];;
+                                Checklistdata.outletid = outletdata.outletid[outletdata.outletname.indexOf(selectedoutlets)];
                               Checklistdata.tasklist =[];
                                 for(int u=0;u<itemno;u++){
-
                                   Checklistdata.tasklist.add(listctrl[u].text.toString());
-
-                                  await addchecklistdata();
-
-                                setState(() {
-                                  isApiCallProcess = false;
-                                });
                               }
+                              await addchecklistdata();
+
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

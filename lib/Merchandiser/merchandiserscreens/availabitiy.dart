@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:merchandising/Fieldmanager/ViewPDF.dart';
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,7 +7,7 @@ import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import '../../ProgressHUD.dart';
 import 'MenuContent.dart';
-import 'package:merchandising/api/FMapi/add_availabilityapi.dart';
+import 'package:merchandising/api/customer_activites_api/add_availabilityapi.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/api/api_service.dart';
 
@@ -21,7 +22,7 @@ List<String> categories = Distintcategory;
 List<String> Brands  = Distintbrands;
 String Selectedcategory;
 String Selectedbrand;
-List<String> defaulflist = Avaiablity.productname;
+List<String> defaulflist = Avaiablity.fullname;
 List<String> filteredList = [];
 class AvailabilityScreen extends StatefulWidget {
   @override
@@ -68,6 +69,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
           title: Row(
@@ -163,8 +165,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       InputList=[];
                                       for(int i =0; i < defaulflist.length;i++){
                                         if(Avaiablity.category[i] == Selectedcategory){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.fullname[i]);
                                           shuffledchecklist.add(Avaiablity.checkvalue[i]);
                                           shuffledreasons.add(Avaiablity.reason[i]);
                                         }
@@ -173,8 +174,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       InputList=[];
                                       for(int i =0; i < defaulflist.length;i++){
                                         if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.fullname[i]);
                                           shuffledchecklist.add(Avaiablity.checkvalue[i]);
                                           shuffledreasons.add(Avaiablity.reason[i]);
                                         }
@@ -210,16 +210,14 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                       InputList=[];
                                       for(int i =0; i < defaulflist.length;i++){
                                         if(Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.fullname[i]);
                                         }
                                       }
                                     }else{
                                       InputList=[];
                                       for(int i =0; i < defaulflist.length;i++){
                                         if(Avaiablity.category[i] == Selectedcategory && Avaiablity.brand[i] == Selectedbrand){
-                                          print(Avaiablity.productname[i]);
-                                          InputList.add(Avaiablity.productname[i]);
+                                          InputList.add(Avaiablity.fullname[i]);
                                         }
                                       }
                                     }
@@ -235,6 +233,8 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                 ],
               ),
             ),
+
+            NBlFloatingButton(),
           ],
         ));
   }
@@ -257,7 +257,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                 isCollapsed: true,
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
                 focusColor: orange,
-                hintText: 'Search by Product Name',
+                hintText: 'Search by Product Name / ZREP code',
                 hintStyle: TextStyle(color: orange),
                 border: InputBorder.none,
                 icon: Icon(CupertinoIcons.search,color: orange,),
@@ -331,7 +331,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                           children: [
                             Container(
                               height: 50,
-                              width: MediaQuery.of(context).size.width/2.2,
+                              width: MediaQuery.of(context).size.width/2.3,
                               decoration: index != InputList.length-1 ? BoxDecoration(
 
                                   border: Border(
@@ -350,10 +350,12 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                               ),
                               child: Align(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  '${InputList[index]}',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 16.0),
+                                child: SingleChildScrollView(
+                                  child: Text(
+                                    '${InputList[index]}',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ),
                               ),
                             ),
@@ -377,13 +379,14 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                             color: Colors.black,
                                           ),),),
                                       child: Switch(
-                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 0 ? true:false,
+                                        value: Avaiablity.checkvalue[Avaiablity.fullname.indexOf(InputList[index])] == 0 ? true:false,
                                         // value: isSwitched,
                                         onChanged: (value) {
                                           setState(() {
-                                            isSwitched = value;
-                                            isSwitched == true ? shuffledchecklist[defaulflist.indexOf(InputList[index])]=0 : shuffledchecklist[defaulflist.indexOf(InputList[index])]=1;
-                                            isSwitched == true ? Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])]=0 : Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])]=1;
+                                            isSwitchedAvail=true;
+                                            isSwitchedAvail = value;
+                                            isSwitchedAvail == true ? shuffledchecklist[defaulflist.indexOf(InputList[index])]=0 : shuffledchecklist[defaulflist.indexOf(InputList[index])]=1;
+                                            isSwitchedAvail == true ? Avaiablity.checkvalue[Avaiablity.fullname.indexOf(InputList[index])]=0 : Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])]=1;
                                             print(Avaiablity.checkvalue);
                                             //isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
                                           });
@@ -395,23 +398,23 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                     SizedBox(
                                         height: 50,
                                         width: 100,
-                                        child:  Avaiablity.checkvalue[Avaiablity.productname.indexOf(InputList[index])] == 1 ?  SizedBox():DropdownButton(
+                                        child:  Avaiablity.checkvalue[Avaiablity.fullname.indexOf(InputList[index])] == 1 ?  SizedBox():DropdownButton(
                                           elevation: 0,
                                           dropdownColor: Colors.white,
                                           isExpanded: true,
                                           iconEnabledColor: orange,
                                           iconSize: 35.0,
                                           underline: SizedBox(),
-                                          value:  reasons[Avaiablity.productname.indexOf(InputList[index])] =="" ?null:reasons[Avaiablity.productname.indexOf(InputList[index])],
+                                          value:  reasons[Avaiablity.fullname.indexOf(InputList[index])] =="" ?null:reasons[Avaiablity.fullname.indexOf(InputList[index])],
                                           onChanged: (newVal){
                                             setState(() {
                                               selectedreason = newVal;
                                               reasons[defaulflist.indexOf(InputList[index])] = newVal;
-                                              Avaiablity.reason[Avaiablity.productname.indexOf(InputList[index])]=newVal;
+                                              Avaiablity.reason[Avaiablity.fullname.indexOf(InputList[index])]=newVal;
                                             });
                                           },
                                           items: DropDownItems,
-                                          hint: Text( Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]==''?"Select Reason":"${ Avaiablity.reason[ Avaiablity.productname.indexOf(InputList[index])]}",style: TextStyle(color: Colors.black),),
+                                          hint: Text( Avaiablity.reason[ Avaiablity.fullname.indexOf(InputList[index])]==''?"Select Reason":"${ Avaiablity.reason[ Avaiablity.fullname.indexOf(InputList[index])]}",style: TextStyle(color: Colors.black),),
                                         ) ,
                                     ),
                                   ],
@@ -496,7 +499,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                           children: [
                             Container(
                               height: 50,
-                              width: MediaQuery.of(context).size.width/2.2,
+                              width: MediaQuery.of(context).size.width/2.3,
                               decoration: index != _filterList.length-1 ? BoxDecoration(
 
                                   border: Border(
@@ -542,14 +545,14 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                             color: Colors.black,
                                           ),),),
                                       child: Switch(
-                                        value: Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])] == 1 ? false:true,
+                                        value: Avaiablity.checkvalue[Avaiablity.fullname.indexOf(_filterList[index])] == 1 ? false:true,
                                         // value: isSwitched,
                                         onChanged: (value) {
                                           setState(() {
-                                            isSwitched = value;
-                                            isSwitched == true ? shuffledchecklist[defaulflist.indexOf(_filterList[index])]=0 : shuffledchecklist[defaulflist.indexOf(_filterList[index])]=1;
+                                            isSwitchedAvail = value;
+                                            isSwitchedAvail == true ? shuffledchecklist[defaulflist.indexOf(_filterList[index])]=0 : shuffledchecklist[defaulflist.indexOf(_filterList[index])]=1;
 
-                                            isSwitched == true ? Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])]=0 : Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])]=1;
+                                            isSwitchedAvail == true ? Avaiablity.checkvalue[Avaiablity.fullname.indexOf(_filterList[index])]=0 : Avaiablity.checkvalue[Avaiablity.fullname.indexOf(_filterList[index])]=1;
                                             //isSwitched == true ? outofStockitems[Avaiablity.productname.indexOf(widget.item)]=0 : outofStockitems[Avaiablity.productname.indexOf(widget.item)]=1;
                                           });
                                         },
@@ -560,22 +563,22 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                                     SizedBox(
                                         height: 50,
                                         width: 100,
-                                        child: Avaiablity.checkvalue[Avaiablity.productname.indexOf(_filterList[index])] == 0 ? DropdownButton(
+                                        child: Avaiablity.checkvalue[Avaiablity.fullname.indexOf(_filterList[index])] == 0 ? DropdownButton(
                                           elevation: 0,
                                           dropdownColor: Colors.white,
                                           isExpanded: true,
                                           iconEnabledColor: orange,
                                           iconSize: 35.0,
-                                          value:reasons[Avaiablity.productname.indexOf(_filterList[index])] =="" ?null:reasons[Avaiablity.productname.indexOf(_filterList[index])],
+                                          value:reasons[Avaiablity.fullname.indexOf(_filterList[index])] =="" ?null:reasons[Avaiablity.fullname.indexOf(_filterList[index])],
                                           onChanged: (newVal){
                                             setState(() {
                                               selectedreason = newVal;
                                               reasons[defaulflist.indexOf(_filterList[index])] = newVal;
-                                              Avaiablity.reason[Avaiablity.productname.indexOf(_filterList[index])]=newVal;
+                                              Avaiablity.reason[Avaiablity.fullname.indexOf(_filterList[index])]=newVal;
                                             });
                                           },
                                           items: DropDownItems,
-                                          hint: Text(Avaiablity.reason[ Avaiablity.productname.indexOf(_filterList[index])]==''?"Select Reason":"${Avaiablity.reason[ Avaiablity.productname.indexOf(_filterList[index])]}",style: TextStyle(color: Colors.black),),
+                                          hint: Text(Avaiablity.reason[ Avaiablity.fullname.indexOf(_filterList[index])]==''?"Select Reason":"${Avaiablity.reason[ Avaiablity.fullname.indexOf(_filterList[index])]}",style: TextStyle(color: Colors.black),),
                                         ) : SizedBox()
                                     ),
                                   ],
@@ -599,7 +602,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
 String selectedreason;
 List DropDownItems  = ["Item Expired","Pending Delivery","Out Of Stock","Not Listed"].map((String val) {return new DropdownMenuItem<String>(value: val, child: new Text(val),);}).toList();
 
-bool isSwitched;
+bool isSwitchedAvail=false;
 // class TogglseSwitch extends StatefulWidget {
 //   ToggleSwitch({this.item});
 //    final item;
