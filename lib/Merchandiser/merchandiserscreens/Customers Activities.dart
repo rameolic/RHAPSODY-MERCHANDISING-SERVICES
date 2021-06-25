@@ -510,7 +510,11 @@ class _checkoutbuttonState extends State<checkoutbutton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
+        print(journeydone[ssi]);
         if(journeydone[ssi]=="done"){
+          setState(() {
+            isApiCallProcess=true;
+          });
           print("entered if");
           getTotalJnyTime();
           var timeofsci = DateTime.now();
@@ -787,12 +791,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      if (Availability &&
-                                          Visibility &&
-                                          ShareofShelf &&
-                                          Planogram &&
-                                          compitetorcheck &&
-                                          expiryinfo) {
+                                      if (true) {
                                         SubmitCheckout();
                                         sendtaskresponse();
                                         workingid != null

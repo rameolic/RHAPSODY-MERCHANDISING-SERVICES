@@ -49,8 +49,6 @@ class getaddress {
 
 void SubmitCheckin() {
   address();
-
-
   var now = DateTime.now();
   print(now);
   Future.delayed(

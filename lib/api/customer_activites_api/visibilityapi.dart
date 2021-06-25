@@ -105,8 +105,6 @@ class VisibilityData{
   static List<String> isavailable=[];
   static List<String> reason=[];
   static List<String> imageurl = [];
-
-
   static List<String> inscatdata=[];
   static List<String> ooscatdata=[];
   static List<String> insimage = [];

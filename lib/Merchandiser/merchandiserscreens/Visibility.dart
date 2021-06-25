@@ -98,21 +98,31 @@ class _VisibilityOneState extends State<VisibilityOne> {
                 AddVisiData.area=[];
                 AddVisiData.sos=[];
                 AddVisiData.poi=[];
-                for(int i=0;i<addGarea.length;i++){
-                  List<String>temparea=addGarea[i];
-                  List<String>tempmain=addmainaisle[i];
-                  List<String>temppois=addpois[i];
-                  String area = temparea[0];
-                  String main = tempmain[0];
-                  String pois = temppois[0];
-                  for(int u=1;u<temparea.length;u++){
-                     area = "$area,${temparea[u]}";
-                     main = "$main,${tempmain[u]}";
-                     pois = "$pois,${temppois[u]}";
+                print(addGarea);
+                for(int i=0;i<addGarea.length;i++) {
+                  print(i);
+                  print("addarea");
+                  print(addGarea[i]);
+                  List<String>temparea = addGarea[i];
+                  List<String>tempmain = addmainaisle[i];
+                  List<String>temppois = addpois[i];
+                  if (temparea.length > 0) {
+                    String area = temparea[0];
+                    String main = tempmain[0];
+                    String pois = temppois[0];
+                    for (int u = 1; u < temparea.length; u++) {
+                      area = "$area,${temparea[u]}";
+                      main = "$main,${tempmain[u]}";
+                      pois = "$pois,${temppois[u]}";
+                    }
+                    AddVisiData.area.add(area);
+                    AddVisiData.sos.add(main);
+                    AddVisiData.poi.add(pois);
+                  }else{
+                    AddVisiData.area.add("");
+                    AddVisiData.sos.add("");
+                    AddVisiData.poi.add("");
                   }
-                  AddVisiData.area.add(area);
-                  AddVisiData.sos.add(main);
-                  AddVisiData.poi.add(pois);
                 }
                 await addVisibilitydata();
                 setState(() {

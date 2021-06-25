@@ -298,7 +298,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
             SingleChildScrollView(
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(10),
+                //padding: EdgeInsets.all(10),
                 margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: pink,

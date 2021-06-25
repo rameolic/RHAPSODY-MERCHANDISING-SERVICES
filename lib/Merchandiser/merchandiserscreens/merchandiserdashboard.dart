@@ -721,7 +721,7 @@ class _DashBoardState extends State<DashBoard> {
                               children: [
                                 Text("Leave "),
                                 Text(DBResponsedatamonthly.leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                Text("Total available Leave's"),
+                                Text("Total Available Leave's"),
                               ],
                             ),
                           ),
@@ -812,7 +812,7 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                       Spacer(flex: 2),
                       Text(
-                        'Welcome to the new merchendiser\ninterface of RMS. '
+                        'Welcome to the new merchandiser\ninterface of RMS. '
                             'Hope to have a\ngreat day ahead!',
                         style: new TextStyle(fontSize: 15
                         ),
