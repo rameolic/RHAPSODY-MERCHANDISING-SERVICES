@@ -56,7 +56,7 @@ void SubmitCheckin() {
         checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
         print(checkinoutdata.checkintime);
       checkinoutdata.checkinlocation = getaddress.currentaddress;
-      checkin();
+     // checkin();
   });
 }
 
@@ -65,7 +65,7 @@ void SubmitCheckout() async {
   var now = DateTime.now();
     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
     checkinoutdata.checkoutlocation = getaddress.currentaddress;
-    await checkout();
+    //await checkout();
 }
 
 // ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}

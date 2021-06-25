@@ -121,6 +121,7 @@ class _ShareShelfState extends State<ShareShelf> {
                     AddShareData.actualpercent=AddShareData.actualpercent;
                     AddShareData.share=AddShareData.actual;
                     await addShareofshelfdata();
+                    shareofshelfcheck = true;
                     setState(() {
                       isApicallProcess = false;
                     });

@@ -19,7 +19,7 @@ int selectindexcl;
 List<File> imagescl = [];
 List<String>encodeimagecl=[];
 
-
+bool checklist = false;
 
 class UploadLivePhoto extends StatefulWidget {
   @override
@@ -101,6 +101,7 @@ class _UploadLivePhotoState extends State<UploadLivePhoto> {
                     print(changecheckoutcolor);
 
                   });
+                  checklist=true;
                   Navigator.pop(
                       context,
                       MaterialPageRoute(

@@ -16,7 +16,7 @@ import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dar
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
 import'package:merchandising/api/api_service.dart';
 
-
+bool compcheck = false;
 TextEditingController itemname = TextEditingController();
 TextEditingController promtdescp = TextEditingController();
 TextEditingController mrp = TextEditingController();
@@ -70,6 +70,7 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
                     setState(() {
                       isApiCallProcess = false;
                     });
+                    compcheck= true;
                     await addCompetition();
                     Navigator.push(
                         context,

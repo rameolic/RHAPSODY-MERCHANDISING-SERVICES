@@ -41,8 +41,8 @@ Future<void> getShareofshelf() async {
       ShareData.target.add(decodeddata['data'][u]['opm_target']);
       ShareData.share.add(decodeddata['data'][u]['merch_update_share']);
       ShareData.actualpercent.add(decodeddata['data'][u]['merch_update_actual']);
-      if(decodeddata['data'][u]['merch_update_actual']==null){
-        ShareData.noactual=null;
+      if(decodeddata['data'][u]['merch_update_actual']!=null){
+        shareofshelfcheck = true;
       }
       if(decodeddata['data'][u]['share']!=null){
         print("has data");
@@ -81,6 +81,7 @@ class ShareData{
   static List<String> noactual=[];
   static var nodata;
 }
+bool shareofshelfcheck = false;
 
 
 

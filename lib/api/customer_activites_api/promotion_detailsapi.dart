@@ -52,8 +52,8 @@ Future<void> getPromotionDetails() async {
             PromoData.inspdtdata.add(decodestores['data'][u]['product_name']);
             PromoData.insimage.add('https://rms2.rhapsody.ae/product_image/${decodestores['data'][u]['Image_url']}');
           }
-          if(decodestores['data'][u]['is_available']==null){
-            PromoData.isavail=null;
+          if(decodestores['data'][u]['is_available']!= null){
+            promocheck=true;
           }
         }
     // }
@@ -81,3 +81,4 @@ class PromoData {
   static List<String> isavail = [];
   static var nodata;
 }
+bool promocheck = false;

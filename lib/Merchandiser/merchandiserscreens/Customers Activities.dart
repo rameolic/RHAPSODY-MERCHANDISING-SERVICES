@@ -107,9 +107,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Activities(
-                        completedicon: Avaiablity.isavail==null||Avaiablity.nodata=="nodata"?CupertinoIcons.clear:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor:  Avaiablity.isavail==null||Avaiablity.nodata=="nodata"?pink:Colors.green,
-
+                        completedicon:CupertinoIcons.check_mark_circled_solid,
+                        iconcolor:  avaliabilitycheck?Colors.green:pink,
                         icon: CupertinoIcons.chart_bar_alt_fill,
                         chartext: 'Availability',
                         tap: () {
@@ -134,8 +133,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
 
                       ),
                       Activities(
-                        completedicon: VisibilityData.isavail==null||VisibilityData.nodata=="nodata"?CupertinoIcons.clear:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: VisibilityData.isavail==null||VisibilityData.nodata=="nodata"?pink:Colors.green,
+                        completedicon: CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: visibilitycheck?Colors.green:pink,
                         icon: CupertinoIcons.eye_solid,
                         chartext: 'Visibility',
                         tap: () {
@@ -165,8 +164,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Activities(
-                        completedicon:ShareData.noactual==null||ShareData.nodata=="nodata"?CupertinoIcons.clear:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor:ShareData.noactual==null||ShareData.nodata=="nodata"?pink:Colors.green,
+                        completedicon:CupertinoIcons.check_mark_circled_solid,
+                        iconcolor:shareofshelfcheck?Colors.green :pink,
                         icon: Icons.table_chart_sharp,
                         chartext: 'Share of Shelf',
                         tap: () {
@@ -185,9 +184,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         },
                       ),
                       Activities(
-                        completedicon: PlanoDetails.nodata=='nodata'||PlanoDetails.isavail==null?CupertinoIcons.clear:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: PlanoDetails.nodata=='nodata'||PlanoDetails.isavail==null?pink:Colors.green,
-
+                        completedicon:CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: planocheck?Colors.green:pink,
                         icon: CupertinoIcons.doc_checkmark_fill,
                         chartext: 'Planogram',
                         tap: () {
@@ -220,8 +218,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Activities(
-                        completedicon: PromoData.nodata=='nodata'||PromoData.isavail=='nochange'?CupertinoIcons.clear:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: PromoData.nodata=='nodata'||PromoData.isavail=='nochange'?pink:Colors.green,
+                        completedicon: CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: promocheck?Colors.green:pink,
                         icon: CupertinoIcons.checkmark_seal_fill,
                         chartext: 'Promotion Check',
                         tap: () {
@@ -236,7 +234,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         },
                       ),
                       Activities(
-
+                        completedicon: CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: compcheck?Colors.green:pink,
                         chartext: 'Compitetor info Capture',
                         icon: CupertinoIcons.info_circle_fill,
                         tap: () {
@@ -256,7 +255,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Activities(
-
+                        completedicon: CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: expirycheck?Colors.green:pink,
                         icon: CupertinoIcons.calendar_badge_minus,
                         chartext: 'Products Expiry Info',
                         tap: () {
@@ -271,7 +271,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                         },
                       ),
                       Activities(
-
+                        completedicon: CupertinoIcons.check_mark_circled_solid,
+                        iconcolor: checklist?Colors.green:pink,
                         icon: CupertinoIcons.text_badge_checkmark,
                         chartext: 'CheckList',
                         tap: () {

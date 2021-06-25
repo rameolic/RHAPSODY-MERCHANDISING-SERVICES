@@ -48,8 +48,8 @@ Future<void> getPlanogram() async {
         PlanoDetails.categoryname.add(decodeddata['data'][u]['category_name']);
         PlanoDetails.categoryid.add(decodeddata['data'][u]['c_id']);
 
-        if(decodeddata['data'][u]['before_image']==null){
-          PlanoDetails.isavail=null;
+        if(decodeddata['data'][u]['before_image']!=null){
+          planocheck = true;
         }
       }
     }
@@ -82,6 +82,7 @@ class PlanoDetails{
   static List<String> isavail =[];
   static var nodata;
 }
+bool planocheck = false;
 
 
 

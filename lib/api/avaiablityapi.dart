@@ -73,6 +73,7 @@ Future<void> getAvaiablitity() async {
           Avaiablity.oosreason.add(Avaiablity.reason[i]);
         }else{
           print('came in');
+          avaliabilitycheck = true;
           Avaiablity.insreason.add(Avaiablity.productname[i]);
         }
       }
@@ -100,6 +101,7 @@ class Avaiablity{
   static List<String> isavail=[];
   static var nodata;
 }
+bool avaliabilitycheck = false;
 
 
 

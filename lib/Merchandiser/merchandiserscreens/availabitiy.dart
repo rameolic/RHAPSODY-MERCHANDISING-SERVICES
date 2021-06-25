@@ -97,6 +97,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                   AddAvail.reason = Avaiablity.reason;
                   AddAvail.checkvalue = Avaiablity.checkvalue;
                   await addAvailability();
+                  avaliabilitycheck = true;
                   setState(() {
                     isApiCallProcess = false;
                   });

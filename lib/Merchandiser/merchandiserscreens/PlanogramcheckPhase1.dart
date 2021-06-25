@@ -92,6 +92,7 @@ class _PlanogramCheckPhase1State extends State<PlanogramCheckPhase1> {
                 AddPlanoData.planoimage = PlanoDetails.image;
                AddPlanoData.categoryid = PlanoDetails.categoryid;
                 await addPlanogramdata();
+                planocheck=true;
                 setState(() {
                   isApicallProcess = false;
                 });

@@ -124,6 +124,7 @@ class _VisibilityOneState extends State<VisibilityOne> {
                     AddVisiData.poi.add("");
                   }
                 }
+                visibilitycheck = true;
                 await addVisibilitydata();
                 setState(() {
                   isApiCallProcess =false;

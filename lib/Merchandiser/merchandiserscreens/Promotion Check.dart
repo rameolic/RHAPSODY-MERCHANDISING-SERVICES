@@ -143,7 +143,7 @@ class _PromotionCheckState extends State<PromotionCheck> {
                                       },
                                       items: DropDownItems,
                                       hint: Text(
-                                        "Select Company",
+                                        "Select Product",
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ),
@@ -477,6 +477,7 @@ class SubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        promocheck = true;
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

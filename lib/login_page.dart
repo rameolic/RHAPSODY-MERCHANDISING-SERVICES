@@ -194,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                                           getstockexpiryproducts();
                                           getempdetailsforreport();
                                           var DBMresult =  DBRequestmonthly();
-                                          var DBDresult =  DBRequestdaily();
+                                          var DBDresult =  await DBRequestdaily();
                                           await getLocation();
                                           await callfrequently();
                                           const period = const Duration(seconds: 600);

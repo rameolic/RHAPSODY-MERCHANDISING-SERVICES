@@ -67,7 +67,7 @@ class ExpiryReport extends StatefulWidget {
   @override
   _ExpiryReportState createState() => _ExpiryReportState();
 }
-
+bool expirycheck = false;
 class _ExpiryReportState extends State<ExpiryReport> {
   bool isApiCallProcess = false;
   @override
@@ -104,11 +104,12 @@ class _ExpiryReportState extends State<ExpiryReport> {
                     pcexpirydate = addedexpirydate[u];
                     exposureqntypc = addedexposurequnatity[u];
                     remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
-                    await addexpiryproducts();
+                   // await addexpiryproducts();
                   }
                   setState(() {
                     isApiCallProcess = false;
                   });
+                  expirycheck= true;
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

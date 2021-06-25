@@ -297,7 +297,7 @@ class _DashBoardState extends State<DashBoard> {
                                                     // ignore: unrelated_type_equality_checks
                                                     if(checkintime !=  DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()){
                                                       addcheckintime();
-                                                      // addattendence();
+                                                      addattendence();
                                                     }else{
                                                       print('checkintime already added');
                                                     }
@@ -641,7 +641,8 @@ class _DashBoardState extends State<DashBoard> {
                                 icon: CupertinoIcons.calendar,
 
                                 chartext: "Attendence",
-                                numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
+                                numtext: "23",
+                                //numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.clock,

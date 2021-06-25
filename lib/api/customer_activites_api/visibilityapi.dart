@@ -51,16 +51,13 @@ Future<void> getVisibility() async {
         VisibilityData.productid.add(decodeddata['data'][u]['product_id']);
         VisibilityData.mappingid=decodeddata['data'][u]['opm'];
         VisibilityData.isavailable.add(decodeddata['data'][u]['is_available']);
-        if(decodeddata['data'][u]['is_available']==null){
-          VisibilityData.isavail=null;
-          // print(VisibilityData.isavail);
-        }
         if(decodeddata['data'][u]['is_available'] == '0'){
           print("yes");
           VisibilityData.ooscatdata.add(decodeddata['data'][u]['category_name']);
           VisibilityData.oosreason.add(decodeddata['data'][u]['reason']);
-        }else{
+        }else if(decodeddata['data'][u]['is_available'] == '1'){
           print("Ohh double yes");
+          visibilitycheck = true;
           print(decodeddata['data'][u]['image_url']);
           VisibilityData.inscatdata.add(decodeddata['data'][u]['category_name']);
           VisibilityData.insimage.add('https://rms2.rhapsody.ae/visibility_image/${decodeddata['data'][u]['image_url']}');
@@ -113,6 +110,7 @@ class VisibilityData{
   static String nodata;
 
 }
+bool visibilitycheck = false;
 
 
 
