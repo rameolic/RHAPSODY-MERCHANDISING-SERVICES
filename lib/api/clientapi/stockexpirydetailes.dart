@@ -126,7 +126,7 @@ Future Addedstockdataformerch() async {
         Stockdatamerch.outletid.add(decodeoutlet['data'][u]['outlet_id']);
         Stockdatamerch.pieceperprice
             .add(decodeoutlet['data'][u]['piece_price']);
-        Stockdatamerch.nearexpiry.add(decodeoutlet['data'][u]['near_expiry']);
+        Stockdatamerch.nearexpiry.add(decodeoutlet['data'][u]['number_ of_ expiry_items_count']);
         Stockdatamerch.exposurequantity
             .add(decodeoutlet['data'][u]['exposure_qty']);
         Stockdatamerch.expirydate.add(decodeoutlet['data'][u]['expiry_date']);
