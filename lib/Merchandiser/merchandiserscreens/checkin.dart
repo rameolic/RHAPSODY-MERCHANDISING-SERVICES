@@ -17,7 +17,7 @@ import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dar
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import'package:merchandising/api/myattendanceapi.dart';
-
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 class CheckIn extends StatefulWidget {
 
   @override
@@ -108,6 +108,7 @@ class _CheckInState extends State<CheckIn> {
           getCompetition();
           getPromotionDetails();
           getNBLdetails();
+          Addedstockdataformerch();
           await getAvaiablitity();
           await getShareofshelf();
           addattendence();
@@ -301,6 +302,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             getPlanogram();
                                             getCompetition();
                                             getPromotionDetails();
+                                            Addedstockdataformerch();
                                             getNBLdetails();
                                             await getAvaiablitity();
                                             await getShareofshelf();
@@ -335,6 +337,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                               getcompinfo();
                                               getPlanogram();
                                               getCompetition();
+                                              Addedstockdataformerch();
                                               getPromotionDetails();
                                               getNBLdetails();
                                               await getAvaiablitity();
@@ -372,6 +375,7 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                                 getPlanogram();
                                                 getCompetition();
                                                 getPromotionDetails();
+                                                Addedstockdataformerch();
                                                 await getAvaiablitity();
                                                 await getShareofshelf();
                                                 getNBLdetails();

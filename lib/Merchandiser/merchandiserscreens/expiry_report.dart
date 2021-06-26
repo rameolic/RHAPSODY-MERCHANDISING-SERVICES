@@ -13,7 +13,7 @@ import 'MenuContent.dart';
 import 'package:intl/intl.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/database.dart';
-
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 var productname = "select from the above";
 var packtype = 'Regular';
 var range = 'Regular';
@@ -104,7 +104,10 @@ class _ExpiryReportState extends State<ExpiryReport> {
                     pcexpirydate = addedexpirydate[u];
                     exposureqntypc = addedexposurequnatity[u];
                     remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
-                   // await addexpiryproducts();
+                    int statuscode = await addexpiryproducts();
+                    if(statuscode == 200){
+                      await Addedstockdataformerch();
+                    }
                   }
                   setState(() {
                     isApiCallProcess = false;
@@ -139,7 +142,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
           children: [
             BackGround(),
             DefaultTabController(
-              length: 2, // lengt0h of tabs
+              length: 3, // lengt0h of tabs
               initialIndex: 0,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
@@ -157,8 +160,9 @@ class _ExpiryReportState extends State<ExpiryReport> {
                       unselectedLabelColor: Colors.black,
                       indicatorColor: orange,
                       tabs: [
-                        Tab(text: 'Add Expiry Data'),
-                        Tab(text: 'Added Expiry Data'),
+                        Tab(text: 'Add Data'),
+                        Tab(text: 'Saved Data'),
+                        Tab(text: 'Submitted Data'),
                       ],
                     ),
                   ),
@@ -470,6 +474,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                         ),
                       ),
                       Addedexpirydata(),
+                      SubmittedData()
                     ]),
               ),
             ),
@@ -1062,3 +1067,196 @@ List<int> addeditemscount = [];
 List<int> addedexposurequnatity = [];
 List<String> addedremarks = [];
 List<int> addedproductid = [];
+
+
+class SubmittedData extends StatefulWidget {
+  const SubmittedData({Key key}) : super(key: key);
+
+  @override
+  _SubmittedDataState createState() => _SubmittedDataState();
+}
+
+class _SubmittedDataState extends State<SubmittedData> {
+  var _searchview = new TextEditingController();
+
+  bool _firstSearch = true;
+
+  String _query = "";
+
+  List<dynamic> inputlist;
+
+  List<String> _filterList;
+
+  List<String> _filteredexpiryList;
+  List<int> _filteredeitemsList;
+
+  @override
+  void initState() {
+    super.initState();
+    inputlist = Stockdatamerch.productname;
+    inputlist.sort();
+  }
+
+  _SubmittedDataState() {
+    _searchview.addListener(() {
+      if (_searchview.text.isEmpty) {
+        setState(() {
+          _firstSearch = true;
+          _query = "";
+        });
+      } else {
+        setState(() {
+          _firstSearch = false;
+          _query = _searchview.text;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _createSearchView(),
+        SizedBox(
+          height: 10.0,
+        ),
+        _firstSearch ? _createListView() : _performSearch(),
+      ],
+    );
+  }
+
+  Widget _createSearchView() {
+    return new Container(
+      margin: EdgeInsets.fromLTRB(10.0, 10, 10, 0),
+      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+      width: double.infinity,
+      decoration:
+      BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10.0)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: new TextField(
+              style: TextStyle(color: orange),
+              controller: _searchview,
+              cursorColor: orange,
+              decoration: InputDecoration(
+                contentPadding:
+                EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                focusColor: orange,
+                hintText: 'Search by SKU/ZREP',
+                hintStyle: TextStyle(color: orange),
+                border: InputBorder.none,
+                isCollapsed: true,
+                icon: Icon(
+                  CupertinoIcons.search,
+                  color: orange,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+              onTap: () {
+                _searchview.clear();
+              },
+              child: Icon(
+                CupertinoIcons.clear_circled_solid,
+                color: orange,
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget _createListView() {
+    return Expanded(
+      child: ListView.builder(
+        //physics: const NeverScrollableScrollPhysics(),
+        //shrinkWrap: true,
+          itemCount:Stockdatamerch.productname.length,
+          itemBuilder: (BuildContext context, int index) {
+            print(Stockdatamerch.productname);
+            return Container(
+              height: 170,
+              margin: EdgeInsets.only(bottom:10,left: 10.0,right: 10.0),
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(child: Text("${Stockdatamerch.productname[index]}",style: TextStyle(color: orange),)),
+                    //Text("Outlet : ${Stockdata.outlet[index]}"),
+                    Text("Expiry Date : ${Stockdatamerch.expirydate[index].toString()}"),
+                    Text("Price : ${Stockdatamerch.pieceperprice[index].toString()} AED"),
+                    Text("Near to Expiry : ${Stockdatamerch.nearexpiry[index].toString()}"),
+                    Text("Exposure Quantity : ${Stockdatamerch.exposurequantity[index].toString()}"),
+                    Text("Remarks : ${Stockdatamerch.remarks[index].toString()}"),
+                    Text("Captured on : ${Stockdatamerch.captureddate[index].toString()}"),
+                  ],
+                ),
+              ),
+            );
+          }
+      ),
+    );
+  }
+List<int>_filterindex=[];
+  Widget _performSearch() {
+    _filterList = [];
+    _filterindex=[];
+    _filteredexpiryList = [];
+    _filteredeitemsList = [];
+    for (int i = 0; i < Stockdatamerch.productname.length; i++) {
+      var item = Stockdatamerch.productname[i];
+      if (item.toLowerCase().contains(_query.toLowerCase())) {
+        _filterindex.add(Stockdatamerch.productname.indexOf(item));
+      }
+    }
+    return _createFilteredListView();
+  }
+
+  Widget _createFilteredListView() {
+    return Expanded(
+      child: ListView.builder(
+        //physics: const NeverScrollableScrollPhysics(),
+        //shrinkWrap: true,
+          itemCount:_filterindex.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              height: 170,
+              margin: EdgeInsets.only(bottom:10,left: 10.0,right: 10.0),
+              padding: EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left:8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(child: Text("${Stockdatamerch.productname[_filterindex[index]]}",style: TextStyle(color: orange),)),
+                    //Text("Outlet : ${Stockdata.outlet[index]}"),
+                    Text("Expiry Date : ${Stockdatamerch.expirydate[_filterindex[index]].toString()}"),
+                    Text("Price : ${Stockdatamerch.pieceperprice[_filterindex[index]].toString()} AED"),
+                    Text("Near to Expiry : ${Stockdatamerch.nearexpiry[_filterindex[index]].toString()}"),
+                    Text("Exposure Quantity : ${Stockdatamerch.exposurequantity[_filterindex[index]].toString()}"),
+                    Text("Remarks : ${Stockdatamerch.remarks[_filterindex[index]].toString()}"),
+                    Text("Captured on : ${Stockdatamerch.captureddate[_filterindex[index]].toString()}"),
+                  ],
+                ),
+              ),
+            );
+          }
+      ),
+    );
+  }
+}

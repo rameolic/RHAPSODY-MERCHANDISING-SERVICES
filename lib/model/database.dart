@@ -96,7 +96,7 @@ Future getstockexpiryproducts() async{
   }
 }
 
-Future addexpiryproducts() async{
+Future<int> addexpiryproducts() async{
   Map stockdata = {
     "timesheet_id" : currenttimesheetid,
     //'outlet_products_mapping_id': comid,
@@ -117,6 +117,7 @@ Future addexpiryproducts() async{
        body: jsonEncode(stockdata),
   );
   print(Response.body);
+  return Response.statusCode;
   }
 //
 Future getaddedexpiryproducts() async {

@@ -59,9 +59,13 @@ class _UploadLivePhotoState extends State<UploadLivePhoto> {
                   if(CheckList[i]==true)
                   {
                     print("entered loop true");
+                    print(encodeimagecl[i].toString());
                     task.iscompleted.add(1);
-                    task.imgurl.add(encodeimagecl[i]);
-
+                    if(encodeimagecl[i].toString() == "dummy.txt"){
+                      task.imgurl.add("");
+                    }else{
+                      task.imgurl.add(encodeimagecl[i]);
+                    }
                   }
                   else{
                     print("entered loop false");
