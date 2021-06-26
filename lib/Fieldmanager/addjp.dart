@@ -81,7 +81,6 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
             backgroundColor: pink,
             iconTheme: IconThemeData(color: orange),
             title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Journey Plan",style: TextStyle(color: orange),),
                 EmpInfo()

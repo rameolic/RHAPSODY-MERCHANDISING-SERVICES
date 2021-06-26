@@ -35,7 +35,7 @@ Future getmerchnamelist() async{
       merchnamelist.firstname.add('${decodeddata["data"][u]['first_name']} '
           '${decodeddata["data"][u]['surname']}(${decodeddata["data"][u]['employee_id']})');
       merchnamelist.employeeid.add(decodeddata["data"][u]['employee_id']);
-      merchnamelist.name.add('${decodeddata["data"][u]['first_name']} ${decodeddata["data"][u]['surname']}');
+      merchnamelist.name.add('${decodeddata["data"][u]['first_name']}');
     }
   }
   print("MerchandiserNameList Done");

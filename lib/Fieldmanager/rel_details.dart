@@ -60,7 +60,6 @@ class _RelieverDetailsState extends State<RelieverDetails> {
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Reliever Details",style: TextStyle(color: orange),),
               EmpInfo()

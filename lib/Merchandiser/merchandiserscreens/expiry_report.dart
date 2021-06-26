@@ -141,7 +141,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
           children: [
             BackGround(),
             DefaultTabController(
-              length: 2, // lengt0h of tabs
+              length: 3, // lengt0h of tabs
               initialIndex: 0,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
@@ -161,7 +161,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                       tabs: [
                         Tab(text: 'Add Data'),
                         Tab(text: 'Saved Data'),
-                        //Tab(text: 'Submitted Data'),
+                        Tab(text: 'Submitted Data'),
                       ],
                     ),
                   ),
@@ -480,7 +480,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                         ),
                       ),
                       Addedexpirydata(),
-                      //SubmittedData()
+                      SubmittedData()
                     ]),
               ),
             ),

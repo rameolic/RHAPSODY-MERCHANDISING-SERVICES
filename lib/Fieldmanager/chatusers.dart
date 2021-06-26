@@ -56,47 +56,49 @@ class _ChatUsersState extends State<ChatUsers> {
                             fontSize: 16.0,color: orange
                         ))),
               ),
-              ListView.builder(
-                // physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: merchnamelist.firstname.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap:()async{
-                        setState(() {
-                          chat.receiver = merchnamelist.employeeid[index];
-                        });
-                        fieldmanagernameofcurrentmerch = merchnamelist.name[index];
-                        print(merchnamelist.employeeid[index]);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                // ignore: non_constant_identifier_names
-                                builder: (BuildContextcontext) => ChatScreen()));
-                      },
-                      child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          margin: EdgeInsets.fromLTRB(10.0,0,10,10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(Radius.circular(10))),
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Merchandiser : ${merchnamelist.name[index]}',
-                                  style: TextStyle(
-                                      fontSize: 16.0,color: orange
-                                  )),
-                              SizedBox(height: 5),
-                              Text('Emp ID : ${merchnamelist.employeeid[index]}',
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                  )),
-                            ],
-                          )),
-                    );
-                  }),
+              Expanded(
+                child: ListView.builder(
+                  // physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: merchnamelist.firstname.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap:()async{
+                          setState(() {
+                            chat.receiver = merchnamelist.employeeid[index];
+                          });
+                          fieldmanagernameofcurrentmerch = merchnamelist.name[index];
+                          print(merchnamelist.employeeid[index]);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  // ignore: non_constant_identifier_names
+                                  builder: (BuildContextcontext) => ChatScreen()));
+                        },
+                        child: Container(
+                            padding: EdgeInsets.all(10.0),
+                            margin: EdgeInsets.fromLTRB(10.0,0,10,10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(10))),
+                            width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Merchandiser : ${merchnamelist.name[index]}',
+                                    style: TextStyle(
+                                        fontSize: 16.0,color: orange
+                                    )),
+                                SizedBox(height: 5),
+                                Text('Emp ID : ${merchnamelist.employeeid[index]}',
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                    )),
+                              ],
+                            )),
+                      );
+                    }),
+              ),
             ],
           ),
         ],

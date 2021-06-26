@@ -62,7 +62,6 @@ class _OuletsState extends State<Oulets> {
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Outlet Details",style: TextStyle(color: orange),),
               EmpInfo()
