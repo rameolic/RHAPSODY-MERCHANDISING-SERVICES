@@ -105,10 +105,9 @@ class _ExpiryReportState extends State<ExpiryReport> {
                     exposureqntypc = addedexposurequnatity[u];
                     remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
                     int statuscode = await addexpiryproducts();
-                    if(statuscode == 200){
-                      await Addedstockdataformerch();
-                    }
+                    print(statuscode);
                   }
+                  await Addedstockdataformerch();
                   setState(() {
                     isApiCallProcess = false;
                   });
@@ -142,7 +141,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
           children: [
             BackGround(),
             DefaultTabController(
-              length: 3, // lengt0h of tabs
+              length: 2, // lengt0h of tabs
               initialIndex: 0,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
@@ -162,7 +161,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                       tabs: [
                         Tab(text: 'Add Data'),
                         Tab(text: 'Saved Data'),
-                        Tab(text: 'Submitted Data'),
+                        //Tab(text: 'Submitted Data'),
                       ],
                     ),
                   ),
@@ -407,58 +406,65 @@ class _ExpiryReportState extends State<ExpiryReport> {
                             ),
                             TextButton(
                                 onPressed: () async {
-                                  if (selectcode != null  && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
-                                    print("correct");
-                                    Storecode = outletid;
-                                    productid = Expiry.id[Expiry.productdetails.indexOf(productname)];
-                                    expirypc = expirypeciescount.text;
-                                    pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
-                                    periodchoosed = SelectedPeriod;
-                                    exposureqntypc = quantity.text == "" ? 0 : quantity.text;
-                                    pricepc = peiceprice.text == "" ? 0 : peiceprice.text;
-                                    filledby = '${DBrequestdata.receivedempid}';
-                                    remarksifany =
-                                        remarks.text == "" ? 0 : remarks.text;
-                                    if (Estimatedvalue == null) {
-                                      Flushbar(
-                                        message:
-                                            "please fill atleast one of the three forms",
-                                        duration: Duration(seconds: 3),
-                                      )..show(context);
-                                    } else {
-                                      setState(() {
-                                        isApiCallProcess = true;
-                                      });
-                                      //await addexpiryproducts();
-                                      addedproductid.add(productid);
-                                      addedproductname.add('${Expiry.zrepcodes[Expiry.productdetails.indexOf(productname)]}-$productname');
-                                      addedexpirydate.add("${ DateFormat("yyyy-MM-dd").format(ENDdate)}");
-                                      addeditemscount.add(int.parse(expirypeciescount.text));
-                                      addedexposurequnatity.add(int.parse(quantity.text));
-                                      addedpriceperitem.add(int.parse(peiceprice.text));
-                                      addedremarks.add(remarks.text==null?"":remarks.text);
+                                  if(int.parse(quantity.text) < int.parse(expirypeciescount.text)){
+                                    if (selectcode != null  && "${ENDdate.toLocal()}".split(' ')[0] != "${tomoroww.toLocal()}".split(' ')[0]) {
+                                      print("correct");
+                                      Storecode = outletid;
+                                      productid = Expiry.id[Expiry.productdetails.indexOf(productname)];
+                                      expirypc = expirypeciescount.text;
+                                      pcexpirydate = "${ENDdate.toLocal()}".split(' ')[0];
+                                      periodchoosed = SelectedPeriod;
+                                      exposureqntypc = quantity.text == "" ? 0 : quantity.text;
+                                      pricepc = peiceprice.text == "" ? 0 : peiceprice.text;
+                                      filledby = '${DBrequestdata.receivedempid}';
+                                      remarksifany =
+                                      remarks.text == "" ? 0 : remarks.text;
+                                      if (Estimatedvalue == null) {
+                                        Flushbar(
+                                          message:
+                                          "please fill atleast one of the three forms",
+                                          duration: Duration(seconds: 3),
+                                        )..show(context);
+                                      } else {
+                                        setState(() {
+                                          isApiCallProcess = true;
+                                        });
+                                        //await addexpiryproducts();
+                                        addedproductid.add(productid);
+                                        addedproductname.add('${Expiry.zrepcodes[Expiry.productdetails.indexOf(productname)]}-$productname');
+                                        addedexpirydate.add("${ DateFormat("yyyy-MM-dd").format(ENDdate)}");
+                                        addeditemscount.add(int.parse(expirypeciescount.text));
+                                        addedexposurequnatity.add(int.parse(quantity.text));
+                                        addedpriceperitem.add(int.parse(peiceprice.text));
+                                        addedremarks.add(remarks.text==null?"":remarks.text);
 
-                                      productname = "select from the above";
-                                      selectcode = null;
-                                      selecttype = null;
-                                      packtype = null;
-                                      expirypeciescount.clear();
-                                      quantity.clear();
-                                      peiceprice.clear();
-                                      remarks.clear();
-                                      setState(() {
-                                        isApiCallProcess = false;
-                                      });
+                                        productname = "select from the above";
+                                        selectcode = null;
+                                        selecttype = null;
+                                        packtype = null;
+                                        expirypeciescount.clear();
+                                        quantity.clear();
+                                        peiceprice.clear();
+                                        remarks.clear();
+                                        setState(() {
+                                          isApiCallProcess = false;
+                                        });
+                                        Flushbar(
+                                          message: "data updated sucessfully",
+                                          duration: Duration(seconds: 3),
+                                        )..show(context);
+                                      }
+                                    } else {
                                       Flushbar(
-                                        message: "data updated sucessfully",
+                                        message:selectcode == null
+                                            ? "please Select Product should not be null "
+                                            : "please select a vaild product Expiry date",
                                         duration: Duration(seconds: 3),
                                       )..show(context);
                                     }
-                                  } else {
+                                  }else{
                                     Flushbar(
-                                      message:selectcode == null
-                                              ? "please Select Product should not be null "
-                                                      : "please select a vaild product Expiry date",
+                                      message:"Exposure Quantity cannot be greater than Items Count",
                                       duration: Duration(seconds: 3),
                                     )..show(context);
                                   }
@@ -474,7 +480,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                         ),
                       ),
                       Addedexpirydata(),
-                      SubmittedData()
+                      //SubmittedData()
                     ]),
               ),
             ),

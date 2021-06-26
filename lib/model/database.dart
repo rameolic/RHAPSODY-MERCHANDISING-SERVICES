@@ -140,8 +140,9 @@ Future getaddedexpiryproducts() async {
     for (int u = 0; u < decodeData['data'].length; u++) {
       addedproductname.add(decodeData['data'][u]["product_name"]);
       addedexpirydate.add(decodeData['data'][u]["expiry_date"]);
-      addeditemscount.add(decodeData['data'][u]["near_expiry"]);
+      addeditemscounts.add(decodeData['data'][u]["near_expiry"]);
     }
     print(addedexpirydate);
   }
 }
+List<dynamic>addeditemscounts=[];
