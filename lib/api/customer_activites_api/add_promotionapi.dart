@@ -9,7 +9,7 @@ class AddPromo{
 
 }
 
-Future addPromotion() async{
+Future<int> addPromotion() async{
   Map addpromodata = {
     'outlet_id' : currentoutletid,
     'timesheet_id' : currenttimesheetid,
@@ -28,4 +28,5 @@ Future addPromotion() async{
     body: jsonEncode(addpromodata),
   );
   print(response.body);
+  return response.statusCode;
 }

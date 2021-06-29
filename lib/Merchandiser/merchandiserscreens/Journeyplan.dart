@@ -31,6 +31,8 @@ import'package:merchandising/api/myattendanceapi.dart';
 
 import 'package:merchandising/api/avaiablityapi.dart';
 import'package:intl/intl.dart';
+
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 List<String>breakspl =[];
 int ssi;
 var spltsidco;
@@ -448,8 +450,9 @@ class _State extends State<JourneyListBuilder> {
                                                     getPlanogram();
                                                     getCompetition();
                                                     getPromotionDetails();
-                                                    await getAvaiablitity();
-                                                    await getShareofshelf();
+                                                     getAvaiablitity();
+                                                     getShareofshelf();
+                                                    Addedstockdataformerch();
                                                     getmappedoutlets();
                                                     await outletwhencheckin();
                                                     await getmyattandance();

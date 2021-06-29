@@ -22,6 +22,7 @@ import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'Journeyplan.dart';
@@ -367,6 +368,7 @@ class _DashBoardState extends State<DashBoard> {
                                                 getPlanogram();
                                                 getCompetition();
                                                 getNBLdetails();
+                                                Addedstockdataformerch();
                                                 getPromotionDetails();
                                                 await getAvaiablitity();
                                                 await getShareofshelf();

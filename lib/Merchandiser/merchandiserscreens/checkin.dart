@@ -18,6 +18,8 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart'
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import'package:merchandising/api/myattendanceapi.dart';
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
+
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 class CheckIn extends StatefulWidget {
 
   @override

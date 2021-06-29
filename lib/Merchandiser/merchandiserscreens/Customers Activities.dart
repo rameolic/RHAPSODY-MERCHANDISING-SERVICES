@@ -38,6 +38,7 @@ import'package:merchandising/api/customer_activites_api/competition_details.dart
 import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
 import'package:intl/intl.dart';
 import'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
+import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
 
 List<bool> CheckList = [];
@@ -57,299 +58,305 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: containerscolor,
-          iconTheme: IconThemeData(color: orange),
-          title: Row(
+      child: ProgressHUD(
+        opacity: 0.3,
+        color: orange,
+        inAsyncCall: isApiCallProcess,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: containerscolor,
+            iconTheme: IconThemeData(color: orange),
+            title: Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Activities',
+                      style: TextStyle(color: orange),
+                    ),
+                    EmpInfo()
+                  ],
+                ),
+                Spacer(),
+                IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                   getTaskList();
+                   getAvaiablitity();
+                   getVisibility();
+                   getcompinfo();
+                   getPlanogram();
+                  Addedstockdataformerch();
+                  await getShareofshelf();
+                  await getCompetition();
+                  await getPromotionDetails();
+                  setState((){
+                    isApiCallProcess = false;
+                  });
+                }),
+                checkoutbutton(),
+              ],
+            ),
+          ),
+          drawer: Drawer(
+            child: Menu(),
+          ),
+          body: Stack(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Activities',
-                    style: TextStyle(color: orange),
-                  ),
-                  EmpInfo()
-                ],
+              BackGround(),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    OutletDetails(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Activities(
+                          completedicon:CupertinoIcons.check_mark_circled_solid,
+                          iconcolor:  avaliabilitycheck?Colors.green:pink,
+                          icon: CupertinoIcons.chart_bar_alt_fill,
+                          chartext: 'Availability',
+                          tap: () {
+                            print(CheckListItems);
+                            print(task.list);
+                            reasons = [];
+                            outofStockitems = [];
+                            for (int i = 0; i < Avaiablity.productname.length;
+                            i++) {
+                              reasons.add('');
+                              outofStockitems.add(1);
+                            }
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return AvailabilityScreen();
+                                },
+                              ),
+                              //  (Route<dynamic> route) => false,
+                            );
+                          },
+
+                        ),
+                        Activities(
+                          completedicon: CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: visibilitycheck?Colors.green:pink,
+                          icon: CupertinoIcons.eye_solid,
+                          chartext: 'Visibility',
+                          tap: () {
+                            checkvaluevisibility=[];
+                            visibilityreasons=[];
+                            for (int i = 0;
+                            i < VisibilityData.productname.length;
+                            i++) {
+                              images.add(File('dummy.txt'));
+                              visibilityreasons.add('');
+                              checkvaluevisibility.add(1);
+                            }
+                            print(images.length);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return VisibilityOne();
+                                },
+                              ),
+                              // (Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Activities(
+                          completedicon:CupertinoIcons.check_mark_circled_solid,
+                          iconcolor:shareofshelfcheck?Colors.green :pink,
+                          icon: Icons.table_chart_sharp,
+                          chartext: 'Share of Shelf',
+                          tap: () {
+                            actualpercent = [];
+                            for (int i = 0; i < ShareData.share.length; i++) {
+                              actualpercent.add(0.0);
+                            }
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ShareShelf();
+                                },
+                              ),
+                              // (Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                        Activities(
+                          completedicon:CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: planocheck?Colors.green:pink,
+                          icon: CupertinoIcons.doc_checkmark_fill,
+                          chartext: 'Planogram',
+                          tap: () {
+                            beforeimages = [];
+                            afterimages = [];
+                            beforeimagesencode = [];
+                            afterimagesencode = [];
+                            for (int i = 0;
+                            i < PlanoDetails.brandname.length;
+                            i++) {
+                              beforeimages.add(File('dummy.txt'));
+                              afterimages.add(File('dummy.txt'));
+                              beforeimagesencode.add('dummy.txt');
+                              afterimagesencode.add('dummy.txt');
+                            }
+                            print(beforeimages.length);
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return PlanogramCheckPhase1();
+                                },
+                              ),
+                              // (Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Activities(
+                          completedicon: CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: promocheck?Colors.green:pink,
+                          icon: CupertinoIcons.checkmark_seal_fill,
+                          chartext: 'Promotion Check',
+                          tap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return PromotionCheck();
+                                },
+                              ),
+                              //(Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                        Activities(
+                          completedicon: CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: compcheck?Colors.green:pink,
+                          chartext: 'Compitetor info Capture',
+                          icon: CupertinoIcons.info_circle_fill,
+                          tap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return CompetitionCheckOne();
+                                },
+                              ),
+                              //  (Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Activities(
+                          completedicon: CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: expirycheck?Colors.green:pink,
+                          icon: CupertinoIcons.calendar_badge_minus,
+                          chartext: 'Products Expiry Info',
+                          tap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ExpiryReport();
+                                },
+                              ),
+                              //(Route<dynamic> route) => false,
+                            );
+                          },
+                        ),
+                        Activities(
+                          completedicon: CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: checklist?Colors.green:pink,
+                          icon: CupertinoIcons.text_badge_checkmark,
+                          chartext: 'CheckList',
+                          tap: () {
+                            print(task.list.length);
+                            if (0==0) {
+                              setState(() {
+                                changecheckoutcolor = false;
+                              });
+                              CheckList = [];
+                              imagescl = [];
+                              encodeimagecl=[];
+
+                              for (int i = 0; i < task.list.length; i++) {
+                                CheckList.add(false);
+                                imagescl.add(File('dummy.txt'));
+                                encodeimagecl.add('dummy.txt');
+                              }
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          UploadLivePhoto()));
+
+
+                            }},
+
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              Spacer(),
-              IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                 getTaskList();
-                 getAvaiablitity();
-                 getVisibility();
-                 getcompinfo();
-                 getPlanogram();
-                await getShareofshelf();
-                await getCompetition();
-                await getPromotionDetails();
-                setState((){
-                  isApiCallProcess = false;
-                });
-              }),
-              checkoutbutton(),
+              NBlFloatingButton(),
+              // SafeArea(
+              //   child: Align(
+              //     alignment: Alignment.bottomRight,
+              //     child: GestureDetector(
+              //       onTap: ()async{
+              //         checkin();
+              //         var breakends = DateTime.now();
+              //         print(breakends);
+              //         splitbreak.citime=checkinoutdata.checkintime;
+              //         splitbreak.cotime=DateFormat('HH:mm:ss').format(breakends);
+              //         splitbreak.type="Break";
+              //         splitbreak.jtimeid="";
+              //         // splitbreak.jtimeid=jtimeidco;
+              //         setState(() {
+              //           isApiCallProcess=true;
+              //         });
+              //
+              //         await merchbreak();
+              //
+              //         setState(() {
+              //           isApiCallProcess=false;
+              //         });
+              //
+              //
+              //
+              //
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (BuildContext context) =>
+              //                     BreakTime(
+              //                     )));
+              //       },
+              //       child: Container(
+              //           decoration: BoxDecoration(color: pink,
+              //               borderRadius: BorderRadius.circular(10.0)),
+              //           margin: EdgeInsets.all(10.0),
+              //           padding: EdgeInsets.all(10.0),
+              //           child: Text("BREAK",style: TextStyle(color: Colors.black),)),
+              //     ),
+              //   ),
+              // )
             ],
           ),
-        ),
-        drawer: Drawer(
-          child: Menu(),
-        ),
-        body: Stack(
-          children: [
-            BackGround(),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  OutletDetails(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Activities(
-                        completedicon:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor:  avaliabilitycheck?Colors.green:pink,
-                        icon: CupertinoIcons.chart_bar_alt_fill,
-                        chartext: 'Availability',
-                        tap: () {
-                          print(CheckListItems);
-                          print(task.list);
-                          reasons = [];
-                          outofStockitems = [];
-                          for (int i = 0; i < Avaiablity.productname.length;
-                          i++) {
-                            reasons.add('');
-                            outofStockitems.add(1);
-                          }
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AvailabilityScreen();
-                              },
-                            ),
-                            //  (Route<dynamic> route) => false,
-                          );
-                        },
-
-                      ),
-                      Activities(
-                        completedicon: CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: visibilitycheck?Colors.green:pink,
-                        icon: CupertinoIcons.eye_solid,
-                        chartext: 'Visibility',
-                        tap: () {
-                          checkvaluevisibility=[];
-                          visibilityreasons=[];
-                          for (int i = 0;
-                          i < VisibilityData.productname.length;
-                          i++) {
-                            images.add(File('dummy.txt'));
-                            visibilityreasons.add('');
-                            checkvaluevisibility.add(1);
-                          }
-                          print(images.length);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return VisibilityOne();
-                              },
-                            ),
-                            // (Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Activities(
-                        completedicon:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor:shareofshelfcheck?Colors.green :pink,
-                        icon: Icons.table_chart_sharp,
-                        chartext: 'Share of Shelf',
-                        tap: () {
-                          actualpercent = [];
-                          for (int i = 0; i < ShareData.share.length; i++) {
-                            actualpercent.add(0.0);
-                          }
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ShareShelf();
-                              },
-                            ),
-                            // (Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                      Activities(
-                        completedicon:CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: planocheck?Colors.green:pink,
-                        icon: CupertinoIcons.doc_checkmark_fill,
-                        chartext: 'Planogram',
-                        tap: () {
-                          beforeimages = [];
-                          afterimages = [];
-                          beforeimagesencode = [];
-                          afterimagesencode = [];
-                          for (int i = 0;
-                          i < PlanoDetails.brandname.length;
-                          i++) {
-                            beforeimages.add(File('dummy.txt'));
-                            afterimages.add(File('dummy.txt'));
-                            beforeimagesencode.add('dummy.txt');
-                            afterimagesencode.add('dummy.txt');
-                          }
-                          print(beforeimages.length);
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PlanogramCheckPhase1();
-                              },
-                            ),
-                            // (Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Activities(
-                        completedicon: CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: promocheck?Colors.green:pink,
-                        icon: CupertinoIcons.checkmark_seal_fill,
-                        chartext: 'Promotion Check',
-                        tap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PromotionCheck();
-                              },
-                            ),
-                            //(Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                      Activities(
-                        completedicon: CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: compcheck?Colors.green:pink,
-                        chartext: 'Compitetor info Capture',
-                        icon: CupertinoIcons.info_circle_fill,
-                        tap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CompetitionCheckOne();
-                              },
-                            ),
-                            //  (Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Activities(
-                        completedicon: CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: expirycheck?Colors.green:pink,
-                        icon: CupertinoIcons.calendar_badge_minus,
-                        chartext: 'Products Expiry Info',
-                        tap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ExpiryReport();
-                              },
-                            ),
-                            //(Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                      Activities(
-                        completedicon: CupertinoIcons.check_mark_circled_solid,
-                        iconcolor: checklist?Colors.green:pink,
-                        icon: CupertinoIcons.text_badge_checkmark,
-                        chartext: 'CheckList',
-                        tap: () {
-                          print(task.list.length);
-                          if (0==0) {
-                            setState(() {
-                              changecheckoutcolor = false;
-                            });
-                            CheckList = [];
-                            imagescl = [];
-                            encodeimagecl=[];
-
-                            for (int i = 0; i < task.list.length; i++) {
-                              CheckList.add(false);
-                              imagescl.add(File('dummy.txt'));
-                              encodeimagecl.add('dummy.txt');
-                            }
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        UploadLivePhoto()));
-
-
-                          }},
-
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            NBlFloatingButton(),
-            // SafeArea(
-            //   child: Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: GestureDetector(
-            //       onTap: ()async{
-            //         checkin();
-            //         var breakends = DateTime.now();
-            //         print(breakends);
-            //         splitbreak.citime=checkinoutdata.checkintime;
-            //         splitbreak.cotime=DateFormat('HH:mm:ss').format(breakends);
-            //         splitbreak.type="Break";
-            //         splitbreak.jtimeid="";
-            //         // splitbreak.jtimeid=jtimeidco;
-            //         setState(() {
-            //           isApiCallProcess=true;
-            //         });
-            //
-            //         await merchbreak();
-            //
-            //         setState(() {
-            //           isApiCallProcess=false;
-            //         });
-            //
-            //
-            //
-            //
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (BuildContext context) =>
-            //                     BreakTime(
-            //                     )));
-            //       },
-            //       child: Container(
-            //           decoration: BoxDecoration(color: pink,
-            //               borderRadius: BorderRadius.circular(10.0)),
-            //           margin: EdgeInsets.all(10.0),
-            //           padding: EdgeInsets.all(10.0),
-            //           child: Text("BREAK",style: TextStyle(color: Colors.black),)),
-            //     ),
-            //   ),
-            // )
-          ],
         ),
       ),
     );
@@ -788,41 +795,6 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                   ],
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    checklist == false
-                                        ? checklist = true
-                                        : checklist = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Check List',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            checklist == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: checklist == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
                               SizedBox(
                                 height: 20,
                               ),
@@ -832,13 +804,13 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                 children: [
                                   GestureDetector(
                                     onTap: () async{
-                                      OutletSurveySubmit.availability == Availability ? 1 : 0;
-                                      OutletSurveySubmit.visibility == Visibility ? 1:0;
-                                      OutletSurveySubmit.sos == ShareofShelf?1:0;
-                                      OutletSurveySubmit.promotioncheck == Planogram?1:0;
-                                      OutletSurveySubmit.planogram == compitetorcheck?1:0;
-                                      OutletSurveySubmit.competitor == promotion?1:0;
-                                      OutletSurveySubmit.stockexpiry == expiryinfo?1:0;
+                                      OutletSurveySubmit.availability = Availability ? 1 : 0;
+                                      OutletSurveySubmit.visibility = Visibility ? 1:0;
+                                      OutletSurveySubmit.sos = ShareofShelf?1:0;
+                                      OutletSurveySubmit.promotioncheck = Planogram?1:0;
+                                      OutletSurveySubmit.planogram = compitetorcheck?1:0;
+                                      OutletSurveySubmit.competitor = promotion?1:0;
+                                      OutletSurveySubmit.stockexpiry = expiryinfo?1:0;
                                       print(ssi);
                                       print(gettodayjp.status[ssi]);
                                       if(gettodayjp.status[ssi]=="done"){

@@ -181,7 +181,97 @@ class _TimeSheetListState extends State<TimeSheetList> {
                   ],
                 ),
               ),
-              pressAttentionMTB == true ? Timesheetmonthly() : TimeSheetdaily(),
+              pressAttentionMTB == true ? Timesheetmonthly() : SizedBox(
+                height: MediaQuery.of(context).size.height/1.43,
+                width: double.infinity,
+                child: ListView.builder(
+                    shrinkWrap: false,
+                    itemCount: TimeSheetdatadaily.checkintime.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      outletindex=index;
+
+                      return GestureDetector(
+                        onTap: ()async{
+
+                          for(int i=0;i<TimeSheetdatadaily.checkintime.length;i++){
+                            outletnameSS.add("");
+                          }
+                          outletnameSS[outletindex]=TimeSheetdatadaily.outletname[index];
+                          currenttimesheetid=TimeSheetdatadaily.tsid[index];
+
+                          print("TS is for SS:${currenttimesheetid}");
+
+                          setState(() {
+                            isApiCallProcess=true;
+                          });
+
+                          await getTotalJnyTime();
+
+                          setState(() {
+                            isApiCallProcess=false;
+                          });
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) => TimeSheetListSS()));
+
+
+                        },
+                        child: Container(
+                            height: 100,
+                            padding: EdgeInsets.all(10.0),
+                            margin: EdgeInsets.fromLTRB(10.0,0,10.0,10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10.00)),
+                            width: MediaQuery.of(context).size.width,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(children: [
+                                    Text('Outlet Name : ',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                        )),
+                                    Text('${TimeSheetdatadaily.outletname[index]}', style: TextStyle(color: orange,fontSize: 16.0)),
+                                  ]),
+                                  Row(
+                                      children: [
+                                        Text('CheckIn Time : ',style: TextStyle(fontSize: 16.0,)),
+                                        Text('${TimeSheetdatadaily.checkintime[index]}',style: TextStyle(fontSize: 16.0,))
+                                      ]),
+                                  /*Row(children: [
+                          Text('Check In Location:',
+                              style: TextStyle(
+                                fontSize: 13.0,
+                              )),
+                          SizedBox(width: 10),
+                          Text(${TimeSheetdata.[index]}),
+                        ]),*/
+                                  Row(children: [
+                                    Text('CheckOut Time : ',style: TextStyle(fontSize: 16.0,)),
+                                    Text('${TimeSheetdatadaily.checkouttime[index]}',style: TextStyle(fontSize: 16.0,))
+                                  ]),
+                                  /* Row(children: [
+                          Text('Check Out Location:',
+                              style: TextStyle(
+                                fontSize: 13.0,
+                              )),
+                          SizedBox(width: 10),
+                          Text('${checkoutlocation[index]}',
+                          ),
+                        ]),*/
+                                ],
+                              ),
+                            )),
+                      );
+                    }),
+              )
 
               // Container(
               //   margin: EdgeInsets.only(bottom:10.0,right: 10.0),

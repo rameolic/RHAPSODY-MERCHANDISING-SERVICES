@@ -3,6 +3,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/ProgressHUD.dart';
+
+import 'package:flushbar/flushbar.dart';
 import 'Customers Activities.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:photo_view/photo_view.dart';
@@ -285,10 +287,17 @@ class _PromotionCheckState extends State<PromotionCheck> {
                           AddPromo.reason.add(isSwitched != true ?
                           'data:image/jpeg;base64,${base64Encode(imagebytes)}'
                               : '$Selectedreason');
-                          await addPromotion();
+                          int result = await addPromotion();
                           setState(() {
                             isApiCallProcess = false;
                           });
+                          if(result == 200){
+                            Flushbar(
+                              message:
+                              "Data Updated",
+                              duration: Duration(seconds: 3),
+                            )..show(context);
+                          }
                         },
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(pink)),

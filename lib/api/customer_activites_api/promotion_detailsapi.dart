@@ -45,14 +45,17 @@ Future<void> getPromotionDetails() async {
           PromoData.todate.add(decodestores['data'][u]['to_date']);
           PromoData.description.add( decodestores['data'][u]['description']);
 
-          if(decodestores['data'][u]['is_available'] == '0' &&  currentuser.roleid == 5){
+          if(decodestores['data'][u]['is_available'] == '0'){
             PromoData.oospdtdata.add(decodestores['data'][u]['product_name']);
             PromoData.oosreason.add(decodestores['data'][u]['reason']);
           }else{
             PromoData.inspdtdata.add(decodestores['data'][u]['product_name']);
+            promocheck=true;
             PromoData.insimage.add('https://rms2.rhapsody.ae/product_image/${decodestores['data'][u]['Image_url']}');
           }
+          print("mowa ikkada okasa look yee : ${decodestores['data'][u]['is_available']}");
           if(decodestores['data'][u]['is_available']!= null){
+            print("check");
             promocheck=true;
           }
         }
