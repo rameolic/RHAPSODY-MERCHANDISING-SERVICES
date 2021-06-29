@@ -237,6 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                                            getmerchnamelist();
                                           getallempdetails();
                                            getStoreDetails();
+                                          OutletsForClient();
                                           getRelieverDetails();
                                           await getFMoutletdetails();
                                           Navigator.pushReplacement(

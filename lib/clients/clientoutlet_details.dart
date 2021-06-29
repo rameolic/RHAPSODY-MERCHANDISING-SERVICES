@@ -65,7 +65,6 @@ class _ClientOutletsdataState extends State<ClientOutletsdata> {
             backgroundColor: pink,
             iconTheme: IconThemeData(color: orange),
             title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
                     onTap: (){

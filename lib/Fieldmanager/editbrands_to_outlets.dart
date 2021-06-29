@@ -77,7 +77,6 @@ class _EditBrandstoOutletState extends State<EditBrandstoOutlet> {
             backgroundColor: containerscolor,
             iconTheme: IconThemeData(color: orange),
             title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Add Activities',

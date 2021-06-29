@@ -61,7 +61,6 @@ class _AddNBLState extends State<AddNBL> {
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Add NBL',

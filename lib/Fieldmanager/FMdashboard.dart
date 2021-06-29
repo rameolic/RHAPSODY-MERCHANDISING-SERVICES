@@ -17,6 +17,7 @@ import 'package:merchandising/api/leavestakenapi.dart';
 import 'merchandiserslist.dart';
 import 'package:merchandising/api/FMapi/merc_leave_details.dart';
 import 'chatusers.dart';
+import 'package:merchandising/clients/clientoutlet_details.dart';
 import 'package:merchandising/model/myattendance.dart';
 import'package:merchandising/api/noti_detapi.dart';
 
@@ -694,15 +695,11 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                         children: [
                           GestureDetector(
                             onTap: ()async{
-                              // setState(() {
-                              //   isApiCallProcess =true;
-                              // });
-                              // await getmyattandance();
-                              // setState(() {
-                              //   isApiCallProcess = false;
-                              // });
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) => MyAttendance()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ClientOutletsdata()));
                             },
                             child: Container(
                               height: 120,
@@ -718,9 +715,12 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("My Attendance",style: TextStyle(fontSize: 15.0),),
-                                  Text(FMdashboarddata.attendance.toString(), style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 30),),
+                                  Icon(
+                                    CupertinoIcons.doc_chart_fill,
+                                    size: 35,
+                                    color: iconscolor,
+                                  ),
+                                  Text("Reports",style: TextStyle(fontSize: 15.0),),
                                 ],
                               ),
                             ),

@@ -96,6 +96,7 @@ Future<void> main() async {
       getmappedoutlets();
       getallempdetails();
       getRelieverDetails();
+      OutletsForClient();
       await getFMoutletdetails();
 
 

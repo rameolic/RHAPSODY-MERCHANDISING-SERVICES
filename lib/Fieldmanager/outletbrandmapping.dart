@@ -83,7 +83,6 @@ class _OutletsmapedtoBrandsState extends State<OutletsmapedtoBrands> {
             backgroundColor: pink,
             iconTheme: IconThemeData(color: orange),
             title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Mapped Outlets",style: TextStyle(color: orange),),
                 EmpInfo()

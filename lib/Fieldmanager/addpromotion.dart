@@ -59,7 +59,6 @@ class _AddPromotionState extends State<AddPromotion> {
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Add Promotion',

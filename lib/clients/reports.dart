@@ -430,32 +430,32 @@ class _AvaialibilityState extends State<Avaialibility> {
               ),
             ),
             Spacer(),
-            GestureDetector(
-              onTap: ()async{
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                String exportedlocation = await Exportavaiablity();
-                setState(() {
-                  isApiCallProcess = false;
-                });
-                if(exportedlocation != null){
-                  Flushbar(
-                    message: 'File was successfully saved at $exportedlocation',
-                    duration: Duration(seconds: 5),
-                  )..show(context);
-                 // OpenFile.open('storage/emulated/0/Android/data/rameolic.merchandising/files/');
-                }else{
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage,
-                  ].request();
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:8),
-                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: ()async{
+            //     setState(() {
+            //       isApiCallProcess = true;
+            //     });
+            //     String exportedlocation = await Exportavaiablity();
+            //     setState(() {
+            //       isApiCallProcess = false;
+            //     });
+            //     if(exportedlocation != null){
+            //       Flushbar(
+            //         message: 'File was successfully saved at $exportedlocation',
+            //         duration: Duration(seconds: 5),
+            //       )..show(context);
+            //      // OpenFile.open('storage/emulated/0/Android/data/rameolic.merchandising/files/');
+            //     }else{
+            //       Map<Permission, PermissionStatus> statuses = await [
+            //         Permission.storage,
+            //       ].request();
+            //     }
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom:8),
+            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(height: 10.0,),
@@ -595,31 +595,31 @@ class _VisibilityState extends State<Visibility> {
               ),
             ),
             Spacer(),
-            GestureDetector(
-              onTap: ()async{
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                String exportedlocation = await ExportVisibility();
-                setState(() {
-                  isApiCallProcess = false;
-                });
-                if(exportedlocation != null){
-                  Flushbar(
-                    message: 'File was successfully saved at $exportedlocation',
-                    duration: Duration(seconds: 5),
-                  )..show(context);
-                }else{
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage,
-                  ].request();
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:8),
-                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: ()async{
+            //     setState(() {
+            //       isApiCallProcess = true;
+            //     });
+            //     String exportedlocation = await ExportVisibility();
+            //     setState(() {
+            //       isApiCallProcess = false;
+            //     });
+            //     if(exportedlocation != null){
+            //       Flushbar(
+            //         message: 'File was successfully saved at $exportedlocation',
+            //         duration: Duration(seconds: 5),
+            //       )..show(context);
+            //     }else{
+            //       Map<Permission, PermissionStatus> statuses = await [
+            //         Permission.storage,
+            //       ].request();
+            //     }
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom:8),
+            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+            //   ),
+            // ),
           ],
         ),
         Row(
@@ -769,37 +769,37 @@ class _ShareOfShelfState extends State<ShareOfShelf> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        GestureDetector(
-          onTap: ()async{
-            setState(() {
-              isApiCallProcess = true;
-            });
-
-            // reports.reportfile = await ExportShareofshelf();
-            // UploadFile();
-            String downloadurl = await DownloadFile();
-            _launchInBrowser(downloadurl);
-            // WidgetsFlutterBinding.ensureInitialized();
-            // await FlutterDownloader.initialize(
-            //     debug: true // optional: set false to disable printing logs to console
-            // );
-            // var directory = await DownloadsPathProvider.downloadsDirectory;
-            // final taskId = await FlutterDownloader.enqueue(
-            //   url: downloadurl,
-            //   savedDir: directory.path,
-            //   showNotification: true, // show download progress in status bar (for Android)
-            //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-            // );
-            // print(taskId);
-            setState(() {
-              isApiCallProcess = false;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom:10),
-            child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-          ),
-        ),
+        // GestureDetector(
+        //   onTap: ()async{
+        //     setState(() {
+        //       isApiCallProcess = true;
+        //     });
+        //
+        //     // reports.reportfile = await ExportShareofshelf();
+        //     // UploadFile();
+        //     String downloadurl = await DownloadFile();
+        //     _launchInBrowser(downloadurl);
+        //     // WidgetsFlutterBinding.ensureInitialized();
+        //     // await FlutterDownloader.initialize(
+        //     //     debug: true // optional: set false to disable printing logs to console
+        //     // );
+        //     // var directory = await DownloadsPathProvider.downloadsDirectory;
+        //     // final taskId = await FlutterDownloader.enqueue(
+        //     //   url: downloadurl,
+        //     //   savedDir: directory.path,
+        //     //   showNotification: true, // show download progress in status bar (for Android)
+        //     //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+        //     // );
+        //     // print(taskId);
+        //     setState(() {
+        //       isApiCallProcess = false;
+        //     });
+        //   },
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(bottom:10),
+        //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.only(bottom:10.0),
           child: Table(
@@ -827,6 +827,7 @@ class _ShareOfShelfState extends State<ShareOfShelf> {
               itemBuilder: (BuildContext context, int index) {
                 return ShareData.actualpercent.toString() != "[null]" ?Column(
                   children: [
+
                     Table(
                       columnWidths: {
                         0: FlexColumnWidth(3),
@@ -836,8 +837,8 @@ class _ShareOfShelfState extends State<ShareOfShelf> {
                             children: [
                               Text(ShareData.categoryname[index]),
                               Center(child: Text("${ShareData.target[index]} %")),
-                              Center(child: Text('${ShareData.share[index]} m')),
-                              Center(child: Text('${double.parse(ShareData.actualpercent[index]).toStringAsFixed(0)} %')),
+                              Center(child: Text(ShareData.actualpercent[index] != null ?'${ShareData.share[index]} m':"No Data")),
+                              Center(child: Text(ShareData.actualpercent[index] != null ?'${double.parse(ShareData.actualpercent[index]).toStringAsFixed(0)} %':"No Data")),
                             ]
                         )
                       ],
@@ -865,31 +866,31 @@ class _PlanogramState extends State<Planogram> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        GestureDetector(
-          onTap: ()async{
-            setState(() {
-              isApiCallProcess = true;
-            });
-            String exportedlocation = await ExportPLanogram();
-            setState(() {
-              isApiCallProcess = false;
-            });
-            if(exportedlocation != null){
-              Flushbar(
-                message: 'File was successfully saved at $exportedlocation',
-                duration: Duration(seconds: 5),
-              )..show(context);
-            }else{
-              Map<Permission, PermissionStatus> statuses = await [
-                Permission.storage,
-              ].request();
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(bottom:10),
-            child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-          ),
-        ),
+        // GestureDetector(
+        //   onTap: ()async{
+        //     setState(() {
+        //       isApiCallProcess = true;
+        //     });
+        //     String exportedlocation = await ExportPLanogram();
+        //     setState(() {
+        //       isApiCallProcess = false;
+        //     });
+        //     if(exportedlocation != null){
+        //       Flushbar(
+        //         message: 'File was successfully saved at $exportedlocation',
+        //         duration: Duration(seconds: 5),
+        //       )..show(context);
+        //     }else{
+        //       Map<Permission, PermissionStatus> statuses = await [
+        //         Permission.storage,
+        //       ].request();
+        //     }
+        //   },
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(bottom:10),
+        //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+        //   ),
+        // ),
         Padding(
           padding: const EdgeInsets.only(bottom:10.0),
           child: Table(
@@ -1122,31 +1123,31 @@ class _PromotionState extends State<Promotion> {
               ),
             ),
             Spacer(),
-            GestureDetector(
-              onTap: ()async{
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                String exportedlocation = await Exportpromotion();
-                setState(() {
-                  isApiCallProcess = false;
-                });
-                if(exportedlocation != null){
-                  Flushbar(
-                    message: 'File was successfully saved at $exportedlocation',
-                    duration: Duration(seconds: 5),
-                  )..show(context);
-                }else{
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage,
-                  ].request();
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:10),
-                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: ()async{
+            //     setState(() {
+            //       isApiCallProcess = true;
+            //     });
+            //     String exportedlocation = await Exportpromotion();
+            //     setState(() {
+            //       isApiCallProcess = false;
+            //     });
+            //     if(exportedlocation != null){
+            //       Flushbar(
+            //         message: 'File was successfully saved at $exportedlocation',
+            //         duration: Duration(seconds: 5),
+            //       )..show(context);
+            //     }else{
+            //       Map<Permission, PermissionStatus> statuses = await [
+            //         Permission.storage,
+            //       ].request();
+            //     }
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom:10),
+            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+            //   ),
+            // ),
           ],
         ),
         Row(
@@ -1259,31 +1260,31 @@ class _CompetitionState extends State<Competition> {
           children: [
             Text("Competitor Info :",style: TextStyle(color: orange,fontSize: 16),),
 
-            GestureDetector(
-              onTap: ()async{
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                String exportedlocation = await ExportCompetation();
-                setState(() {
-                  isApiCallProcess = false;
-                });
-                if(exportedlocation != null){
-                  Flushbar(
-                    message: 'File was successfully saved at $exportedlocation',
-                    duration: Duration(seconds: 5),
-                  )..show(context);
-                }else{
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage,
-                  ].request();
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:10),
-                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: ()async{
+            //     setState(() {
+            //       isApiCallProcess = true;
+            //     });
+            //     String exportedlocation = await ExportCompetation();
+            //     setState(() {
+            //       isApiCallProcess = false;
+            //     });
+            //     if(exportedlocation != null){
+            //       Flushbar(
+            //         message: 'File was successfully saved at $exportedlocation',
+            //         duration: Duration(seconds: 5),
+            //       )..show(context);
+            //     }else{
+            //       Map<Permission, PermissionStatus> statuses = await [
+            //         Permission.storage,
+            //       ].request();
+            //     }
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom:10),
+            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+            //   ),
+            // ),
           ],
         ),
         Expanded(
@@ -1421,25 +1422,25 @@ class ExpiryData extends StatelessWidget {
               padding: const EdgeInsets.only(bottom:8),
               child: Text("Expiry Details :",style: TextStyle(color: orange,fontSize: 16),),
             ),
-            GestureDetector(
-              onTap: ()async{
-                String exported = await ExportStockExpiry();
-                if(exported != null){
-                    Flushbar(
-                      message: 'File was successfully saved at $exported',
-                      duration: Duration(seconds: 5),
-                    )..show(context);
-                  }else{
-                    Map<Permission, PermissionStatus> statuses = await [
-                      Permission.storage,
-                    ].request();
-                  }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom:8),
-                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: ()async{
+            //     String exported = await ExportStockExpiry();
+            //     if(exported != null){
+            //         Flushbar(
+            //           message: 'File was successfully saved at $exported',
+            //           duration: Duration(seconds: 5),
+            //         )..show(context);
+            //       }else{
+            //         Map<Permission, PermissionStatus> statuses = await [
+            //           Permission.storage,
+            //         ].request();
+            //       }
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(bottom:8),
+            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+            //   ),
+            // ),
           ],
         ),
         Expanded(
