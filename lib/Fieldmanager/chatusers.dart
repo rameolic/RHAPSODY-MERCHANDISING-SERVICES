@@ -20,7 +20,6 @@ class _ChatUsersState extends State<ChatUsers> {
         backgroundColor: pink,
         iconTheme: IconThemeData(color: orange),
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("HQ Communication",style: TextStyle(color: orange),),
             EmpInfo()

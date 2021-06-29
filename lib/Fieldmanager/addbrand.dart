@@ -38,7 +38,6 @@ class _AddBrandState extends State<AddBrand> {
             title: Row(
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Add Brand',

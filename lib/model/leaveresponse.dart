@@ -39,18 +39,13 @@ class _ResponsetoLeaveState extends State<ResponsetoLeave> {
         appBar: AppBar(
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
-          title: Row(
+          title: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Leave Response',
-                    style: TextStyle(color: orange),
-                  ),
-                  EmpInfo()
-                ],
+              Text(
+                'Leave Response',
+                style: TextStyle(color: orange),
               ),
+              EmpInfo()
             ],
           ),
         ),

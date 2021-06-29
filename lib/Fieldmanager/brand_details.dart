@@ -51,7 +51,6 @@ class _BrandDetailsState extends State<BrandDetails> {
           backgroundColor: pink,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Brand Details",style: TextStyle(color: orange),),
               EmpInfo(),

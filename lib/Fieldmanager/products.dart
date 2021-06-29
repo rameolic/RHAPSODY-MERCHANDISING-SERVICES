@@ -55,7 +55,6 @@ class _ProductsState extends State<Products> {
               child: Icon(CupertinoIcons.back,size: 30,)),
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Activities',

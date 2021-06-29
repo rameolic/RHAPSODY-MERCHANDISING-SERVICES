@@ -641,8 +641,7 @@ class _DashBoardState extends State<DashBoard> {
                                 icon: CupertinoIcons.calendar,
 
                                 chartext: "Attendence",
-                                numtext: "23",
-                                //numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
+                                numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.clock,
