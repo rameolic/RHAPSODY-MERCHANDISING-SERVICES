@@ -51,6 +51,7 @@ Future<void> getAvaiablitity() async {
       }
       //print(decodeddata['data'][u]['is_available']);
       if(decodeddata['data'][u]['is_available'] != null){
+        avaliabilitycheck = true;
         Avaiablity.checkvalue.add(int.parse(decodeddata['data'][u]['is_available']));
       }else{Avaiablity.checkvalue.add(1);}
       Avaiablity.storedetailes.add('[${decodeddata['data'][u]['store_code']}] ${decodeddata['data'][u]['store_name']}');
@@ -73,7 +74,6 @@ Future<void> getAvaiablitity() async {
           Avaiablity.oosreason.add(Avaiablity.reason[i]);
         }else{
           print('came in');
-          avaliabilitycheck = true;
           Avaiablity.insreason.add(Avaiablity.productname[i]);
         }
       }

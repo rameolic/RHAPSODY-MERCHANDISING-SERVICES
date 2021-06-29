@@ -9,7 +9,7 @@ import 'package:merchandising/api/monthlyvisitschart.dart';
 bool splitsf = false;
 
 int comid;
-
+Uri OutletSurvey = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_survey");
 Uri deltimesheet = Uri.parse("https://rms2.rhapsody.ae/api/delete_journeyplan");
 Uri ShareofshelfDetails = Uri.parse("https://rms2.rhapsody.ae/api/share_of_shelf_details");
 Uri PlanogramDetails = Uri.parse("https://rms2.rhapsody.ae/api/Planogram_details");
@@ -653,4 +653,38 @@ class forcecheck{
   static var checktype;
   static var reason;
 
+}
+
+Future outletsurvey() async{
+  Map outsvy =
+  {
+    "timesheet_id" : currenttimesheetid,
+    "employee_id" : '${DBrequestdata.receivedempid}',
+    "availability" : OutletSurveySubmit.availability,
+    "visibility":OutletSurveySubmit.visibility,
+    "shareofself" : OutletSurveySubmit.sos,
+    "promotioncheck":OutletSurveySubmit.promotioncheck,
+    "planogramcheck" : OutletSurveySubmit.planogram,
+    "compitetorinfo":OutletSurveySubmit.competitor,
+    "stockexpiry":OutletSurveySubmit.stockexpiry,
+  };
+  print(jsonEncode(outsvy));
+  http.Response response = await http.post(OutletSurvey,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body: jsonEncode(outsvy),
+  );
+  print(response.body);
+}
+class OutletSurveySubmit{
+  static var availability;
+  static var visibility;
+  static var sos;
+  static var promotioncheck;
+  static var planogram;
+  static var competitor;
+  static var stockexpiry;
 }

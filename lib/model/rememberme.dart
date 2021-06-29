@@ -33,9 +33,5 @@ chackdata() async{
 }
 
 
-addcheckintime() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('checkintime', "${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
-  print("checkintimeadded");
-}
+
 

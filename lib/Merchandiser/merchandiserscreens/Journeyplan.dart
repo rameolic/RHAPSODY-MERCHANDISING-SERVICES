@@ -342,7 +342,6 @@ class JourneyPlanHeader extends StatelessWidget {
 }
 
 List<String>journeydone=[];
-List<int> jtimeidss=[];
 
 class JourneyListBuilder extends StatefulWidget {
   @override
@@ -370,7 +369,6 @@ class _State extends State<JourneyListBuilder> {
             onTap: () async{
               for(int i=0;i<gettodayjp.status.length;i++){
                 journeydone.add("");
-                jtimeidss.add(0);
 
               }
               journeydone[ssi]=gettodayjp.status[index];
@@ -378,7 +376,6 @@ class _State extends State<JourneyListBuilder> {
               if(gettodayjp.status[index] == 'done'){
                 print("entered if");
                 print("JP Check in:${gettodayjp.checkintime[index]}");
-
                 print("JP Check out:${gettodayjp.checkouttime[index]}");
                 showDialog(
                     context: context,
@@ -462,8 +459,6 @@ class _State extends State<JourneyListBuilder> {
                                                     else{
                                                       await addattendence();
                                                     }
-
-
                                                     setState(() {
                                                       isApiCallProcess=false;
                                                     });

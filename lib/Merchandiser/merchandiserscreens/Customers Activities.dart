@@ -8,6 +8,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashb
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
+import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/camera.dart';
 import 'expiry_report.dart';
 import 'package:flutter/material.dart';
@@ -77,11 +78,11 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                 setState(() {
                   isApiCallProcess = true;
                 });
-                await getTaskList();
-                await getAvaiablitity();
-                await getVisibility();
-                await getcompinfo();
-                await getPlanogram();
+                 getTaskList();
+                 getAvaiablitity();
+                 getVisibility();
+                 getcompinfo();
+                 getPlanogram();
                 await getShareofshelf();
                 await getCompetition();
                 await getPromotionDetails();
@@ -497,8 +498,9 @@ bool ShareofShelf = false;
 bool Planogram = false;
 
 bool compitetorcheck = false;
-
+bool promotion = false;
 bool expiryinfo = false;
+bool checklist = false;
 
 // ignore: camel_case_types
 class checkoutbutton extends StatefulWidget {
@@ -511,38 +513,6 @@ class _checkoutbuttonState extends State<checkoutbutton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        print(journeydone[ssi]);
-        if(journeydone[ssi]=="done"){
-          setState(() {
-            isApiCallProcess=true;
-          });
-          print("entered if");
-          getTotalJnyTime();
-          var timeofsci = DateTime.now();
-          splitbreak.type="Split Shift";
-          currenttimesheetid=spltsidco;
-          splitbreak.citime="";
-          splitbreak.cotime =DateFormat('HH:mm:ss').format(timeofsci);
-          //splitbreak.jtimeid= jtimeidco;
-          //splitbreak.jtimeid=jtimeidss[selindexjid];
-          splitbreak.jtimeid=TotalJnyTime.id[selectJTID];
-          print(splitbreak.jtimeid);
-          setState(() {
-            isApiCallProcess=true;
-          });
-          await merchbreak();
-          await getTotalJnyTime();
-          setState(() {
-            isApiCallProcess=false;
-          });
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext
-                  context) =>
-                      JourneyPlan()));
-        }
-        else{
           print("entered else");
           showDialog(
                 context: context,
@@ -751,6 +721,41 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
+                                    promotion == false
+                                        ? promotion = true
+                                        : promotion = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Promotion Check',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            promotion == true
+                                                ? CupertinoIcons
+                                                .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                .xmark_circle_fill,
+                                            color: promotion == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
                                     expiryinfo == false
                                         ? expiryinfo = true
                                         : expiryinfo = false;
@@ -783,6 +788,41 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                   ],
                                 ),
                               ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    checklist == false
+                                        ? checklist = true
+                                        : checklist = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Check List',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            checklist == true
+                                                ? CupertinoIcons
+                                                .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                .xmark_circle_fill,
+                                            color: checklist == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
                               SizedBox(
                                 height: 20,
                               ),
@@ -791,10 +831,49 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                 MainAxisAlignment.spaceEvenly,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
-                                      if (true) {
+                                    onTap: () async{
+                                      OutletSurveySubmit.availability == Availability ? 1 : 0;
+                                      OutletSurveySubmit.visibility == Visibility ? 1:0;
+                                      OutletSurveySubmit.sos == ShareofShelf?1:0;
+                                      OutletSurveySubmit.promotioncheck == Planogram?1:0;
+                                      OutletSurveySubmit.planogram == compitetorcheck?1:0;
+                                      OutletSurveySubmit.competitor == promotion?1:0;
+                                      OutletSurveySubmit.stockexpiry == expiryinfo?1:0;
+                                      print(ssi);
+                                      print(gettodayjp.status[ssi]);
+                                      if(gettodayjp.status[ssi]=="done"){
+                                        setState(() {
+                                          isApiCallProcess=true;
+                                        });
+                                        print("entered if");
+                                        getTotalJnyTime();
+                                        var timeofsci = DateTime.now();
+                                        splitbreak.type="Split Shift";
+                                        currenttimesheetid=spltsidco;
+                                        splitbreak.citime="";
+                                        splitbreak.cotime =DateFormat('HH:mm:ss').format(timeofsci);
+                                        //splitbreak.jtimeid= jtimeidco;
+                                        //splitbreak.jtimeid=jtimeidss[selindexjid];
+                                        splitbreak.jtimeid=TotalJnyTime.id[selectJTID];
+                                        print(splitbreak.jtimeid);
+                                        setState(() {
+                                          isApiCallProcess=true;
+                                        });
+                                        await merchbreak();
+                                        outletsurvey();
+                                        await getTotalJnyTime();
+                                        setState(() {
+                                          isApiCallProcess=false;
+                                        });
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext
+                                                context) =>
+                                                    JourneyPlan()));
+                                      }else {
+                                        outletsurvey();
                                         SubmitCheckout();
-                                        sendtaskresponse();
                                         workingid != null
                                             ? workingid = null
                                             : workingid = workingid;
@@ -853,7 +932,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                     ),
                   );
                 }));
-      }},
+      },
       child: Container(
         margin: EdgeInsets.only(right: 10.00),
         padding: EdgeInsets.all(10.0),

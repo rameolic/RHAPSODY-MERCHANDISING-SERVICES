@@ -165,6 +165,7 @@ class _DashBoardState extends State<DashBoard> {
                     for(int u =0;u<gettodayjp.status.length;u++){
                       if(gettodayjp.status[u]=="working"){
                         workingid = gettodayjp.id[u];
+                        ssi = u;
                         currentoutletid = gettodayjp.outletids[u];
                         print(workingid);
                         print(gettodayjp.id[u]);
@@ -291,16 +292,6 @@ class _DashBoardState extends State<DashBoard> {
                                               GestureDetector(
                                                 onTap: () async{
                                                   if(uniform && unit && transport && posm){
-                                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                    String checkintime = prefs.getString('checkintime');
-                                                    print('checkintime : $checkintime');
-                                                    // ignore: unrelated_type_equality_checks
-                                                    if(checkintime !=  DateFormat('yyyy-MM-dd').format(DateTime.now()).toString()){
-                                                      addcheckintime();
-                                                      addattendence();
-                                                    }else{
-                                                      print('checkintime already added');
-                                                    }
                                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                   }
                                                 },
@@ -639,13 +630,11 @@ class _DashBoardState extends State<DashBoard> {
                               Text('Time Sheet'),
                               WorkingRow(
                                 icon: CupertinoIcons.calendar,
-
                                 chartext: "Attendence",
                                 numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
                               ),
                               WorkingRow(
                                 icon: CupertinoIcons.clock,
-
                                 chartext: "Effective Time",
                                 numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.EffectiveTime}' : '${DBResponsedatadaily.EffectiveTime}',
                               ),
