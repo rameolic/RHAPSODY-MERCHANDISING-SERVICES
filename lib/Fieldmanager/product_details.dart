@@ -75,25 +75,25 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
             ),
 
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(15.0),
-                child: FloatingActionButton(
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext
-                            context) =>
-                                AddProduct()));
-                  },
-                  backgroundColor: pink,
-                  elevation: 8.0,
-                  child: Icon(Icons.add,color: orange,),
-                ),
-              ),
-            ),
+            // Align(
+            //   alignment: Alignment.bottomRight,
+            //   child: Container(
+            //     margin: EdgeInsets.all(15.0),
+            //     child: FloatingActionButton(
+            //       onPressed: (){
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (BuildContext
+            //                 context) =>
+            //                     AddProduct()));
+            //       },
+            //       backgroundColor: pink,
+            //       elevation: 8.0,
+            //       child: Icon(Icons.add,color: orange,),
+            //     ),
+            //   ),
+            // ),
 
           ],
         ),

@@ -47,15 +47,15 @@ class getaddress {
   static var currentaddress;
 }
 
-void SubmitCheckin() {
-  address();
+void SubmitCheckin() async {
+  await address();
   var now = DateTime.now();
   print(now);
   Future.delayed(
       const Duration(seconds: 5), () {
         checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
         print(checkinoutdata.checkintime);
-      checkinoutdata.checkinlocation = getaddress.currentaddress;
+      checkinoutdata.checkinlocation = "${getaddress.currentaddress}($lat,$long)";
       checkin();
   });
 }
@@ -64,8 +64,8 @@ void SubmitCheckout() async {
   await address();
   var now = DateTime.now();
     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
-    checkinoutdata.checkoutlocation = getaddress.currentaddress;
-    await checkout();
+    checkinoutdata.checkoutlocation = "${getaddress.currentaddress}($lat,$long)";
+    checkout();
 }
 
 // ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}

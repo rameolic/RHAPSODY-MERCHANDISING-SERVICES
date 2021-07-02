@@ -25,6 +25,7 @@ import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dar
 import 'PlanogramcheckPhase1.dart';
 import 'NPD Check.dart';
 import 'CompetitionCheckOne.dart';
+import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'Visibility.dart';
 import 'OutletSurvey.dart';
 import 'Journeyplan.dart';
@@ -52,7 +53,11 @@ class CustomerActivities extends StatefulWidget {
 }
 
 class _CustomerActivitiesState extends State<CustomerActivities> {
-
+  final GlobalKey<_CustomerActivitiesState> _pdfViewerKey = GlobalKey();
+  @override
+  void initState() {
+    super.initState();
+  }
   Offset count =Offset(20.0,20.0);
   @override
   Widget build(BuildContext context) {
@@ -83,14 +88,15 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                   setState(() {
                     isApiCallProcess = true;
                   });
+                   getNBLdetails();
                    getTaskList();
                    getAvaiablitity();
                    getVisibility();
                    getcompinfo();
                    getPlanogram();
-                  Addedstockdataformerch();
-                  await getShareofshelf();
-                  await getCompetition();
+                  await Addedstockdataformerch();
+                   getShareofshelf();
+                   getCompetition();
                   await getPromotionDetails();
                   setState((){
                     isApiCallProcess = false;
@@ -496,6 +502,7 @@ class Activities extends StatelessWidget {
 
 bool isApiCallProcess = false;
 
+
 bool Availability = false;
 
 bool Visibility = false;
@@ -509,7 +516,6 @@ bool promotion = false;
 bool expiryinfo = false;
 bool checklist = false;
 
-// ignore: camel_case_types
 class checkoutbutton extends StatefulWidget {
   @override
   _checkoutbuttonState createState() => _checkoutbuttonState();
@@ -520,390 +526,359 @@ class _checkoutbuttonState extends State<checkoutbutton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-          print("entered else");
-          showDialog(
-                context: context,
-                builder: (_) => StatefulBuilder(builder: (context, setState) {
-                  return ProgressHUD(
-                    inAsyncCall: isApiCallProcess,
-                    opacity: 0.3,
-                    child: AlertDialog(
-                      backgroundColor: alertboxcolor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(10.0))),
-                      content: Builder(
-                        builder: (context) {
-                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
+        print("printed");
+
+        showDialog(
+            context: context,
+            builder: (_) => StatefulBuilder(builder: (context, setState) {
+              return ProgressHUD(
+                inAsyncCall: isApiCallProcess,
+                opacity: 0.3,
+                child: AlertDialog(
+                  backgroundColor: alertboxcolor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(10.0))),
+                  content: Builder(
+                    builder: (context) {
+                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Outlet Survey',
+                            style:
+                            TextStyle(color: orange, fontSize: 20),
+                          ),
+                          Divider(
+                            color: Colors.black,
+                            thickness: 0.8,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Availability == false
+                                    ? Availability = true
+                                    : Availability = false;
+
+
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      'Availability',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Availability == true
+                                          ? CupertinoIcons
+                                          .check_mark_circled_solid
+                                          : CupertinoIcons
+                                          .xmark_circle_fill,
+                                      color: Availability == true
+                                          ? orange
+                                          : Colors.grey,
+                                      size: 30,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Visibility == false
+                                    ? Visibility = true
+                                    : Visibility = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Visibility',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Icon(
+                                        Visibility == true
+                                            ? CupertinoIcons
+                                            .check_mark_circled_solid
+                                            : CupertinoIcons
+                                            .xmark_circle_fill,
+                                        color: Visibility == true
+                                            ? orange
+                                            : Colors.grey,
+                                        size: 30),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                ShareofShelf == false
+                                    ? ShareofShelf = true
+                                    : ShareofShelf = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Share of Shelf',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Icon(
+                                        ShareofShelf == true
+                                            ? CupertinoIcons
+                                            .check_mark_circled_solid
+                                            : CupertinoIcons
+                                            .xmark_circle_fill,
+                                        color: ShareofShelf == true
+                                            ? orange
+                                            : Colors.grey,
+                                        size: 30),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                Planogram == false
+                                    ? Planogram = true
+                                    : Planogram = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Planogram',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Icon(
+                                        Planogram == true
+                                            ? CupertinoIcons
+                                            .check_mark_circled_solid
+                                            : CupertinoIcons
+                                            .xmark_circle_fill,
+                                        color: Planogram == true
+                                            ? orange
+                                            : Colors.grey,
+                                        size: 30),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                compitetorcheck == false
+                                    ? compitetorcheck = true
+                                    : compitetorcheck = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Compitetor Info Capture',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Icon(
+                                        compitetorcheck == true
+                                            ? CupertinoIcons
+                                            .check_mark_circled_solid
+                                            : CupertinoIcons
+                                            .xmark_circle_fill,
+                                        color: compitetorcheck == true
+                                            ? orange
+                                            : Colors.grey,
+                                        size: 30),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                expiryinfo == false
+                                    ? expiryinfo = true
+                                    : expiryinfo = false;
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text('Expiry Info',
+                                        style: TextStyle(fontSize: 16)),
+                                    Spacer(),
+                                    Icon(
+                                        expiryinfo == true
+                                            ? CupertinoIcons
+                                            .check_mark_circled_solid
+                                            : CupertinoIcons
+                                            .xmark_circle_fill,
+                                        color: expiryinfo == true
+                                            ? orange
+                                            : Colors.grey,
+                                        size: 30),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                'Outlet Survey',
-                                style:
-                                TextStyle(color: orange, fontSize: 20),
-                              ),
-                              Divider(
-                                color: Colors.black,
-                                thickness: 0.8,
-                              ),
                               GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    Availability == false
-                                        ? Availability = true
-                                        : Availability = false;
-                                  });
+                                onTap: () async{
+
+                                  Availability==true?OutletSurveySubmit.availability=1:OutletSurveySubmit.availability=0;
+                                  Visibility==true?OutletSurveySubmit.visibility=1:OutletSurveySubmit.visibility=0;
+                                  ShareofShelf==true?OutletSurveySubmit.sos=1:OutletSurveySubmit.sos=0;
+                                  Planogram==true?OutletSurveySubmit.planogram=1:OutletSurveySubmit.planogram=0;
+                                  compitetorcheck==true?OutletSurveySubmit.competitor=1:OutletSurveySubmit.competitor=0;
+                                  promotion==true?OutletSurveySubmit.promotioncheck=1:OutletSurveySubmit.promotioncheck=0;
+                                  expiryinfo==true?OutletSurveySubmit.stockexpiry=1:OutletSurveySubmit.stockexpiry=0;
+
+                                  if(journeydone[ssi]=="done"){
+                                    print("entered if");
+                                    getTotalJnyTime();
+                                    var timeofsci = DateTime.now();
+                                    splitbreak.type="Split Shift";
+                                    currenttimesheetid=spltsidco;
+                                    splitbreak.citime="";
+                                    splitbreak.cotime =DateFormat('HH:mm:ss').format(timeofsci);
+                                    splitbreak.jtimeid=TotalJnyTime.id[selectJTID];
+
+                                    print(splitbreak.jtimeid);
+
+                                    setState(() {
+                                      isApiCallProcess=true;
+                                    });
+                                    await merchbreak();
+                                    await getTotalJnyTime();
+                                    setState(() {
+                                      isApiCallProcess=false;
+                                    });
+
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext
+                                            context) =>
+                                                JourneyPlan()));
+
+                                  }
+                                  else{
+                                    print("entered else");
+
+                                    SubmitCheckout();
+                                    sendtaskresponse();
+                                    workingid != null
+                                        ? workingid = null
+                                        : workingid = workingid;
+                                    checkedoutlet.checkoutlet = true;
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext
+                                            context) =>
+                                                JourneyPlan()));
+                                  }
                                 },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          'Availability',
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Availability == true
-                                              ? CupertinoIcons
-                                              .check_mark_circled_solid
-                                              : CupertinoIcons
-                                              .xmark_circle_fill,
-                                          color: Availability == true
-                                              ? orange
-                                              : Colors.grey,
-                                          size: 30,
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    Visibility == false
-                                        ? Visibility = true
-                                        : Visibility = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Visibility',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            Visibility == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: Visibility == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    ShareofShelf == false
-                                        ? ShareofShelf = true
-                                        : ShareofShelf = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Share of Shelf',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            ShareofShelf == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: ShareofShelf == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    Planogram == false
-                                        ? Planogram = true
-                                        : Planogram = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Planogram',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            Planogram == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: Planogram == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    compitetorcheck == false
-                                        ? compitetorcheck = true
-                                        : compitetorcheck = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Compitetor Info Capture',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            compitetorcheck == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: compitetorcheck == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    promotion == false
-                                        ? promotion = true
-                                        : promotion = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Promotion Check',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            promotion == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: promotion == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    expiryinfo == false
-                                        ? expiryinfo = true
-                                        : expiryinfo = false;
-                                  });
-                                },
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text('Expiry Info',
-                                            style: TextStyle(fontSize: 16)),
-                                        Spacer(),
-                                        Icon(
-                                            expiryinfo == true
-                                                ? CupertinoIcons
-                                                .check_mark_circled_solid
-                                                : CupertinoIcons
-                                                .xmark_circle_fill,
-                                            color: expiryinfo == true
-                                                ? orange
-                                                : Colors.grey,
-                                            size: 30),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () async{
-                                      OutletSurveySubmit.availability = Availability ? 1 : 0;
-                                      OutletSurveySubmit.visibility = Visibility ? 1:0;
-                                      OutletSurveySubmit.sos = ShareofShelf?1:0;
-                                      OutletSurveySubmit.promotioncheck = Planogram?1:0;
-                                      OutletSurveySubmit.planogram = compitetorcheck?1:0;
-                                      OutletSurveySubmit.competitor = promotion?1:0;
-                                      OutletSurveySubmit.stockexpiry = expiryinfo?1:0;
-                                      print(ssi);
-                                      print(gettodayjp.status[ssi]);
-                                      if(gettodayjp.status[ssi]=="done"){
-                                        setState(() {
-                                          isApiCallProcess=true;
-                                        });
-                                        print("entered if");
-                                        getTotalJnyTime();
-                                        var timeofsci = DateTime.now();
-                                        splitbreak.type="Split Shift";
-                                        currenttimesheetid=spltsidco;
-                                        splitbreak.citime="";
-                                        splitbreak.cotime =DateFormat('HH:mm:ss').format(timeofsci);
-                                        //splitbreak.jtimeid= jtimeidco;
-                                        //splitbreak.jtimeid=jtimeidss[selindexjid];
-                                        splitbreak.jtimeid=TotalJnyTime.id[selectJTID];
-                                        print(splitbreak.jtimeid);
-                                        setState(() {
-                                          isApiCallProcess=true;
-                                        });
-                                        await merchbreak();
-                                        outletsurvey();
-                                        await getTotalJnyTime();
-                                        setState(() {
-                                          isApiCallProcess=false;
-                                        });
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext
-                                                context) =>
-                                                    JourneyPlan()));
-                                      }else {
-                                        outletsurvey();
-                                        SubmitCheckout();
-                                        workingid != null
-                                            ? workingid = null
-                                            : workingid = workingid;
-                                        checkedoutlet.checkoutlet = true;
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext
-                                                context) =>
-                                                    JourneyPlan()));
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color: orange,
-                                        borderRadius:
-                                        BorderRadius.circular(5),
-                                      ),
-                                      child: Center(
-                                          child: Text('ok',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
-                                    ),
+                                child: Container(
+                                  height: 30,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    color: orange,
+                                    borderRadius:
+                                    BorderRadius.circular(5),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext
-                                              context) =>
-                                                  CustomerActivities()));
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                        BorderRadius.circular(5),
-                                      ),
-                                      child: Center(
-                                          child: Text('Cancel',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
-                                    ),
+                                  child: Center(
+                                      child: Text('ok',
+                                          style: TextStyle(
+                                              color: Colors.white))),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext
+                                          context) =>
+                                              CustomerActivities()));
+                                },
+                                child: Container(
+                                  height: 30,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius:
+                                    BorderRadius.circular(5),
                                   ),
-                                ],
+                                  child: Center(
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                              color: Colors.white))),
+                                ),
                               ),
                             ],
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                }));
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            }));
       },
       child: Container(
         margin: EdgeInsets.only(right: 10.00),

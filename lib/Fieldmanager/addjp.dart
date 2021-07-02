@@ -123,41 +123,6 @@ class _AddJourneyPlanState extends State<AddJourneyPlan> {
                             itemCount: merchnamelist.firstname.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
-                                onDoubleTap: ()async{
-                                  jpempid = merchnamelist.employeeid[index];
-                                   currenttimesheetid = getweeklyjp.timeid[index];
-                                    currentoutletid= getweeklyjp.outletid[index];
-
-
-                                  // currenttimesheetid=1107;
-                                  // outletrequestdata.outletidpressed = 63;
-                                  setState(() {
-                                    isApiCallProcess = true;
-                                  });
-                                  await outletwhencheckin();
-                                  await getJourneyPlanweekly();
-                                  await getPromotionDetails();
-                                  await getAvaiablitity();
-                                  await getVisibility();
-                                  await getPlanogram();
-                                  await getShareofshelf();
-                                  await getcompinfo();
-                                  await getTaskList();
-
-                                  setState(() {
-                                    isApiCallProcess = false;
-                                  });
-
-                                  print('time sheet id:${getweeklyjp.timeid[index]}');
-                                  print('outlet id: ${ getweeklyjp.outletid[index]}');
-
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext
-                                          context) =>
-                                              CustomerActivities()));
-                                  },
                                 onTap:()async{
                                   print(merchnamelist.employeeid[index]);
                                   jpempid = merchnamelist.employeeid[index];

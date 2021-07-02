@@ -75,6 +75,7 @@ Future<void> getJourneyPlan() async {
         gettodayjp.status.add('pending');
       }
     }
+    print("lat: ${ gettodayjp.outletlat}");
   }
   else{
     print(JPresponse.statusCode);

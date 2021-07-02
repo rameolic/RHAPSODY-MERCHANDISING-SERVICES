@@ -33,9 +33,13 @@ import 'package:merchandising/api/FMapi/product_detailsapi.dart';
 import'package:merchandising/api/clientapi/outletreport.dart';
 import 'clients/client_dashboard.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // await FlutterDownloader.initialize(
+  //     debug: true // optional: set false to disable printing logs to console
+  // );
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('useremail');
   var password = prefs.getString('userpassword');
@@ -51,6 +55,7 @@ Future<void> main() async {
        await DBRequestdaily();
        getaddedexpiryproducts();
       getempdetails();
+      getallempdetails();
       getempdetailsforreport();
       getstockexpiryproducts();
       await getLocation();

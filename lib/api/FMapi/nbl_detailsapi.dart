@@ -6,7 +6,7 @@ Future<void> getNBLdetails() async {
   Map body ={
     "outlet_id": currentoutletid,
   };
-
+  print(jsonEncode(body));
   http.Response response = await http.post(NBLDetailsFM,
     headers: {
       'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ Future<void> getNBLdetails() async {
     print("get FM NBL Details Done");
     String brand = response.body;
     var decodebrands = jsonDecode(brand);
-
+    print(brand);
     NBLDetData.fileurl=[];
     NBLDetData.outletid=[];
     NBLDetData.id=[];

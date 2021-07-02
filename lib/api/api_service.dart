@@ -108,7 +108,7 @@ Uri TotalJnryTime = Uri.parse("https://rms2.rhapsody.ae/api/outlet_journey_time_
 Uri ForceCIReason = Uri.parse("https://rms2.rhapsody.ae/api/add_force_checkin");
 Uri Uploadfile = Uri.parse("https://rms2.rhapsody.ae/api/add_excel_report");
 Uri downloadfile = Uri.parse("https://rms2.rhapsody.ae/api/excel_report_details");
-
+Uri Logout = Uri.parse("https://rms2.rhapsody.ae/api/logout");
 int ischatscreen;
 bool newmsgavaiable = false;
 var currenttimesheetid;
@@ -117,6 +117,18 @@ var fieldmanagerofcurrentmerch;
 var currentmerchid;
 bool alreadycheckedin =false;
 bool fromloginscreen =false;
+
+
+Future logout() async{
+  http.Response response = await http.post(Logout,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    },
+  );
+  print(response.body);
+}
 
 String greetingMessage(){
 

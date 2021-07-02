@@ -192,6 +192,7 @@ class _MenuState extends State<Menu> {
           ),
           onTap: () {
             removeValues();
+            logout();
             chackdata();
             loggedin.email = null;
             loggedin.password = null;

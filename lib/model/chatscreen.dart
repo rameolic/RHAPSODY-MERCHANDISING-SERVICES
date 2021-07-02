@@ -38,7 +38,6 @@ class _ChatScreenState extends State<ChatScreen> {
           backgroundColor: containerscolor,
           iconTheme: IconThemeData(color: orange),
           title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'HQ Communication',
@@ -336,8 +335,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Container(
                   width: double.infinity,
-                  padding: EdgeInsets.all(10.0),
-                  margin: EdgeInsets.fromLTRB(10.0, 10, 10.0, 10.0),
+                  margin: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.fromLTRB(20.0, 10, 10.0, 10.0),
                   decoration: BoxDecoration(
                     color: pink,
                     borderRadius: BorderRadius.circular(100.0),),

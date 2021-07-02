@@ -1,15 +1,30 @@
+import 'dart:io' show Platform;
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/widgets.dart';
 import 'main.dart';
 import 'api/api_service.dart';
-import'package:merchandising/Fieldmanager/ViewPDF.dart';
-import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'api/FMapi/nbl_detailsapi.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'dart:isolate';
+import 'dart:ui';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:device_apps/device_apps.dart';
+import 'package:open_file/open_file.dart';
 
-String nblfile;
+
+String nblfile=Uri.encodeFull("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}.pdf");
+
+
 //bool alreadycheckedin = false;
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
@@ -181,72 +196,66 @@ class EmpInfo extends StatelessWidget {
 
 
 
-
-
+bool filealreadyexists = false;
 class NBlFloatingButton extends StatefulWidget {
   @override
   _NBlFloatingButtonState createState() => _NBlFloatingButtonState();
 }
-
 class _NBlFloatingButtonState extends State<NBlFloatingButton> {
-  Offset count=Offset(20.0,20.0);
+  Offset _dragOffset = Offset(0, 0);
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        left : count.dx,
-        top  : count.dy ,
-        child : Draggable(
-            feedback: Container(
-                child : FloatingActionButton(
-                  onPressed: (){},
-                  child: Text("NBL",style: TextStyle(color: pink),),
-                  backgroundColor: grey,)
-            ),
-            child: FloatingActionButton(child: Text("NBL",style: TextStyle(color: pink),),
-              onPressed: (){
-                showDialog(
-                    context: context,
-                    builder: (_) => StatefulBuilder(
-                        builder: (context, setState) {
-                          return AlertDialog(
-                            backgroundColor: alertboxcolor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.all(
-                                    Radius.circular(10.0))),
-                            content: Builder(
-                              builder: (context) {
-                                // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                return Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  //margin: EdgeInsets.all(10.0),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Text('NBL',style: TextStyle(color: orange,fontSize: 20),),
-                                        Divider(color: Colors.black,thickness: 0.8,),
-                                        NBLDetData.fileurl.isNotEmpty ?
-                                        SfPdfViewer.network(
-                                            "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}"
-                                        ):Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("NBL not found"),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }));
+      left: _dragOffset.dx+MediaQuery.of(context).size.width /1.2,
+      top: _dragOffset.dy+40,
+      child: Draggable(
+        child:Container(
+            child : FloatingActionButton(
+              heroTag: "btn1",
+              onPressed: ()async{
+                print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                if (Platform.isAndroid) {
+                  var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
+                  filealreadyexists = await File("${downloadsDirectory.path}/${NBLDetData.fileurl.last}").exists();
+                  print(filealreadyexists);
+                  if(filealreadyexists){
+                    OpenFile.open("/${downloadsDirectory.path}/${NBLDetData.fileurl.last}");
+                  }else{
+                    print("here");
+                    await launch("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                  }
+                } else if (Platform.isIOS) {
+                  _launchURL();
+                }
               },
-              backgroundColor: orange,),
-            childWhenDragging: Container(),
-            onDragEnd: (details){
-              setState(() {
-                count = details.offset;
-              });
-            }));
+              child: Text("NBL",style: TextStyle(color: pink),),
+              backgroundColor: orange,)
+        ),
+        childWhenDragging:Container(
+          child : Text(""),
+        ),
+        feedback:Container(
+            child : FloatingActionButton(
+              heroTag: "btn2",
+              onPressed: (){
+              },
+              child: Text("NBL",style: TextStyle(color: pink),),
+              backgroundColor: orange,)
+        ),
+        onDragEnd: (drag) {
+          RenderBox renderBox = context.findRenderObject();
+          onDragEnd(renderBox.globalToLocal(drag.offset));
+        },
+      ),
+    );
+  }
+  void onDragEnd(Offset offset) {
+    setState(() {
+      _dragOffset += offset;
+    });
   }
 }
+
+void _launchURL() async =>
+    await canLaunch(nblfile) ? await launch(nblfile) : throw 'Could not launch $nblfile';
+bool loaded=false;

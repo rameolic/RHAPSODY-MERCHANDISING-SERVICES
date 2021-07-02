@@ -430,32 +430,32 @@ class _AvaialibilityState extends State<Avaialibility> {
               ),
             ),
             Spacer(),
-            // GestureDetector(
-            //   onTap: ()async{
-            //     setState(() {
-            //       isApiCallProcess = true;
-            //     });
-            //     String exportedlocation = await Exportavaiablity();
-            //     setState(() {
-            //       isApiCallProcess = false;
-            //     });
-            //     if(exportedlocation != null){
-            //       Flushbar(
-            //         message: 'File was successfully saved at $exportedlocation',
-            //         duration: Duration(seconds: 5),
-            //       )..show(context);
-            //      // OpenFile.open('storage/emulated/0/Android/data/rameolic.merchandising/files/');
-            //     }else{
-            //       Map<Permission, PermissionStatus> statuses = await [
-            //         Permission.storage,
-            //       ].request();
-            //     }
-            //   },
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(bottom:8),
-            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-            //   ),
-            // ),
+            GestureDetector(
+              onTap: ()async{
+                setState(() {
+                  isApiCallProcess = true;
+                });
+                String exportedlocation = await Exportavaiablity();
+                setState(() {
+                  isApiCallProcess = false;
+                });
+                if(exportedlocation != null){
+                  Flushbar(
+                    message: 'File was successfully saved at $exportedlocation',
+                    duration: Duration(seconds: 5),
+                  )..show(context);
+                 // OpenFile.open('storage/emulated/0/Android/data/rameolic.merchandising/files/');
+                }else{
+                  Map<Permission, PermissionStatus> statuses = await [
+                    Permission.storage,
+                  ].request();
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom:8),
+                child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+              ),
+            ),
           ],
         ),
         SizedBox(height: 10.0,),
@@ -769,37 +769,37 @@ class _ShareOfShelfState extends State<ShareOfShelf> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // GestureDetector(
-        //   onTap: ()async{
-        //     setState(() {
-        //       isApiCallProcess = true;
-        //     });
-        //
-        //     // reports.reportfile = await ExportShareofshelf();
-        //     // UploadFile();
-        //     String downloadurl = await DownloadFile();
-        //     _launchInBrowser(downloadurl);
-        //     // WidgetsFlutterBinding.ensureInitialized();
-        //     // await FlutterDownloader.initialize(
-        //     //     debug: true // optional: set false to disable printing logs to console
-        //     // );
-        //     // var directory = await DownloadsPathProvider.downloadsDirectory;
-        //     // final taskId = await FlutterDownloader.enqueue(
-        //     //   url: downloadurl,
-        //     //   savedDir: directory.path,
-        //     //   showNotification: true, // show download progress in status bar (for Android)
-        //     //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
-        //     // );
-        //     // print(taskId);
-        //     setState(() {
-        //       isApiCallProcess = false;
-        //     });
-        //   },
-        //   child: Padding(
-        //     padding: const EdgeInsets.only(bottom:10),
-        //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: ()async{
+            setState(() {
+              isApiCallProcess = true;
+            });
+
+            // reports.reportfile = await ExportShareofshelf();
+            // UploadFile();
+            String downloadurl = await DownloadFile();
+            _launchInBrowser(downloadurl);
+            // WidgetsFlutterBinding.ensureInitialized();
+            // await FlutterDownloader.initialize(
+            //     debug: true // optional: set false to disable printing logs to console
+            // );
+            // var directory = await DownloadsPathProvider.downloadsDirectory;
+            // final taskId = await FlutterDownloader.enqueue(
+            //   url: downloadurl,
+            //   savedDir: directory.path,
+            //   showNotification: true, // show download progress in status bar (for Android)
+            //   openFileFromNotification: true, // click on notification to open downloaded file (for Android)
+            // );
+            // print(taskId);
+            setState(() {
+              isApiCallProcess = false;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(bottom:10),
+            child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom:10.0),
           child: Table(
@@ -866,31 +866,31 @@ class _PlanogramState extends State<Planogram> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        // GestureDetector(
-        //   onTap: ()async{
-        //     setState(() {
-        //       isApiCallProcess = true;
-        //     });
-        //     String exportedlocation = await ExportPLanogram();
-        //     setState(() {
-        //       isApiCallProcess = false;
-        //     });
-        //     if(exportedlocation != null){
-        //       Flushbar(
-        //         message: 'File was successfully saved at $exportedlocation',
-        //         duration: Duration(seconds: 5),
-        //       )..show(context);
-        //     }else{
-        //       Map<Permission, PermissionStatus> statuses = await [
-        //         Permission.storage,
-        //       ].request();
-        //     }
-        //   },
-        //   child: Padding(
-        //     padding: const EdgeInsets.only(bottom:10),
-        //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-        //   ),
-        // ),
+        GestureDetector(
+          onTap: ()async{
+            setState(() {
+              isApiCallProcess = true;
+            });
+            String exportedlocation = await ExportPLanogram();
+            setState(() {
+              isApiCallProcess = false;
+            });
+            if(exportedlocation != null){
+              Flushbar(
+                message: 'File was successfully saved at $exportedlocation',
+                duration: Duration(seconds: 5),
+              )..show(context);
+            }else{
+              Map<Permission, PermissionStatus> statuses = await [
+                Permission.storage,
+              ].request();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(bottom:10),
+            child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(bottom:10.0),
           child: Table(
@@ -901,7 +901,7 @@ class _PlanogramState extends State<Planogram> {
               TableRow(
                   children: [
                     Text("Category",style: TextStyle(color: orange,fontWeight: FontWeight.bold),),
-                    Center(child: Text("Target",style: TextStyle(color: orange,fontWeight: FontWeight.bold),)),
+                    //Center(child: Text("Target",style: TextStyle(color: orange,fontWeight: FontWeight.bold),)),
                     Center(child: Text("Before",style: TextStyle(color: orange,fontWeight: FontWeight.bold),)),
                     Center(child: Text("After",style: TextStyle(color: orange,fontWeight: FontWeight.bold),)),
                   ]
@@ -928,36 +928,36 @@ class _PlanogramState extends State<Planogram> {
                                 padding: const EdgeInsets.only(top:40.0),
                                 child: Text( PlanoDetails.categoryname[index],),
                               ),
-                              GestureDetector(
-                                onTap: (){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              PreveiwScreen(
-                                                input: PlanoDetails.imageurl[index],
-                                              )));
-                                },
-                                child: Center(
-                                  child: Container(
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 80,
-                                    width: 50,
-                                    child: PhotoView(
-                                      loadingBuilder: (context, event) => Center(
-                                        child: Container(
-                                          width: 40.0,
-                                          height: 40.0,
-                                          child: CircularProgressIndicator(
-                                            backgroundColor: orange,
-                                          ),
-                                        ),
-                                      ),
-                                      imageProvider: NetworkImage(  PlanoDetails.imageurl[index]),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // GestureDetector(
+                              //   onTap: (){
+                              //     Navigator.push(
+                              //         context,
+                              //         MaterialPageRoute(
+                              //             builder: (BuildContext context) =>
+                              //                 PreveiwScreen(
+                              //                   input: PlanoDetails.imageurl[index],
+                              //                 )));
+                              //   },
+                              //   child: Center(
+                              //     child: Container(
+                              //       margin: EdgeInsets.all(10.0),
+                              //       height: 80,
+                              //       width: 50,
+                              //       child: PhotoView(
+                              //         loadingBuilder: (context, event) => Center(
+                              //           child: Container(
+                              //             width: 40.0,
+                              //             height: 40.0,
+                              //             child: CircularProgressIndicator(
+                              //               backgroundColor: orange,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //         imageProvider: NetworkImage(  PlanoDetails.imageurl[index]),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                               GestureDetector(
                                 onTap: (){
                                   Navigator.push(
@@ -1043,204 +1043,206 @@ class _PromotionState extends State<Promotion> {
   bool pressAttentionTODAY = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  pressAttentionMTB = true;
-                  pressAttentionTODAY = false;
-                });
-              },
-              child: Container(
-                height: 40,
-                width: 60,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Center(
-                      child: Text(
-                        "INS",
-                        style: TextStyle(
-                          color: pressAttentionMTB == true
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ),
-                    Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white,width: 1.0),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)),
-                  color: pressAttentionMTB == true
-                      ? orange
-                      : Colors.white,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  pressAttentionTODAY = true;
-                  pressAttentionMTB = false;
-                });
-              },
-              child: Container(
-                height: 40,
-                width: 60,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Center(
-                      child: Text(
-                        'OOS',
-                        style: TextStyle(
-                          color: pressAttentionTODAY == false
-                              ? Colors.black
-                              : Colors.white,
-                        ),
-                      ),
-                    ),
-                    Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white,width: 1.0),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10)),
-                  color: pressAttentionTODAY == true
-                      ? orange
-                      : Colors.white,
-                ),
-              ),
-            ),
-            Spacer(),
-            // GestureDetector(
-            //   onTap: ()async{
-            //     setState(() {
-            //       isApiCallProcess = true;
-            //     });
-            //     String exportedlocation = await Exportpromotion();
-            //     setState(() {
-            //       isApiCallProcess = false;
-            //     });
-            //     if(exportedlocation != null){
-            //       Flushbar(
-            //         message: 'File was successfully saved at $exportedlocation',
-            //         duration: Duration(seconds: 5),
-            //       )..show(context);
-            //     }else{
-            //       Map<Permission, PermissionStatus> statuses = await [
-            //         Permission.storage,
-            //       ].request();
-            //     }
-            //   },
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(bottom:10),
-            //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
-            //   ),
-            // ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom:5.0),
-              child: Text("Product :",style: TextStyle(color: orange,fontSize: 16),),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom:5.0,top: 10.0),
-              child: Text(pressAttentionTODAY ?"Reason":"Image",style: TextStyle(color: orange,fontSize: 16),),
-            ),
-          ],
-        ),
-        pressAttentionTODAY ? ListView.builder(
-          //physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount:clientpromo.reason.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    pressAttentionMTB = true;
+                    pressAttentionTODAY = false;
+                  });
+                },
+                child: Container(
+                  height: 40,
+                  width: 60,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top:5.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width/1.6,
-                          child: Text(clientpromo.productnameoos[index]),
-                        ),
-                      ),
-                      Text(clientpromo.reason[index])
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.black,
-                  ),
-                ],
-              );
-            }) : ListView.builder(
-          //physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: clientpromo.productname.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top:5.0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width/1.6,
-                          child: Text(clientpromo.productname[index]),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      PreveiwScreen(
-                                        input: clientpromo.imageurl[index],
-                                      )));
-                        },
-                        child: SizedBox(
-                          height: 80,
-                          width: 50,
-                          child: PhotoView(
-                            loadingBuilder: (context, event) => Center(
-                              child: Container(
-                                width: 40.0,
-                                height: 40.0,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: orange,
-                                ),
-                              ),
-                            ),
-                            imageProvider: NetworkImage(clientpromo.imageurl[index]),
+                      Center(
+                        child: Text(
+                          "INS",
+                          style: TextStyle(
+                            color: pressAttentionMTB == true
+                                ? Colors.white
+                                : Colors.black,
                           ),
                         ),
                       ),
+                      Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
                     ],
                   ),
-                  Divider(
-                    color: Colors.black,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white,width: 1.0),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)),
+                    color: pressAttentionMTB == true
+                        ? orange
+                        : Colors.white,
                   ),
-                ],
-              );
-            }),
-      ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    pressAttentionTODAY = true;
+                    pressAttentionMTB = false;
+                  });
+                },
+                child: Container(
+                  height: 40,
+                  width: 60,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Center(
+                        child: Text(
+                          'OOS',
+                          style: TextStyle(
+                            color: pressAttentionTODAY == false
+                                ? Colors.black
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                      Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white,width: 1.0),
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        bottomRight: Radius.circular(10)),
+                    color: pressAttentionTODAY == true
+                        ? orange
+                        : Colors.white,
+                  ),
+                ),
+              ),
+              Spacer(),
+              // GestureDetector(
+              //   onTap: ()async{
+              //     setState(() {
+              //       isApiCallProcess = true;
+              //     });
+              //     String exportedlocation = await Exportpromotion();
+              //     setState(() {
+              //       isApiCallProcess = false;
+              //     });
+              //     if(exportedlocation != null){
+              //       Flushbar(
+              //         message: 'File was successfully saved at $exportedlocation',
+              //         duration: Duration(seconds: 5),
+              //       )..show(context);
+              //     }else{
+              //       Map<Permission, PermissionStatus> statuses = await [
+              //         Permission.storage,
+              //       ].request();
+              //     }
+              //   },
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(bottom:10),
+              //     child: Text("Export to CSV",style: TextStyle(color: orange,fontSize: 16),),
+              //   ),
+              // ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom:5.0),
+                child: Text("Product :",style: TextStyle(color: orange,fontSize: 16),),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom:5.0,top: 10.0),
+                child: Text(pressAttentionTODAY ?"Reason":"Image",style: TextStyle(color: orange,fontSize: 16),),
+              ),
+            ],
+          ),
+          pressAttentionTODAY ? ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount:clientpromo.reason.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top:5.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width/1.6,
+                            child: Text(clientpromo.productnameoos[index]),
+                          ),
+                        ),
+                        Text(clientpromo.reason[index])
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                  ],
+                );
+              }) : ListView.builder(
+            //physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: clientpromo.productname.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top:5.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width/1.6,
+                            child: Text(clientpromo.productname[index]),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        PreveiwScreen(
+                                          input: clientpromo.imageurl[index],
+                                        )));
+                          },
+                          child: SizedBox(
+                            height: 80,
+                            width: 50,
+                            child: PhotoView(
+                              loadingBuilder: (context, event) => Center(
+                                child: Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: orange,
+                                  ),
+                                ),
+                              ),
+                              imageProvider: NetworkImage(clientpromo.imageurl[index]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black,
+                    ),
+                  ],
+                );
+              }),
+        ],
+      ),
     );
   }
 }

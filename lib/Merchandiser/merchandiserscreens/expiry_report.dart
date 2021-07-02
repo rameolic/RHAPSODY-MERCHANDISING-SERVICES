@@ -430,7 +430,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                                           isApiCallProcess = true;
                                         });
                                         //await addexpiryproducts();
-                                        addedproductid.add(productid);
+                                        addedproductid.add(Expiry.id[Expiry.productdetails.indexOf(productname)]);
                                         addedproductname.add('${Expiry.zrepcodes[Expiry.productdetails.indexOf(productname)]}-$productname');
                                         addedexpirydate.add("${ DateFormat("yyyy-MM-dd").format(ENDdate)}");
                                         addeditemscount.add(int.parse(expirypeciescount.text));
@@ -1096,13 +1096,6 @@ class _SubmittedDataState extends State<SubmittedData> {
   List<String> _filteredexpiryList;
   List<int> _filteredeitemsList;
 
-  @override
-  void initState() {
-    super.initState();
-    inputlist = Stockdatamerch.productname;
-    inputlist.sort();
-  }
-
   _SubmittedDataState() {
     _searchview.addListener(() {
       if (_searchview.text.isEmpty) {
@@ -1183,6 +1176,7 @@ class _SubmittedDataState extends State<SubmittedData> {
           itemCount:Stockdatamerch.productname.length,
           itemBuilder: (BuildContext context, int index) {
             print(Stockdatamerch.productname);
+            print("$index - ${Stockdatamerch.productname[index]}");
             return Container(
               height: 170,
               margin: EdgeInsets.only(bottom:10,left: 10.0,right: 10.0),

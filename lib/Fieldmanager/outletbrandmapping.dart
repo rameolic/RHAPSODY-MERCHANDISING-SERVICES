@@ -412,36 +412,36 @@ class _MappedOutletsState extends State<MappedOutlets> {
                                             fontSize: 15.0,fontWeight: FontWeight.bold
                                         )),
                                     SizedBox(height: 5),
-                                    Text('Target : ${mapping.target[index]}%',
+                                    Text('SOS Target : ${mapping.target[index]}%',
                                         style: TextStyle(
                                           fontSize: 14.0,
                                         )),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Planogram Image : "),
-                                        GestureDetector(
-                                          onTap: (){
-                                            print(Selectedimage);
-                                            Selectedimage = mapping.planogramimage[index];
-                                            print('https://rms2.rhapsody.ae/planogram_image/$Selectedimage');
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext context) =>
-                                                        VeiwImage()));
-                                          },
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 10.0),
-                                            padding: EdgeInsets.all(10.0),
-                                            decoration: BoxDecoration(
-                                                color: orange,
-                                                borderRadius: BorderRadius.all(Radius.circular(10))),
-                                            child: Text("Veiw",style: TextStyle(color: Colors.white),),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Planogram Image : "),
+                                    //     GestureDetector(
+                                    //       onTap: (){
+                                    //         print(Selectedimage);
+                                    //         Selectedimage = mapping.planogramimage[index];
+                                    //         print('https://rms2.rhapsody.ae/planogram_image/$Selectedimage');
+                                    //         Navigator.push(
+                                    //             context,
+                                    //             MaterialPageRoute(
+                                    //                 builder: (BuildContext context) =>
+                                    //                     VeiwImage()));
+                                    //       },
+                                    //       child: Container(
+                                    //         margin: EdgeInsets.only(top: 10.0),
+                                    //         padding: EdgeInsets.all(10.0),
+                                    //         decoration: BoxDecoration(
+                                    //             color: orange,
+                                    //             borderRadius: BorderRadius.all(Radius.circular(10))),
+                                    //         child: Text("Veiw",style: TextStyle(color: Colors.white),),
+                                    //       ),
+                                    //     )
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                                 GestureDetector(
@@ -538,11 +538,8 @@ class _MappedOutletsState extends State<MappedOutlets> {
                                     children: [
                                       Text('${task.list[index]}',
                                           style: TextStyle(
-                                              fontSize: 15.0,fontWeight: FontWeight.bold,
+                                              fontSize: 14
                                           )),
-                                      SizedBox(height: 5),
-
-
                                     ],
                                   ),
                                   GestureDetector(

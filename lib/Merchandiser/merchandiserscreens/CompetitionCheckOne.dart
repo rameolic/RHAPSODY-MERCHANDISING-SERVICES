@@ -15,7 +15,6 @@ import 'package:camera/camera.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
 import'package:merchandising/api/api_service.dart';
-
 bool compcheck = false;
 TextEditingController itemname = TextEditingController();
 TextEditingController promtdescp = TextEditingController();
@@ -32,6 +31,11 @@ class CompetitionCheckOne extends StatefulWidget {
 }
 
 class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
+  // final GlobalKey<_CompetitionCheckOneState> _pdfViewerKey = GlobalKey();
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
   GlobalKey<FormState> products = GlobalKey<FormState>();
 
 
@@ -346,7 +350,9 @@ class _CompetitionCheckOneState extends State<CompetitionCheckOne> {
               ),
             ),
           ),
-          NBlFloatingButton(),
+          NBlFloatingButton(
+            //key: _pdfViewerKey,
+          ),
         ],
       ),
     );

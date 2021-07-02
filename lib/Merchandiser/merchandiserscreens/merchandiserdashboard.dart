@@ -12,6 +12,7 @@ import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:intl/intl.dart';
+import 'package:merchandising/model/merchandiserschatusers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Leave Request.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Time Sheet.dart';
@@ -746,12 +747,12 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          ischatscreen =1;
-                          newmsgavaiable = false;
-                          chat.receiver = fieldmanagerofcurrentmerch;
-                        });
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
+                        // setState(() {
+                        //   ischatscreen =1;
+                        //   newmsgavaiable = false;
+                        //   chat.receiver = fieldmanagerofcurrentmerch;
+                        // });
+                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatUsersformerch()));
                         },
                       child: Container(
                         height: 120,
@@ -822,7 +823,7 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
           ),
-
+          NBlFloatingButton()
         ],
       ),
     );

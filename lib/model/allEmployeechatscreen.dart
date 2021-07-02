@@ -17,17 +17,18 @@ import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 bool firstopen=true;
 bool selected= false;
 List<bool>selectedpeople;
+bool allmerchselected = false;
 
 class data{
   static List<Row>  messages;
 }
-class FmGroupChatScreen extends StatefulWidget {
+class AllChatScreen extends StatefulWidget {
 
   @override
-  _FmGroupChatScreenState createState() => _FmGroupChatScreenState();
+  _AllChatScreenState createState() => _AllChatScreenState();
 }
 
-class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
+class _AllChatScreenState extends State<AllChatScreen> {
   TextEditingController typedmsg = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     StreamBuilder<QuerySnapshot>(
-                        stream:  FirebaseFirestore.instance.collection('FMGROUPCHAT').orderBy('time', descending: true).snapshots(),
+                        stream:  FirebaseFirestore.instance.collection('AllGROUPCHAT').orderBy('time', descending: true).snapshots(),
                         builder: (context,snapshot){
                           if(!snapshot.hasData){
                             return Center(
@@ -97,134 +98,188 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                                 children: [
                                   GestureDetector(
                                     onLongPress: (){
-                                      if(currentuser.roleid == 5){
-                                        selectedpeople =[];
-                                        for(int i=0; i<merchnamelist.name.length;i++){
-                                          selectedpeople.add(false);
-                                        }
-                                        print(messagetext);
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => StatefulBuilder(
-                                                builder: (context, setState) {
-                                                  return AlertDialog(
-                                                    backgroundColor: alertboxcolor,
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.all(
-                                                            Radius.circular(10.0))),
-                                                    content: Builder(
-                                                      builder: (context) {
-                                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                        return Column(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            Text(
-                                                              'Forward Message',
-                                                              style: TextStyle(
-                                                                  color: orange,
-                                                                  fontSize: 20),
-                                                            ),
-                                                            Divider(
-                                                              color: Colors.black,
-                                                              thickness: 0.8,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 300,
-                                                              width: 300,
-                                                              child: SingleChildScrollView(
-                                                                child: new ListView.builder(
-                                                                    shrinkWrap: true,
-                                                                    physics:
-                                                                    NeverScrollableScrollPhysics(),
-                                                                    itemCount:
-                                                                    merchnamelist.name.length,
-                                                                    itemBuilder:
-                                                                        (BuildContext
-                                                                    context,
-                                                                        int index) {
-                                                                      return Column(
-                                                                        children: [
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                            MainAxisAlignment
-                                                                                .spaceBetween,
-                                                                            children: [
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width/1.7,
-                                                                                child: Text(
-                                                                                  merchnamelist.name[index],
-                                                                                  style: TextStyle(fontSize: 16),
-                                                                                  textAlign: TextAlign.start,
-                                                                                ),
-                                                                              ),
-                                                                              GestureDetector(
-                                                                                onTap: (){
-                                                                                  setState(() {
-                                                                                    selectedpeople[index] == false? selectedpeople[index]= true:selectedpeople[index] = false;
-                                                                                  });
-                                                                                },
-                                                                                child: Icon(
-                                                                                  selectedpeople[index] ==
-                                                                                      true
-                                                                                      ? CupertinoIcons
-                                                                                      .check_mark_circled_solid
-                                                                                      : CupertinoIcons
-                                                                                      .xmark_circle_fill,
-                                                                                  color:  selectedpeople[index] ==
-                                                                                      true
-                                                                                      ? orange
-                                                                                      : Colors
-                                                                                      .grey,
-                                                                                  size: 30,
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          SizedBox(
-                                                                            height: 5,
-                                                                          ),
-                                                                        ],
-                                                                      );
-                                                                    }),
+                                        if(currentuser.roleid == 5){
+                                          selectedpeople =[];
+                                          allmerchselected = false;
+                                          for(int i=0; i<merchnamelist.name.length;i++){
+                                            selectedpeople.add(false);
+                                          }
+                                          print(messagetext);
+                                          showDialog(
+                                              context: context,
+                                              builder: (_) => StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                    return AlertDialog(
+                                                      backgroundColor: alertboxcolor,
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(10.0))),
+                                                      content: Builder(
+                                                        builder: (context) {
+                                                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                          return Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              Text(
+                                                                'Forward Message',
+                                                                style: TextStyle(
+                                                                    color: orange,
+                                                                    fontSize: 20),
                                                               ),
-                                                            ),
-                                                            GestureDetector(
-                                                              onTap: ()async{
-                                                                for(int i =0; i <selectedpeople.length; i++){
-                                                                  if(selectedpeople[i]){
-                                                                    print(merchnamelist.employeeid[i]);
-                                                                    var receiver = merchnamelist.employeeid[i];
-                                                                    FirebaseFirestore.instance.collection('$receiver.${DBrequestdata.receivedempid}').add({'text': messagetext, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
-                                                                    await FirebaseFirestore.instance.collection('${DBrequestdata.receivedempid}.$receiver').add({'text': messagetext, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
-                                                                  }
-                                                                }
-                                                                Navigator.pop(context);
-                                                              },
-                                                              child: Container(
-                                                                height: 30,
-                                                                width: 80,
-                                                                decoration:
-                                                                BoxDecoration(
-                                                                  color: orange,
-                                                                  borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(5),
+                                                              Divider(
+                                                                color: Colors.black,
+                                                                thickness: 0.8,
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width: MediaQuery.of(context).size.width/1.7,
+                                                                        child: Text(
+                                                                         "Select All",
+                                                                          style: TextStyle(fontSize: 16,color: orange),
+                                                                          textAlign: TextAlign.start,
+                                                                        ),
+                                                                      ),
+                                                                      GestureDetector(
+                                                                        onTap: (){
+                                                                          setState(() {
+                                                                            if(allmerchselected){
+                                                                              allmerchselected = false;
+                                                                              for(int i=0;i<merchnamelist.name.length;i++){
+                                                                                selectedpeople[i]=false;
+                                                                              }
+                                                                            }else{
+                                                                              allmerchselected = true;
+                                                                              for(int i=0;i<merchnamelist.name.length;i++){
+                                                                                selectedpeople[i]=true;
+                                                                              }
+                                                                            }
+                                                                          });
+                                                                        },
+                                                                        child: Icon(
+                                                                          allmerchselected ==
+                                                                              true
+                                                                              ? CupertinoIcons
+                                                                              .check_mark_circled_solid
+                                                                              : CupertinoIcons
+                                                                              .xmark_circle_fill,
+                                                                          color:  allmerchselected ==
+                                                                              true
+                                                                              ? orange
+                                                                              : Colors
+                                                                              .grey,
+                                                                          size: 30,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 5,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              SizedBox(
+                                                                height: MediaQuery.of(context).size.height/1.5,
+                                                                width:  MediaQuery.of(context).size.height/1.2,
+                                                                child: SingleChildScrollView(
+                                                                  child: new ListView.builder(
+                                                                      shrinkWrap: true,
+                                                                      physics: NeverScrollableScrollPhysics(),
+                                                                      itemCount:
+                                                                      merchnamelist.name.length,
+                                                                      itemBuilder:
+                                                                          (BuildContext
+                                                                      context,
+                                                                          int index) {
+                                                                        return Column(
+                                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Row(
+                                                                              mainAxisAlignment:
+                                                                              MainAxisAlignment
+                                                                                  .spaceBetween,
+                                                                              children: [
+                                                                                SizedBox(
+                                                                                  width: MediaQuery.of(context).size.width/1.7,
+                                                                                  child: Text(
+                                                                                    merchnamelist.name[index],
+                                                                                    style: TextStyle(fontSize: 16),
+                                                                                    textAlign: TextAlign.start,
+                                                                                  ),
+                                                                                ),
+                                                                                GestureDetector(
+                                                                                  onTap: (){
+                                                                                    setState(() {
+                                                                                      selectedpeople[index] == false? selectedpeople[index]= true:selectedpeople[index] = false;
+                                                                                    });
+                                                                                  },
+                                                                                  child: Icon(
+                                                                                    selectedpeople[index] ==
+                                                                                        true
+                                                                                        ? CupertinoIcons
+                                                                                        .check_mark_circled_solid
+                                                                                        : CupertinoIcons
+                                                                                        .xmark_circle_fill,
+                                                                                    color:  selectedpeople[index] ==
+                                                                                        true
+                                                                                        ? orange
+                                                                                        : Colors
+                                                                                        .grey,
+                                                                                    size: 30,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+                                                                          ],
+                                                                        );
+                                                                      }),
                                                                 ),
-                                                                child: Center(
-                                                                    child: Text('Forward',
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .white))),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                }));
-                                      }
-
+                                                              GestureDetector(
+                                                                onTap: ()async{
+                                                                  for(int i =0; i <selectedpeople.length; i++){
+                                                                    if(selectedpeople[i]){
+                                                                      print(merchnamelist.employeeid[i]);
+                                                                      var receiver = merchnamelist.employeeid[i];
+                                                                      FirebaseFirestore.instance.collection('$receiver.${DBrequestdata.receivedempid}').add({'text': messagetext, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
+                                                                      await FirebaseFirestore.instance.collection('${DBrequestdata.receivedempid}.$receiver').add({'text': messagetext, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
+                                                                    }
+                                                                  }
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Container(
+                                                                  height: 30,
+                                                                  width: 80,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    color: orange,
+                                                                    borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(5),
+                                                                  ),
+                                                                  child: Center(
+                                                                      child: Text('Forward',
+                                                                          style: TextStyle(
+                                                                              color: Colors
+                                                                                  .white))),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                      ),
+                                                    );
+                                                  }));
+                                        }
                                     },
                                     child: ConstrainedBox(
                                       constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width/1.5),
@@ -260,6 +315,7 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                                     onLongPress: (){
                                       if(currentuser.roleid == 5){
                                         selectedpeople =[];
+                                        allmerchselected = false;
                                         for(int i=0; i<merchnamelist.name.length;i++){
                                           selectedpeople.add(false);
                                         }
@@ -289,14 +345,67 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                                                               color: Colors.black,
                                                               thickness: 0.8,
                                                             ),
+                                                            Column(
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      width: MediaQuery.of(context).size.width/1.7,
+                                                                      child: Text(
+                                                                        "Select All",
+                                                                        style: TextStyle(fontSize: 16,color: orange),
+                                                                        textAlign: TextAlign.start,
+                                                                      ),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap: (){
+                                                                        setState(() {
+                                                                          if(allmerchselected){
+                                                                            allmerchselected = false;
+                                                                            for(int i=0;i<merchnamelist.name.length;i++){
+                                                                              selectedpeople[i]=false;
+                                                                            }
+                                                                          }else{
+                                                                            allmerchselected = true;
+                                                                            for(int i=0;i<merchnamelist.name.length;i++){
+                                                                              selectedpeople[i]=true;
+                                                                            }
+                                                                          }
+                                                                        });
+                                                                      },
+                                                                      child: Icon(
+                                                                        allmerchselected ==
+                                                                            true
+                                                                            ? CupertinoIcons
+                                                                            .check_mark_circled_solid
+                                                                            : CupertinoIcons
+                                                                            .xmark_circle_fill,
+                                                                        color:  allmerchselected ==
+                                                                            true
+                                                                            ? orange
+                                                                            : Colors
+                                                                            .grey,
+                                                                        size: 30,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                              ],
+                                                            ),
                                                             SizedBox(
-                                                              height: 300,
-                                                              width: 300,
+                                                              height: MediaQuery.of(context).size.height/1.5,
+                                                              width:  MediaQuery.of(context).size.height/1.2,
                                                               child: SingleChildScrollView(
                                                                 child: new ListView.builder(
                                                                     shrinkWrap: true,
-                                                                    physics:
-                                                                    NeverScrollableScrollPhysics(),
+                                                                    physics: NeverScrollableScrollPhysics(),
                                                                     itemCount:
                                                                     merchnamelist.name.length,
                                                                     itemBuilder:
@@ -304,6 +413,7 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                                                                     context,
                                                                         int index) {
                                                                       return Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
                                                                           Row(
                                                                             mainAxisAlignment:
@@ -454,7 +564,7 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                           GestureDetector(
                             onTap: () async{
                               if(typedmsg.text.isNotEmpty){
-                                await FirebaseFirestore.instance.collection('FMGROUPCHAT').add({'text': typedmsg.text, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
+                                await FirebaseFirestore.instance.collection('AllGROUPCHAT').add({'text': typedmsg.text, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
                                 //await FirebaseFirestore.instance.collection('${DBrequestdata.receivedempid}.${chat.receiver}').add({'text': typedmsg.text, 'sender': '${DBrequestdata.receivedempid}','time': '${DateTime.now()}',});
                                 typedmsg.clear();
                               }
@@ -473,7 +583,7 @@ class _FmGroupChatScreenState extends State<FmGroupChatScreen> {
                   decoration: BoxDecoration(
                     color: pink,
                     borderRadius: BorderRadius.circular(100.0),),
-                  child: Text('TO : Field manager\'s Group Chat',style: TextStyle(fontSize: 16,color: orange),),
+                  child: Text('TO : Rhapsody Merchandising Services',style: TextStyle(fontSize: 16,color: orange),),
                 ),
               ],
             ),

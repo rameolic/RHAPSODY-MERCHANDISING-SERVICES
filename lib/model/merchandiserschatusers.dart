@@ -1,19 +1,19 @@
 import 'package:merchandising/Constants.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 //import 'file:///C:/Users/ramkumar/StudioProjects/RHAPSODY-MERCHANDISING-SERVICES/lib/model/chatscreen.dart';
 import'package:merchandising/model/chatscreen.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:merchandising/model/goupchatscreen.dart';
-import 'package:merchandising/model/allEmployeechatscreen.dart';
-class ChatUsers extends StatefulWidget {
+import 'allEmployeechatscreen.dart';
+// import 'package:merchandising/model/goupchatscreen.dart';
+class ChatUsersformerch extends StatefulWidget {
   @override
-  _ChatUsersState createState() => _ChatUsersState();
+  _ChatUsersformerchState createState() => _ChatUsersformerchState();
 }
 
-class _ChatUsersState extends State<ChatUsers> {
+class _ChatUsersformerchState extends State<ChatUsersformerch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,11 +68,12 @@ class _ChatUsersState extends State<ChatUsers> {
               ),
               GestureDetector(
                 onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        // ignore: non_constant_identifier_names
-                          builder: (BuildContextcontext) => FmGroupChatScreen()));
+                  setState(() {
+                    ischatscreen =1;
+                    newmsgavaiable = false;
+                    chat.receiver = fieldmanagerofcurrentmerch;
+                  });
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatScreen()));
                 },
                 child: Container(
                     padding: EdgeInsets.all(10.0),
@@ -84,60 +85,17 @@ class _ChatUsersState extends State<ChatUsers> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Field managers Group Chat',
+                        Text('Field Manager',
                             style: TextStyle(
                                 fontSize: 16.0,color: orange
                             )),
                         SizedBox(height: 5 ,),
-                        Text('participants : All Field manager\'s',
+                        Text('participants : $fieldmanagernameofcurrentmerch',
                             style: TextStyle(
                                 fontSize: 14.0,color: grey
                             )),
                       ],
                     )),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  // physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: merchnamelist.firstname.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap:()async{
-                          setState(() {
-                            chat.receiver = merchnamelist.employeeid[index];
-                          });
-                          fieldmanagernameofcurrentmerch = merchnamelist.name[index];
-                          print(merchnamelist.employeeid[index]);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  // ignore: non_constant_identifier_names
-                                  builder: (BuildContextcontext) => ChatScreen()));
-                        },
-                        child: Container(
-                            padding: EdgeInsets.all(10.0),
-                            margin: EdgeInsets.fromLTRB(10.0,0,10,10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(10))),
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Merchandiser : ${merchnamelist.name[index]}',
-                                    style: TextStyle(
-                                        fontSize: 16.0,color: orange
-                                    )),
-                                SizedBox(height: 5),
-                                Text('Emp ID : ${merchnamelist.employeeid[index]}',
-                                    style: TextStyle(
-                                        fontSize: 14.0,color: grey
-                                    )),
-                              ],
-                            )),
-                      );
-                    }),
               ),
             ],
           ),

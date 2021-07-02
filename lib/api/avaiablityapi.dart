@@ -66,7 +66,7 @@ Future<void> getAvaiablitity() async {
     for (int i = 0; i < Avaiablity.productname.length; i++) {
       reasons.add('');
       outofStockitems.add(1);
-      if(currentuser.roleid ==7){
+      if(true){
         // ignore: unrelated_type_equality_checks
         if('${Avaiablity.checkvalue[i]}'=='0'){
           print('came out');

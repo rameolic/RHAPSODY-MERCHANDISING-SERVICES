@@ -117,11 +117,14 @@ Future Addedstockdataformerch() async {
     Stockdatamerch.period = [];
     Stockdatamerch.expiryperiod = [];
     Stockdatamerch.outlet = [];
+    print(decodeoutlet['data'].length);
     for (int u = 0; u < decodeoutlet['data'].length; u++) {
-      if (decodeoutlet['data'][u]['outlet_id'].toString() ==
-          "$currentoutletid") {
-        Stockdatamerch.productname.add(
-            "${decodeoutlet['data'][u]['description']} [${decodeoutlet['data'][u]['zrep']}]");
+      print("here");
+      print(decodeoutlet['data'][u]['outlet_id'].toString());
+      print(currentoutletid);
+      if (decodeoutlet['data'][u]['outlet_id'].toString() == "$currentoutletid") {
+        print('${decodeoutlet['data'][u]['created_at']} ${decodeoutlet['data'][u]['description']}}');
+        Stockdatamerch.productname.add("${decodeoutlet['data'][u]['description']} [${decodeoutlet['data'][u]['zrep']}]");
         Stockdatamerch.captureddate.add(decodeoutlet['data'][u]['created_at']);
         Stockdatamerch.outletid.add(decodeoutlet['data'][u]['outlet_id']);
         Stockdatamerch.pieceperprice
@@ -136,8 +139,6 @@ Future Addedstockdataformerch() async {
         Stockdatamerch.outlet.add(decodeoutlet['data'][u]['store_name']);
       }
     }
-    print(Stockdatamerch.period);
-    print("expiry data done");
   }
   if (response.statusCode != 200) {
     print(response.statusCode);
@@ -145,7 +146,7 @@ Future Addedstockdataformerch() async {
 }
 
 class Stockdatamerch {
-  static List<dynamic> productname = [];
+  static List<dynamic> productname= [];
   static List<String> captureddate = [];
   static List<dynamic> outletid = [];
   static List<dynamic> pieceperprice = [];
