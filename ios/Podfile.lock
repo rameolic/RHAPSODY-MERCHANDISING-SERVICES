@@ -220,7 +220,7 @@ PODS:
   - BoringSSL-GRPC/Interface (0.0.7)
   - camera (0.0.1):
     - Flutter
-  - cloud_firestore (2.2.2):
+  - cloud_firestore (2.3.0):
     - Firebase/Firestore (= 8.0.0)
     - firebase_core
     - Flutter
@@ -450,7 +450,7 @@ SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
-  cloud_firestore: 83d6cd19d24798c523265494ab81db32009fcb7b
+  cloud_firestore: 0e708a57ee3e13a56cf6a6fdaf085d5edb1e7e0f
   connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
