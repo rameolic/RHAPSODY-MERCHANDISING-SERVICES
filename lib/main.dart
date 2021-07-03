@@ -57,10 +57,7 @@ Future<void> main() async {
       getempdetailsforreport();
       getstockexpiryproducts();
       await DBRequestdaily();
-       getLocation();
       await callfrequently();
-       const period = const Duration(seconds: 60);
-       Timer.periodic(period, (Timer t) => getLocation());
        const time = const Duration(seconds: 120);
        Timer.periodic(time, (Timer t) => callfrequently());
       runApp(MaterialApp(
@@ -129,7 +126,6 @@ Future<void> main() async {
       ));
     }
     else{
-
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

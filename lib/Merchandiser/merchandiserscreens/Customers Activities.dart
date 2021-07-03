@@ -845,7 +845,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        JourneyPlan()));
+                                                        DashBoard()));
                                       } else {
                                         print("entered else");
 
@@ -860,7 +860,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        JourneyPlan()));
+                                                        DashBoard()));
                                       }
                                     },
                                     child: Container(

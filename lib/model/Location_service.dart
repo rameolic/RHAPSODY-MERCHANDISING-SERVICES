@@ -8,7 +8,7 @@ double lat;
 double long;
 String currentlocation;
 var splittime = checkinoutdata.checkintime;
-class Location {
+class Locationclass {
   double latitude;
   double longitude;
 
@@ -24,18 +24,19 @@ class Location {
   }
 }
 
- getLocation() async {
-   PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
-   print('permission : $permission');
+ Future<bool> getLocation() async {
    try{
-     if((permission.toString() == 'PermissionStatus.granted')) {
-       Location location = Location();
+
+     if(true) {
+       Locationclass location = Locationclass();
        await location.getCurrentLocation();
        lat = location.latitude;
        long = location.longitude;
        distinmeters();
+       return lat==null?false:true;
      }else{
-       await LocationPermissions().requestPermissions();
+       return false;
+
      }
    }catch(e){
      print(e);

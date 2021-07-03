@@ -45,6 +45,13 @@ import 'package:merchandising/model/Location_service.dart';
 import'package:merchandising/Fieldmanager/ViewPDF.dart';
 import'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
+import 'dart:io' show Platform;
+
+Future <bool>checklocationenable()async{
+    bool locationreceived = await getLocation();
+    print(locationreceived);
+    return locationreceived;
+}
 
 Future<String> callfrequently()async{
    getJourneyPlan();
@@ -53,12 +60,9 @@ Future<String> callfrequently()async{
     getSkipJourneyPlanweekly();
     getVisitJourneyPlanweekly();
    await getJourneyPlanweekly();
-   PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
-   if(permission.toString() == 'PermissionStatus.granted'){
-     //distinmeters();
-   }else{
-     await LocationPermissions().requestPermissions();
-     return "done";
+   if(lat!=null&&long!=null){
+     await getLocation();
+     distinmeters();
    }
 }
 int workingid;
@@ -160,10 +164,10 @@ class _DashBoardState extends State<DashBoard> {
             ),
             GestureDetector(
                 onTap: () async{
-                  PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
-                  print(permission);
-                  if(permission.toString() == 'PermissionStatus.granted'){
-                     getLocation();
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  if(await checklocationenable()){
                     print(gettodayjp.checkintime);
                     print(gettodayjp.checkouttime);
                     print(gettodayjp.status);
@@ -183,6 +187,10 @@ class _DashBoardState extends State<DashBoard> {
                         chekinoutlet.checkincountry = gettodayjp.outletcountry[u];
                       }
                     }
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
+
                     workingid==null? showDialog(
                         context: context,
                         builder: (_) => StatefulBuilder(
@@ -422,6 +430,9 @@ class _DashBoardState extends State<DashBoard> {
                               );
                             }));
                   }else{
+                    setState(() {
+                      isApiCallProcess = false;
+                    });
                     showDialog(
                         context: context,
                         builder: (_) => StatefulBuilder(

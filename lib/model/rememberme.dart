@@ -6,6 +6,7 @@ addLogindetails() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString('useremail', "${loginrequestdata.inputemail}");
   prefs.setString('userpassword', "${loginrequestdata.inputpassword}");
+  print("detailes added");
 }
 
 

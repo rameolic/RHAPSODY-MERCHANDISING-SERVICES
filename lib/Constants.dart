@@ -13,7 +13,7 @@ import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 
-String nblfile=Uri.encodeFull("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}.pdf");
+String nblfile=Uri.encodeFull("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
 
 
 //bool alreadycheckedin = false;
@@ -204,6 +204,8 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
             child : FloatingActionButton(
               heroTag: "btn1",
               onPressed: ()async{
+                print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                print(nblfile);
                 if (Platform.isAndroid) {
                   var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
                   rmsdownloadsexists = await Directory("${downloadsDirectory.path}/Rmsnblfiles").exists();

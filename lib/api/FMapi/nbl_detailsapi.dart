@@ -7,7 +7,7 @@ Future<void> getNBLdetails() async {
     "outlet_id": currentoutletid,
   };
   print(jsonEncode(body));
-  http.Response response = await http.post(NBLDetailsFM,
+  http.Response response = await http.post(NBLDetailsFMs,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

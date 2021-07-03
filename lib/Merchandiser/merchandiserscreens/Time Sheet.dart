@@ -29,7 +29,6 @@ class _TimeSheetListState extends State<TimeSheetList> {
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
-      color: orange,
       opacity: 0.3,
       inAsyncCall: isApiCallProcess,
       child: Scaffold(

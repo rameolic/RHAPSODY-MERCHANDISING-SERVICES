@@ -185,10 +185,12 @@ class _LoginPageState extends State<LoginPage> {
                                       loginrequestdata.inputpassword =passwordinputcontroller.text;
                                       if (loginrequestdata.inputemail != null &&
                                           loginrequestdata.inputpassword != null) {
-                                          addLogindetails();
                                           fromloginscreen = true;
                                         int userroleid = await loginapi();
                                         currentuser.roleid = userroleid;
+                                        if(userroleid!=null){
+                                          addLogindetails();
+                                        }
                                         if (userroleid == 6) {
                                           getempdetails();
                                           getaddedexpiryproducts ();
@@ -196,10 +198,8 @@ class _LoginPageState extends State<LoginPage> {
                                           getempdetailsforreport();
                                           var DBMresult =  DBRequestmonthly();
                                           var DBDresult =  await DBRequestdaily();
-                                           getLocation();
+                                          // getLocation();
                                           await callfrequently();
-                                          const period = const Duration(seconds: 600);
-                                          Timer.periodic(period, (Timer t) => getLocation());
                                           const time = const Duration(seconds: 120);
                                           Timer.periodic(time, (Timer t) => callfrequently());
                                           if (DBMresult != null && DBDresult != null) {
@@ -267,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                                               elevation: 20.00,
                                               duration: Duration(seconds: 2),
                                               content: Text(
-                                                "Username/password was wrong",
+                                                DBrequestdata.message.toString(),
                                               ));
                                           scaffoldKey.currentState.showSnackBar(snackBar);
                                         }

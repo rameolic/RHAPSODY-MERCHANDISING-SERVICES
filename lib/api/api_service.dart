@@ -90,7 +90,7 @@ Uri AddOutletMap = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outl
 Uri AddBrandOMap = Uri.parse("https://rms2.rhapsody.ae/api/outlet_brand_mapping_details");
 Uri addoutletshareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_add_outlet_shareofself");
 Uri clientpromodataurl = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_promotion_check_details");
-Uri NBLDetailsFM = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_outlet_nbl_details");
+Uri NBLDetailsFMs = Uri.parse("https://rms2.rhapsody.ae/api/fieldmanager_view_outlet_nbl_details");
 Uri clientoutletsurl = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_details");
 Uri clientexpiryinfo = Uri.parse("https://rms2.rhapsody.ae/api/client_view_outlet_stock_expirey_details");
 Uri delcategorymapping = Uri.parse("https://rms2.rhapsody.ae/api/delete_outlet_products_mapping");
@@ -153,6 +153,8 @@ class loggedin{
 int currentoutletid;
 //int Currenttimesheetid;
 Future loginapi() async {
+  print(remembereddata.email);
+  print(remembereddata.email.toString() == null);
   loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
   loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
   Map loginData = {
@@ -163,9 +165,9 @@ Future loginapi() async {
   http.Response response = await http.post(Loginurl,
       body: loginData);
   if (response.statusCode == 200) {
+
     userpassword.password = loggedin.password;
     print("LoginDone");
-    getLocation();
     String data = response.body;
     var decodeData = jsonDecode(data);
     DBrequestdata.receivedtoken =decodeData['token'];
@@ -174,6 +176,7 @@ Future loginapi() async {
     DBrequestdata.emailid =decodeData['user']['email'];
     currentuser.roleid = decodeData['user']['role_id'];
     print(DBrequestdata.empname);
+
     if(currentuser.roleid == 6){
       currentmerchid = DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     }
@@ -181,6 +184,9 @@ Future loginapi() async {
   }
   else {
     print(response.statusCode);
+    String data = response.body;
+    var decodeData = jsonDecode(data);
+    DBrequestdata.message = decodeData['message'];
     print("error");
     print(response.body);
     return currentuser.roleid;
@@ -198,6 +204,7 @@ class DBrequestdata {
   static var receivedempid;
   static var empname;
   static var emailid;
+  static var message;
 }
 
 
@@ -616,7 +623,7 @@ Future<void> getTotalJnyTime() async {
         // TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
       }
       if(decodestores['data'][u]['checkout_time']==null){
-        TotalJnyTime.checkout.add("Not Checked Out");
+        TotalJnyTime.checkout.add("Check out not registered");
       }
       else{
         TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
