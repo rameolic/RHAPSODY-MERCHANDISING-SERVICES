@@ -33,6 +33,7 @@ import 'package:merchandising/api/avaiablityapi.dart';
 import'package:intl/intl.dart';
 
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
+import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 List<String>breakspl =[];
 int ssi;
 var spltsidco;
@@ -454,6 +455,7 @@ class _State extends State<JourneyListBuilder> {
                                                      getShareofshelf();
                                                     Addedstockdataformerch();
                                                     getmappedoutlets();
+                                                     getNBLdetails();
                                                     await outletwhencheckin();
                                                     await getmyattandance();
                                                     if(noattendance.noatt=="attadded"){

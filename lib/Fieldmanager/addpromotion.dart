@@ -120,6 +120,7 @@ class _AddPromotionState extends State<AddPromotion> {
                               ),
                             ),
                           ),
+                          SizedBox(height:5),
                           Container(
                             margin: EdgeInsets.only(top: 5, bottom: 5),
                             width: double.infinity,
@@ -129,9 +130,10 @@ class _AddPromotionState extends State<AddPromotion> {
                             ),
                             child: SearchableDropdown.multiple(
                               underline: SizedBox(),
+                              iconEnabledColor: orange,
                               items: brandlist,
                               selectedItems: selectbrands,
-                              hint: Text("Select Products"),
+                              hint: Text("Select Products", style: TextStyle(color: Colors.grey)),
                               searchHint: "Select Products",
                               onChanged: (value) {
                                 setState(() {

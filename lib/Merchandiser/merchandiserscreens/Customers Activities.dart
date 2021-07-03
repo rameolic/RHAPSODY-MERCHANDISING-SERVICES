@@ -31,21 +31,19 @@ import 'OutletSurvey.dart';
 import 'Journeyplan.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/upload_live_pic.dart';
-import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
-import'package:merchandising/Fieldmanager/ViewPDF.dart';
+import 'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
+import 'package:merchandising/Fieldmanager/ViewPDF.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
-import'package:merchandising/api/customer_activites_api/competition_details.dart';
-import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
-import'package:intl/intl.dart';
-import'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
+import 'package:merchandising/api/customer_activites_api/competition_details.dart';
+import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:intl/intl.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
 
 List<bool> CheckList = [];
 List<String> CheckListItems = task.list;
-
-
 
 class CustomerActivities extends StatefulWidget {
   @override
@@ -58,7 +56,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   void initState() {
     super.initState();
   }
-  Offset count =Offset(20.0,20.0);
+
+  Offset count = Offset(20.0, 20.0);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -84,24 +83,30 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                   ],
                 ),
                 Spacer(),
-                IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
-                  setState(() {
-                    isApiCallProcess = true;
-                  });
-                   getNBLdetails();
-                   getTaskList();
-                   getAvaiablitity();
-                   getVisibility();
-                   getcompinfo();
-                   getPlanogram();
-                  await Addedstockdataformerch();
-                   getShareofshelf();
-                   getCompetition();
-                  await getPromotionDetails();
-                  setState((){
-                    isApiCallProcess = false;
-                  });
-                }),
+                IconButton(
+                    icon: Icon(
+                      CupertinoIcons.refresh_circled_solid,
+                      color: orange,
+                      size: 30,
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        isApiCallProcess = true;
+                      });
+                      getNBLdetails();
+                      getTaskList();
+                      getAvaiablitity();
+                      getVisibility();
+                      getcompinfo();
+                      getPlanogram();
+                      Addedstockdataformerch();
+                      getShareofshelf();
+                      getCompetition();
+                      await getPromotionDetails();
+                      setState(() {
+                        isApiCallProcess = false;
+                      });
+                    }),
                 checkoutbutton(),
               ],
             ),
@@ -120,8 +125,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Activities(
-                          completedicon:CupertinoIcons.check_mark_circled_solid,
-                          iconcolor:  avaliabilitycheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: avaliabilitycheck ? Colors.green : pink,
                           icon: CupertinoIcons.chart_bar_alt_fill,
                           chartext: 'Availability',
                           tap: () {
@@ -129,8 +135,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                             print(task.list);
                             reasons = [];
                             outofStockitems = [];
-                            for (int i = 0; i < Avaiablity.productname.length;
-                            i++) {
+                            for (int i = 0;
+                                i < Avaiablity.productname.length;
+                                i++) {
                               reasons.add('');
                               outofStockitems.add(1);
                             }
@@ -143,19 +150,19 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                               //  (Route<dynamic> route) => false,
                             );
                           },
-
                         ),
                         Activities(
-                          completedicon: CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: visibilitycheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: visibilitycheck ? Colors.green : pink,
                           icon: CupertinoIcons.eye_solid,
                           chartext: 'Visibility',
                           tap: () {
-                            checkvaluevisibility=[];
-                            visibilityreasons=[];
+                            checkvaluevisibility = [];
+                            visibilityreasons = [];
                             for (int i = 0;
-                            i < VisibilityData.productname.length;
-                            i++) {
+                                i < VisibilityData.productname.length;
+                                i++) {
                               images.add(File('dummy.txt'));
                               visibilityreasons.add('');
                               checkvaluevisibility.add(1);
@@ -177,8 +184,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Activities(
-                          completedicon:CupertinoIcons.check_mark_circled_solid,
-                          iconcolor:shareofshelfcheck?Colors.green :pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: shareofshelfcheck ? Colors.green : pink,
                           icon: Icons.table_chart_sharp,
                           chartext: 'Share of Shelf',
                           tap: () {
@@ -197,8 +205,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                           },
                         ),
                         Activities(
-                          completedicon:CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: planocheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: planocheck ? Colors.green : pink,
                           icon: CupertinoIcons.doc_checkmark_fill,
                           chartext: 'Planogram',
                           tap: () {
@@ -207,8 +216,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                             beforeimagesencode = [];
                             afterimagesencode = [];
                             for (int i = 0;
-                            i < PlanoDetails.brandname.length;
-                            i++) {
+                                i < PlanoDetails.brandname.length;
+                                i++) {
                               beforeimages.add(File('dummy.txt'));
                               afterimages.add(File('dummy.txt'));
                               beforeimagesencode.add('dummy.txt');
@@ -231,8 +240,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Activities(
-                          completedicon: CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: promocheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: promocheck ? Colors.green : pink,
                           icon: CupertinoIcons.checkmark_seal_fill,
                           chartext: 'Promotion Check',
                           tap: () {
@@ -247,8 +257,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                           },
                         ),
                         Activities(
-                          completedicon: CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: compcheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: compcheck ? Colors.green : pink,
                           chartext: 'Compitetor info Capture',
                           icon: CupertinoIcons.info_circle_fill,
                           tap: () {
@@ -268,8 +279,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Activities(
-                          completedicon: CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: expirycheck?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: expirycheck ? Colors.green : pink,
                           icon: CupertinoIcons.calendar_badge_minus,
                           chartext: 'Products Expiry Info',
                           tap: () {
@@ -284,19 +296,20 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                           },
                         ),
                         Activities(
-                          completedicon: CupertinoIcons.check_mark_circled_solid,
-                          iconcolor: checklist?Colors.green:pink,
+                          completedicon:
+                              CupertinoIcons.check_mark_circled_solid,
+                          iconcolor: checklist ? Colors.green : pink,
                           icon: CupertinoIcons.text_badge_checkmark,
                           chartext: 'CheckList',
                           tap: () {
                             print(task.list.length);
-                            if (0==0) {
+                            if (0 == 0) {
                               setState(() {
                                 changecheckoutcolor = false;
                               });
                               CheckList = [];
                               imagescl = [];
-                              encodeimagecl=[];
+                              encodeimagecl = [];
 
                               for (int i = 0; i < task.list.length; i++) {
                                 CheckList.add(false);
@@ -308,10 +321,8 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           UploadLivePhoto()));
-
-
-                            }},
-
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -373,12 +384,13 @@ class BreakTime extends StatefulWidget {
   @override
   _BreakTimeState createState() => _BreakTimeState();
 }
+
 class _BreakTimeState extends State<BreakTime> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children:[
+        children: [
           BackGround(),
           ProgressHUD(
               inAsyncCall: isApiCallProcess,
@@ -401,42 +413,48 @@ class _BreakTimeState extends State<BreakTime> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height:10),
-                            Text("Once you have finished your Break Time\n Tap on Continue to start your Work"),
-
-                            SizedBox(height:10),
+                            SizedBox(height: 10),
+                            Text(
+                                "Once you have finished your Break Time\n Tap on Continue to start your Work"),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
-                                  onTap:()async{
+                                  onTap: () async {
                                     checkin();
                                     var breakends = DateTime.now();
                                     print(breakends);
-                                    splitbreak.citime=checkinoutdata.checkintime;
-                                    splitbreak.cotime=DateFormat('HH:mm:ss').format(breakends);
-                                    splitbreak.type="Break";
-                                    splitbreak.jtimeid="";
+                                    splitbreak.citime =
+                                        checkinoutdata.checkintime;
+                                    splitbreak.cotime = DateFormat('HH:mm:ss')
+                                        .format(breakends);
+                                    splitbreak.type = "Break";
+                                    splitbreak.jtimeid = "";
                                     // splitbreak.jtimeid=jtimeidco;
                                     setState(() {
-                                      isApiCallProcess=true;
+                                      isApiCallProcess = true;
                                     });
                                     await merchbreak();
                                     setState(() {
-                                      isApiCallProcess=false;
+                                      isApiCallProcess = false;
                                     });
                                     Navigator.pop(
                                         context,
                                         MaterialPageRoute(
-                                            builder:
-                                                (BuildContext context) =>
+                                            builder: (BuildContext context) =>
                                                 CustomerActivities()));
                                   },
                                   child: Container(
-                                      decoration: BoxDecoration(color: orange,borderRadius: BorderRadius.circular(10)),
+                                      decoration: BoxDecoration(
+                                          color: orange,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
                                       padding: EdgeInsets.all(10.0),
-                                      child:Text("Continue Work",style: TextStyle(color: pink),)
-                                  ),
+                                      child: Text(
+                                        "Continue Work",
+                                        style: TextStyle(color: pink),
+                                      )),
                                 ),
                               ],
                             ),
@@ -446,24 +464,24 @@ class _BreakTimeState extends State<BreakTime> {
                     );
                   },
                 ),
-              )),],
+              )),
+        ],
       ),
     );
   }
 }
 
-
 bool iseverythingchecked = false;
 bool changecheckoutcolor = false;
 
 class Activities extends StatelessWidget {
-  Activities({this.icon, this.chartext, this.tap,this.completedicon,this.iconcolor});
+  Activities(
+      {this.icon, this.chartext, this.tap, this.completedicon, this.iconcolor});
   final icon;
   final chartext;
   final tap;
   final completedicon;
   final iconcolor;
-
 
   @override
   Widget build(BuildContext context) {
@@ -474,19 +492,19 @@ class Activities extends StatelessWidget {
         margin: EdgeInsets.only(left: 5, bottom: 10, right: 5),
         padding: EdgeInsets.all(10.0),
         decoration:
-        BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10)),
+            BoxDecoration(color: pink, borderRadius: BorderRadius.circular(10)),
         child: Center(
           child: Column(
             children: [
-           Row(
-             children: [
-               Icon(completedicon,color: iconcolor,size: 20.0),
-             ],
-           ),
+              Row(
+                children: [
+                  Icon(completedicon, color: iconcolor, size: 20.0),
+                ],
+              ),
               Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Icon(icon, size: 50.0, color:Color(0xff424B4D)),
+                    Icon(icon, size: 50.0, color: Color(0xff424B4D)),
                     Text(
                       chartext,
                       style: TextStyle(fontSize: 13),
@@ -501,7 +519,6 @@ class Activities extends StatelessWidget {
 }
 
 bool isApiCallProcess = false;
-
 
 bool Availability = false;
 
@@ -525,360 +542,370 @@ class _checkoutbuttonState extends State<checkoutbutton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async{
+      onTap: () async {
         print("printed");
 
         showDialog(
             context: context,
             builder: (_) => StatefulBuilder(builder: (context, setState) {
-              return ProgressHUD(
-                inAsyncCall: isApiCallProcess,
-                opacity: 0.3,
-                child: AlertDialog(
-                  backgroundColor: alertboxcolor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(10.0))),
-                  content: Builder(
-                    builder: (context) {
-                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Outlet Survey',
-                            style:
-                            TextStyle(color: orange, fontSize: 20),
-                          ),
-                          Divider(
-                            color: Colors.black,
-                            thickness: 0.8,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Availability == false
-                                    ? Availability = true
-                                    : Availability = false;
-
-
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Availability',
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    Spacer(),
-                                    Icon(
-                                      Availability == true
-                                          ? CupertinoIcons
-                                          .check_mark_circled_solid
-                                          : CupertinoIcons
-                                          .xmark_circle_fill,
-                                      color: Availability == true
-                                          ? orange
-                                          : Colors.grey,
-                                      size: 30,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Visibility == false
-                                    ? Visibility = true
-                                    : Visibility = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text('Visibility',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Icon(
-                                        Visibility == true
-                                            ? CupertinoIcons
-                                            .check_mark_circled_solid
-                                            : CupertinoIcons
-                                            .xmark_circle_fill,
-                                        color: Visibility == true
-                                            ? orange
-                                            : Colors.grey,
-                                        size: 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                ShareofShelf == false
-                                    ? ShareofShelf = true
-                                    : ShareofShelf = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text('Share of Shelf',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Icon(
-                                        ShareofShelf == true
-                                            ? CupertinoIcons
-                                            .check_mark_circled_solid
-                                            : CupertinoIcons
-                                            .xmark_circle_fill,
-                                        color: ShareofShelf == true
-                                            ? orange
-                                            : Colors.grey,
-                                        size: 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                Planogram == false
-                                    ? Planogram = true
-                                    : Planogram = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text('Planogram',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Icon(
-                                        Planogram == true
-                                            ? CupertinoIcons
-                                            .check_mark_circled_solid
-                                            : CupertinoIcons
-                                            .xmark_circle_fill,
-                                        color: Planogram == true
-                                            ? orange
-                                            : Colors.grey,
-                                        size: 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                compitetorcheck == false
-                                    ? compitetorcheck = true
-                                    : compitetorcheck = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text('Compitetor Info Capture',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Icon(
-                                        compitetorcheck == true
-                                            ? CupertinoIcons
-                                            .check_mark_circled_solid
-                                            : CupertinoIcons
-                                            .xmark_circle_fill,
-                                        color: compitetorcheck == true
-                                            ? orange
-                                            : Colors.grey,
-                                        size: 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                expiryinfo == false
-                                    ? expiryinfo = true
-                                    : expiryinfo = false;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text('Expiry Info',
-                                        style: TextStyle(fontSize: 16)),
-                                    Spacer(),
-                                    Icon(
-                                        expiryinfo == true
-                                            ? CupertinoIcons
-                                            .check_mark_circled_solid
-                                            : CupertinoIcons
-                                            .xmark_circle_fill,
-                                        color: expiryinfo == true
-                                            ? orange
-                                            : Colors.grey,
-                                        size: 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly,
+                  return ProgressHUD(
+                    inAsyncCall: isApiCallProcess,
+                    opacity: 0.3,
+                    child: AlertDialog(
+                      backgroundColor: alertboxcolor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
+                              Text(
+                                'Outlet Survey',
+                                style: TextStyle(color: orange, fontSize: 20),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 0.8,
+                              ),
                               GestureDetector(
-                                onTap: () async{
-
-                                  Availability==true?OutletSurveySubmit.availability=1:OutletSurveySubmit.availability=0;
-                                  Visibility==true?OutletSurveySubmit.visibility=1:OutletSurveySubmit.visibility=0;
-                                  ShareofShelf==true?OutletSurveySubmit.sos=1:OutletSurveySubmit.sos=0;
-                                  Planogram==true?OutletSurveySubmit.planogram=1:OutletSurveySubmit.planogram=0;
-                                  compitetorcheck==true?OutletSurveySubmit.competitor=1:OutletSurveySubmit.competitor=0;
-                                  promotion==true?OutletSurveySubmit.promotioncheck=1:OutletSurveySubmit.promotioncheck=0;
-                                  expiryinfo==true?OutletSurveySubmit.stockexpiry=1:OutletSurveySubmit.stockexpiry=0;
-
-                                  if(journeydone[ssi]=="done"){
-                                    print("entered if");
-                                    getTotalJnyTime();
-                                    var timeofsci = DateTime.now();
-                                    splitbreak.type="Split Shift";
-                                    currenttimesheetid=spltsidco;
-                                    splitbreak.citime="";
-                                    splitbreak.cotime =DateFormat('HH:mm:ss').format(timeofsci);
-                                    splitbreak.jtimeid=TotalJnyTime.id[selectJTID];
-
-                                    print(splitbreak.jtimeid);
-
-                                    setState(() {
-                                      isApiCallProcess=true;
-                                    });
-                                    await merchbreak();
-                                    await getTotalJnyTime();
-                                    setState(() {
-                                      isApiCallProcess=false;
-                                    });
-
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext
-                                            context) =>
-                                                JourneyPlan()));
-
-                                  }
-                                  else{
-                                    print("entered else");
-
-                                    SubmitCheckout();
-                                    sendtaskresponse();
-                                    workingid != null
-                                        ? workingid = null
-                                        : workingid = workingid;
-                                    checkedoutlet.checkoutlet = true;
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext
-                                            context) =>
-                                                JourneyPlan()));
-                                  }
+                                onTap: () {
+                                  setState(() {
+                                    Availability == false
+                                        ? Availability = true
+                                        : Availability = false;
+                                  });
                                 },
-                                child: Container(
-                                  height: 30,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: orange,
-                                    borderRadius:
-                                    BorderRadius.circular(5),
-                                  ),
-                                  child: Center(
-                                      child: Text('ok',
-                                          style: TextStyle(
-                                              color: Colors.white))),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text(
+                                          'Availability',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        Spacer(),
+                                        Icon(
+                                          Availability == true
+                                              ? CupertinoIcons
+                                                  .check_mark_circled_solid
+                                              : CupertinoIcons
+                                                  .xmark_circle_fill,
+                                          color: Availability == true
+                                              ? orange
+                                              : Colors.grey,
+                                          size: 30,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
                                 ),
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext
-                                          context) =>
-                                              CustomerActivities()));
+                                  setState(() {
+                                    Visibility == false
+                                        ? Visibility = true
+                                        : Visibility = false;
+                                  });
                                 },
-                                child: Container(
-                                  height: 30,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius:
-                                    BorderRadius.circular(5),
-                                  ),
-                                  child: Center(
-                                      child: Text('Cancel',
-                                          style: TextStyle(
-                                              color: Colors.white))),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Visibility',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            Visibility == true
+                                                ? CupertinoIcons
+                                                    .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                    .xmark_circle_fill,
+                                            color: Visibility == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
                                 ),
                               ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    ShareofShelf == false
+                                        ? ShareofShelf = true
+                                        : ShareofShelf = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Share of Shelf',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            ShareofShelf == true
+                                                ? CupertinoIcons
+                                                    .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                    .xmark_circle_fill,
+                                            color: ShareofShelf == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    Planogram == false
+                                        ? Planogram = true
+                                        : Planogram = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Planogram',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            Planogram == true
+                                                ? CupertinoIcons
+                                                    .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                    .xmark_circle_fill,
+                                            color: Planogram == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    compitetorcheck == false
+                                        ? compitetorcheck = true
+                                        : compitetorcheck = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Compitetor Info Capture',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            compitetorcheck == true
+                                                ? CupertinoIcons
+                                                    .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                    .xmark_circle_fill,
+                                            color: compitetorcheck == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    expiryinfo == false
+                                        ? expiryinfo = true
+                                        : expiryinfo = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Expiry Info',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            expiryinfo == true
+                                                ? CupertinoIcons
+                                                    .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                    .xmark_circle_fill,
+                                            color: expiryinfo == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      Availability == true
+                                          ? OutletSurveySubmit.availability = 1
+                                          : OutletSurveySubmit.availability = 0;
+                                      Visibility == true
+                                          ? OutletSurveySubmit.visibility = 1
+                                          : OutletSurveySubmit.visibility = 0;
+                                      ShareofShelf == true
+                                          ? OutletSurveySubmit.sos = 1
+                                          : OutletSurveySubmit.sos = 0;
+                                      Planogram == true
+                                          ? OutletSurveySubmit.planogram = 1
+                                          : OutletSurveySubmit.planogram = 0;
+                                      compitetorcheck == true
+                                          ? OutletSurveySubmit.competitor = 1
+                                          : OutletSurveySubmit.competitor = 0;
+                                      promotion == true
+                                          ? OutletSurveySubmit.promotioncheck =
+                                              1
+                                          : OutletSurveySubmit.promotioncheck =
+                                              0;
+                                      expiryinfo == true
+                                          ? OutletSurveySubmit.stockexpiry = 1
+                                          : OutletSurveySubmit.stockexpiry = 0;
+
+                                      if (journeydone[ssi] == "done") {
+                                        print("entered if");
+                                        getTotalJnyTime();
+                                        var timeofsci = DateTime.now();
+                                        splitbreak.type = "Split Shift";
+                                        currenttimesheetid = spltsidco;
+                                        splitbreak.citime = "";
+                                        splitbreak.cotime =
+                                            DateFormat('HH:mm:ss')
+                                                .format(timeofsci);
+                                        splitbreak.jtimeid =
+                                            TotalJnyTime.id[selectJTID];
+
+                                        print(splitbreak.jtimeid);
+
+                                        setState(() {
+                                          isApiCallProcess = true;
+                                        });
+                                        await merchbreak();
+                                        await getTotalJnyTime();
+                                        setState(() {
+                                          isApiCallProcess = false;
+                                        });
+
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        JourneyPlan()));
+                                      } else {
+                                        print("entered else");
+
+                                        SubmitCheckout();
+                                        sendtaskresponse();
+                                        workingid != null
+                                            ? workingid = null
+                                            : workingid = workingid;
+                                        checkedoutlet.checkoutlet = true;
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        JourneyPlan()));
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        color: orange,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Center(
+                                          child: Text('ok',
+                                              style: TextStyle(
+                                                  color: Colors.white))),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  CustomerActivities()));
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Center(
+                                          child: Text('Cancel',
+                                              style: TextStyle(
+                                                  color: Colors.white))),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              );
-            }));
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                }));
       },
       child: Container(
         margin: EdgeInsets.only(right: 10.00),

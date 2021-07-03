@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
 
   void _onRememberMeChanged(bool newValue) => setState(() {
+
         rememberMe = newValue;
 
         if (rememberMe) {
@@ -195,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                                           getempdetailsforreport();
                                           var DBMresult =  DBRequestmonthly();
                                           var DBDresult =  await DBRequestdaily();
-                                          await getLocation();
+                                           getLocation();
                                           await callfrequently();
                                           const period = const Duration(seconds: 600);
                                           Timer.periodic(period, (Timer t) => getLocation());

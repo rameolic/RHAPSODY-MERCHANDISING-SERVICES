@@ -188,15 +188,15 @@ class _MenuState extends State<Menu> {
         //             builder: (BuildContext context) => MyApp()));
         //   },
         // ),
-        ListTile(
-          title: MenuElements(title: 'FeedBack', icon: Icons.pending_actions),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => FeedbackPage(title: "Report Feedback",)));
-          },
-        ),
+        // ListTile(
+        //   title: MenuElements(title: 'FeedBack', icon: Icons.pending_actions),
+        //   onTap: () {
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (BuildContext context) => FeedbackPage(title: "Report Feedback",)));
+        //   },
+        // ),
         ListTile(
           title: MenuElements(
             title: 'Log Out',

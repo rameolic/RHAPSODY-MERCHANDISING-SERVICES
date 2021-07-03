@@ -25,7 +25,6 @@ class _ReportingempState extends State<Reportingemp> {
   void initState() {
     super.initState();
     inputlist =  reporting.merchandisers;
-    inputlist.sort();
   }
 
   _ReportingempState() {

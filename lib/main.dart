@@ -51,13 +51,13 @@ Future<void> main() async {
     print(userroleid);
     if(userroleid == 6){
        DBRequestmonthly();
-       await DBRequestdaily();
        getaddedexpiryproducts();
       getempdetails();
       getallempdetails();
       getempdetailsforreport();
       getstockexpiryproducts();
-      await getLocation();
+      await DBRequestdaily();
+       getLocation();
       await callfrequently();
        const period = const Duration(seconds: 60);
        Timer.periodic(period, (Timer t) => getLocation());
@@ -129,6 +129,7 @@ Future<void> main() async {
       ));
     }
     else{
+
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

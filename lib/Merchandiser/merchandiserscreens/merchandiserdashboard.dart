@@ -46,7 +46,7 @@ import'package:merchandising/Fieldmanager/ViewPDF.dart';
 import'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 
-Future callfrequently()async{
+Future<String> callfrequently()async{
    getJourneyPlan();
    getskippedJourneyPlan();
    getvisitedJourneyPlan();
@@ -55,7 +55,10 @@ Future callfrequently()async{
    await getJourneyPlanweekly();
    PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
    if(permission.toString() == 'PermissionStatus.granted'){
-     await distinmeters();
+     //distinmeters();
+   }else{
+     await LocationPermissions().requestPermissions();
+     return "done";
    }
 }
 int workingid;
@@ -123,6 +126,7 @@ class _DashBoardState extends State<DashBoard> {
   bool unit = false;
   bool transport = false;
   bool posm = false;
+  bool location = false;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -284,6 +288,28 @@ class _DashBoardState extends State<DashBoard> {
                                                         color: posm == true ? orange : Colors.grey,size:30  ),
                                                   ],
                                                 ),
+                                                SizedBox(height: 5,),
+                                              ],
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: (){
+                                              setState(() {
+                                                location == false ? location = true : location = false;
+                                              });
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Text('Location',style: TextStyle(fontSize: 16)),
+                                                    Spacer(),
+                                                    Icon(
+                                                        location == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
+                                                        color: location == true ? orange : Colors.grey,size:30  ),
+                                                  ],
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -293,7 +319,7 @@ class _DashBoardState extends State<DashBoard> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () async{
-                                                  if(uniform && unit && transport && posm){
+                                                  if(uniform && unit && transport && posm && location){
                                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
                                                   }
                                                 },
@@ -747,11 +773,11 @@ class _DashBoardState extends State<DashBoard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // setState(() {
-                        //   ischatscreen =1;
-                        //   newmsgavaiable = false;
-                        //   chat.receiver = fieldmanagerofcurrentmerch;
-                        // });
+                        setState(() {
+                          ischatscreen =1;
+                          newmsgavaiable = false;
+                          chat.receiver = fieldmanagerofcurrentmerch;
+                        });
                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatUsersformerch()));
                         },
                       child: Container(
@@ -823,7 +849,7 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
           ),
-          NBlFloatingButton()
+         // NBlFloatingButton()
         ],
       ),
     );

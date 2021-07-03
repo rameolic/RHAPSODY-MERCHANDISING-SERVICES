@@ -27,11 +27,19 @@ class Location {
  getLocation() async {
    PermissionStatus permission = await LocationPermissions().checkPermissionStatus();
    print('permission : $permission');
-  Location location = Location();
-  await location.getCurrentLocation();
-  lat = location.latitude;
-  long =location.longitude;
-  distinmeters();
+   try{
+     if((permission.toString() == 'PermissionStatus.granted')) {
+       Location location = Location();
+       await location.getCurrentLocation();
+       lat = location.latitude;
+       long = location.longitude;
+       distinmeters();
+     }else{
+       await LocationPermissions().requestPermissions();
+     }
+   }catch(e){
+     print(e);
+   }
 }
 
 address() async {

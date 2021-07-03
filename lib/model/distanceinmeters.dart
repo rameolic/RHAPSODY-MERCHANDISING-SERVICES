@@ -12,16 +12,26 @@ distinmeters() {
   gettodayjp.distanceinmeters = [];
   gettodayjp.sortdistnce = [];
   print("length : ${gettodayjp.outletlat.length}");
-  for(int u=0;u<gettodayjp.outletlat.length;u++){
-    double dist = Geolocator.distanceBetween(lat, long, double.parse(gettodayjp.outletlat[u]), double.parse(gettodayjp.outletlong[u]));
-    gettodayjp.distanceinmeters.add(dist/1000);
-    double sort = Geolocator.distanceBetween(lat, long, double.parse(gettodayjp.outletlat[u]), double.parse(gettodayjp.outletlong[u]));
-    gettodayjp.sortdistnce.add(sort/1000);
+  try{
+    if (lat != null && long != null) {
+      for (int u = 0; u < gettodayjp.outletlat.length; u++) {
+        double dist = Geolocator.distanceBetween(
+            lat, long, double.parse(gettodayjp.outletlat[u]),
+            double.parse(gettodayjp.outletlong[u]));
+        gettodayjp.distanceinmeters.add(dist / 1000);
+        double sort = Geolocator.distanceBetween(
+            lat, long, double.parse(gettodayjp.outletlat[u]),
+            double.parse(gettodayjp.outletlong[u]));
+        gettodayjp.sortdistnce.add(sort / 1000);
+      }
+      print(gettodayjp.distanceinmeters);
+      //marker();
+      distinmetersforskipjp();
+    }
+  }catch(e){
+    print("distance cal exception error : $e");
   }
-  print(gettodayjp.distanceinmeters);
-  //marker();
-  distinmetersforskipjp();
-  }
+}
 distinmetersforskipjp() {
   todayskipjplist.distanceinmeters=[];
   for(int u=0;u<todayskipjplist.outletlat.length;u++){

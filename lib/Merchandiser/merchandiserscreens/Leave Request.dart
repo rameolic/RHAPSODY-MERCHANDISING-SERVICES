@@ -458,6 +458,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             controller: reasoninputcontroller,
                             cursorColor: grey,
                             decoration: new InputDecoration(
+                              border: InputBorder.none,
                               focusColor: grey,
                               hintText: "Type your Reason here",
                               hintStyle: TextStyle(

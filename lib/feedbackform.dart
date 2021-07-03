@@ -31,7 +31,7 @@ class FeedbackForm {
 /// HTTP GET request on Google App Script Web URL and parses response and sends result callback.
 class FormController {
   // Google App Script Web URL.
-    Uri URL = Uri.parse("https://script.google.com/macros/s/AKfycbwpIsvLoEkoMMovo5o-PHYGSv5S8ZeNErHjj26W3niB7jicbC2QVM_1Q29Nhy0SK4PMQQ/exec");
+    Uri URL = Uri.parse("https://script.google.com/macros/s/AKfycbyqQHi2CL5JDzdM4MO1WiXmNDawmYnQs72i52hJH9uC4kD2hyS0/exec");
 
   // Success Status Message
   static const STATUS_SUCCESS = "SUCCESS";
@@ -43,7 +43,7 @@ class FormController {
     try {
       print(feedbackForm.toJson());
       await http.post(URL, body: feedbackForm.toJson()).then((response) async {
-        print(response.body);
+        print(response.statusCode);
         if (response.statusCode == 302) {
           Uri url = Uri.parse("${response.headers['location']}");
           await http.get(url).then((response) {

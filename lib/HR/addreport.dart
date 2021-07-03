@@ -157,9 +157,9 @@ class _addreportingState extends State<addreporting> {
                             print(
                                 'Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'), '')}');
                             print(
-                                'Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'), '')}');
+                                'RMS${feildmanager.replaceAll(new RegExp(r'[^0-9]'), '')}');
                             report.feildmanagerid =
-                                'Emp${feildmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
+                                'RMS${feildmanager.replaceAll(new RegExp(r'[^0-9]'), '')}';
                             report.merchandiserid =
                                 'Emp${merchandiser.replaceAll(new RegExp(r'[^0-9]'), '')}';
                             report.startdate = pickeddate.startdate == null
