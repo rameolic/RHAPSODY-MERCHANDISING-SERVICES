@@ -7,7 +7,6 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/api_service.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 class ClientDB extends StatefulWidget {
@@ -961,20 +960,6 @@ class _ClientNBLState extends State<ClientNBL> {
                                         ),
                                         Divider(color: Colors.black,thickness: 0.8,),
                                         loaded?SizedBox():Text("Loadiing..."),
-                                        SfPdfViewer.network(nblfile,
-                                          onDocumentLoaded: (var file){
-                                            setState(() {
-                                              loaded = true;
-                                              print(file.document);
-                                            });
-                                          },
-                                          onDocumentLoadFailed: (e){
-                                            print(e);
-                                          },
-                                          canShowScrollHead: true,
-                                          canShowScrollStatus: true,
-                                        )
-
                                       ],
                                     ),
                                   ),

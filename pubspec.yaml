@@ -24,7 +24,6 @@ dependencies:
   http: ^0.13.3
   flutter:
     sdk: flutter
-  flutter_launcher_name: ^0.0.1
   smooth_star_rating: 1.1.1
   file_picker: ^3.0.2+2
   cupertino_icons:
@@ -50,28 +49,20 @@ dependencies:
   path:
   location_permissions: ^4.0.0
   form_data:
-  syncfusion_flutter_pdfviewer:
   csv: ^5.0.0
   permission_handler: ^8.1.2
   image:
   url_launcher: ^6.0.7
-  downloads_path_provider: ^0.1.0
-  flutter_offline: "^0.3.0"
   open_file: ^3.2.1
 
 
 dev_dependencies:
-
   flutter_test:
     sdk: flutter
-  #integration_test:
-  #  sdk: flutter
-  flutter_launcher_icons: ^0.8.1
+  flutter_launcher_icons: ^0.9.0
 flutter_icons:
   ios: true
   image_path: "images/appstore.png"
-
-
 flutter_launcher_name:
   name: "RMS"
 

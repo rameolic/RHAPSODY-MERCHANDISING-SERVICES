@@ -1,5 +1,4 @@
 import 'dart:ffi';
-import 'package:merchandising/Fieldmanager/ViewPDF.dart';
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -32,7 +32,6 @@ import 'Journeyplan.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/upload_live_pic.dart';
 import 'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
-import 'package:merchandising/Fieldmanager/ViewPDF.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
 import 'package:merchandising/api/customer_activites_api/competition_details.dart';

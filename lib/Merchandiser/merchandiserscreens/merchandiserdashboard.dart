@@ -42,7 +42,6 @@ import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dar
 
 import 'package:location_permissions/location_permissions.dart';
 import 'package:merchandising/model/Location_service.dart';
-import'package:merchandising/Fieldmanager/ViewPDF.dart';
 import'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'dart:io' show Platform;

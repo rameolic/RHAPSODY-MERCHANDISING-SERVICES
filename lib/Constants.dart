@@ -9,7 +9,6 @@ import 'api/api_service.dart';
 import 'dart:io';
 import 'api/FMapi/nbl_detailsapi.dart';
 import 'dart:ui';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 
@@ -207,20 +206,15 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
                 print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
                 print(nblfile);
                 if (Platform.isAndroid) {
-                  var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
-                  rmsdownloadsexists = await Directory("${downloadsDirectory.path}/Rmsnblfiles").exists();
-                  if(rmsdownloadsexists){
-                    filealreadyexists = await File("${downloadsDirectory.path}/Rmsnblfiles/${NBLDetData.fileurl.last}").exists();
+                    filealreadyexists = await File("/storage/emulated/0/Download/${NBLDetData.fileurl.last}").exists();
                     print(filealreadyexists);
                     if(filealreadyexists){
-                      OpenFile.open("/${downloadsDirectory.path}/${NBLDetData.fileurl.last}");
+                      OpenFile.open("/storage/emulated/0/Download/${NBLDetData.fileurl.last}");
                     }else{
                       print("here");
                       await launch("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
                     }
-                  }else{
-                    Directory("${downloadsDirectory.path}/Rmsnblfiles").create();
-                  } 
+
                 } else if (Platform.isIOS) {
                   _launchURL();
                 }

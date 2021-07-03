@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/api/FMapi/add_nblapi.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
-import'package:merchandising/Fieldmanager/ViewPDF.dart';
 
 
 import'package:merchandising/api/FMapi/promotion_detailsapi.dart';
