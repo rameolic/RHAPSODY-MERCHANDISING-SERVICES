@@ -1,5 +1,4 @@
 import 'dart:io' show Platform;
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,18 +6,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/widgets.dart';
 import 'main.dart';
 import 'api/api_service.dart';
-import 'dart:async';
 import 'dart:io';
-import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'api/FMapi/nbl_detailsapi.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'dart:isolate';
 import 'dart:ui';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:device_apps/device_apps.dart';
+import 'package:downloads_path_provider/downloads_path_provider.dart';
 import 'package:open_file/open_file.dart';
 
 
@@ -195,7 +186,7 @@ class EmpInfo extends StatelessWidget {
 }
 
 
-
+bool rmsdownloadsexists = false;
 bool filealreadyexists = false;
 class NBlFloatingButton extends StatefulWidget {
   @override
@@ -213,17 +204,21 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
             child : FloatingActionButton(
               heroTag: "btn1",
               onPressed: ()async{
-                print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
                 if (Platform.isAndroid) {
                   var downloadsDirectory = await DownloadsPathProvider.downloadsDirectory;
-                  filealreadyexists = await File("${downloadsDirectory.path}/${NBLDetData.fileurl.last}").exists();
-                  print(filealreadyexists);
-                  if(filealreadyexists){
-                    OpenFile.open("/${downloadsDirectory.path}/${NBLDetData.fileurl.last}");
+                  rmsdownloadsexists = await Directory("${downloadsDirectory.path}/Rmsnblfiles").exists();
+                  if(rmsdownloadsexists){
+                    filealreadyexists = await File("${downloadsDirectory.path}/Rmsnblfiles/${NBLDetData.fileurl.last}").exists();
+                    print(filealreadyexists);
+                    if(filealreadyexists){
+                      OpenFile.open("/${downloadsDirectory.path}/${NBLDetData.fileurl.last}");
+                    }else{
+                      print("here");
+                      await launch("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                    }
                   }else{
-                    print("here");
-                    await launch("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
-                  }
+                    Directory("${downloadsDirectory.path}/Rmsnblfiles").create();
+                  } 
                 } else if (Platform.isIOS) {
                   _launchURL();
                 }
@@ -259,3 +254,4 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
 void _launchURL() async =>
     await canLaunch(nblfile) ? await launch(nblfile) : throw 'Could not launch $nblfile';
 bool loaded=false;
+

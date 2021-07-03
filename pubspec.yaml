@@ -55,9 +55,7 @@ dependencies:
   permission_handler: ^7.1.0
   image:
   url_launcher: ^6.0.7
-  flutter_downloader: ^1.6.1
   downloads_path_provider: ^0.1.0
-  device_apps:
   flutter_offline: "^0.3.0"
   open_file: ^3.2.1
 
