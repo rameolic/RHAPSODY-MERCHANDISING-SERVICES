@@ -6,6 +6,7 @@ import '../../Constants.dart';
 import 'merchandiserdashboard.dart';
 import 'myprofile.dart';
 import 'package:merchandising/model/inappupdate.dart';
+import 'package:merchandising/feedbackform.dart';
 import 'package:merchandising/api/api_service.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
@@ -172,6 +173,8 @@ class _MenuState extends State<Menu> {
           ),
           onTap: () {},
         ), */
+
+
         ListTile(
           title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
           onTap: () {},
@@ -185,6 +188,15 @@ class _MenuState extends State<Menu> {
         //             builder: (BuildContext context) => MyApp()));
         //   },
         // ),
+        ListTile(
+          title: MenuElements(title: 'FeedBack', icon: Icons.pending_actions),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => FeedbackPage(title: "Report Feedback",)));
+          },
+        ),
         ListTile(
           title: MenuElements(
             title: 'Log Out',
