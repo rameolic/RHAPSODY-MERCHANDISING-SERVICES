@@ -184,7 +184,7 @@ class EmpInfo extends StatelessWidget {
   }
 }
 
-
+bool regularcheckout= true;
 bool rmsdownloadsexists = false;
 bool filealreadyexists = false;
 class NBlFloatingButton extends StatefulWidget {

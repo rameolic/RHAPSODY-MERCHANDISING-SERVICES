@@ -814,7 +814,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                       expiryinfo == true
                                           ? OutletSurveySubmit.stockexpiry = 1
                                           : OutletSurveySubmit.stockexpiry = 0;
-
+                                      if(regularcheckout){
                                       if (journeydone[ssi] == "done") {
                                         print("entered if");
                                         getTotalJnyTime();
@@ -845,7 +845,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                                 builder:
                                                     (BuildContext context) =>
                                                         DashBoard()));
-                                      } else {
+                                      }} else {
                                         print("entered else");
 
                                         SubmitCheckout();

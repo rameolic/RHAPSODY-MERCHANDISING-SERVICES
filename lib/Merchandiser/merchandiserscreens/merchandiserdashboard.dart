@@ -391,6 +391,7 @@ class _DashBoardState extends State<DashBoard> {
                                               onTap: () async{
                                                 setState(() {
                                                   isApiCallProcess = true;
+                                                  regularcheckout = false;
                                                 });
                                                 print("current outlet id: $currentoutletid");
                                                 outletrequestdata.outletidpressed = currentoutletid;
