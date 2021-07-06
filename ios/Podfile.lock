@@ -224,9 +224,6 @@ PODS:
     - Firebase/Firestore (= 8.0.0)
     - firebase_core
     - Flutter
-  - connectivity (0.0.1):
-    - Flutter
-    - Reachability
   - DKImagePickerController/Core (4.3.2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -258,8 +255,6 @@ PODS:
   - DKPhotoGallery/Resource (0.0.17):
     - SDWebImage
     - SwiftyGif
-  - downloads_path_provider (0.0.1):
-    - Flutter
   - file_picker (0.0.1):
     - DKImagePickerController/PhotoGallery
     - Flutter
@@ -352,7 +347,6 @@ PODS:
   - "permission_handler (5.1.0+2)":
     - Flutter
   - PromisesObjC (1.2.12)
-  - Reachability (3.2)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -361,16 +355,12 @@ PODS:
   - shared_preferences (0.0.1):
     - Flutter
   - SwiftyGif (5.4.0)
-  - syncfusion_flutter_pdfviewer (0.0.1):
-    - Flutter
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - connectivity (from `.symlinks/plugins/connectivity/ios`)
-  - downloads_path_provider (from `.symlinks/plugins/downloads_path_provider/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -383,7 +373,6 @@ DEPENDENCIES:
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - searchable_dropdown (from `.symlinks/plugins/searchable_dropdown/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - syncfusion_flutter_pdfviewer (from `.symlinks/plugins/syncfusion_flutter_pdfviewer/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
@@ -404,7 +393,6 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
-    - Reachability
     - SDWebImage
     - SwiftyGif
 
@@ -413,10 +401,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  connectivity:
-    :path: ".symlinks/plugins/connectivity/ios"
-  downloads_path_provider:
-    :path: ".symlinks/plugins/downloads_path_provider/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_core:
@@ -441,8 +425,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/searchable_dropdown/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  syncfusion_flutter_pdfviewer:
-    :path: ".symlinks/plugins/syncfusion_flutter_pdfviewer/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
 
@@ -451,10 +433,8 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   camera: a0ca5080336f7af47b88436e5e26da3dee5568f0
   cloud_firestore: 0e708a57ee3e13a56cf6a6fdaf085d5edb1e7e0f
-  connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  downloads_path_provider: fe0d06888d4b8c055a59edbc2f51f03e63cb0e28
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
   firebase_core: cda81ae37eda6df2bc2d16027fda527987c4bd33
@@ -477,12 +457,10 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   searchable_dropdown: 5058be32fdc5e0481d300ff2087129072e71bd62
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
-  syncfusion_flutter_pdfviewer: bb9998884b864cfedf72628df3503bdf57e397c0
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c

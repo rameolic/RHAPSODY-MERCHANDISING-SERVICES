@@ -48,7 +48,6 @@ dependencies:
   dio: ^4.0.0
   path:
   location_permissions: ^4.0.0
-  form_data:
   csv: ^5.0.0
   permission_handler: ^8.1.2
   image:

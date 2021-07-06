@@ -7,7 +7,8 @@
     <application
 
        android:label="RMS"
-       android:icon="@mipmap/ic_launcher">
+       android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDKEaHXFJX0ZZ0zlCII7lG4vL9F0NlTqQE"/>
         <activity
@@ -50,6 +51,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-         android:requestLegacyExternalStorage="true">
     </application>
 </manifest>

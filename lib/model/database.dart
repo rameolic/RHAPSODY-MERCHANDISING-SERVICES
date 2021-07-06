@@ -32,7 +32,7 @@ List<dynamic>addedproductid=[];
 // }
 
 class Expiry{
-
+  static List<String>productfullname=[];
   static List<int>id=[];
   static List<String>zrepcodes=[];
   static List<String>sku=[];
@@ -40,6 +40,7 @@ class Expiry{
   static List<String>productdetails=[];
   static List<String>type=[];
   static List<String>range=[];
+  static List<int>priceofitem=[];
   static List<String>barcode=[];
 }
 
@@ -91,6 +92,8 @@ Future getstockexpiryproducts() async{
       Expiry.barcode.add(decodebrands['data'][u]["barcode"].toString());
       Expiry.type.add(decodebrands['data'][u]["type"]);
       Expiry.range.add(decodebrands['data'][u]["range"]);
+      Expiry.priceofitem.add(decodebrands['data'][u]["price_per_piece"]);
+      Expiry.productfullname.add("${decodebrands['data'][u]["product_name"]}-${decodebrands['data'][u]["zrep_code"]}-${decodebrands['data'][u]["sku"]}-${decodebrands['data'][u]["barcode"]}");
     }
     // print(Expiry.barcode);
   }
@@ -108,7 +111,7 @@ Future<int> addexpiryproducts() async{
     "remarks" : remarksifany
   };
   print(jsonEncode(stockdata));
-  http.Response Response = await http.post(addexpiryDetails,
+  http.Response Response = await http.post(addexpiryDetail,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

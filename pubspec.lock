@@ -233,13 +233,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  form_data:
-    dependency: "direct main"
-    description:
-      name: form_data
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   geocoder:
     dependency: "direct main"
     description:

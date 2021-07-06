@@ -79,7 +79,7 @@ Uri AddTaskList = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_task");
 Uri GetTaskDetails = Uri.parse("https://rms2.rhapsody.ae/api/outlet_task_details");
 Uri stockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_product_details_new");
 Uri addedstockexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/stock_expiry_details_new");
-Uri addexpiryDetails = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
+Uri addexpiryDetail = Uri.parse("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
 Uri AddShareofshelf = Uri.parse("https://rms2.rhapsody.ae/api/add_share_of_shelf");
 Uri MercViewUpdtPromo = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_view_updated_promotion__details");
 Uri MercAddPromotion = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_add_promotion__details");
@@ -145,7 +145,7 @@ String greetingMessage(){
   }
 }
 
-
+bool loginfromloginpage = false;
 class loggedin{
   static var email;
   static var password;
@@ -155,8 +155,8 @@ int currentoutletid;
 Future loginapi() async {
   print(remembereddata.email);
   print(remembereddata.email.toString() == null);
-  loggedin.email = remembereddata.email == null ? loginrequestdata.inputemail : remembereddata.email;
-  loggedin.password =remembereddata.password == null ? loginrequestdata.inputpassword : remembereddata.password;
+  loggedin.email = loginfromloginpage ? loginrequestdata.inputemail : remembereddata.email;
+  loggedin.password =loginfromloginpage ? loginrequestdata.inputpassword : remembereddata.password;
   Map loginData = {
     'email': '${loggedin.email}',
     'password': '${loggedin.password}',

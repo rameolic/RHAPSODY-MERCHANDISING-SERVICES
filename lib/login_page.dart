@@ -181,6 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                       setState(() {
                                         isApiCallProcess = true;
                                       });
+                                      loginfromloginpage = true;
                                       loginrequestdata.inputemail = emailinputcontroller.text;
                                       loginrequestdata.inputpassword =passwordinputcontroller.text;
                                       if (loginrequestdata.inputemail != null &&
