@@ -53,6 +53,7 @@ dependencies:
   image:
   url_launcher: ^6.0.7
   open_file: ^3.2.1
+  flutter_email_sender: ^5.0.2
 
 
 dev_dependencies:

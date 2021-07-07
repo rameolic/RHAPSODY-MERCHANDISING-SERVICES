@@ -103,21 +103,23 @@ class _CheckInState extends State<CheckIn> {
           setState(() {
             isApiCallProcess = true;
           });
+          addforeccheckin();
+          SubmitCheckin();
           getTaskList();
           getVisibility();
-          getcompinfo();
           getPlanogram();
-          getCompetition();
           getPromotionDetails();
-          getNBLdetails();
           Addedstockdataformerch();
+          getNBLdetails();
           await getAvaiablitity();
           await getShareofshelf();
-          addattendence();
-
-           if(alreadycheckedin == false){
-             SubmitCheckin();
-           }
+          await getmyattandance();
+          if(noattendance.noatt=="attadded"){
+            print("Attendance added:${noattendance.noatt}");
+          }
+          else{
+            addattendence();
+          }
           setState(() {
             isApiCallProcess = false;
           });
@@ -288,37 +290,26 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                         onTap: ()async{
                                           if (gpsnotworking == true) {
                                             forcecheck.reason="GPS not working";
-
-                                            await addforeccheckin();
-
                                             setState(() {
                                               isApiCallProcess = true;
                                             });
-
-                                            await getTaskList();
-                                            print("gps not working");
-                                            if(alreadycheckedin == false){SubmitCheckin();}
+                                            addforeccheckin();
+                                            SubmitCheckin();
                                             getTaskList();
                                             getVisibility();
-                                            getcompinfo();
                                             getPlanogram();
-                                            getCompetition();
                                             getPromotionDetails();
                                             Addedstockdataformerch();
                                             getNBLdetails();
                                             await getAvaiablitity();
                                             await getShareofshelf();
-                                            await getmappedoutlets();
-
                                             await getmyattandance();
                                             if(noattendance.noatt=="attadded"){
                                               print("Attendance added:${noattendance.noatt}");
                                             }
                                             else{
-                                              await addattendence();
+                                               addattendence();
                                             }
-
-
                                             setState(() {
                                               isApiCallProcess = false;
                                             });
@@ -330,27 +321,26 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             if(geolocation == true){
                                               forcecheck.reason="Geolocation was wrong";
 
-                                              await addforeccheckin();
+                                               addforeccheckin();
                                               setState(() {
                                                 isApiCallProcess = true;
                                               });
+                                              addforeccheckin();
+                                              SubmitCheckin();
                                               getTaskList();
                                               getVisibility();
-                                              getcompinfo();
                                               getPlanogram();
-                                              getCompetition();
-                                              Addedstockdataformerch();
                                               getPromotionDetails();
+                                              Addedstockdataformerch();
                                               getNBLdetails();
                                               await getAvaiablitity();
                                               await getShareofshelf();
-                                              getmappedoutlets();
                                               await getmyattandance();
                                               if(noattendance.noatt=="attadded"){
                                                 print("Attendance added:${noattendance.noatt}");
                                               }
                                               else{
-                                                await addattendence();
+                                                addattendence();
                                               }
 
                                               if(alreadycheckedin == false){SubmitCheckin();}
@@ -366,32 +356,26 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             else {
                                               if(others == true){
                                                 forcecheck.reason="Others";
-
-                                                await addforeccheckin();
+                                                 addforeccheckin();
                                                 setState(() {
                                                   isApiCallProcess = true;
                                                 });
+                                                addforeccheckin();
                                                 getTaskList();
+                                                SubmitCheckin();
                                                 getVisibility();
-                                                getcompinfo();
                                                 getPlanogram();
-                                                getCompetition();
                                                 getPromotionDetails();
                                                 Addedstockdataformerch();
+                                                getNBLdetails();
                                                 await getAvaiablitity();
                                                 await getShareofshelf();
-                                                getNBLdetails();
-                                                getmappedoutlets();
                                                 await getmyattandance();
                                                 if(noattendance.noatt=="attadded"){
                                                   print("Attendance added:${noattendance.noatt}");
                                                 }
                                                 else{
-                                                  await addattendence();
-                                                }
-
-                                                if(alreadycheckedin == false){
-                                                  SubmitCheckin();
+                                                  addattendence();
                                                 }
                                                 setState(() {
                                                   isApiCallProcess = false;

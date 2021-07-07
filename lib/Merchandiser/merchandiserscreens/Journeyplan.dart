@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
@@ -23,25 +22,21 @@ import 'Customers Activities.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
-import'package:merchandising/api/customer_activites_api/competition_details.dart';
-import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/api/customer_activites_api/competition_details.dart';
+import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
 import 'package:merchandising/api/FMapi/outlet%20brand%20mappingapi.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
-import'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/api/myattendanceapi.dart';
 
 import 'package:merchandising/api/avaiablityapi.dart';
-import'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
-List<String>breakspl =[];
-int ssi;
-var spltsidco;
-var jtimeidco;
+
+List<String> breakspl = [];
+int currentoutletindex;
 bool jptimecal = false;
-
-
-
 
 class JourneyPlan extends StatefulWidget {
   @override
@@ -61,21 +56,20 @@ class _JourneyPlanState extends State<JourneyPlan> {
         backgroundColor: containerscolor,
         automaticallyImplyLeading: false,
         leading: GestureDetector(
-            onTap: (){
+            onTap: () {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder:
-                          (BuildContext context) =>
-                          DashBoard()));
+                      builder: (BuildContext context) => DashBoard()));
             },
-            child: Icon(CupertinoIcons.back,size: 30,)),
-
+            child: Icon(
+              CupertinoIcons.back,
+              size: 30,
+            )),
         iconTheme: IconThemeData(color: orange),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -87,33 +81,38 @@ class _JourneyPlanState extends State<JourneyPlan> {
               ],
             ),
             GestureDetector(
-                onTap:(){
-                  nearestoutletindex = null;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              MapVeiw()));
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 10.00),
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: orange,
-                    borderRadius: BorderRadius.circular(10.00),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        CupertinoIcons.location_solid,
-                        size: 15,color: Colors.white,
-                      ),
-                      SizedBox(width: 5,),
-                      Text("Map",style: TextStyle(fontSize: 15,color: Colors.white),),
-                    ],
-                  ),
+              onTap: () {
+                nearestoutletindex = null;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => MapVeiw()));
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10.00),
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  color: orange,
+                  borderRadius: BorderRadius.circular(10.00),
                 ),
-              )
+                child: Row(
+                  children: [
+                    Icon(
+                      CupertinoIcons.location_solid,
+                      size: 15,
+                      color: Colors.white,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Map",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -143,7 +142,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       icon: Icons.calendar_today,
                       chartext: "Today's\nJourney Plan",
                       textcolor:
-                      pressTODAY == true ? Colors.white : Colors.black,
+                          pressTODAY == true ? Colors.white : Colors.black,
                       containercolor: pressTODAY == true ? orange : pink,
                     ),
                   ),
@@ -159,7 +158,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       icon: Icons.calendar_today_outlined,
                       chartext: " This Week's\nJounery Plan",
                       textcolor:
-                      pressWeek == true ? Colors.white : Colors.black,
+                          pressWeek == true ? Colors.white : Colors.black,
                       containercolor: pressWeek == true ? orange : pink,
                     ),
                   ),
@@ -175,7 +174,7 @@ class _JourneyPlanState extends State<JourneyPlan> {
                       icon: Icons.group,
                       chartext: "My\nCustomers",
                       textcolor:
-                      pressCustomers == true ? Colors.white : Colors.black,
+                          pressCustomers == true ? Colors.white : Colors.black,
                       containercolor: pressCustomers == true ? orange : pink,
                     ),
                   ),
@@ -270,7 +269,15 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? JourneyListBuilder() : pressWeek == true ? WeeklyJourneyListBuilder() : Center(child: Text("we have journey plan only for today and monthly only",)))
+                          Expanded(
+                              child: pressTODAY == true
+                                  ? JourneyListBuilder()
+                                  : pressWeek == true
+                                      ? WeeklyJourneyListBuilder()
+                                      : Center(
+                                          child: Text(
+                                          "we have journey plan only for today and monthly only",
+                                        )))
                         ],
                       ),
                       Column(
@@ -279,19 +286,35 @@ class _JourneyPlanState extends State<JourneyPlan> {
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? SkipedJourneyListBuilder() : pressWeek == true ? WeeklySkipJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(
+                              child: pressTODAY == true
+                                  ? SkipedJourneyListBuilder()
+                                  : pressWeek == true
+                                      ? WeeklySkipJourneyListBuilder()
+                                      : Center(
+                                          child: Text(
+                                          "we have journey plan only for today",
+                                        )))
                         ],
-                         ),
+                      ),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             height: 10,
                           ),
-                          Expanded(child: pressTODAY == true ? visitedJourneyListBuilder() : pressWeek == true ? WeeklyVisitJourneyListBuilder() : Center(child: Text("we have journey plan only for today",)))
+                          Expanded(
+                              child: pressTODAY == true
+                                  ? visitedJourneyListBuilder()
+                                  : pressWeek == true
+                                      ? WeeklyVisitJourneyListBuilder()
+                                      : Center(
+                                          child: Text(
+                                          "we have journey plan only for today",
+                                        )))
                         ],
                       ),
-                          ]),
+                    ]),
                   ),
                 ),
               ),
@@ -301,7 +324,6 @@ class _JourneyPlanState extends State<JourneyPlan> {
       ),
     );
   }
-
 }
 
 class JourneyPlanHeader extends StatelessWidget {
@@ -315,7 +337,7 @@ class JourneyPlanHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      width: MediaQuery.of(context).size.width/3.5,
+      width: MediaQuery.of(context).size.width / 3.5,
       padding: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -344,7 +366,7 @@ class JourneyPlanHeader extends StatelessWidget {
   }
 }
 
-List<String>journeydone=[];
+//List<String>journeydone=[];
 
 class JourneyListBuilder extends StatefulWidget {
   @override
@@ -355,268 +377,275 @@ class _State extends State<JourneyListBuilder> {
   bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
-    return  ProgressHUD(
+    return ProgressHUD(
       child: _uiSetup(context),
       inAsyncCall: isApiCallProcess,
       opacity: 0.3,
     );
   }
+
   Widget _uiSetup(BuildContext context) {
-    return gettodayjp.storenames.length == 0 ? Center(child: Text("you dont have any active journey plan\ncontact your manager for more info",textAlign: TextAlign.center,)) :
-    ListView.builder(
-        itemCount:gettodayjp.storenames.length,
-        itemBuilder: (BuildContext context, int index) {
-           ssi=index;
-
-          return GestureDetector(
-            onTap: () async{
-              for(int i=0;i<gettodayjp.status.length;i++){
-                journeydone.add("");
-
-              }
-              journeydone[ssi]=gettodayjp.status[index];
-              print(journeydone[ssi]);
-              if(gettodayjp.status[index] == 'done'){
-                print("entered if");
-                print("JP Check in:${gettodayjp.checkintime[index]}");
-                print("JP Check out:${gettodayjp.checkouttime[index]}");
-                showDialog(
-                    context: context,
-                    builder: (_) =>  StatefulBuilder(
-                        builder: (context, setState) {
-                          return ProgressHUD(
-                              inAsyncCall: isApiCallProcess,
-                              opacity: 0.3,
-                              child: AlertDialog(
-                                backgroundColor: alertboxcolor,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                                content: Builder(
-                                  builder: (context) {
-                                    // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                    return Container(
-                                      child: SizedBox(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Alert",
-                                              style: TextStyle(
-                                                  fontSize: 16, fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                                "It seems you have already finished this Outlet\nDo you want to do Split Shift?",
-                                                style: TextStyle(fontSize: 13.6)),
-                                            SizedBox(
-                                              height: 10.00,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+    return gettodayjp.storenames.length == 0
+        ? Center(
+            child: Text(
+            "you dont have any active journey plan\ncontact your manager for more info",
+            textAlign: TextAlign.center,
+          ))
+        : ListView.builder(
+            itemCount: gettodayjp.storenames.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () async {
+                  currentoutletindex = index;
+                  if (gettodayjp.status[index] == 'done') {
+                    print("entered if");
+                    print("JP Check in:${gettodayjp.checkintime[index]}");
+                    print("JP Check out:${gettodayjp.checkouttime[index]}");
+                    showDialog(
+                        context: context,
+                        builder: (_) =>
+                            StatefulBuilder(builder: (context, setState) {
+                              return ProgressHUD(
+                                  inAsyncCall: isApiCallProcess,
+                                  opacity: 0.3,
+                                  child: AlertDialog(
+                                    backgroundColor: alertboxcolor,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                    content: Builder(
+                                      builder: (context) {
+                                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                        return Container(
+                                          child: SizedBox(
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                GestureDetector(
-                                                  onTap: () async{
-                                                    print("Split Tapped");
-                                                    setState(() {
-                                                      jptimecal = true;
-                                                    });
-                                                    currenttimesheetid=gettodayjp.id[index];
-
-                                                    var timeofsci = DateTime.now();
-                                                    splitbreak.type="Split Shift";
-                                                    currenttimesheetid=gettodayjp.id[index];
-                                                    spltsidco=currenttimesheetid;
-                                                    splitbreak.citime=DateFormat('HH:mm:ss').format(timeofsci);
-                                                    splitbreak.cotime ="";
-                                                    splitbreak.jtimeid ="";
-
-                                                    outletrequestdata.outletidpressed =
-                                                    gettodayjp.outletids[index];
-                                                    print(outletrequestdata.outletidpressed);
-                                                    currentoutletid=gettodayjp.outletids[index];
-
-                                                    setState(() {
-                                                      isApiCallProcess=true;
-                                                    });
-
-
-                                                    await merchbreak();
-                                                    await getTotalJnyTime();
-                                                    //jtimeidco=TotalJnyTime.id[index];
-                                                    // jtimeidss[selindexjid]=TotalJnyTime.id[index];
-                                                    // print(jtimeidss[selindexjid]);
-                                                    getTaskList();
-                                                    getVisibility();
-                                                    getcompinfo();
-                                                    getPlanogram();
-                                                    getCompetition();
-                                                    getPromotionDetails();
-                                                     getAvaiablitity();
-                                                     getShareofshelf();
-                                                    Addedstockdataformerch();
-                                                    getmappedoutlets();
-                                                     getNBLdetails();
-                                                    await outletwhencheckin();
-                                                    await getmyattandance();
-                                                    if(noattendance.noatt=="attadded"){
-                                                      print("Attendance added:${noattendance.noatt}");
-                                                    }
-                                                    else{
-                                                      await addattendence();
-                                                    }
-                                                    setState(() {
-                                                      isApiCallProcess=false;
-                                                    });
-                                                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
-                                                  },
-                                                  child: Container(
-                                                    height: 40,
-                                                    width: 70,
-                                                    decoration: BoxDecoration(
-                                                      color:orange,
-                                                      borderRadius: BorderRadius.circular(5),
-                                                    ),
-                                                    margin: EdgeInsets.only(right: 10.00),
-                                                    child: Center(child: Text("YES")),
-                                                  ),
+                                                Text(
+                                                  "Alert",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-
+                                                Text(
+                                                    "It seems you have already finished this Outlet\nDo you want to do Split Shift?",
+                                                    style: TextStyle(
+                                                        fontSize: 13.6)),
+                                                SizedBox(
+                                                  height: 10.00,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        jptimecal = true;
+                                                        currentoutletid =
+                                                            gettodayjp
+                                                                    .outletids[
+                                                                index];
+                                                        currenttimesheetid =
+                                                            gettodayjp
+                                                                .id[index];
+                                                        var currenttime =
+                                                            DateTime.now();
+                                                        splitbreak.type =
+                                                            "Split Shift";
+                                                        splitbreak.citime =
+                                                            DateFormat(
+                                                                    'HH:mm:ss')
+                                                                .format(
+                                                                    currenttime);
+                                                        splitbreak.cotime = "";
+                                                        splitbreak.jtimeid = "";
+                                                        outletrequestdata
+                                                                .outletidpressed =
+                                                            currentoutletid;
+                                                        setState(() {
+                                                          isApiCallProcess =
+                                                              true;
+                                                        });
+                                                        getTaskList();
+                                                        getVisibility();
+                                                        getPlanogram();
+                                                        getPromotionDetails();
+                                                        getAvaiablitity();
+                                                        getShareofshelf();
+                                                        Addedstockdataformerch();
+                                                        getNBLdetails();
+                                                        await merchbreak();
+                                                        await getTotalJnyTime();
+                                                        await outletwhencheckin();
+                                                        setState(() {
+                                                          isApiCallProcess =
+                                                              false;
+                                                        });
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    CustomerActivities()));
+                                                      },
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 70,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: orange,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        margin: EdgeInsets.only(
+                                                            right: 10.00),
+                                                        child: Center(
+                                                            child: Text("YES")),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ));
-                        }));
-
-              }
-
-              else {
-                print("entered else");
-                setState(() {
-                               isApiCallProcess = true;
-                             });
-                     outletrequestdata.outletidpressed =
-                        gettodayjp.outletids[index];
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ));
+                            }));
+                  } else {
+                    print("entered else");
+                    setState(() {
+                      isApiCallProcess = true;
+                    });
+                    outletrequestdata.outletidpressed = gettodayjp.outletids[index];
                     checkinoutdata.checkid = gettodayjp.id[index];
                     currenttimesheetid = gettodayjp.id[index];
                     currentoutletid = gettodayjp.outletids[index];
                     var data = await outletwhencheckin();
-                  if (data != null) {
+                    if (data != null) {
                       await Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               // ignore: non_constant_identifier_names
                               builder: (BuildContextcontext) => OutLet()));
 
-
-
                       setState(() {
                         isApiCallProcess = false;
                       });
-                    }
-                    else {
+                    } else {
                       setState(() {
                         isApiCallProcess = false;
                       });
                     }
                     print(checkinoutdata.checkid);
-                }},
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              height: 130,
-              width: MediaQuery.of(context).size.width,
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  height: 130,
+                  width: MediaQuery.of(context).size.width,
+                  child: Stack(
                     children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Text(
-                              '[${gettodayjp.storecodes[index]}] ${gettodayjp.storenames[index]}',
-                              style: TextStyle(fontSize: 15,
-                               fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            gettodayjp.isscheduled[index] == 0 ? Text(
-                              '(unscheduled)',
-                              style: TextStyle(
-                                  fontSize: 13.0,color: orange),
-                            ) :SizedBox(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('${gettodayjp.outletarea[index]}',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('${gettodayjp.outletcity[index]}',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('${gettodayjp.outletcountry[index]}',
-                              style: TextStyle(
-                                fontSize: 15.0,
-                              )),
-                        ],
-                      ),
-                      Spacer(),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            Text('Contact Number :',
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                )),
-                            Text('${gettodayjp.contactnumbers[index]}',
-                                style: TextStyle(color: orange)),
-                          ]),
-                          TableRow(children: [
-                            Text('Distance :',
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                )),
-                            Row(
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
                               children: [
-                                Text('${gettodayjp.distanceinmeters[index].toStringAsFixed(2)}',
-                                    style: TextStyle(color: orange)),
-                                Text("KM", style: TextStyle(color: orange))
+                                Text(
+                                  '[${gettodayjp.storecodes[index]}] ${gettodayjp.storenames[index]}',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                gettodayjp.isscheduled[index] == 0
+                                    ? Text(
+                                        '(unscheduled)',
+                                        style: TextStyle(
+                                            fontSize: 13.0, color: orange),
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
-                          ]),
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: [
+                              Text('${gettodayjp.outletarea[index]}',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('${gettodayjp.outletcity[index]}',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text('${gettodayjp.outletcountry[index]}',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                  )),
+                            ],
+                          ),
+                          Spacer(),
+                          Table(
+                            children: [
+                              TableRow(children: [
+                                Text('Contact Number :',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    )),
+                                Text('${gettodayjp.contactnumbers[index]}',
+                                    style: TextStyle(color: orange)),
+                              ]),
+                              TableRow(children: [
+                                Text('Distance :',
+                                    style: TextStyle(
+                                      fontSize: 13.0,
+                                    )),
+                                Row(
+                                  children: [
+                                    Text(
+                                        '${gettodayjp.distanceinmeters[index].toStringAsFixed(2)}',
+                                        style: TextStyle(color: orange)),
+                                    Text("KM", style: TextStyle(color: orange))
+                                  ],
+                                ),
+                              ]),
+                            ],
+                          ),
                         ],
                       ),
+                      gettodayjp.status[index] == 'done'
+                          ? Align(
+                              alignment: Alignment.bottomRight,
+                              child: Icon(
+                                Icons.check_circle_outline_sharp,
+                                color: Colors.green,
+                                size: 20,
+                              ))
+                          : SizedBox(),
                     ],
                   ),
-                  gettodayjp.status[index] == 'done' ? Align(
-                    alignment: Alignment.bottomRight,
-                      child: Icon(Icons.check_circle_outline_sharp,color: Colors.green,size: 20,)): SizedBox(),
-                ],
-              ),
-            ),
-          );
-        });
+                ),
+              );
+            });
   }
 }
-

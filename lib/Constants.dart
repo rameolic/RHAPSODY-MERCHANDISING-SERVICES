@@ -8,6 +8,7 @@ import 'main.dart';
 import 'api/api_service.dart';
 import 'dart:io';
 import 'api/FMapi/nbl_detailsapi.dart';
+import 'package:flushbar/flushbar.dart';
 import 'dart:ui';
 import 'package:open_file/open_file.dart';
 
@@ -170,9 +171,9 @@ class EmpInfo extends StatelessWidget {
               Text('${DBrequestdata.empname}(${DBrequestdata.receivedempid})'
                 ,style: TextStyle(fontSize: 8.0,color: orange),),
               if(currentuser.roleid == 5)
-                Text('- Field Manager',style: TextStyle(fontSize: 8.0,color: orange),)
+                Text('-FMS',style: TextStyle(fontSize: 8.0,color: orange),)
               else if(currentuser.roleid == 6)
-                Text('-Merchandiser',
+                Text('-MRCH',
                   style: TextStyle(fontSize: 8.0, color: orange),)
               else if(currentuser.roleid == 3)Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
               else Text('- Client',style: TextStyle(fontSize: 8.0, color: orange),)
@@ -203,20 +204,35 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
             child : FloatingActionButton(
               heroTag: "btn1",
               onPressed: ()async{
-                print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
-                print(nblfile);
-                if (Platform.isAndroid) {
-                    filealreadyexists = await File("/storage/emulated/0/Download/${NBLDetData.fileurl.last}").exists();
+                print("nbl file: ${NBLDetData.fileurl.toString()}");
+                if(NBLDetData.fileurl.toString()!="[]") {
+                  print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl
+                      .last}");
+                  print(nblfile);
+                  if (Platform.isAndroid) {
+                    filealreadyexists = await File(
+                        "/storage/emulated/0/Download/${NBLDetData.fileurl
+                            .last}").exists();
                     print(filealreadyexists);
-                    if(filealreadyexists){
-                      OpenFile.open("/storage/emulated/0/Download/${NBLDetData.fileurl.last}");
-                    }else{
+                    if (filealreadyexists) {
+                      OpenFile.open(
+                          "/storage/emulated/0/Download/${NBLDetData.fileurl
+                              .last}");
+                    } else {
                       print("here");
-                      await launch("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                      await launch(
+                          "https://rms2.rhapsody.ae/nbl_file/${NBLDetData
+                              .fileurl.last}");
                     }
-
-                } else if (Platform.isIOS) {
-                  _launchURL();
+                  } else if (Platform.isIOS) {
+                    _launchURL();
+                  }
+                }else{
+                  Flushbar(
+                    message:
+                    "Nbl Not Found",
+                    duration: Duration(seconds: 3),
+                  )..show(context);
                 }
               },
               child: Text("NBL",style: TextStyle(color: pink),),

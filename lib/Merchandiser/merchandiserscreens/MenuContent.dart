@@ -12,6 +12,7 @@ import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/model/notifications.dart';
+import 'package:merchandising/model/version deailes.dart';
 import'package:merchandising/api/noti_detapi.dart';
 final menuitemscolor = Colors.black54;
 List<bool> changecoloricon =[];
@@ -138,7 +139,9 @@ class _MenuState extends State<Menu> {
             title: 'My Customers',
             icon: CupertinoIcons.group_solid,
           ),
-          onTap: () {},
+          onTap: () async{
+            await sendemail();
+          },
         ),
         ListTile(
           title: MenuElements(
@@ -174,11 +177,19 @@ class _MenuState extends State<Menu> {
           onTap: () {},
         ), */
 
-
         ListTile(
-          title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
-          onTap: () {},
+          title: MenuElements(title: 'RMS Version', icon: Icons.info),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => AppVersion()));
+          },
         ),
+        // ListTile(
+        //   title: MenuElements(title: 'EOD Summary', icon: Icons.dynamic_form),
+        //   onTap: () {},
+        // ),
         // ListTile(
         //   title: MenuElements(title: 'check for updates', icon: Icons.system_update),
         //   onTap: () {

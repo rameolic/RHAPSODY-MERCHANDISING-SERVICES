@@ -65,6 +65,7 @@ List inputlist = selectedList.map((String val) {
 }).toList();
 
 TextEditingController remarks = TextEditingController();
+TextEditingController productcontroller = TextEditingController();
 
 class ExpiryReport extends StatefulWidget {
   @override
@@ -107,33 +108,33 @@ class _ExpiryReportState extends State<ExpiryReport> {
                     setState(() {
                       isApiCallProcess = true;
                     });
+                    print(addedproductid.length);
                     for(int u=0; u<addedproductid.length;u++){
+                      print(u);
+                      addedexpiryindex = u;
                       productid = addedproductid[u];
                       pricepc = addedpriceperitem[u];
                       expirypc = addeditemscount[u];
                       pcexpirydate = addedexpirydate[u];
                       exposureqntypc = addedexposurequnatity[u];
                       remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
-                      int statuscode = await addexpiryproducts();
-                      if(statuscode == 200){
-                        addedproductid.removeAt(u);
-                        addedpriceperitem.removeAt(u);
-                        addeditemscount.removeAt(u);
-                        addedexpirydate.removeAt(u);
-                        addedexposurequnatity.removeAt(u);
-                        addedremarks.removeAt(u);
-                      }
-                      print(statuscode);
+                      await addexpiryproducts();
                     }
-                     Addedstockdataformerch();
+                    addedproductid=[];
+                    addedpriceperitem=[];
+                    addeditemscount=[];
+                    addedexpirydate=[];
+                    addedexposurequnatity=[];
+                    addedremarks=[];
+                     await Addedstockdataformerch();
                     setState(() {
                       isApiCallProcess = false;
                     });
                     expirycheck= true;
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => CustomerActivities()));
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (BuildContext context) => CustomerActivities()));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 10.00),
@@ -291,6 +292,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                                     //   ),
                                     // ),
                                     DropDownField(
+                                      controller: productcontroller,
                                         value: selectedproduct,
                                         labelText: 'Select product',
                                         hintText: "Search by Product-ZREP-SKU-Barcode",
@@ -496,6 +498,7 @@ class _ExpiryReportState extends State<ExpiryReport> {
                                             expirypeciescount.clear();
                                             quantity.clear();
                                             peiceprice.clear();
+                                            productcontroller.clear();
                                             remarks.clear();
                                             setState(() {
                                               isApiCallProcess = false;

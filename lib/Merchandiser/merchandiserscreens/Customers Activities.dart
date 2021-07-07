@@ -39,6 +39,7 @@ import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.da
 import 'package:intl/intl.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
 
 List<bool> CheckList = [];
@@ -96,11 +97,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                       getTaskList();
                       getAvaiablitity();
                       getVisibility();
-                      getcompinfo();
                       getPlanogram();
                       Addedstockdataformerch();
                       getShareofshelf();
-                      getCompetition();
                       await getPromotionDetails();
                       setState(() {
                         isApiCallProcess = false;
@@ -379,96 +378,6 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   }
 }
 
-class BreakTime extends StatefulWidget {
-  @override
-  _BreakTimeState createState() => _BreakTimeState();
-}
-
-class _BreakTimeState extends State<BreakTime> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          BackGround(),
-          ProgressHUD(
-              inAsyncCall: isApiCallProcess,
-              opacity: 0.3,
-              child: AlertDialog(
-                backgroundColor: alertboxcolor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                content: Builder(
-                  builder: (context) {
-                    // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                    return Container(
-                      child: SizedBox(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Break Time",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                                "Once you have finished your Break Time\n Tap on Continue to start your Work"),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    checkin();
-                                    var breakends = DateTime.now();
-                                    print(breakends);
-                                    splitbreak.citime =
-                                        checkinoutdata.checkintime;
-                                    splitbreak.cotime = DateFormat('HH:mm:ss')
-                                        .format(breakends);
-                                    splitbreak.type = "Break";
-                                    splitbreak.jtimeid = "";
-                                    // splitbreak.jtimeid=jtimeidco;
-                                    setState(() {
-                                      isApiCallProcess = true;
-                                    });
-                                    await merchbreak();
-                                    setState(() {
-                                      isApiCallProcess = false;
-                                    });
-                                    Navigator.pop(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CustomerActivities()));
-                                  },
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          color: orange,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Text(
-                                        "Continue Work",
-                                        style: TextStyle(color: pink),
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )),
-        ],
-      ),
-    );
-  }
-}
 
 bool iseverythingchecked = false;
 bool changecheckoutcolor = false;
@@ -715,6 +624,41 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
+                                    promotion == false
+                                        ? promotion = true
+                                        : promotion = false;
+                                  });
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Text('Promotion Check',
+                                            style: TextStyle(fontSize: 16)),
+                                        Spacer(),
+                                        Icon(
+                                            promotion == true
+                                                ? CupertinoIcons
+                                                .check_mark_circled_solid
+                                                : CupertinoIcons
+                                                .xmark_circle_fill,
+                                            color: promotion == true
+                                                ? orange
+                                                : Colors.grey,
+                                            size: 30),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
                                     compitetorcheck == false
                                         ? compitetorcheck = true
                                         : compitetorcheck = false;
@@ -791,6 +735,11 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                 children: [
                                   GestureDetector(
                                     onTap: () async {
+                                      setState(() {
+                                        isApiCallProcess = true;
+                                      });
+                                      print(gettodayjp.status);
+                                      print("check1");
                                       Availability == true
                                           ? OutletSurveySubmit.availability = 1
                                           : OutletSurveySubmit.availability = 0;
@@ -814,52 +763,61 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                       expiryinfo == true
                                           ? OutletSurveySubmit.stockexpiry = 1
                                           : OutletSurveySubmit.stockexpiry = 0;
-                                      if(regularcheckout){
-                                      if (journeydone[ssi] == "done") {
-                                        print("entered if");
-                                        getTotalJnyTime();
+                                      print("check2");
+
+                                      print("currentoutletindex");
+                                      print(currentoutletindex);
+                                      if (gettodayjp.status[currentoutletindex] == "done") {
+                                        outletsurvey();
+                                        print("check3");
+                                        await getTotalJnyTime();
                                         var timeofsci = DateTime.now();
                                         splitbreak.type = "Split Shift";
-                                        currenttimesheetid = spltsidco;
                                         splitbreak.citime = "";
-                                        splitbreak.cotime =
-                                            DateFormat('HH:mm:ss')
-                                                .format(timeofsci);
-                                        splitbreak.jtimeid =
-                                            TotalJnyTime.id[selectJTID];
-
-                                        print(splitbreak.jtimeid);
-
-                                        setState(() {
-                                          isApiCallProcess = true;
-                                        });
+                                        splitbreak.cotime = DateFormat('HH:mm:ss').format(timeofsci);
+                                        splitbreak.jtimeid = TotalJnyTime.id[indexofjurneytimeid];
                                         await merchbreak();
-                                        await getTotalJnyTime();
                                         setState(() {
                                           isApiCallProcess = false;
                                         });
-
+                                        regularcheckout = true;
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        DashBoard()));
-                                      }} else {
+                                                        JourneyPlan()));
+                                      } else {
+                                        setState(() {
+                                          isApiCallProcess = true;
+                                        });
                                         print("entered else");
-
-                                        SubmitCheckout();
-                                        sendtaskresponse();
-                                        workingid != null
-                                            ? workingid = null
-                                            : workingid = workingid;
+                                        outletsurvey();
+                                        workingid != null ? workingid = null : workingid = workingid;
+                                        await SubmitCheckout();
+                                        gettodayjp.status[currentoutletindex] = 'done';
+                                        setState(() {
+                                          isApiCallProcess = false;
+                                        });
                                         checkedoutlet.checkoutlet = true;
+                                        // print("check10");
+                                        // todayskipjplist.outletids.removeAt(skippedoutletindex);
+                                        // todayskipjplist.storenames.removeAt(skippedoutletindex);
+                                        // todayskipjplist.storecodes.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletids.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletlat.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletlong.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletarea.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletcity.removeAt(skippedoutletindex);
+                                        // todayskipjplist.outletcountry.removeAt(skippedoutletindex);
+                                        // todayskipjplist.id.removeAt(skippedoutletindex);
+                                        // todayskipjplist.contactnumbers.removeAt(skippedoutletindex);
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        DashBoard()));
+                                                        JourneyPlan()));
                                       }
                                     },
                                     child: Container(

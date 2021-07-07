@@ -58,7 +58,7 @@ Future<void> getskippedJourneyPlan() async {
     print(JPresponse.statusCode);
   }
 }
-
+int skippedoutletindex;
 
 class todayskipjplist{
   static List<dynamic> storecodes=[];

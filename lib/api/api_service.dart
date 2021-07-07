@@ -616,11 +616,10 @@ Future<void> getTotalJnyTime() async {
     TotalJnyTime.checkout=[];
 
     for(int u=0;u<decodestores['data'].length;u++) {
-      selectJTID=u;if(decodestores['data'][u]['type']=="Split Shift")
-      {
+      indexofjurneytimeid=u;
+      if(decodestores['data'][u]['type']=="Split Shift") {
         TotalJnyTime.id.add(decodestores['data'][u]['id']);
         TotalJnyTime.checkin.add(decodestores['data'][u]['checkin_time']);
-        // TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
       }
       if(decodestores['data'][u]['checkout_time']==null){
         TotalJnyTime.checkout.add("Check out not registered");
@@ -649,7 +648,7 @@ class TotalJnyTime {
 
 }
 
-int selectJTID;
+int indexofjurneytimeid;
 
 
 Future addforeccheckin() async{

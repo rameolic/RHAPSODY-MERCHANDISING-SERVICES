@@ -29,12 +29,12 @@ Future<void> getNBLdetails() async {
     for(int u=0;u<decodebrands['data'].length;u++) {
       NBLDetData.outletid.add(decodebrands['data'][u]['outlet_id']);
       NBLDetData.fileurl.add(decodebrands['data'][u]['file_url']);
-
       NBLDetData.id.add(decodebrands['data'][u]['id']);
       NBLDetData.isactive.add(decodebrands['data'][u]['is_active']);
 
     }
-    print(NBLDetData.fileurl.last);
+    print("files");
+    print(NBLDetData.fileurl);
   }
   if(response.statusCode != 200){
     print(response.statusCode);

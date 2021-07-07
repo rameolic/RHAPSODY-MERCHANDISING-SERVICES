@@ -174,7 +174,7 @@ class _DashBoardState extends State<DashBoard> {
                     for(int u =0;u<gettodayjp.status.length;u++){
                       if(gettodayjp.status[u]=="working"){
                         workingid = gettodayjp.id[u];
-                        ssi = u;
+                        currentoutletindex = u;
                         currentoutletid = gettodayjp.outletids[u];
                         print(workingid);
                         print(gettodayjp.id[u]);
@@ -399,14 +399,12 @@ class _DashBoardState extends State<DashBoard> {
                                                 currenttimesheetid = workingid;
                                                 getTaskList();
                                                 getVisibility();
-                                                getcompinfo();
                                                 getPlanogram();
-                                                getCompetition();
                                                 getNBLdetails();
                                                 Addedstockdataformerch();
                                                 getPromotionDetails();
+                                                getShareofshelf();
                                                 await getAvaiablitity();
-                                                await getShareofshelf();
                                                 setState(() {
                                                   isApiCallProcess = false;
                                                 });

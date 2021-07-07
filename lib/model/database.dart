@@ -98,7 +98,7 @@ Future getstockexpiryproducts() async{
     // print(Expiry.barcode);
   }
 }
-
+int addedexpiryindex;
 Future<int> addexpiryproducts() async{
   Map stockdata = {
     "timesheet_id" : currenttimesheetid,
@@ -120,7 +120,6 @@ Future<int> addexpiryproducts() async{
        body: jsonEncode(stockdata),
   );
   print(Response.body);
-  return Response.statusCode;
   }
 //
 Future getaddedexpiryproducts() async {

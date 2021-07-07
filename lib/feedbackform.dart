@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+
 class FeedbackForm {
   String userid;
   String name;
@@ -192,5 +194,24 @@ class _MyHomePageState extends State<FeedbackPage> {
         ),
       ),
     );
+  }
+}
+
+sendemail()async{
+  final Email email =  Email(
+    body: 'test',
+    subject: 'RMS Log report',
+    recipients: ['vilvaroja@gmail.com'],
+    isHTML: false,
+  );
+  String platformResponse;
+
+  try {
+    await FlutterEmailSender.send(email);
+    platformResponse = 'success';
+    print("done");
+  } catch (error) {
+    platformResponse = error.toString();
+    print(error);
   }
 }

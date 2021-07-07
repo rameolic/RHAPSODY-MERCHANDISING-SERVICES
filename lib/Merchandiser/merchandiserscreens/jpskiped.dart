@@ -6,6 +6,8 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/outletdetailes.da
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/ProgressHUD.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
 
 class SkipedJourneyListBuilder extends StatefulWidget {
   @override
@@ -29,25 +31,29 @@ class _State extends State<SkipedJourneyListBuilder> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () async{
-              setState(() {
-                isApiCallProcess = true;
-              });
-              outletrequestdata.outletidpressed = todayskipjplist.outletids[index];
-              checkinoutdata.checkid = todayskipjplist.id[index];
-              var data = await outletwhencheckin();
-              if(data != null ){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContextcontext) => OutLet()));
-                setState(() {
-                  isApiCallProcess = false;
-                });
-              }else{
-                setState(() {
-                  isApiCallProcess = false;
-                });
-              }
+              // setState(() {
+              //   isApiCallProcess = true;
+              // });
+              // skippedoutletindex = index;
+              // currentoutletindex = gettodayjp.storenames.indexOf(todayskipjplist.storenames[index]);
+              // currentoutletid = todayskipjplist.outletids[index];
+              // currenttimesheetid = todayskipjplist.outletids[index];
+              // outletrequestdata.outletidpressed = todayskipjplist.outletids[index];
+              // checkinoutdata.checkid = todayskipjplist.id[index];
+              // var data = await outletwhencheckin();
+              // if(data != null ){
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (BuildContextcontext) => OutLet()));
+              //   setState(() {
+              //     isApiCallProcess = false;
+              //   });
+              // }else{
+              //   setState(() {
+              //     isApiCallProcess = false;
+              //   });
+              // }
             },
             child: Container(
               margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
