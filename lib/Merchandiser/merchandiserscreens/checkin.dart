@@ -103,16 +103,18 @@ class _CheckInState extends State<CheckIn> {
           setState(() {
             isApiCallProcess = true;
           });
+          normalcheckin=true;
+          forcecheck.reason="normal checkin less than 300m";
           addforeccheckin();
-          SubmitCheckin();
           getTaskList();
           getVisibility();
           getPlanogram();
           getPromotionDetails();
           Addedstockdataformerch();
           getNBLdetails();
+          getShareofshelf();
+          await SubmitCheckin();
           await getAvaiablitity();
-          await getShareofshelf();
           await getmyattandance();
           if(noattendance.noatt=="attadded"){
             print("Attendance added:${noattendance.noatt}");
@@ -123,6 +125,7 @@ class _CheckInState extends State<CheckIn> {
           setState(() {
             isApiCallProcess = false;
           });
+          normalcheckin = false;
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
             return CustomerActivities();
           }), (Route<dynamic> route) => false);
@@ -294,22 +297,22 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                               isApiCallProcess = true;
                                             });
                                             addforeccheckin();
-                                            SubmitCheckin();
                                             getTaskList();
                                             getVisibility();
                                             getPlanogram();
                                             getPromotionDetails();
                                             Addedstockdataformerch();
                                             getNBLdetails();
+                                            getShareofshelf();
+                                            await SubmitCheckin();
                                             await getAvaiablitity();
-                                            await getShareofshelf();
-                                            await getmyattandance();
                                             if(noattendance.noatt=="attadded"){
                                               print("Attendance added:${noattendance.noatt}");
                                             }
                                             else{
                                                addattendence();
                                             }
+                                            await getmyattandance();
                                             setState(() {
                                               isApiCallProcess = false;
                                             });
@@ -320,8 +323,6 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                           else {
                                             if(geolocation == true){
                                               forcecheck.reason="Geolocation was wrong";
-
-                                               addforeccheckin();
                                               setState(() {
                                                 isApiCallProcess = true;
                                               });
@@ -356,20 +357,19 @@ class _ForceCheckinState extends State<ForceCheckin> {
                                             else {
                                               if(others == true){
                                                 forcecheck.reason="Others";
-                                                 addforeccheckin();
                                                 setState(() {
                                                   isApiCallProcess = true;
                                                 });
                                                 addforeccheckin();
                                                 getTaskList();
-                                                SubmitCheckin();
                                                 getVisibility();
                                                 getPlanogram();
                                                 getPromotionDetails();
                                                 Addedstockdataformerch();
                                                 getNBLdetails();
+                                                getShareofshelf();
                                                 await getAvaiablitity();
-                                                await getShareofshelf();
+                                                await SubmitCheckin();
                                                 await getmyattandance();
                                                 if(noattendance.noatt=="attadded"){
                                                   print("Attendance added:${noattendance.noatt}");

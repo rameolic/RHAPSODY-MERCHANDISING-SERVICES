@@ -650,14 +650,14 @@ class TotalJnyTime {
 
 int indexofjurneytimeid;
 
-
+bool normalcheckin = false;
 Future addforeccheckin() async{
 
 
   Map forceci =
   {
     "time_sheet_id" :currenttimesheetid,
-    "checkin_type" : "force",
+    "checkin_type" : normalcheckin?"normal":"force",
     "reason" : forcecheck.reason,
 
   };

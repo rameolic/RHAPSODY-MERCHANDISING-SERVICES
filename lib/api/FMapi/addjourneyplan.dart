@@ -39,7 +39,7 @@ class addschdulejp{
   static var month;
   static var year;
 }
-Future addschdulejourneypaln() async{
+Future  addschdulejourneypaln() async{
   final DateTime now = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy');
   final String thisyear = formatter.format(now);

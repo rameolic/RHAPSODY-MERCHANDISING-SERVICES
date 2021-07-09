@@ -774,32 +774,32 @@ class _journeyplanDetailsState extends State<journeyplanDetails> {
                                       itemBuilder: (BuildContext context, int index) {
                                         return GestureDetector(
                                           onTap: ()async{
-                                            if(currentuser.roleid == 5){
-                                              setState(() {
-                                                isApiCallProcess = true;
-                                              });
-                                              print('timesheet id : ${getweeklyjp.sundayid[index]} ');
-                                              currenttimesheetid = getweeklyjp.sundayid[index];
-                                              currentoutletid =  getweeklyjp.outletid[index];
-                                              getTaskList();
-                                              getAvaiablitity();
-                                              getVisibility();
-                                              getCompetition();
-                                              getPlanogram();
-                                              getShareofshelf();
-                                              Addedstockdataforclient();
-                                              await getCompetition();
-                                              await clientpromodata();
-                                              setState(() {
-                                                isApiCallProcess = false;
-                                              });
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (BuildContextcontext) =>
-                                                          ClientsReports()));
-                                            }
+                                            // if(currentuser.roleid == 5){
+                                            //   setState(() {
+                                            //     isApiCallProcess = true;
+                                            //   });
+                                            //   print('timesheet id : ${getweeklyjp.sundayid[index]} ');
+                                            //   currenttimesheetid = getweeklyjp.sundayid[index];
+                                            //   currentoutletid =  getweeklyjp.outletid[index];
+                                            //   getTaskList();
+                                            //   getAvaiablitity();
+                                            //   getVisibility();
+                                            //   getCompetition();
+                                            //   getPlanogram();
+                                            //   getShareofshelf();
+                                            //   Addedstockdataforclient();
+                                            //   await getCompetition();
+                                            //   await clientpromodata();
+                                            //   setState(() {
+                                            //     isApiCallProcess = false;
+                                            //   });
+                                            //   Navigator.push(
+                                            //       context,
+                                            //       MaterialPageRoute(
+                                            //           builder:
+                                            //               (BuildContextcontext) =>
+                                            //               ClientsReports()));
+                                            // }
                                           },
                                           onLongPress: (){
                                             if(currentuser.roleid ==5){
@@ -921,10 +921,12 @@ class _journeyplanDetailsState extends State<journeyplanDetails> {
                                                   ),
                                                 ),
                                                 SizedBox(height: 5),
-                                                Text('${getweeklyjp.sundayaddress[index]}',
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                    )),
+                                                SingleChildScrollView(
+                                                  child: Text('${getweeklyjp.sundayaddress[index]}',
+                                                      style: TextStyle(
+                                                        fontSize: 15.0,
+                                                      )),
+                                                ),
                                                 Spacer(),
                                                 Table(
                                                   children: [

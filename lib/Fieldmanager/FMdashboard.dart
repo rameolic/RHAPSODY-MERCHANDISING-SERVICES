@@ -89,7 +89,6 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
               backgroundColor: pink,
               iconTheme: IconThemeData(color: orange),
               title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image(
                   height: 30,
