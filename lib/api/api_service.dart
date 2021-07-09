@@ -1,3 +1,5 @@
+import 'package:flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +9,10 @@ import 'package:merchandising/model/OutLet_BarChart.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
 bool splitsf = false;
+bool checkoutdatasubmitted =false;
+bool checkindatasubmitted =false;
+bool checkoutrequested =false;
+bool checkinrequested =false;
 
 int comid;
 Uri OutletSurvey = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_survey");
@@ -379,7 +385,8 @@ void addattendence() async {
   print("Attendance In Done");
 }
 
-void checkin() async {
+Future<bool> checkin() async {
+  checkinrequested = true;
   var checkid = checkinoutdata.checkid;
   var checkintime = checkinoutdata.checkintime;
   var checkinlocation = checkinoutdata.checkinlocation;
@@ -400,11 +407,13 @@ void checkin() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
+    checkindatasubmitted = true;
   }else{
-    print(cicoresponse.body);
+    checkindatasubmitted = false;
   }
 }
-void checkout() async {
+ checkout() async {
+  checkoutrequested = true;
   var checkid = checkinoutdata.checkid;
   var checkouttime = checkinoutdata.checkouttime;
   var checkoutlocation = checkinoutdata.checkoutlocation;
@@ -425,10 +434,12 @@ void checkout() async {
   );
   if(cicoresponse.statusCode == 200){
     print(cicoresponse.body);
+    checkoutdatasubmitted = true;
     DBRequestdaily();
     DBRequestmonthly();
   }else{
     print(cicoresponse.body);
+    checkoutdatasubmitted = false;
   }
 }
 

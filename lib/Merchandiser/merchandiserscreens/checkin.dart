@@ -103,6 +103,7 @@ class _CheckInState extends State<CheckIn> {
           setState(() {
             isApiCallProcess = true;
           });
+          await SubmitCheckin();
           normalcheckin=true;
           forcecheck.reason="normal checkin less than 300m";
           addforeccheckin();
@@ -113,7 +114,6 @@ class _CheckInState extends State<CheckIn> {
           Addedstockdataformerch();
           getNBLdetails();
           getShareofshelf();
-          await SubmitCheckin();
           await getAvaiablitity();
           await getmyattandance();
           if(noattendance.noatt=="attadded"){

@@ -55,6 +55,28 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   @override
   void initState() {
     super.initState();
+    if(checkinrequested && checkindatasubmitted){
+      Future.delayed(
+          const Duration(seconds: 2), () {
+        Flushbar(
+          message: "Checkin Updated",
+          duration: Duration(seconds: 5),
+        )
+          ..show(context);
+        checkinrequested = false;
+        checkindatasubmitted = false;
+      });
+    }else if(checkinrequested && !checkindatasubmitted){
+      Future.delayed(
+          const Duration(seconds: 2), (){
+      Flushbar(
+        message: "Error While Updating Checkin Please Try again.",
+        duration: Duration(seconds: 5),
+      )..show(context);
+    });
+      checkinrequested = false;
+      checkindatasubmitted = false;
+    }
   }
 
   Offset count = Offset(20.0, 20.0);

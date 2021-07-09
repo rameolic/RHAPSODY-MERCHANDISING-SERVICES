@@ -30,6 +30,7 @@ import 'package:merchandising/api/myattendanceapi.dart';
 
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:intl/intl.dart';
+import 'package:flushbar/flushbar.dart';
 
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
@@ -44,6 +45,32 @@ class JourneyPlan extends StatefulWidget {
 }
 
 class _JourneyPlanState extends State<JourneyPlan> {
+  @override
+  void initState() {
+    super.initState();
+    if(checkoutrequested && checkoutdatasubmitted){
+      Future.delayed(
+          const Duration(seconds: 2), () {
+        Flushbar(
+          message: "Checkout Updated",
+          duration: Duration(seconds: 5),
+        )
+          ..show(context);
+        checkoutrequested = false;
+        checkoutdatasubmitted = false;
+      });
+    }else if(checkoutrequested && !checkoutdatasubmitted){
+      Future.delayed(
+          const Duration(seconds: 2), (){
+        Flushbar(
+          message: "Error While Updating Checkout Please Try again.",
+          duration: Duration(seconds: 5),
+        )..show(context);
+        checkoutrequested = false;
+        checkoutdatasubmitted = false;
+      });
+    }
+  }
   bool isApiCallProcess = false;
   int index;
   bool pressWeek = false;

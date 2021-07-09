@@ -26,18 +26,12 @@ class Locationclass {
 
  Future<bool> getLocation() async {
    try{
-
-     if(true) {
        Locationclass location = Locationclass();
        await location.getCurrentLocation();
        lat = location.latitude;
        long = location.longitude;
        distinmeters();
        return lat==null?false:true;
-     }else{
-       return false;
-
-     }
    }catch(e){
      print(e);
    }
@@ -56,22 +50,23 @@ class getaddress {
   static var currentaddress;
 }
 
-void SubmitCheckin() async {
+ SubmitCheckin() async {
+  await getLocation();
   await address();
   var now = DateTime.now();
   print(now);
   checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
   print(checkinoutdata.checkintime);
   checkinoutdata.checkinlocation = "${getaddress.currentaddress}($lat,$long)";
-  checkin();
+  await checkin();
 }
 
-void SubmitCheckout() async {
+ SubmitCheckout() async {
   await address();
   var now = DateTime.now();
     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
     checkinoutdata.checkoutlocation = "${getaddress.currentaddress}($lat,$long)";
-    checkout();
+    await checkout();
 }
 
 // ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}
