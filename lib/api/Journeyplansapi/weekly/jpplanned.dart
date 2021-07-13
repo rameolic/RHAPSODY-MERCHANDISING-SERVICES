@@ -3,89 +3,522 @@ import 'package:http/http.dart' as http;
 import 'package:merchandising/main.dart';
 import '../../api_service.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 var jpempid;
+String JPweekly;
 Future<void> getJourneyPlanweekly() async {
-  Map DBrequestData = {
-    'emp_id': '${DBrequestdata.receivedempid}'
-  };
-  Map FmDBrequestData = {
-    'emp_id': '$jpempid'
-  };
-  http.Response JPresponse = await http.post(
-    WJPPlannedurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(currentuser.roleid == 6 ? DBrequestData : FmDBrequestData ),
-  );
-  if (JPresponse.statusCode == 200) {
-    getweeklyjp.sundaystorenames =[];
-    getweeklyjp.mondaystorenames =[];
-    getweeklyjp.tuesdaystorenames =[];
-    getweeklyjp.wednesdaystorenames =[];
-    getweeklyjp.thrusdaystorenames =[];
-    getweeklyjp.fridaystorenames =[];
-    getweeklyjp.saturdaystorenames =[];
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  JPweekly = prefs.getString('journeyplanweekly');
+  if(JPweekly == null|| currentlysyncing){
+    Map DBrequestData = {'emp_id': '${DBrequestdata.receivedempid}'};
+    Map FmDBrequestData = {'emp_id': '$jpempid'};
+    http.Response JPresponse = await http.post(
+      WJPPlannedurl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+      body:
+          jsonEncode(currentuser.roleid == 6 ? DBrequestData : FmDBrequestData),
+    );
+    if (JPresponse.statusCode == 200) {
+      getweeklyjp.sundaystorenames = [];
+      getweeklyjp.mondaystorenames = [];
+      getweeklyjp.tuesdaystorenames = [];
+      getweeklyjp.wednesdaystorenames = [];
+      getweeklyjp.thrusdaystorenames = [];
+      getweeklyjp.fridaystorenames = [];
+      getweeklyjp.saturdaystorenames = [];
 
-    getweeklyjp.sundaystorecodes =[];
-    getweeklyjp.mondaystorecodes =[];
-    getweeklyjp.tuesdaystorecodes =[];
-    getweeklyjp.wednesdaystorecodes =[];
-    getweeklyjp.thrusdaystorecodes =[];
-    getweeklyjp.fridaystorecodes =[];
-    getweeklyjp.saturdaystorecodes =[];
+      getweeklyjp.sundaystorecodes = [];
+      getweeklyjp.mondaystorecodes = [];
+      getweeklyjp.tuesdaystorecodes = [];
+      getweeklyjp.wednesdaystorecodes = [];
+      getweeklyjp.thrusdaystorecodes = [];
+      getweeklyjp.fridaystorecodes = [];
+      getweeklyjp.saturdaystorecodes = [];
 
-    getweeklyjp.sundayaddress =[];
-    getweeklyjp.mondayaddress =[];
-    getweeklyjp.tuesdayaddress =[];
-    getweeklyjp.wednesdayaddress =[];
-    getweeklyjp.thrusdayaddress =[];
-    getweeklyjp.fridayaddress=[];
-    getweeklyjp.saturdayaddress =[];
+      getweeklyjp.sundayaddress = [];
+      getweeklyjp.mondayaddress = [];
+      getweeklyjp.tuesdayaddress = [];
+      getweeklyjp.wednesdayaddress = [];
+      getweeklyjp.thrusdayaddress = [];
+      getweeklyjp.fridayaddress = [];
+      getweeklyjp.saturdayaddress = [];
 
-    getweeklyjp.sundaycontactnumbers =[];
-    getweeklyjp.mondaycontactnumbers =[];
-    getweeklyjp.tuesdaycontactnumbers =[];
-    getweeklyjp.wednesdaycontactnumbers =[];
-    getweeklyjp.thrusdaycontactnumbers =[];
-    getweeklyjp.fridaycontactnumbers=[];
-    getweeklyjp.saturdaycontactnumbers =[];
+      getweeklyjp.sundaycontactnumbers = [];
+      getweeklyjp.mondaycontactnumbers = [];
+      getweeklyjp.tuesdaycontactnumbers = [];
+      getweeklyjp.wednesdaycontactnumbers = [];
+      getweeklyjp.thrusdaycontactnumbers = [];
+      getweeklyjp.fridaycontactnumbers = [];
+      getweeklyjp.saturdaycontactnumbers = [];
 
-    getweeklyjp.sundaylatitudes =[];
-    getweeklyjp.mondaylatitudes =[];
-    getweeklyjp.tuesdaylatitudes =[];
-    getweeklyjp.wednesdaylatitudes =[];
-    getweeklyjp.thrusdaylatitudes =[];
-    getweeklyjp.fridaylatitudes=[];
-    getweeklyjp.saturdaylatitudes =[];
+      getweeklyjp.sundaylatitudes = [];
+      getweeklyjp.mondaylatitudes = [];
+      getweeklyjp.tuesdaylatitudes = [];
+      getweeklyjp.wednesdaylatitudes = [];
+      getweeklyjp.thrusdaylatitudes = [];
+      getweeklyjp.fridaylatitudes = [];
+      getweeklyjp.saturdaylatitudes = [];
 
-    getweeklyjp.sundaylongitudes =[];
-    getweeklyjp.mondaylongitudes =[];
-    getweeklyjp.tuesdaylongitudes =[];
-    getweeklyjp.wednesdaylongitudes =[];
-    getweeklyjp.thrusdaylongitudes =[];
-    getweeklyjp.fridaylongitudes=[];
-    getweeklyjp.saturdaylongitudes=[];
+      getweeklyjp.sundaylongitudes = [];
+      getweeklyjp.mondaylongitudes = [];
+      getweeklyjp.tuesdaylongitudes = [];
+      getweeklyjp.wednesdaylongitudes = [];
+      getweeklyjp.thrusdaylongitudes = [];
+      getweeklyjp.fridaylongitudes = [];
+      getweeklyjp.saturdaylongitudes = [];
 
+      getweeklyjp.sundayid = [];
+      getweeklyjp.mondayid = [];
+      getweeklyjp.tuesdayid = [];
+      getweeklyjp.wednesdayid = [];
+      getweeklyjp.thrusdayid = [];
+      getweeklyjp.fridayid = [];
+      getweeklyjp.saturdayid = [];
 
-    getweeklyjp.sundayid =[];
-    getweeklyjp.mondayid =[];
-    getweeklyjp.tuesdayid =[];
-    getweeklyjp.wednesdayid =[];
-    getweeklyjp.thrusdayid =[];
-    getweeklyjp.fridayid=[];
-    getweeklyjp.saturdayid=[];
+      getweeklyjp.timeid = [];
+      getweeklyjp.outletid = [];
+
+      print('journey plan weekly done');
+      JPweekly = JPresponse.body;
+      plannedjpweekly(JPweekly);
+      var decodeJPData = jsonDecode(JPweekly);
+      for (int u = 0; u < decodeJPData['data'].length; u++) {
+        getweeklyjp.timeid.add(decodeJPData['data'][u]['id']);
+        getweeklyjp.outletid.add(decodeJPData['data'][u]['outlet_id']);
+
+        dynamic storename = decodeJPData['data'][u]['store_name'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridaystorenames.add(storename);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdaystorenames.add(storename);
+        }
+
+        dynamic storecode = decodeJPData['data'][u]['store_code'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridaystorecodes.add(storecode);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdaystorecodes.add(storecode);
+        }
+        dynamic address = decodeJPData['data'][u]['address'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridayaddress.add(address);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdayaddress.add(address);
+        }
+
+        dynamic numbers = decodeJPData['data'][u]['contact_number'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridaycontactnumbers.add(numbers);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdaycontactnumbers.add(numbers);
+        }
+
+        dynamic latitude = decodeJPData['data'][u]['outlet']['outlet_lat'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridaylatitudes.add(latitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdaylatitudes.add(latitude);
+        }
+
+        dynamic longitude = decodeJPData['data'][u]['outlet']['outlet_long'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridaylongitudes.add(longitude);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdaylongitudes.add(longitude);
+        }
+
+        dynamic timesheet = decodeJPData['data'][u]['id'];
+
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Sunday'
+            : decodeJPData['data'][u]['day'] == 'Sunday') {
+          getweeklyjp.sundayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Monday'
+            : decodeJPData['data'][u]['day'] == 'Monday') {
+          getweeklyjp.mondayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Tuesday'
+            : decodeJPData['data'][u]['day'] == 'Tuesday') {
+          getweeklyjp.tuesdayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Wednesday'
+            : decodeJPData['data'][u]['day'] == 'Wednesday') {
+          getweeklyjp.wednesdayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Thursday'
+            : decodeJPData['data'][u]['day'] == 'Thursday') {
+          getweeklyjp.thrusdayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Friday'
+            : decodeJPData['data'][u]['day'] == 'Friday') {
+          getweeklyjp.fridayid.add(timesheet);
+        }
+        if (decodeJPData['data'][u]['day'] == null
+            ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
+                    .parse(decodeJPData['data'][u]['date'])) ==
+                'Saturday'
+            : decodeJPData['data'][u]['day'] == 'Saturday') {
+          getweeklyjp.saturdayid.add(timesheet);
+        }
+      }
+    } else {
+      print(JPresponse.statusCode);
+    }
+  }else{
+    getweeklyjp.sundaystorenames = [];
+    getweeklyjp.mondaystorenames = [];
+    getweeklyjp.tuesdaystorenames = [];
+    getweeklyjp.wednesdaystorenames = [];
+    getweeklyjp.thrusdaystorenames = [];
+    getweeklyjp.fridaystorenames = [];
+    getweeklyjp.saturdaystorenames = [];
+
+    getweeklyjp.sundaystorecodes = [];
+    getweeklyjp.mondaystorecodes = [];
+    getweeklyjp.tuesdaystorecodes = [];
+    getweeklyjp.wednesdaystorecodes = [];
+    getweeklyjp.thrusdaystorecodes = [];
+    getweeklyjp.fridaystorecodes = [];
+    getweeklyjp.saturdaystorecodes = [];
+
+    getweeklyjp.sundayaddress = [];
+    getweeklyjp.mondayaddress = [];
+    getweeklyjp.tuesdayaddress = [];
+    getweeklyjp.wednesdayaddress = [];
+    getweeklyjp.thrusdayaddress = [];
+    getweeklyjp.fridayaddress = [];
+    getweeklyjp.saturdayaddress = [];
+
+    getweeklyjp.sundaycontactnumbers = [];
+    getweeklyjp.mondaycontactnumbers = [];
+    getweeklyjp.tuesdaycontactnumbers = [];
+    getweeklyjp.wednesdaycontactnumbers = [];
+    getweeklyjp.thrusdaycontactnumbers = [];
+    getweeklyjp.fridaycontactnumbers = [];
+    getweeklyjp.saturdaycontactnumbers = [];
+
+    getweeklyjp.sundaylatitudes = [];
+    getweeklyjp.mondaylatitudes = [];
+    getweeklyjp.tuesdaylatitudes = [];
+    getweeklyjp.wednesdaylatitudes = [];
+    getweeklyjp.thrusdaylatitudes = [];
+    getweeklyjp.fridaylatitudes = [];
+    getweeklyjp.saturdaylatitudes = [];
+
+    getweeklyjp.sundaylongitudes = [];
+    getweeklyjp.mondaylongitudes = [];
+    getweeklyjp.tuesdaylongitudes = [];
+    getweeklyjp.wednesdaylongitudes = [];
+    getweeklyjp.thrusdaylongitudes = [];
+    getweeklyjp.fridaylongitudes = [];
+    getweeklyjp.saturdaylongitudes = [];
+
+    getweeklyjp.sundayid = [];
+    getweeklyjp.mondayid = [];
+    getweeklyjp.tuesdayid = [];
+    getweeklyjp.wednesdayid = [];
+    getweeklyjp.thrusdayid = [];
+    getweeklyjp.fridayid = [];
+    getweeklyjp.saturdayid = [];
 
     getweeklyjp.timeid = [];
     getweeklyjp.outletid = [];
-
-    print('journey plan weekly done');
-    String JPdata = JPresponse.body;
-    var decodeJPData = jsonDecode(JPdata);
+    var decodeJPData = jsonDecode(JPweekly);
     for (int u = 0; u < decodeJPData['data'].length; u++) {
-
       getweeklyjp.timeid.add(decodeJPData['data'][u]['id']);
       getweeklyjp.outletid.add(decodeJPData['data'][u]['outlet_id']);
 
@@ -93,180 +526,205 @@ Future<void> getJourneyPlanweekly() async {
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridaystorenames.add(storename);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-                  .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaystorenames.add(storename);
       }
 
       dynamic storecode = decodeJPData['data'][u]['store_code'];
 
-
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridaystorecodes.add(storecode);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaystorecodes.add(storecode);
       }
       dynamic address = decodeJPData['data'][u]['address'];
 
-
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridayaddress.add(address);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdayaddress.add(address);
       }
-
 
       dynamic numbers = decodeJPData['data'][u]['contact_number'];
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridaycontactnumbers.add(numbers);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaycontactnumbers.add(numbers);
       }
@@ -275,43 +733,50 @@ Future<void> getJourneyPlanweekly() async {
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridaylatitudes.add(latitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaylatitudes.add(latitude);
       }
@@ -320,43 +785,50 @@ Future<void> getJourneyPlanweekly() async {
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridaylongitudes.add(longitude);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdaylongitudes.add(longitude);
       }
@@ -365,49 +837,54 @@ Future<void> getJourneyPlanweekly() async {
 
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Sunday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Sunday'
           : decodeJPData['data'][u]['day'] == 'Sunday') {
         getweeklyjp.sundayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Monday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Monday'
           : decodeJPData['data'][u]['day'] == 'Monday') {
         getweeklyjp.mondayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Tuesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Tuesday'
           : decodeJPData['data'][u]['day'] == 'Tuesday') {
         getweeklyjp.tuesdayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Wednesday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Wednesday'
           : decodeJPData['data'][u]['day'] == 'Wednesday') {
         getweeklyjp.wednesdayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Thursday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Thursday'
           : decodeJPData['data'][u]['day'] == 'Thursday') {
         getweeklyjp.thrusdayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Friday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Friday'
           : decodeJPData['data'][u]['day'] == 'Friday') {
         getweeklyjp.fridayid.add(timesheet);
       }
       if (decodeJPData['data'][u]['day'] == null
           ? DateFormat('EEEE').format(DateFormat("yyyy-MM-dd")
-          .parse(decodeJPData['data'][u]['date'])) == 'Saturday'
+          .parse(decodeJPData['data'][u]['date'])) ==
+          'Saturday'
           : decodeJPData['data'][u]['day'] == 'Saturday') {
         getweeklyjp.saturdayid.add(timesheet);
       }
     }
-  } else {
-    print(JPresponse.statusCode);
   }
 }
 

@@ -1,10 +1,15 @@
 import 'package:merchandising/Merchandiser/merchandiserscreens/expiry_report.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:intl/intl.dart';
+import 'package:merchandising/Constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:merchandising/Merchandiser/merchandiserscreens/expiry_report.dart';
-
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 List<dynamic>addedproductid=[];
 
 
@@ -71,20 +76,41 @@ var pricebs;
 var filledby;
 var remarksifany;
 
-
+String brand;
 Future getstockexpiryproducts() async{
-  http.Response Response = await http.post(stockexpiryDetails,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-  );
-  if (Response.statusCode == 200){
-    print("stockexpirydone");
-    String brand = Response.body;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  brand = prefs.getString('expiryproductsdata');
+  if (brand == null || currentlysyncing) {
+    http.Response Response = await http.post(stockexpiryDetails,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+    );
+    if (Response.statusCode == 200) {
+      print("stockexpirydone");
+      String brand = Response.body;
+      Expiryreportproducts(brand);
+      Expiryreportproducts(brand);
+      var decodebrands = jsonDecode(brand);
+      for (int u = 0; u < decodebrands['data'].length; u++) {
+        Expiry.id.add(decodebrands['data'][u]["id"]);
+        Expiry.zrepcodes.add(decodebrands['data'][u]["zrep_code"].toString());
+        Expiry.sku.add(decodebrands['data'][u]["sku"]);
+        Expiry.productdetails.add(decodebrands['data'][u]["product_name"]);
+        Expiry.barcode.add(decodebrands['data'][u]["barcode"].toString());
+        Expiry.type.add(decodebrands['data'][u]["type"]);
+        Expiry.range.add(decodebrands['data'][u]["range"]);
+        Expiry.priceofitem.add(decodebrands['data'][u]["price_per_piece"]);
+        Expiry.productfullname.add(
+            "${decodebrands['data'][u]["product_name"]}-${decodebrands['data'][u]["zrep_code"]}-${decodebrands['data'][u]["sku"]}-${decodebrands['data'][u]["barcode"]}");
+      }
+      // print(Expiry.barcode);
+    }
+  }else {
     var decodebrands = jsonDecode(brand);
-    for(int u=0;u<decodebrands['data'].length;u++) {
+    for (int u = 0; u < decodebrands['data'].length; u++) {
       Expiry.id.add(decodebrands['data'][u]["id"]);
       Expiry.zrepcodes.add(decodebrands['data'][u]["zrep_code"].toString());
       Expiry.sku.add(decodebrands['data'][u]["sku"]);
@@ -93,9 +119,9 @@ Future getstockexpiryproducts() async{
       Expiry.type.add(decodebrands['data'][u]["type"]);
       Expiry.range.add(decodebrands['data'][u]["range"]);
       Expiry.priceofitem.add(decodebrands['data'][u]["price_per_piece"]);
-      Expiry.productfullname.add("${decodebrands['data'][u]["product_name"]}-${decodebrands['data'][u]["zrep_code"]}-${decodebrands['data'][u]["sku"]}-${decodebrands['data'][u]["barcode"]}");
+      Expiry.productfullname.add(
+          "${decodebrands['data'][u]["product_name"]}-${decodebrands['data'][u]["zrep_code"]}-${decodebrands['data'][u]["sku"]}-${decodebrands['data'][u]["barcode"]}");
     }
-    // print(Expiry.barcode);
   }
 }
 int addedexpiryindex;
@@ -111,16 +137,27 @@ Future<int> addexpiryproducts() async{
     "remarks" : remarksifany
   };
   print(jsonEncode(stockdata));
-  http.Response Response = await http.post(addexpiryDetail,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-       body: jsonEncode(stockdata),
-  );
-  print(Response.body);
+  requireurlstosync.add("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
+  requirebodytosync.add(jsonEncode(stockdata));
+  message.add("expiry report for $productid for the timesheet $currenttimesheetid");
+  print(requireurlstosync);
+  print(requirebodytosync);
+  print(message);
+  Adddatatoserver(requireurlstosync,requirebodytosync,message);
+
+
+   //http.Response Response = await http.post(addexpiryDetail,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //      body: jsonEncode(stockdata),
+  // );
+  // print(Response.body);
   }
+
+
 //
 Future getaddedexpiryproducts() async {
   Map stockdata = {

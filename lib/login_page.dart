@@ -10,6 +10,7 @@ import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'api/FMapi/relieverdet_api.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import 'package:merchandising/main.dart';
 import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
@@ -17,6 +18,7 @@ import 'api/HRapi/empdetailsforreportapi.dart';
 import 'dart:async';
 import 'model/database.dart';
 import 'package:merchandising/api/FMapi/storedetailsapi.dart';
+import 'offlinedata/syncreferenceapi.dart';
 import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
 import 'package:merchandising/api/myattendanceapi.dart';
@@ -29,6 +31,13 @@ import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
 import 'package:merchandising/clients/client_dashboard.dart';
 import 'api/clientapi/outletreport.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'offlinedata/syncsendapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -187,22 +196,42 @@ class _LoginPageState extends State<LoginPage> {
                                       if (loginrequestdata.inputemail != null &&
                                           loginrequestdata.inputpassword != null) {
                                           fromloginscreen = true;
+                                          var date = DateTime.now();
+                                          var starttime = DateTime.now();
+                                          currentlysyncing = true;
                                         int userroleid = await loginapi();
                                         currentuser.roleid = userroleid;
+                                        print(userroleid);
                                         if(userroleid!=null){
+                                          print("logindetails added");
                                           addLogindetails();
                                         }
                                         if (userroleid == 6) {
+                                          await getJourneyPlan();
+                                          getalljpoutletsdata();
+                                          chartvisits();
                                           getempdetails();
-                                          getaddedexpiryproducts ();
+                                          getaddedexpiryproducts();
                                           getstockexpiryproducts();
                                           getempdetailsforreport();
                                           var DBMresult =  DBRequestmonthly();
                                           var DBDresult =  await DBRequestdaily();
+                                          getskippedJourneyPlan();
+                                          getvisitedJourneyPlan();
+                                          getSkipJourneyPlanweekly();
+                                          getJourneyPlanweekly();
+                                          getVisitJourneyPlanweekly();
                                           // getLocation();
                                           await callfrequently();
-                                          const time = const Duration(seconds: 120);
-                                          Timer.periodic(time, (Timer t) => callfrequently());
+                                          const time = const Duration(minutes: 30);
+                                          Timer.periodic(time, (Timer t) => syncingreferencedata());
+                                          const period = const Duration(minutes: 15);
+                                          Timer.periodic(period, (Timer t) => syncingsenddata());
+                                          const hat = const Duration(seconds: 120);
+                                          Timer.periodic(hat, (Timer t) => callfrequently());
+
+                                          var endtime = DateTime.now();
+                                          await lastsynced(date, starttime, endtime);
                                           if (DBMresult != null && DBDresult != null) {
                                             Navigator.pushReplacement(
                                                 context,

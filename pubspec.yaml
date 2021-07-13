@@ -54,7 +54,8 @@ dependencies:
   url_launcher: ^6.0.7
   open_file: ^3.2.1
   flutter_email_sender: ^5.0.2
-
+  flutter_offline: ^2.0.0
+  enough_mail:
 
 dev_dependencies:
   flutter_test:

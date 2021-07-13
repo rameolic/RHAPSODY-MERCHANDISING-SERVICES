@@ -67,13 +67,13 @@ List inputlist = selectedList.map((String val) {
 TextEditingController remarks = TextEditingController();
 TextEditingController productcontroller = TextEditingController();
 
+bool isApiCallProcess = false;
 class ExpiryReport extends StatefulWidget {
   @override
   _ExpiryReportState createState() => _ExpiryReportState();
 }
 bool expirycheck = false;
 class _ExpiryReportState extends State<ExpiryReport> {
-  bool isApiCallProcess = false;
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -1178,7 +1178,7 @@ class _SubmittedDataState extends State<SubmittedData> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stockdatamerch.productname.length>0? Column(
       children: <Widget>[
         _createSearchView(),
         SizedBox(
@@ -1186,6 +1186,38 @@ class _SubmittedDataState extends State<SubmittedData> {
         ),
         _firstSearch ? _createListView() : _performSearch(),
       ],
+    ):GestureDetector(
+       onTap: ()async{
+        setState(() {
+          isApiCallProcess = true;
+        });
+        await Addedstockdataformerch();
+
+        setState(() {
+          isApiCallProcess = false;
+        });
+        if(Stockdatamerch.productname.length==0){
+          Flushbar(
+            message:
+            "Submitted data not for this outlet",
+            duration: Duration(seconds: 3),
+          )..show(context);
+        }
+    },
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.only(right: 10.00),
+          padding: EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: Color(0xffFFDBC1),
+            borderRadius: BorderRadius.circular(10.00),
+          ),
+          child: Text(
+            'Get Submitted Data',
+            style: TextStyle(color: Colors.black, fontSize: 15),
+          ),
+        ),
+      ),
     );
   }
 

@@ -11,11 +11,48 @@ import 'api/FMapi/nbl_detailsapi.dart';
 import 'package:flushbar/flushbar.dart';
 import 'dart:ui';
 import 'package:open_file/open_file.dart';
+import 'package:intl/intl.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
+import 'package:flutter_offline/flutter_offline.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+List<String>logreportstatus=[];
+ValueNotifier<bool> onlinemode = new ValueNotifier(true);
+bool currentlysyncing = false;
+List<String>logreport=[];
+List<String>logtime=[];
+
+createlog(message,status)async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  logreport = prefs.getStringList('logdata');
+  if(logreport == null){
+    logreport=[];
+    logreportstatus=[];
+    logtime=[];
+  }else{
+    logtime = prefs.getStringList('logtime');
+    logreportstatus = prefs.getStringList('status');
+  }
+  if(logreport.length<500) {
+    logreport.add(message);
+    logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
+    logreportstatus.add(status);
+    await savelogreport(logreport, logtime, logreportstatus);
+  }else{
+    removelogdatafromlocal();
+    logreport=[];
+    logtime=[];
+    logreportstatus=[];
+    logreport.add(message);
+    logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
+    logreportstatus.add(status);
+    await savelogreport(logreport, logtime, logreportstatus);
+  }
+}
 
 
 String nblfile=Uri.encodeFull("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
 
-
+//bool onlinemode = true;
 //bool alreadycheckedin = false;
 final containerscolor = Color(0xffFAECE3);
 final alertboxcolor = Colors.white;
@@ -106,6 +143,85 @@ class OutletDetails extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class OfflineNotification extends StatefulWidget {
+  OfflineNotification({@required this.body});
+  final body;
+  @override
+  _OfflineNotificationState createState() => _OfflineNotificationState();
+}
+class _OfflineNotificationState extends State<OfflineNotification> {
+  @override
+  Widget build(BuildContext context) {
+    return OfflineBuilder(
+      connectivityBuilder: (BuildContext context,
+          ConnectivityResult connectivity, Widget child) {
+        final bool connected = connectivity != ConnectivityResult.none;
+        if(connected){
+          Future.delayed(const Duration(seconds:1), () {
+
+              onlinemode.value = true;
+
+          });}else{
+          Future.delayed(const Duration(seconds:1), () {
+            createlog("entered to Offline mode","true");
+
+            onlinemode.value = false;
+
+          });
+        }
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            child,
+            onlinemode.value ?  SizedBox():Positioned(
+              left: 0.0,
+              right: 0.0,
+              height: 32.0,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                color:
+                connected ? orange : Color(0xFFEE4400),
+                child: connected
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "ONLINE",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                )
+                    : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "OFFLINE",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    SizedBox(
+                      width: 12.0,
+                      height: 12.0,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+      child: widget.body,
     );
   }
 }
@@ -204,6 +320,7 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
             child : FloatingActionButton(
               heroTag: "btn1",
               onPressed: ()async{
+                createlog("NBL icon tapped tapped","true");
                 print("nbl file: ${NBLDetData.fileurl.toString()}");
                 if(NBLDetData.fileurl.toString()!="[]") {
                   print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl
@@ -245,6 +362,7 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
             child : FloatingActionButton(
               heroTag: "btn2",
               onPressed: (){
+
               },
               child: Text("NBL",style: TextStyle(color: pink),),
               backgroundColor: orange,)

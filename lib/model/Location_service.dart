@@ -4,6 +4,7 @@ import 'package:merchandising/api/api_service.dart';
 import 'package:geocoder/geocoder.dart';
 import 'distanceinmeters.dart';
 import 'package:location_permissions/location_permissions.dart';
+import 'package:merchandising/Constants.dart';
 double lat;
 double long;
 String currentlocation;
@@ -51,22 +52,43 @@ class getaddress {
 }
 
  SubmitCheckin() async {
-  await getLocation();
-  await address();
-  var now = DateTime.now();
-  print(now);
-  checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
-  print(checkinoutdata.checkintime);
-  checkinoutdata.checkinlocation = "${getaddress.currentaddress}($lat,$long)";
-  await checkin();
-}
+   createlog("Check In tapped","true");
+  if(onlinemode.value) {
+    await getLocation();
+    print(lat);
+    print(long);
+    await address();
+    var now = DateTime.now();
+    checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
+    print(checkinoutdata.checkintime);
+    checkinoutdata.checkinlocation = "${getaddress.currentaddress}($lat,$long)";
+    await checkin();
+  }else{
+    var now = DateTime.now();
+    checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
+    print(checkinoutdata.checkintime);
+    checkinoutdata.checkinlocation = "offline unable to get location";
+    await checkin();
+  }
+
+ }
 
  SubmitCheckout() async {
-  await address();
-  var now = DateTime.now();
-    checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
-    checkinoutdata.checkoutlocation = "${getaddress.currentaddress}($lat,$long)";
-    await checkout();
+   createlog("Check Out tapped","true");
+   if(onlinemode.value) {
+     await getLocation();
+     await address();
+     var now = DateTime.now();
+     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
+     checkinoutdata.checkoutlocation = "${getaddress.currentaddress}($lat,$long)";
+     await checkout();
+   }else{
+     var now = DateTime.now();
+     checkinoutdata.checkouttime = DateFormat('HH:mm:ss').format(now);
+     checkinoutdata.checkoutlocation = "offline unable to get location";
+     await checkout();
+   }
+
 }
 
 // ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}

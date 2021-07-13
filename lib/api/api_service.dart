@@ -1,13 +1,18 @@
-import 'package:flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:merchandising/Merchandiser/merchandiserscreens/PlanogramcheckPhase1.dart';
 import 'package:merchandising/model/Location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/model/OutLet_BarChart.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+
 bool splitsf = false;
 bool checkoutdatasubmitted =false;
 bool checkindatasubmitted =false;
@@ -121,7 +126,7 @@ var currenttimesheetid;
 var fieldmanagernameofcurrentmerch;
 var fieldmanagerofcurrentmerch;
 var currentmerchid;
-bool alreadycheckedin =false;
+bool alreadycheckedina =false;
 bool fromloginscreen =false;
 
 
@@ -159,23 +164,50 @@ class loggedin{
 int currentoutletid;
 //int Currenttimesheetid;
 Future loginapi() async {
-  print(remembereddata.email);
-  print(remembereddata.email.toString() == null);
-  loggedin.email = loginfromloginpage ? loginrequestdata.inputemail : remembereddata.email;
-  loggedin.password =loginfromloginpage ? loginrequestdata.inputpassword : remembereddata.password;
-  Map loginData = {
-    'email': '${loggedin.email}',
-    'password': '${loggedin.password}',
-  };
-  print(loginData);
-  http.Response response = await http.post(Loginurl,
-      body: loginData);
-  if (response.statusCode == 200) {
+  var logindatajson;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  logindatajson = prefs.getString('logindata');
+  print("logindata: $logindatajson");
+  if(logindatajson == null|| currentlysyncing){
+    loggedin.email = loginfromloginpage ? loginrequestdata.inputemail : remembereddata.email;
+    loggedin.password =loginfromloginpage ? loginrequestdata.inputpassword : remembereddata.password;
+    Map loginData = {
+      'email': '${loggedin.email}',
+      'password': '${loggedin.password}',
+    };
+    print(loginData);
+    http.Response response = await http.post(Loginurl,
+        body: loginData);
+    if (response.statusCode == 200) {
+      userpassword.password = loggedin.password;
+      print("LoginDone");
+      logindatajson = response.body;
+      adduserdetails(logindatajson);
+      var decodeData = jsonDecode(logindatajson);
+      DBrequestdata.receivedtoken =decodeData['token'];
+      DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
+      DBrequestdata.empname = decodeData['user'] ['name'];
+      DBrequestdata.emailid =decodeData['user']['email'];
+      currentuser.roleid = decodeData['user']['role_id'];
+      print(DBrequestdata.empname);
 
+      if(currentuser.roleid == 6){
+        currentmerchid = DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
+      }
+      return currentuser.roleid;
+    }
+    else {
+      print(response.statusCode);
+      String data = response.body;
+      var decodeData = jsonDecode(data);
+      DBrequestdata.message = decodeData['message'];
+      print("error");
+      print(response.body);
+      return currentuser.roleid;
+    }
+  }else{
     userpassword.password = loggedin.password;
-    print("LoginDone");
-    String data = response.body;
-    var decodeData = jsonDecode(data);
+    var decodeData = jsonDecode(logindatajson);
     DBrequestdata.receivedtoken =decodeData['token'];
     DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     DBrequestdata.empname = decodeData['user'] ['name'];
@@ -186,15 +218,6 @@ Future loginapi() async {
     if(currentuser.roleid == 6){
       currentmerchid = DBrequestdata.receivedempid = decodeData['user'] ['emp_id'];
     }
-    return currentuser.roleid;
-  }
-  else {
-    print(response.statusCode);
-    String data = response.body;
-    var decodeData = jsonDecode(data);
-    DBrequestdata.message = decodeData['message'];
-    print("error");
-    print(response.body);
     return currentuser.roleid;
   }
 }
@@ -215,22 +238,44 @@ class DBrequestdata {
 
 
 Future DBRequestdaily() async{
-  Map DBrequestData = {
-    'emp_id': '${DBrequestdata.receivedempid}'
-  };
-  print(DBrequestData);
-  http.Response DBresponse = await http.post(DBdailyurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(DBrequestData),
-  );
-  if (DBresponse.statusCode == 200){
-    print('dashboard daily done');
-    String DBdata = DBresponse.body;
-    var decodeDBData = jsonDecode(DBdata);
+  var dbdailyresponse;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  dbdailyresponse = prefs.getString('dbdailymerch');
+  print("dbdaily: $dbdailyresponse");
+  if(dbdailyresponse==null|| currentlysyncing){
+    Map DBrequestData = {
+      'emp_id': '${DBrequestdata.receivedempid}'
+    };
+    print(DBrequestData);
+    http.Response DBresponse = await http.post(DBdailyurl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+      body: jsonEncode(DBrequestData),
+    );
+    if (DBresponse.statusCode == 200){
+      print('dashboard daily done');
+      dbdailyresponse = DBresponse.body;
+      adddailydashboardmerch(dbdailyresponse);
+      var decodeDBData = jsonDecode(dbdailyresponse);
+      DBResponsedatadaily.shedulevisits = decodeDBData['SheduleCalls'];
+      DBResponsedatadaily.unshedulevisits = decodeDBData['UnSheduleCalls'];
+      DBResponsedatadaily.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
+      DBResponsedatadaily.UnShedulevisitsDone = decodeDBData['UnSheduleCallsDone'];
+      DBResponsedatadaily.Attendance =decodeDBData['Attendance'];
+      DBResponsedatadaily.WorkingTime =decodeDBData['WorkingTime'];
+      DBResponsedatadaily.EffectiveTime =decodeDBData['EffectiveTime'];
+      DBResponsedatadaily.TravelTime =decodeDBData['TravelTime'];
+      DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
+      return  DBResponsedatadaily.todayPlanpercentage;
+    }
+    if(DBresponse.statusCode != 200){
+      print(DBresponse.statusCode);
+    }
+  }else{
+    var decodeDBData = jsonDecode(dbdailyresponse);
     DBResponsedatadaily.shedulevisits = decodeDBData['SheduleCalls'];
     DBResponsedatadaily.unshedulevisits = decodeDBData['UnSheduleCalls'];
     DBResponsedatadaily.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
@@ -242,27 +287,49 @@ Future DBRequestdaily() async{
     DBResponsedatadaily.todayPlanpercentage =decodeDBData['JourneyPlanpercentage'];
     return  DBResponsedatadaily.todayPlanpercentage;
   }
-  if(DBresponse.statusCode != 200){
-    print(DBresponse.statusCode);
-  }
+
 }
 Future DBRequestmonthly() async{
-  Map DBrequestData = {
-    'emp_id': '${DBrequestdata.receivedempid}'
-  };
-  http.Response DBresponse = await http.post(DBmonthlyurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(DBrequestData),
-  );
-  print(DBresponse.body);
-  if (DBresponse.statusCode == 200){
-    print('dashboard monthly done');
-    String DBdata = DBresponse.body;
-    var decodeDBData = jsonDecode(DBdata);
+  var dbmonthly;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  dbmonthly = prefs.getString('dbmontlymerch');
+  print(currentlysyncing);
+  if(dbmonthly==null || currentlysyncing){
+    Map DBrequestData = {
+      'emp_id': '${DBrequestdata.receivedempid}'
+    };
+    http.Response DBresponse = await http.post(DBmonthlyurl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+      body: jsonEncode(DBrequestData),
+    );
+    print(DBresponse.body);
+    if (DBresponse.statusCode == 200){
+      print('dashboard monthly done');
+      dbmonthly = DBresponse.body;
+      adddailymonthlymerch(dbmonthly);
+      var decodeDBData = jsonDecode(dbmonthly);
+      DBResponsedatamonthly.shedulevisits = decodeDBData['SheduleCalls'];
+      DBResponsedatamonthly.unshedulevisits = decodeDBData['UnSheduleCalls'];
+      DBResponsedatamonthly.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
+      DBResponsedatamonthly.UnShedulevisitsDone = decodeDBData['UnSheduleCallsDone'];
+      DBResponsedatamonthly.Attendance =decodeDBData['Attendance'];
+      DBResponsedatamonthly.WorkingTime =decodeDBData['WorkingTime'];
+      DBResponsedatamonthly.EffectiveTime =decodeDBData['EffectiveTime'];
+      DBResponsedatamonthly.TravelTime =decodeDBData['TravelTime'];
+      DBResponsedatamonthly.monthPlanpercentage =decodeDBData['JourneyPlanpercentage'];
+      DBResponsedatamonthly.leavebalance = decodeDBData['LeaveCount'];
+      remaining.leaves = DBResponsedatamonthly.leavebalance;
+      return DBResponsedatamonthly.leavebalance;
+    }
+    if(DBresponse.statusCode != 200){
+      print(DBresponse.statusCode);
+    }
+  }else{
+    var decodeDBData = jsonDecode(dbmonthly);
     DBResponsedatamonthly.shedulevisits = decodeDBData['SheduleCalls'];
     DBResponsedatamonthly.unshedulevisits = decodeDBData['UnSheduleCalls'];
     DBResponsedatamonthly.ShedulevisitssDone =decodeDBData['SheduleCallsDone'];
@@ -276,11 +343,7 @@ Future DBRequestmonthly() async{
     remaining.leaves = DBResponsedatamonthly.leavebalance;
     return DBResponsedatamonthly.leavebalance;
   }
-  if(DBresponse.statusCode != 200){
-    print(DBresponse.statusCode);
-  }
 }
-
 class DBResponsedatadaily {
   static int shedulevisits;
   static int unshedulevisits;
@@ -321,48 +384,53 @@ class chekinoutlet{
 
 }
 
-
+int currentoutletindex;
+List<String>outletvisitsdata=[];
+List<String> offlineoutletdeatiles = [];
+int outletselectedfordetails;
 Future outletwhencheckin() async {
-
-  var outletid = outletrequestdata.outletidpressed;
-  chartoutletid.outlet = outletrequestdata.outletidpressed;
-
-
-
-  Map ODrequestDataforcheckin = {
-    "emp_id": "${DBrequestdata.receivedempid}",
-    'outlet_id': '$outletid',
-  };
-  print(ODrequestDataforcheckin);
-  http.Response OCresponse = await http.post(OCurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(ODrequestDataforcheckin),
-  );
-  if (OCresponse.statusCode == 200){
-    String OCdata = OCresponse.body;
-    var decodeODData = jsonDecode(OCdata);
-    chekinoutlet.checkinoutletid = decodeODData['data'][0]['store'][0]["store_code"];
-    chekinoutlet.checkinoutletname = decodeODData['data'][0]['store'][0]["store_name"];
-    chekinoutlet.checkinaddress = decodeODData['data'][0]['store'][0]["address"];
-    chekinoutlet.contactnumber = decodeODData['data'][0]['store'][0]["contact_number"];
-    chekinoutlet.checkinarea = decodeODData['data'][0]['outlet_area'];
-    chekinoutlet.checkincity = decodeODData['data'][0]['outlet_city'];
-    chekinoutlet.checkinstate = decodeODData['data'][0]['outlet_state'];
-    chekinoutlet.checkincountry = decodeODData['data'][0]['outlet_country'];
-    chekinoutlet.checkinlat = decodeODData['data'][0]['outlet_lat'];
-    chekinoutlet.checkinlong = decodeODData['data'][0]['outlet_long'];
-    chekinoutlet.currentdistance = Geolocator.distanceBetween(lat, long, double.parse(chekinoutlet.checkinlat), double.parse(chekinoutlet.checkinlong));
-    return getchartdetails();
-  }
-
-  if(OCresponse.statusCode != 200){
-    print(OCresponse.statusCode);
-
-  }
+  print(currentoutletindex);
+    // var outletid = outletrequestdata.outletidpressed;
+    // chartoutletid.outlet = outletrequestdata.outletidpressed;
+    // Map ODrequestDataforcheckin = {
+    //   "emp_id": "${DBrequestdata.receivedempid}",
+    //   'outlet_id': '$outletid',
+    // };
+    // print(ODrequestDataforcheckin);
+    // http.Response OCresponse = await http.post(OCurl,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Accept': 'application/json',
+    //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+    //   },
+    //   body: jsonEncode(ODrequestDataforcheckin),
+    // );
+    //if (OCresponse.statusCode == 200) {
+      String OCdata = offlineoutletdeatiles[currentoutletindex];
+      var decodeODData = jsonDecode(OCdata);
+      chekinoutlet.checkinoutletid =
+      decodeODData['data'][0]['store'][0]["store_code"];
+      chekinoutlet.checkinoutletname =
+      decodeODData['data'][0]['store'][0]["store_name"];
+      chekinoutlet.checkinaddress =
+      decodeODData['data'][0]['store'][0]["address"];
+      chekinoutlet.contactnumber =
+      decodeODData['data'][0]['store'][0]["contact_number"];
+      chekinoutlet.checkinarea = decodeODData['data'][0]['outlet_area'];
+      chekinoutlet.checkincity = decodeODData['data'][0]['outlet_city'];
+      chekinoutlet.checkinstate = decodeODData['data'][0]['outlet_state'];
+      chekinoutlet.checkincountry = decodeODData['data'][0]['outlet_country'];
+      chekinoutlet.checkinlat = decodeODData['data'][0]['outlet_lat'];
+      chekinoutlet.checkinlong = decodeODData['data'][0]['outlet_long'];
+      chekinoutlet.currentdistance = Geolocator.distanceBetween(
+          lat, long, double.parse(chekinoutlet.checkinlat),
+          double.parse(chekinoutlet.checkinlong));
+      return getchartdetails();
+    // }
+    //
+    // if (OCresponse.statusCode != 200) {
+    //   print(OCresponse.statusCode);
+    // }
 }
 
 class checkinoutdata{
@@ -396,21 +464,29 @@ Future<bool> checkin() async {
     "checkin_time": "$checkintime",
     "checkin_location": "$checkinlocation",
   };
-  print(checkinoutresponse);
-  http.Response cicoresponse = await http.post(CICOurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(checkinoutresponse),
-  );
-  if(cicoresponse.statusCode == 200){
-    print(cicoresponse.body);
-    checkindatasubmitted = true;
-  }else{
-    checkindatasubmitted = false;
-  }
+  requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
+  requirebodytosync.add(jsonEncode(checkinoutresponse));
+  message.add("Checkin at $checkintime for the timesheet $checkid at $checkinlocation");
+  print(requireurlstosync);
+  print(requirebodytosync);
+  print(message);
+  Adddatatoserver(requireurlstosync,requirebodytosync,message);
+  checkindatasubmitted = true;
+  // print(checkinoutresponse);
+  // http.Response cicoresponse = await http.post(CICOurl,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(checkinoutresponse),
+  // );
+  // if(cicoresponse.statusCode == 200){
+  //   print(cicoresponse.body);
+  //   checkindatasubmitted = true;
+  // }else{
+  //   checkindatasubmitted = false;
+  // }
 }
  checkout() async {
   checkoutrequested = true;
@@ -424,23 +500,33 @@ Future<bool> checkin() async {
     "checkout_location": "$checkoutlocation",
   };
   print(checkinoutresponse);
-  http.Response cicoresponse = await http.post(CICOurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(checkinoutresponse),
-  );
-  if(cicoresponse.statusCode == 200){
-    print(cicoresponse.body);
-    checkoutdatasubmitted = true;
-    DBRequestdaily();
-    DBRequestmonthly();
-  }else{
-    print(cicoresponse.body);
-    checkoutdatasubmitted = false;
-  }
+  requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
+  requirebodytosync.add(jsonEncode(checkinoutresponse));
+  message.add("Checkout at $checkouttime for the timesheet $checkid at $checkoutlocation");
+  print(requireurlstosync);
+  print(requirebodytosync);
+  print(message);
+  Adddatatoserver(requireurlstosync,requirebodytosync,message);
+  gettodayjp.isscheduled[currentoutletindex] == 1 ?DBResponsedatadaily.ShedulevisitssDone++:DBResponsedatadaily.UnShedulevisitsDone++;
+  gettodayjp.isscheduled[currentoutletindex] == 1 ?DBResponsedatamonthly.ShedulevisitssDone++:DBResponsedatamonthly.UnShedulevisitsDone++;
+  checkoutdatasubmitted = true;
+  // http.Response cicoresponse = await http.post(CICOurl,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(checkinoutresponse),
+  // );
+  // if(cicoresponse.statusCode == 200){
+  //   print(cicoresponse.body);
+  //   checkoutdatasubmitted = true;
+  //   DBRequestdaily();
+  //   DBRequestmonthly();
+  // }else{
+  //   print(cicoresponse.body);
+  //   checkoutdatasubmitted = false;
+  // }
 }
 
 
@@ -673,15 +759,21 @@ Future addforeccheckin() async{
 
   };
   print(jsonEncode(forceci));
-  http.Response response = await http.post(ForceCIReason,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(forceci),
-  );
-  print(response.body);
+  requireurlstosync.add("https://rms2.rhapsody.ae/api/add_force_checkin");
+  requirebodytosync.add(jsonEncode(forceci));
+  message.add("Checkin type ${forcecheck.reason} for the timesheet $currenttimesheetid");
+  Adddatatoserver(requireurlstosync,requirebodytosync,message);
+
+
+   //http.Response response = await http.post(ForceCIReason,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(forceci),
+  // );
+  // print(response.body);
 }
 
 class forcecheck{

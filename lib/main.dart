@@ -1,26 +1,32 @@
-import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
-import 'api/HRapi/empdetailsforreportapi.dart';
+import 'package:merchandising/offlinedata/syncreferenceapi.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/model/rememberme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
+import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
+import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'api/FMapi/outlet brand mappingapi.dart';
-import 'model/database.dart';
-import 'package:flutter/material.dart';
-import 'package:merchandising/Constants.dart';
 import 'login_page.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'dart:async';
 import 'model/rememberme.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'api/FMapi/relieverdet_api.dart';
 import 'api/api_service.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
-import 'model/Location_service.dart';
 import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'api/FMapi/fmdbapi.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
+import 'offlinedata/syncsendapi.dart';
 import 'package:merchandising/api/FMapi/storedetailsapi.dart';
 import 'package:merchandising/api/FMapi/outletapi.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
@@ -33,6 +39,7 @@ import 'package:merchandising/api/FMapi/product_detailsapi.dart';
 import'package:merchandising/api/clientapi/outletreport.dart';
 import 'clients/client_dashboard.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
+import 'package:merchandising/Constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -44,22 +51,19 @@ Future<void> main() async {
   var password = prefs.getString('userpassword');
   remembereddata.email = email;
   remembereddata.password = password;
+  print("rememberme : $email");
+  print("rememberme : $password");
   if(email != null && password != null) {
     fromloginscreen = true;
     int userroleid = await loginapi();
     currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
-       DBRequestmonthly();
-       getaddedexpiryproducts();
-      getempdetails();
-      getallempdetails();
-      getempdetailsforreport();
-      getstockexpiryproducts();
-      await DBRequestdaily();
-      await callfrequently();
-       const time = const Duration(seconds: 120);
-       Timer.periodic(time, (Timer t) => callfrequently());
+      await syncingreferencedata();
+      const time = const Duration(minutes: 30);
+      Timer.periodic(time, (Timer t) => syncingreferencedata());
+      const period = const Duration(minutes: 15);
+      Timer.periodic(period, (Timer t) => syncingsenddata());
       runApp(MaterialApp(
           title: 'Rhapsody merchandising solutions',
           debugShowCheckedModeBanner: false,

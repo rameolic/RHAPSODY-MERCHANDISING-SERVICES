@@ -53,6 +53,7 @@ class _OutLetState extends State<OutLet> {
                 ],
               ),
               IconButton(icon: Icon(CupertinoIcons.refresh_circled_solid,color: orange,size: 30,), onPressed: ()async{
+                createlog("Refresh Button Tapped in Outlet Details","true");
                 setState(() {
                   isApiCallProcess = true;
                 });
@@ -74,110 +75,117 @@ class _OutLetState extends State<OutLet> {
         // drawer: Drawer(
         //   child: Menu(),
         // ),
-        body: Stack(
-          children: [
-            BackGround(),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  OutLetContainer(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height/5,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: GoogleMap(
-                              zoomControlsEnabled: false,
-                              zoomGesturesEnabled: true,
-                              myLocationButtonEnabled: false,
-                              markers:Set<Marker>.of(_markers),
-                              initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong)), zoom: 15),
+        body:
+
+        ValueListenableBuilder<bool>(
+            valueListenable: onlinemode,
+            builder: (context, value, child) {
+              return OfflineNotification(
+          body: Stack(
+            children: [
+              BackGround(),
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    OutLetContainer(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height/5,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: onlinemode.value ? GoogleMap(
+                                zoomControlsEnabled: false,
+                                zoomGesturesEnabled: true,
+                                myLocationButtonEnabled: false,
+                                markers:Set<Marker>.of(_markers),
+                                initialCameraPosition: CameraPosition(target: LatLng(double.tryParse(chekinoutlet.checkinlat),double.tryParse(chekinoutlet.checkinlong)), zoom: 15),
+                              ):Center(child: Text("Map is not available in offline mode",style: TextStyle(color: orange),),),
                             ),
                           ),
-                        ),
-
-                        SizedBox(height: 10,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
+                          SizedBox(height: 10,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '[${chekinoutlet.checkinoutletid}]',
+                                      style: TextStyle( fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(width: 5,),
+                                    Text(
+                                      chekinoutlet.checkinoutletname,
+                                      style: TextStyle( fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(chekinoutlet.checkinaddress),
+                              Row(
                                 children: [
-                                  Text(
-                                    '[${chekinoutlet.checkinoutletid}]',
-                                    style: TextStyle( fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Text(
-                                    chekinoutlet.checkinoutletname,
-                                    style: TextStyle( fontWeight: FontWeight.bold),
-                                  ),
+                                  Text(chekinoutlet.checkinarea),SizedBox(width: 5,),Text(chekinoutlet.checkincity),SizedBox(width: 5,),Text(chekinoutlet.checkinstate),SizedBox(width: 5,),Text(chekinoutlet.checkincountry),
                                 ],
                               ),
-                            ),
-                            Text(chekinoutlet.checkinaddress),
-                            Row(
-                              children: [
-                                Text(chekinoutlet.checkinarea),SizedBox(width: 5,),Text(chekinoutlet.checkincity),SizedBox(width: 5,),Text(chekinoutlet.checkinstate),SizedBox(width: 5,),Text(chekinoutlet.checkincountry),
-                              ],
-                            ),
-                            SizedBox(height: 5,),
-                            Table(
-                              columnWidths: {
-                                0: FlexColumnWidth(2.5),
-                                1: FlexColumnWidth(1),
-                                2: FlexColumnWidth(2),
-                              },
-                              children: [
-                                TableRow(children: [
-                                  Text('Contact Number',
-                                  ),
-                                  Text(":"),
-                                  SelectableText(chekinoutlet.contactnumber.toString(), style: TextStyle(color: orange)),
-                                ]),
-                                // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
-                                TableRow(children: [
-                                  Text('Distance',
-                                  ),
-                                  Text(":"),
-                                  Row(
-                                    children: [
-                                      Text((distance).toStringAsFixed(2).toString(), style: TextStyle(color: orange)),
-                                      Text("KM",style: TextStyle(color: orange))
-                                    ],
-                                  ),
-                                ]),
-                                //TableRow(children: [Text('Coverage Productivity %',),Text(":"),Text(oproductivity, style: TextStyle(color: orange)),]),
-                                //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                              SizedBox(height: 5,),
+                              Table(
+                                columnWidths: {
+                                  0: FlexColumnWidth(2.5),
+                                  1: FlexColumnWidth(1),
+                                  2: FlexColumnWidth(2),
+                                },
+                                children: [
+                                  TableRow(children: [
+                                    Text('Contact Number',
+                                    ),
+                                    Text(":"),
+                                    SelectableText(chekinoutlet.contactnumber.toString(), style: TextStyle(color: orange)),
+                                  ]),
+                                  // TableRow(children: [Text('Programme Name',Text(":"),Text(oprogramname, style: TextStyle(color: orange)),]),
+                                  TableRow(children: [
+                                    Text('Distance',
+                                    ),
+                                    Text(":"),
+                                    Row(
+                                      children: [
+                                        Text((distance).toStringAsFixed(2).toString(), style: TextStyle(color: orange)),
+                                        Text("KM",style: TextStyle(color: orange))
+                                      ],
+                                    ),
+                                  ]),
+                                  //TableRow(children: [Text('Coverage Productivity %',),Text(":"),Text(oproductivity, style: TextStyle(color: orange)),]),
+                                  //TableRow(children: [Text('Last Visit',),Text(":"), Text(olastvisit, style: TextStyle(color: orange)),]),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  OutLetContainer(
-                    child: BarChatData(),
-                  ),
-                  SizedBox(height: 30,),
-                  CheckIn(),
-                  SizedBox(height: 10,),
-                ],
+                    SizedBox(
+                      height: 10,
+                    ),
+                    OutLetContainer(
+                      child: BarChatData(),
+                    ),
+                    SizedBox(height: 30,),
+                    CheckIn(),
+                    SizedBox(height: 10,),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        );
+  })
       ),
     );
   }

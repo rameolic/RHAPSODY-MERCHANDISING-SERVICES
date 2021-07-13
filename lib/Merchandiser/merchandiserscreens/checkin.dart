@@ -10,18 +10,20 @@ import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dar
 import 'package:merchandising/api/api_service.dart';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/Location_service.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/customer_activites_api/share_of_shelf_detailsapi.dart';
-import'package:merchandising/api/customer_activites_api/competition_details.dart';
-import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
+import 'package:merchandising/api/customer_activites_api/competition_details.dart';
+import 'package:merchandising/api/customer_activites_api/promotion_detailsapi.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
-import'package:merchandising/api/myattendanceapi.dart';
+import 'package:merchandising/api/myattendanceapi.dart';
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
+import'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
+
 class CheckIn extends StatefulWidget {
-
   @override
   _CheckInState createState() => _CheckInState();
 }
@@ -33,102 +35,107 @@ class _CheckInState extends State<CheckIn> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        createlog("Check In tapped from outlet details","true");
         print(chekinoutlet.currentdistance);
-        if(chekinoutlet.currentdistance > 300 ){
+        if (chekinoutlet.currentdistance > 300) {
           showDialog(
               context: context,
-              builder: (_) =>  StatefulBuilder(
-              builder: (context, setState) {
-                return ProgressHUD(
-                inAsyncCall: isApiCallProcess,
-                opacity: 0.3,
-                child: AlertDialog(
-                  backgroundColor: alertboxcolor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  content: Builder(
-                    builder: (context) {
-                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                      return Container(
-                        child: SizedBox(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Alert",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                  "It seems that you are not at the customer location.\nDo you want to do Force CheckIn?",
-                                  style: TextStyle(fontSize: 13.6)),
-                              SizedBox(
-                                height: 10.00,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  OutLet()));
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      width: 70,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffAEB7B5),
-                                        borderRadius: BorderRadius.circular(5),
+              builder: (_) => StatefulBuilder(builder: (context, setState) {
+                    return ProgressHUD(
+                        inAsyncCall: isApiCallProcess,
+                        opacity: 0.3,
+                        child: AlertDialog(
+                          backgroundColor: alertboxcolor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          content: Builder(
+                            builder: (context) {
+                              // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                              return Container(
+                                child: SizedBox(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Alert",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                      margin: EdgeInsets.only(right: 10.00),
-                                      child: Center(child: Text("cancel")),
-                                    ),
+                                      Text(
+                                          "It seems that you are not at the customer location.\nDo you want to do Force CheckIn?",
+                                          style: TextStyle(fontSize: 13.6)),
+                                      SizedBox(
+                                        height: 10.00,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          OutLet()));
+                                            },
+                                            child: Container(
+                                              height: 40,
+                                              width: 70,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xffAEB7B5),
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              margin:
+                                                  EdgeInsets.only(right: 10.00),
+                                              child:
+                                                  Center(child: Text("cancel")),
+                                            ),
+                                          ),
+                                          ForceCheckin(),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  ForceCheckin(),
-                                ],
-                              ),
-                            ],
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ));
-              }));
+                        ));
+                  }));
         } else {
-          setState(() {
-            isApiCallProcess = true;
-          });
-          await SubmitCheckin();
-          normalcheckin=true;
-          forcecheck.reason="normal checkin less than 300m";
-          addforeccheckin();
-          getTaskList();
-          getVisibility();
-          getPlanogram();
-          getPromotionDetails();
-          Addedstockdataformerch();
-          getNBLdetails();
-          getShareofshelf();
-          await getAvaiablitity();
-          await getmyattandance();
-          if(noattendance.noatt=="attadded"){
-            print("Attendance added:${noattendance.noatt}");
-          }
-          else{
+            setState(() {
+              isApiCallProcess = true;
+            });
+             SubmitCheckin();
+            normalcheckin = true;
+            forcecheck.reason = "normal checkin less than 300m";
+            addforeccheckin();
+            // getTaskList();
+            // getVisibility();
+            // getPlanogram();
+            // getPromotionDetails();
+            // Addedstockdataformerch();
+            // getNBLdetails();
+            // getShareofshelf();
+            // await getAvaiablitity();
+            // await getmyattandance();
             addattendence();
-          }
-          setState(() {
-            isApiCallProcess = false;
-          });
-          normalcheckin = false;
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
-            return CustomerActivities();
-          }), (Route<dynamic> route) => false);
+            setState(() {
+              isApiCallProcess = false;
+            });
+            normalcheckin = false;
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return CustomerActivities();
+            }), (Route<dynamic> route) => false);
+
         }
       },
       child: Container(
@@ -154,7 +161,6 @@ class ForceCheckin extends StatefulWidget {
 }
 
 class _ForceCheckinState extends State<ForceCheckin> {
-
   bool isApiCallProcess = false;
   bool gpsnotworking = false;
   bool geolocation = false;
@@ -163,260 +169,293 @@ class _ForceCheckinState extends State<ForceCheckin> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        createlog("yes from alert Tapped","true");
+
         showDialog(
             context: context,
-            builder: (_) => StatefulBuilder(
-                builder: (context, setState) {
+            builder: (_) => StatefulBuilder(builder: (context, setState) {
                   return ProgressHUD(
-              inAsyncCall: isApiCallProcess,
-              opacity: 0.1,
-              child: AlertDialog(
-                    backgroundColor: alertboxcolor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    content: Builder(
-                      builder: (context) {
-                        // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                        return Container(
-                          child: SizedBox(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Force Check-In",
-                                  style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          gpsnotworking = true;
-                                          geolocation =false;
-                                          others = false;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          ForcecheckinContent(
-                                            child: gpsnotworking == true
-                                                ? Icon(
-                                              Icons.circle,
-                                              size: 15.0,
-                                              color: orange,
-                                            )
-                                                : null,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "GPS Not Working",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                        ],
+                    inAsyncCall: isApiCallProcess,
+                    opacity: 0.1,
+                    child: AlertDialog(
+                      backgroundColor: alertboxcolor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          return Container(
+                            child: SizedBox(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Force Check-In",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            gpsnotworking = true;
+                                            geolocation = false;
+                                            others = false;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ForcecheckinContent(
+                                              child: gpsnotworking == true
+                                                  ? Icon(
+                                                      Icons.circle,
+                                                      size: 15.0,
+                                                      color: orange,
+                                                    )
+                                                  : null,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "GPS Not Working",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          gpsnotworking = false;
-                                          geolocation =true;
-                                          others = false;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          ForcecheckinContent(
-                                            child: geolocation == true
-                                                ? Icon(
-                                              Icons.circle,
-                                              size: 15.0,
-                                              color: orange,
-                                            )
-                                                : null,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "Geo Location was wrong",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                        ],
+                                      SizedBox(
+                                        height: 10,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          gpsnotworking = false;
-                                          geolocation =false;
-                                          others = true;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          ForcecheckinContent(
-                                            child: others == true
-                                                ? Icon(
-                                              Icons.circle,
-                                              size: 15.0,
-                                              color: orange,
-                                            )
-                                                : null,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "Others",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                        ],
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            gpsnotworking = false;
+                                            geolocation = true;
+                                            others = false;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ForcecheckinContent(
+                                              child: geolocation == true
+                                                  ? Icon(
+                                                      Icons.circle,
+                                                      size: 15.0,
+                                                      color: orange,
+                                                    )
+                                                  : null,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Geo Location was wrong",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Center(
-                                      child: GestureDetector(
-                                        onTap: ()async{
-                                          if (gpsnotworking == true) {
-                                            forcecheck.reason="GPS not working";
-                                            setState(() {
-                                              isApiCallProcess = true;
-                                            });
-                                            addforeccheckin();
-                                            getTaskList();
-                                            getVisibility();
-                                            getPlanogram();
-                                            getPromotionDetails();
-                                            Addedstockdataformerch();
-                                            getNBLdetails();
-                                            getShareofshelf();
-                                            await SubmitCheckin();
-                                            await getAvaiablitity();
-                                            if(noattendance.noatt=="attadded"){
-                                              print("Attendance added:${noattendance.noatt}");
-                                            }
-                                            else{
-                                               addattendence();
-                                            }
-                                            await getmyattandance();
-                                            setState(() {
-                                              isApiCallProcess = false;
-                                            });
-                                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
-                                              return CustomerActivities();
-                                            }), (Route<dynamic> route) => false);
-                                          }
-                                          else {
-                                            if(geolocation == true){
-                                              forcecheck.reason="Geolocation was wrong";
-                                              setState(() {
-                                                isApiCallProcess = true;
-                                              });
-                                              addforeccheckin();
-                                              SubmitCheckin();
-                                              getTaskList();
-                                              getVisibility();
-                                              getPlanogram();
-                                              getPromotionDetails();
-                                              Addedstockdataformerch();
-                                              getNBLdetails();
-                                              await getAvaiablitity();
-                                              await getShareofshelf();
-                                              await getmyattandance();
-                                              if(noattendance.noatt=="attadded"){
-                                                print("Attendance added:${noattendance.noatt}");
-                                              }
-                                              else{
-                                                addattendence();
-                                              }
-
-                                              if(alreadycheckedin == false){SubmitCheckin();}
-                                              setState(() {
-                                                isApiCallProcess = false;
-                                              });
-
-                                              print("geo Location was wrong");
-                                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
-                                                return CustomerActivities();
-                                              }), (Route<dynamic> route) => false);
-                                            }
-                                            else {
-                                              if(others == true){
-                                                forcecheck.reason="Others";
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            gpsnotworking = false;
+                                            geolocation = false;
+                                            others = true;
+                                          });
+                                        },
+                                        child: Row(
+                                          children: [
+                                            ForcecheckinContent(
+                                              child: others == true
+                                                  ? Icon(
+                                                      Icons.circle,
+                                                      size: 15.0,
+                                                      color: orange,
+                                                    )
+                                                  : null,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Others",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Center(
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            createlog("GPS not working tapped","true");
+                                              if (gpsnotworking == true) {
+                                                forcecheck.reason =
+                                                    "GPS not working";
                                                 setState(() {
                                                   isApiCallProcess = true;
                                                 });
+
                                                 addforeccheckin();
-                                                getTaskList();
-                                                getVisibility();
-                                                getPlanogram();
-                                                getPromotionDetails();
-                                                Addedstockdataformerch();
-                                                getNBLdetails();
-                                                getShareofshelf();
-                                                await getAvaiablitity();
-                                                await SubmitCheckin();
-                                                await getmyattandance();
-                                                if(noattendance.noatt=="attadded"){
-                                                  print("Attendance added:${noattendance.noatt}");
-                                                }
-                                                else{
-                                                  addattendence();
-                                                }
+                                                addattendence();
+                                                // getTaskList();
+                                                // getVisibility();
+                                                // getPlanogram();
+                                                // getPromotionDetails();
+                                                // Addedstockdataformerch();
+                                                // getNBLdetails();
+                                                // getShareofshelf();
+                                                 SubmitCheckin();
+                                                // await getAvaiablitity();
+                                                // await getmyattandance();
+                                                //  if(noattendance.noatt=="attadded"){
+                                                //    print("Attendance added:${noattendance.noatt}");
+                                                //  }
+                                                //  else{
+                                                //     addattendence();
+                                                //  }
                                                 setState(() {
                                                   isApiCallProcess = false;
                                                 });
-                                                print("others");
-                                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(builder:
+                                                        (BuildContext context) {
                                                   return CustomerActivities();
-                                                }), (Route<dynamic> route) => false);
-                                              }
-                                              else{
-                                                null;
+                                                }),
+                                                    (Route<dynamic> route) =>
+                                                        false);
+                                              } else {
+                                                if (geolocation == true) {
+                                                  createlog("Geo Location was wrong tapped","true");
+                                                  forcecheck.reason =
+                                                      "Geolocation was wrong";
+                                                  setState(() {
+                                                    isApiCallProcess = true;
+                                                  });
+                                                  addforeccheckin();
+                                                  addattendence();
+                                                   SubmitCheckin();
+                                                  // getTaskList();
+                                                  // getVisibility();
+                                                  // getPlanogram();
+                                                  // getPromotionDetails();
+                                                  // Addedstockdataformerch();
+                                                  // getNBLdetails();
+                                                  // await getAvaiablitity();
+                                                  // await getShareofshelf();
+                                                  // await getmyattandance();
+                                                  // if(noattendance.noatt=="attadded"){
+                                                  //   print("Attendance added:${noattendance.noatt}");
+                                                  // }
+                                                  // else{
+                                                  //   addattendence();
+                                                  // }
+                                                  setState(() {
+                                                    isApiCallProcess = false;
+                                                  });
+
+                                                  print(
+                                                      "geo Location was wrong");
+                                                  Navigator.pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(builder:
+                                                          (BuildContext
+                                                              context) {
+                                                    return CustomerActivities();
+                                                  }),
+                                                      (Route<dynamic> route) =>
+                                                          false);
+                                                } else {
+                                                  if (others == true) {
+                                                    createlog("Others tapped","true");
+                                                    forcecheck.reason =
+                                                        "Others";
+                                                    setState(() {
+                                                      isApiCallProcess = true;
+                                                    });
+                                                    addforeccheckin();
+                                                    addattendence();
+                                                    // getTaskList();
+                                                    // getVisibility();
+                                                    // getPlanogram();
+                                                    // getPromotionDetails();
+                                                    // Addedstockdataformerch();
+                                                    // getNBLdetails();
+                                                    // getShareofshelf();
+                                                    // await getAvaiablitity();
+                                                    await SubmitCheckin();
+                                                    setState(() {
+                                                      isApiCallProcess = false;
+                                                    });
+                                                    print("others");
+                                                    Navigator.pushAndRemoveUntil(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                      return CustomerActivities();
+                                                    }),
+                                                        (Route<dynamic>
+                                                                route) =>
+                                                            false);
+                                                  } else {
+                                                    null;
+                                                  }
+                                                }
                                               }
                                             }
-                                          }
-                                        },
-                                        child: Container(
-                                          height: 40,
-                                          width: 70,
-                                          decoration: BoxDecoration(
-                                            color: orange,
-                                            borderRadius: BorderRadius.circular(5),
+
+                                          ,
+                                          child: Container(
+                                            height: 40,
+                                            width: 70,
+                                            decoration: BoxDecoration(
+                                              color: orange,
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            margin:
+                                                EdgeInsets.only(right: 10.00),
+                                            child: Center(
+                                                child: Text(
+                                              "Submit",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )),
                                           ),
-                                          margin: EdgeInsets.only(right: 10.00),
-                                          child: Center(child: Text("Submit",style: TextStyle(color: Colors.white),)),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-
-                              ],
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-            );}));
+                  );
+                }));
       },
       child: Container(
         height: 40,
@@ -614,6 +653,3 @@ class ForcecheckinContent extends StatelessWidget {
     );
   }
 }
-
-
-

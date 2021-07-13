@@ -6,6 +6,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Customers Activit
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:merchandising/api/timesheetapi.dart';
 import 'package:merchandising/Constants.dart';
@@ -38,7 +39,7 @@ import'package:merchandising/api/customer_activites_api/promotion_detailsapi.dar
 import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
-
+import 'package:flushbar/flushbar.dart';
 
 import 'package:location_permissions/location_permissions.dart';
 import 'package:merchandising/model/Location_service.dart';
@@ -49,16 +50,12 @@ import 'dart:io' show Platform;
 Future <bool>checklocationenable()async{
     bool locationreceived = await getLocation();
     print(locationreceived);
+    print(lat);
+    print(long);
     return locationreceived;
 }
 
 Future<String> callfrequently()async{
-   getJourneyPlan();
-   getskippedJourneyPlan();
-   getvisitedJourneyPlan();
-    getSkipJourneyPlanweekly();
-    getVisitJourneyPlanweekly();
-   await getJourneyPlanweekly();
    if(lat!=null&&long!=null){
      await getLocation();
      distinmeters();
@@ -74,11 +71,15 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void initState() {
+    createlog("navigated to DashBoard","true");
     ischatscreen = 0;
+
     print("chatscreen from dshbrd: $ischatscreen");
     if(fromloginscreen){
       Future.delayed(
-          const Duration(seconds: 2), (){
+          const Duration(seconds: 2), ()async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        var synctime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
         showDialog(
             context: context,
             builder: (_) => StatefulBuilder(
@@ -100,16 +101,20 @@ class _DashBoardState extends State<DashBoard> {
                             Text("Wish you have a great day ahead 😀",textAlign: TextAlign.center,),
                             SizedBox(height: 5,),
                             Text(DBrequestdata.empname,textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize: 14),),
-                            SizedBox(height: 20,),
+                            //SizedBox(height: 5,),
+                            synctime!=null?Padding(
+                                padding: const EdgeInsets.only(top:3.0,bottom: 3),
+                                child: Text("last synced on : ${DateFormat.yMd().add_jm().format(synctime)}",textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize: 10),)
+                            ):SizedBox(),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Spacer(),
                                 Image(
                                   height: 30,
                                   image: AssetImage('images/rmsLogo.png'),
                                 ),
                               ],
-                            )
+                            ),
 
                           ],
                         );
@@ -120,7 +125,6 @@ class _DashBoardState extends State<DashBoard> {
       });
       fromloginscreen = false;
     }
-    //super.initState();
   }
   bool isApiCallProcess = false;
   bool pressAttentionMTB = false;
@@ -163,286 +167,448 @@ class _DashBoardState extends State<DashBoard> {
             ),
             GestureDetector(
                 onTap: () async{
+                  createlog("startday tapped","true");
+                  if(true){
                   setState(() {
                     isApiCallProcess = true;
                   });
-                  if(await checklocationenable()){
+                  if (await checklocationenable()) {
                     print(gettodayjp.checkintime);
                     print(gettodayjp.checkouttime);
                     print(gettodayjp.status);
-                    workingid=null;
-                    for(int u =0;u<gettodayjp.status.length;u++){
-                      if(gettodayjp.status[u]=="working"){
+                    workingid = null;
+                    for (int u = 0; u < gettodayjp.status.length; u++) {
+                      if (gettodayjp.status[u] == "working") {
                         workingid = gettodayjp.id[u];
                         currentoutletindex = u;
                         currentoutletid = gettodayjp.outletids[u];
                         print(workingid);
                         print(gettodayjp.id[u]);
                         chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
-                        chekinoutlet.checkinoutletname = gettodayjp.storenames[u];
+                        chekinoutlet.checkinoutletname =
+                            gettodayjp.storenames[u];
                         chekinoutlet.checkinarea = gettodayjp.outletarea[u];
                         chekinoutlet.checkincity = gettodayjp.outletcity[u];
                         chekinoutlet.checkinstate = gettodayjp.outletcountry[u];
-                        chekinoutlet.checkincountry = gettodayjp.outletcountry[u];
+                        chekinoutlet.checkincountry =
+                            gettodayjp.outletcountry[u];
                       }
                     }
                     setState(() {
                       isApiCallProcess = false;
                     });
 
-                    workingid==null? showDialog(
-                        context: context,
-                        builder: (_) => StatefulBuilder(
-                            builder: (context, setState) {
-                              return ProgressHUD(
-                                inAsyncCall: isApiCallProcess,
-                                opacity: 0.3,
-                                child: AlertDialog(
-                                  backgroundColor: alertboxcolor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  content: Builder(
-                                    builder: (context) {
-                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text('Roll Call',style: TextStyle(color: orange,fontSize: 20),),
-                                          Divider(color: Colors.black,thickness: 0.8,),
-                                          GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                uniform == false ? uniform = true : uniform = false;
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text('Uniform and Hygiene',style: TextStyle(fontSize: 16),),
-                                                    Spacer(),
-                                                    Icon(
-                                                      uniform == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                      color: uniform == true ? orange : Colors.grey,size:30 , ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5,),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                unit == false ? unit = true : unit = false;
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text('Hand Held Unit Charge',style: TextStyle(fontSize: 16)),
-                                                    Spacer(),
-                                                    Icon(
-                                                        unit == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                        color: unit == true ? orange : Colors.grey ,size:30 ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5,),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                transport == false ? transport = true : transport = false;
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text('Transportation',style: TextStyle(fontSize: 16)),
-                                                    Spacer(),
-                                                    Icon(
-                                                        transport == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                        color: transport == true ? orange : Colors.grey ,size:30 ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5,),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                posm == false ? posm = true : posm = false;
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text('POSM',style: TextStyle(fontSize: 16)),
-                                                    Spacer(),
-                                                    Icon(
-                                                        posm == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                        color: posm == true ? orange : Colors.grey,size:30  ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 5,),
-                                              ],
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              setState(() {
-                                                location == false ? location = true : location = false;
-                                              });
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text('Location',style: TextStyle(fontSize: 16)),
-                                                    Spacer(),
-                                                    Icon(
-                                                        location == true ? CupertinoIcons.check_mark_circled_solid :CupertinoIcons.xmark_circle_fill,
-                                                        color: location == true ? orange : Colors.grey,size:30  ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(height: 20,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    workingid == null
+                        ? showDialog(
+                            context: context,
+                            builder: (_) =>
+                                StatefulBuilder(builder: (context, setState) {
+                                  return ProgressHUD(
+                                    inAsyncCall: isApiCallProcess,
+                                    opacity: 0.3,
+                                    child: AlertDialog(
+                                      backgroundColor: alertboxcolor,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      content: Builder(
+                                        builder: (context) {
+                                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
                                             children: [
+                                              Text(
+                                                'Roll Call',
+                                                style: TextStyle(
+                                                    color: orange,
+                                                    fontSize: 20),
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 0.8,
+                                              ),
                                               GestureDetector(
-                                                onTap: () async{
-                                                  if(uniform && unit && transport && posm && location){
-                                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => JourneyPlan()));
-                                                  }
+                                                onTap: () {
+                                                  setState(() {
+                                                    uniform == false
+                                                        ? uniform = true
+                                                        : uniform = false;
+                                                  });
                                                 },
-                                                child: Container(
-                                                  height: 30,
-                                                  width: 70,
-                                                  decoration: BoxDecoration(
-                                                    color: orange,borderRadius: BorderRadius.circular(5),
-                                                  ),
-                                                  child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text(
+                                                          'Uniform and Hygiene',
+                                                          style: TextStyle(
+                                                              fontSize: 16),
+                                                        ),
+                                                        Spacer(),
+                                                        Icon(
+                                                          uniform == true
+                                                              ? CupertinoIcons
+                                                                  .check_mark_circled_solid
+                                                              : CupertinoIcons
+                                                                  .xmark_circle_fill,
+                                                          color: uniform == true
+                                                              ? orange
+                                                              : Colors.grey,
+                                                          size: 30,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                               GestureDetector(
-                                                onTap: (){
-                                                  Navigator.pop(context, MaterialPageRoute(builder: (BuildContext context) => DashBoard()));},
-                                                child: Container(
-                                                  height: 30,
-                                                  width: 70,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey,
-                                                    borderRadius: BorderRadius.circular(5),
+                                                onTap: () {
+                                                  setState(() {
+                                                    unit == false
+                                                        ? unit = true
+                                                        : unit = false;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text(
+                                                            'Hand Held Unit Charge',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                        Spacer(),
+                                                        Icon(
+                                                            unit == true
+                                                                ? CupertinoIcons
+                                                                    .check_mark_circled_solid
+                                                                : CupertinoIcons
+                                                                    .xmark_circle_fill,
+                                                            color: unit == true
+                                                                ? orange
+                                                                : Colors.grey,
+                                                            size: 30),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    transport == false
+                                                        ? transport = true
+                                                        : transport = false;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text('Transportation',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                        Spacer(),
+                                                        Icon(
+                                                            transport == true
+                                                                ? CupertinoIcons
+                                                                    .check_mark_circled_solid
+                                                                : CupertinoIcons
+                                                                    .xmark_circle_fill,
+                                                            color: transport ==
+                                                                    true
+                                                                ? orange
+                                                                : Colors.grey,
+                                                            size: 30),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    posm == false
+                                                        ? posm = true
+                                                        : posm = false;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text('POSM',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                        Spacer(),
+                                                        Icon(
+                                                            posm == true
+                                                                ? CupertinoIcons
+                                                                    .check_mark_circled_solid
+                                                                : CupertinoIcons
+                                                                    .xmark_circle_fill,
+                                                            color: posm == true
+                                                                ? orange
+                                                                : Colors.grey,
+                                                            size: 30),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    location == false
+                                                        ? location = true
+                                                        : location = false;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text('Location',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                        Spacer(),
+                                                        Icon(
+                                                            location == true
+                                                                ? CupertinoIcons
+                                                                    .check_mark_circled_solid
+                                                                : CupertinoIcons
+                                                                    .xmark_circle_fill,
+                                                            color: location ==
+                                                                    true
+                                                                ? orange
+                                                                : Colors.grey,
+                                                            size: 30),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      createlog("Roll Call OK tapped","true");
+                                                      if (uniform &&
+                                                          unit &&
+                                                          transport &&
+                                                          posm &&
+                                                          location) {
+                                                        Navigator.pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    JourneyPlan()));
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      width: 70,
+                                                      decoration: BoxDecoration(
+                                                        color: orange,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      child: Center(
+                                                          child: Text('ok',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
+                                                    ),
                                                   ),
-                                                  child: Center(child: Text('Cancel',style: TextStyle(color: Colors.white))),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.pop(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  DashBoard()));
+                                                    },
+                                                    child: Container(
+                                                      height: 30,
+                                                      width: 70,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.grey,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      child: Center(
+                                                          child: Text('Cancel',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                }))
+                        : showDialog(
+                            context: context,
+                            builder: (_) =>
+                                StatefulBuilder(builder: (context, setState) {
+                                  return ProgressHUD(
+                                    inAsyncCall: isApiCallProcess,
+                                    opacity: 0.3,
+                                    child: AlertDialog(
+                                      backgroundColor: alertboxcolor,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      content: Builder(
+                                        builder: (context) {
+                                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                'Alert',
+                                                style: TextStyle(
+                                                    color: orange,
+                                                    fontSize: 20),
+                                              ),
+                                              Divider(
+                                                color: Colors.black,
+                                                thickness: 0.8,
+                                              ),
+                                              Text(
+                                                "you have unfinished outlet!",
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                "Note* if you recently checked out please wait 2 minutes minimum to get the updated data",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: orange,
+                                                    fontSize: 10),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                              Center(
+                                                child: GestureDetector(
+                                                  onTap: () async {
+                                                    createlog("unfinished outlet OK tapped","true");
+
+                                                    setState(() {
+                                                      isApiCallProcess = true;
+                                                      regularcheckout = false;
+                                                    });
+                                                    print(
+                                                        "current outlet id: $currentoutletid");
+                                                    outletrequestdata
+                                                            .outletidpressed =
+                                                        currentoutletid;
+                                                    checkinoutdata.checkid =
+                                                        workingid;
+                                                    currenttimesheetid =
+                                                        workingid;
+                                                    getTaskList();
+                                                    getVisibility();
+                                                    getPlanogram();
+                                                    getNBLdetails();
+                                                    Addedstockdataformerch();
+                                                    getPromotionDetails();
+                                                    getShareofshelf();
+                                                    await getAvaiablitity();
+                                                    setState(() {
+                                                      isApiCallProcess = false;
+                                                    });
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                CustomerActivities()));
+                                                  },
+                                                  child: Container(
+                                                    height: 30,
+                                                    width: 70,
+                                                    decoration: BoxDecoration(
+                                                      color: orange,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: Center(
+                                                        child: Text('ok',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                  ),
                                                 ),
                                               ),
                                             ],
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            })
-                    ):showDialog(
-                        context: context,
-                        builder: (_) => StatefulBuilder(
-                            builder: (context, setState) {
-                              return ProgressHUD(
-                                inAsyncCall: isApiCallProcess,
-                                opacity: 0.3,
-                                child: AlertDialog(
-                                  backgroundColor: alertboxcolor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  content: Builder(
-                                    builder: (context) {
-                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
-                                          Divider(color: Colors.black,thickness: 0.8,),
-                                          Text("you have unfinished outlet!",textAlign: TextAlign.center,),
-                                          SizedBox(height: 10,),
-                                          Text("Note* if you recently checked out please wait 2 minutes minimum to get the updated data",textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize:10),),
-                                          SizedBox(height: 5,),
-                                          Center(
-                                            child: GestureDetector(
-                                              onTap: () async{
-                                                setState(() {
-                                                  isApiCallProcess = true;
-                                                  regularcheckout = false;
-                                                });
-                                                print("current outlet id: $currentoutletid");
-                                                outletrequestdata.outletidpressed = currentoutletid;
-                                                checkinoutdata.checkid = workingid;
-                                                currenttimesheetid = workingid;
-                                                getTaskList();
-                                                getVisibility();
-                                                getPlanogram();
-                                                getNBLdetails();
-                                                Addedstockdataformerch();
-                                                getPromotionDetails();
-                                                getShareofshelf();
-                                                await getAvaiablitity();
-                                                setState(() {
-                                                  isApiCallProcess = false;
-                                                });
-                                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => CustomerActivities()));
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                width: 70,
-                                                decoration: BoxDecoration(
-                                                  color: orange,borderRadius: BorderRadius.circular(5),
-                                                ),
-                                                child: Center(child: Text('ok',style: TextStyle(color: Colors.white))),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              );
-                            }));
-                  }else{
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                }));
+                  } else {
                     setState(() {
                       isApiCallProcess = false;
                     });
                     showDialog(
                         context: context,
-                        builder: (_) => StatefulBuilder(
-                            builder: (context, setState) {
+                        builder: (_) =>
+                            StatefulBuilder(builder: (context, setState) {
                               return ProgressHUD(
                                 inAsyncCall: isApiCallProcess,
                                 opacity: 0.3,
                                 child: AlertDialog(
                                   backgroundColor: alertboxcolor,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(
+                                      borderRadius: BorderRadius.all(
                                           Radius.circular(10.0))),
                                   content: Builder(
                                     builder: (context) {
@@ -450,22 +616,42 @@ class _DashBoardState extends State<DashBoard> {
                                       return Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text('Alert',style: TextStyle(color: orange,fontSize: 20),),
-                                          Divider(color: Colors.black,thickness: 0.8,),
-                                          Text("Location permissions need to be granted to proceed further.",textAlign: TextAlign.center,),
-                                          SizedBox(height: 10,),
+                                          Text(
+                                            'Alert',
+                                            style: TextStyle(
+                                                color: orange, fontSize: 20),
+                                          ),
+                                          Divider(
+                                            color: Colors.black,
+                                            thickness: 0.8,
+                                          ),
+                                          Text(
+                                            "Location permissions need to be granted to proceed further.",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
                                           Center(
                                             child: GestureDetector(
-                                              onTap: () async{
-                                                bool permission = await LocationPermissions().openAppSettings();
+                                              onTap: () async {
+                                                bool permission =
+                                                    await LocationPermissions()
+                                                        .openAppSettings();
                                                 print(permission);
-                                                },
+                                              },
                                               child: Container(
                                                 height: 30,
                                                 decoration: BoxDecoration(
-                                                  color: orange,borderRadius: BorderRadius.circular(5),
+                                                  color: orange,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
-                                                child: Center(child: Text('Open Settings',style: TextStyle(color: Colors.white))),
+                                                child: Center(
+                                                    child: Text('Open Settings',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white))),
                                               ),
                                             ),
                                           ),
@@ -477,8 +663,13 @@ class _DashBoardState extends State<DashBoard> {
                               );
                             }));
                   }
-
-          },
+                }else{
+                    Flushbar(
+                      message: "Please make sure internet is active and try again.",
+                      duration: Duration(seconds: 5),
+                    )..show(context);
+                  }
+              },
                   child: Container(
                     padding: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
@@ -494,251 +685,229 @@ class _DashBoardState extends State<DashBoard> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: Menu(),
+      drawer: GestureDetector(
+        onTap: (){ createlog("Menu tapped","true");
+       },
+        child: Drawer(
+          child: Menu(),
+        ),
       ),
-      body: Stack(
-        children: [
-          BackGround(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                SingleChildScrollView(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body:
+      ValueListenableBuilder<bool>(
+          valueListenable: onlinemode,
+          builder: (context, value, child) {
+            return OfflineNotification(
+        body: Stack(
+          children: [
+            BackGround(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Key Performance Indicators',
+                          style: TextStyle(fontSize: 17,color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                createlog("MTB tapped","true");
+
+                                setState(() {
+                                  pressAttentionMTB = true;
+                                  pressAttentionTODAY = false;
+                                });
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 60,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        'MTB',
+                                        style: TextStyle(
+                                          color: pressAttentionMTB == true
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white,width: 1.0),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10)),
+                                  color: pressAttentionMTB == true
+                                      ? Colors.transparent
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                createlog("today tapped","true");
+                                setState(() {
+                                  pressAttentionTODAY = true;
+                                  pressAttentionMTB = false;
+                                });
+                              },
+                              child: Container(
+                                height: 40,
+                                width: 60,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        'Today',
+                                        style: TextStyle(
+                                          color: pressAttentionTODAY == false
+                                              ? Colors.black
+                                              : Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white,width: 1.0),
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomRight: Radius.circular(10)),
+                                  color: pressAttentionTODAY == true
+                                      ? Colors.transparent
+                                      : Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text(
-                        'Key Performance Indicators',
-                        style: TextStyle(fontSize: 17,color: Colors.white),
+                      Containerblock(
+                        width: MediaQuery.of(context).size.width / 4.3,
+                        numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
+                        chartext: ' Scheduled \nVisits',
+                        icon: CupertinoIcons.phone_circle_fill,
+                        color: Colors.green,
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                pressAttentionMTB = true;
-                                pressAttentionTODAY = false;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 60,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      'MTB',
-                                      style: TextStyle(
-                                        color: pressAttentionMTB == true
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white,width: 1.0),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    bottomLeft: Radius.circular(10)),
-                                color: pressAttentionMTB == true
-                                    ? Colors.transparent
-                                    : Colors.white,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                pressAttentionTODAY = true;
-                                pressAttentionMTB = false;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 60,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      'Today',
-                                      style: TextStyle(
-                                        color: pressAttentionTODAY == false
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  Icon(CupertinoIcons.triangle_fill,size: 12,color: Colors.white,),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white,width: 1.0),
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(10),
-                                    bottomRight: Radius.circular(10)),
-                                color: pressAttentionTODAY == true
-                                    ? Colors.transparent
-                                    : Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Containerblock(
+                        width: MediaQuery.of(context).size.width / 4.3,
+                        numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.unshedulevisits}' :'${DBResponsedatadaily.unshedulevisits}',
+                        chartext: 'UnScheduled\nVisits',
+                        icon: CupertinoIcons.exclamationmark_circle_fill,
+                        color: Colors.red,
+                      ),
+                      Containerblock(
+                        width: MediaQuery.of(context).size.width / 4.3,
+                        numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
+                        chartext: ' Scheduled \nVisits Done',
+                        icon:CupertinoIcons.check_mark_circled_solid,
+                        color: Colors.green,
+                      ),
+                      Containerblock(
+                        width: MediaQuery.of(context).size.width / 4.3,
+                        numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}': '${DBResponsedatadaily.UnShedulevisitsDone}',
+                        chartext: 'UnScheduled\nVisits Done',
+                        icon: CupertinoIcons.checkmark_seal_fill,
+                        color: Colors.red,
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Containerblock(
-                      width: MediaQuery.of(context).size.width / 4.3,
-                      numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
-                      chartext: ' Scheduled \nVisits',
-                      icon: CupertinoIcons.phone_circle_fill,
-                      color: Colors.green,
-                    ),
-                    Containerblock(
-                      width: MediaQuery.of(context).size.width / 4.3,
-                      numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.unshedulevisits}' :'${DBResponsedatadaily.unshedulevisits}',
-                      chartext: 'UnScheduled\nVisits',
-                      icon: CupertinoIcons.exclamationmark_circle_fill,
-                      color: Colors.red,
-                    ),
-                    Containerblock(
-                      width: MediaQuery.of(context).size.width / 4.3,
-                      numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
-                      chartext: ' Scheduled \nVisits Done',
-                      icon:CupertinoIcons.check_mark_circled_solid,
-                      color: Colors.green,
-                    ),
-                    Containerblock(
-                      width: MediaQuery.of(context).size.width / 4.3,
-                      numbertext: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}': '${DBResponsedatadaily.UnShedulevisitsDone}',
-                      chartext: 'UnScheduled\nVisits Done',
-                      icon: CupertinoIcons.checkmark_seal_fill,
-                      color: Colors.red,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: ()async{
-                        setState(() {
-                          isApiCallProcess = true;
-                        });
-                        timesheet.empid = DBrequestdata.receivedempid;
-                          await getTimeSheetdaily();
-                         await gettimesheetmonthly();
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: ()async{
+                          createlog("time sheet tapped","true");
+                          if(requireurlstosync != null) {
+                            if (requireurlstosync.length == 0) {
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              timesheet.empid = DBrequestdata.receivedempid;
+                              await getTimeSheetdaily();
+                              await gettimesheetmonthly();
 
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContextcontext) => TimeSheetList()));
-                        setState(() {
-                          isApiCallProcess = false;
-                        });
-
-                      },
-                      child: Container(
-                        height: 265,
-                        width: MediaQuery.of(context).size.width/2.6,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: containerscolor,
-                        ),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('Time Sheet'),
-                              WorkingRow(
-                                icon: CupertinoIcons.calendar,
-                                chartext: "Attendence",
-                                numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
-                              ),
-                              WorkingRow(
-                                icon: CupertinoIcons.clock,
-                                chartext: "Effective Time",
-                                numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.EffectiveTime}' : '${DBResponsedatadaily.EffectiveTime}',
-                              ),
-                              WorkingRow(
-                                icon: CupertinoIcons.clock_fill,
-                                chartext: "Working Time",
-                                numtext: pressAttentionMTB == true ?"${DBResponsedatamonthly.WorkingTime}" :"${DBResponsedatadaily.WorkingTime}",
-                              ),
-                              WorkingRow(
-                                icon: CupertinoIcons.time,
-                                chartext: "Travel Time",
-                                numtext: pressAttentionMTB == true ?  "${DBResponsedatamonthly.TravelTime}": "${DBResponsedatadaily.TravelTime}",
-                              ),
-                            ]),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 140,
-                          width: MediaQuery.of(context).size.width/1.75,
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContextcontext) =>
+                                          TimeSheetList()));
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                            }else{
+                              Flushbar(
+                                message:
+                                "we have noticed some activities need to be synced in your account, please sync it and try again.",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                            }
+                          }
+                        },
+                        child: Container(
+                          height: 265,
+                          width: MediaQuery.of(context).size.width/2.6,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             color: containerscolor,
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text("Journey Plan",),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  JourneryPlan(
-                                    color: Colors.orange,
-                                    percent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) < 101 ?(int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}'))/(int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) :0.0: (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}'))<101? (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')):0.0,
-                                    textpercent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')*100).toStringAsFixed(0) :(int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')*100).toStringAsFixed(0),
-                                    title: "Journey Plan\nCompletion",
-                                  ),
-                                  JourneryPlan(
-                                    color: Colors.grey[600],
-                                    percent: pressAttentionMTB == true ? 0.5 : 0.1,
-                                    textpercent: pressAttentionMTB == true ? '50' : '10',
-                                    title: "Process\nCompliance",
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text('Time Sheet'),
+                                WorkingRow(
+                                  icon: CupertinoIcons.calendar,
+                                  chartext: "Attendence",
+                                  numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.Attendance}'  : '${DBResponsedatadaily.Attendance}',
+                                ),
+                                WorkingRow(
+                                  icon: CupertinoIcons.clock,
+                                  chartext: "Effective Time",
+                                  numtext: pressAttentionMTB == true ? '${DBResponsedatamonthly.EffectiveTime}' : '${DBResponsedatadaily.EffectiveTime}',
+                                ),
+                                WorkingRow(
+                                  icon: CupertinoIcons.clock_fill,
+                                  chartext: "Working Time",
+                                  numtext: pressAttentionMTB == true ?"${DBResponsedatamonthly.WorkingTime}" :"${DBResponsedatadaily.WorkingTime}",
+                                ),
+                                WorkingRow(
+                                  icon: CupertinoIcons.time,
+                                  chartext: "Travel Time",
+                                  numtext: pressAttentionMTB == true ?  "${DBResponsedatamonthly.TravelTime}": "${DBResponsedatadaily.TravelTime}",
+                                ),
+                              ]),
                         ),
-                        SizedBox(height: 5,),
-                        GestureDetector(
-                          onTap: ()async{
-                            setState(() {
-                              isApiCallProcess = true;
-                            });
-                            await leaveData();
-                            await Navigator.push(context,
-                                MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
-                            setState(() {
-                              isApiCallProcess = false;
-                            });
-                          },
-                          child: Container(
-                            height: 120,
+                      ),
+                      Column(
+                        children: [
+                          Container(
+                            height: 140,
                             width: MediaQuery.of(context).size.width/1.75,
-                            padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: containerscolor,
@@ -746,121 +915,192 @@ class _DashBoardState extends State<DashBoard> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("Leave "),
-                                Text(DBResponsedatamonthly.leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                Text("Total Available Leave's"),
+                                Text("Journey Plan",),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    JourneryPlan(
+                                      color: Colors.orange,
+                                      percent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) < 101 ?(int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}'))/(int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) :0.0: (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}'))<101? (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')):0.0,
+                                      textpercent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')*100).toStringAsFixed(0) :(int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')*100).toStringAsFixed(0),
+                                      title: "Journey Plan\nCompletion",
+                                    ),
+                                    JourneryPlan(
+                                      color: Colors.grey[600],
+                                      percent: pressAttentionMTB == true ? 0.5 : 0.1,
+                                      textpercent: pressAttentionMTB == true ? '50' : '10',
+                                      title: "Process\nCompliance",
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 120,
-                      width: MediaQuery.of(context).size.width/1.55,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: containerscolor,
+                          SizedBox(height: 5,),
+                          GestureDetector(
+                            onTap: ()async{
+                              createlog("leave tapped","true");
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              await leaveData();
+                              await Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                            },
+                            child: Container(
+                              height: 120,
+                              width: MediaQuery.of(context).size.width/1.75,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("Leave "),
+                                  Text(DBResponsedatamonthly.leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                                  Text("Total Available Leave's"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: ActivityPerformance(
-                        pprimary:pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
-                        psecondary: pressAttentionMTB == true ? '${DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.unshedulevisits}',
-                        ptotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}',
-                        aprimary: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
-                        asecondary: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.UnShedulevisitsDone}',
-                        atotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}',
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          ischatscreen =1;
-                          newmsgavaiable = false;
-                          chat.receiver = fieldmanagerofcurrentmerch;
-                        });
-                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChatUsersformerch()));
-                        },
-                      child: Container(
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
                         height: 120,
-                        width: MediaQuery.of(context).size.width/3.25,
+                        width: MediaQuery.of(context).size.width/1.55,
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
                           color: containerscolor,
                         ),
+                        child: ActivityPerformance(
+                          pprimary:pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits}' : '${DBResponsedatadaily.shedulevisits}',
+                          psecondary: pressAttentionMTB == true ? '${DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.unshedulevisits}',
+                          ptotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}' : '${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}',
+                          aprimary: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone}' : '${DBResponsedatadaily.ShedulevisitssDone}',
+                          asecondary: pressAttentionMTB == true ?  '${DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.UnShedulevisitsDone}',
+                          atotal: pressAttentionMTB == true ? '${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}' : '${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          createlog("HQ Communication tapped","true");
+                          if(onlinemode.value){
+                            setState(() {
+                              ischatscreen = 1;
+                              newmsgavaiable = false;
+                              chat.receiver = fieldmanagerofcurrentmerch;
+                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ChatUsersformerch()));
+                          }
+                          },
+                        child: Container(
+                          height: 120,
+                          width: MediaQuery.of(context).size.width / 3.25,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: onlinemode.value ? containerscolor : iconscolor,
+                          ),
                           child: Stack(
                             children: [
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Icon(Icons.mark_chat_unread_rounded,size: 40,color: iconscolor,),
+                                  Icon(
+                                    Icons.mark_chat_unread_rounded,
+                                    size: 40,
+                                    color: onlinemode.value ? iconscolor : containerscolor ,
+                                  ),
                                   FittedBox(
-                                      fit:BoxFit.fitWidth,
-                                      child: Text("HQ\nCommunication",textAlign: TextAlign.center,maxLines: 2,)),
+                                      fit: BoxFit.fitWidth,
+                                      child: Text(
+                                        "HQ\nCommunication",
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,style: TextStyle(color: onlinemode.value ? iconscolor : containerscolor),
+                                      )),
                                 ],
                               ),
-                              newmsgavaiable ? Align(
+                              newmsgavaiable
+                                  ? Align(
                                 alignment: Alignment.topRight,
-                                child: Icon(CupertinoIcons.bell_solid,color: Colors.red,size: 20,),
-                              ) : SizedBox(),
+                                child: Icon(
+                                  CupertinoIcons.bell_solid,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                              )
+                                  : SizedBox(),
                             ],
                           ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10,),
-                Container(
-                  height: 125,
-                  width: MediaQuery.of(context).size.width / 1.03,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: containerscolor,
-                  ),
-                  child: Row(
-                    children: [
-                      Spacer(
-                        flex: 2,
-                      ),
-                      Icon(
-                        CupertinoIcons.sun_max,
-                        color: Colors.black,
-                        size: 50,
-                      ),
-                      Spacer(flex: 2),
-                      Text(
-                        'Welcome to the new merchandiser\ninterface of RMS. '
-                            'Hope to have a\ngreat day ahead!',
-                        style: new TextStyle(fontSize: 15
                         ),
-                      ),
-                      Spacer(
-                        flex: 2,
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 125,
+                    width: MediaQuery.of(context).size.width / 1.03,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: containerscolor,
+                    ),
+                    child: Row(
+                      children: [
+                        Spacer(
+                          flex: 2,
+                        ),
+                        Icon(
+                          CupertinoIcons.sun_max,
+                          color: Colors.black,
+                          size: 50,
+                        ),
+                        Spacer(flex: 2),
+                        Text(
+                          'Welcome to the new merchandiser\ninterface of RMS. '
+                              'Hope to have a\ngreat day ahead!',
+                          style: new TextStyle(fontSize: 15
+                          ),
+                        ),
+                        Spacer(
+                          flex: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
 
 
-              ],
+                ],
+              ),
             ),
-          ),
-         // NBlFloatingButton()
-        ],
-      ),
+           // NBlFloatingButton()
+          ],
+        ),
+      );
+  })
     );
   }
 }

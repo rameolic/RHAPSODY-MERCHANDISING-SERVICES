@@ -1,8 +1,9 @@
-
+import 'package:merchandising/Constants.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'api_service.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class myprofile {
   static var surname;
   static var passportnumber;
@@ -19,40 +20,61 @@ class myprofile {
   static var loginstatuscode;
 }
 
-
-Future getempdetails() async{
-  Map body = {
-    'emp_id': '${DBrequestdata.receivedempid}'
-  };
-  print(body);
-  http.Response DBresponse = await http.post(empdataurl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(body),
-  );
-  print(DBresponse.body);
-  if (DBresponse.statusCode == 200){
-    print('empolyee details done');
-    String empdata = DBresponse.body;
+String empdata;
+Future getempdetails() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  empdata = prefs.getString('empdetails');
+  if (empdata == null || currentlysyncing) {
+    Map body = {
+      'emp_id': '${DBrequestdata.receivedempid}'
+    };
+    print(body);
+    http.Response DBresponse = await http.post(empdataurl,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+      body: jsonEncode(body),
+    );
+    print(DBresponse.body);
+    if (DBresponse.statusCode == 200) {
+      print('empolyee details done');
+      empdata = DBresponse.body;
+      addempdetailesdata(empdata);
+      var decodedempdata = jsonDecode(empdata);
+      myprofile.surname = decodedempdata["data"][0]['surname'];
+      myprofile.passportnumber = decodedempdata["data"][0]['passport_number'];
+      myprofile.nationality = decodedempdata["data"][0]['nationality'];
+      myprofile.mobilenumber = decodedempdata["data"][0]['mobile_number'];
+      myprofile.designation = decodedempdata["data"][0]['designation'];
+      myprofile.department = decodedempdata["data"][0]['department'];
+      myprofile.joiningdate = decodedempdata["data"][0]['joining_date'];
+      myprofile.passportexpirydate =
+      decodedempdata["data"][0]['passport_exp_date'];
+      myprofile.visaexpirydate = decodedempdata["data"][0]['visa_exp_date'];
+      myprofile.visacompanyname =
+      decodedempdata["data"][0]['visa_company_name'];
+      myprofile.employeescore = decodedempdata["data"][0]['employee_score'];
+    }
+    if (DBresponse.statusCode != 200) {
+      print("empdeatils");
+      print(DBresponse.statusCode);
+    }
+  }else{
     var decodedempdata = jsonDecode(empdata);
-    myprofile.surname =decodedempdata["data"][0]['surname'];
-    myprofile.passportnumber =decodedempdata["data"][0]['passport_number'];
+    myprofile.surname = decodedempdata["data"][0]['surname'];
+    myprofile.passportnumber = decodedempdata["data"][0]['passport_number'];
     myprofile.nationality = decodedempdata["data"][0]['nationality'];
     myprofile.mobilenumber = decodedempdata["data"][0]['mobile_number'];
     myprofile.designation = decodedempdata["data"][0]['designation'];
     myprofile.department = decodedempdata["data"][0]['department'];
     myprofile.joiningdate = decodedempdata["data"][0]['joining_date'];
-    myprofile.passportexpirydate = decodedempdata["data"][0]['passport_exp_date'];
+    myprofile.passportexpirydate =
+    decodedempdata["data"][0]['passport_exp_date'];
     myprofile.visaexpirydate = decodedempdata["data"][0]['visa_exp_date'];
-    myprofile.visacompanyname = decodedempdata["data"][0]['visa_company_name'];
+    myprofile.visacompanyname =
+    decodedempdata["data"][0]['visa_company_name'];
     myprofile.employeescore = decodedempdata["data"][0]['employee_score'];
-  }
-  if(DBresponse.statusCode != 200){
-    print("empdeatils");
-    print(DBresponse.statusCode);
-
   }
 }

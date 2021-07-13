@@ -6,21 +6,21 @@ class chartoutletid{
   static var outlet;
 }
 Future getchartdetails() async{
-  Map ODrequestDataforcheckin = {
-    'outlet_id': '${chartoutletid.outlet}',
-  };
-  print(ODrequestDataforcheckin);
-  http.Response BCResponse = await http.post(ChartUrl,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(ODrequestDataforcheckin),
-  );
-  if (BCResponse.statusCode == 200){
-    print(BCResponse.body);
-    String chartdata = BCResponse.body;
+  // Map ODrequestDataforcheckin = {
+  //   'outlet_id': '${chartoutletid.outlet}',
+  // };
+  // print(ODrequestDataforcheckin);
+  // http.Response BCResponse = await http.post(ChartUrl,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(ODrequestDataforcheckin),
+  // );
+  // if (BCResponse.statusCode == 200){
+  //  print(BCResponse.body);
+    String chartdata = outletvisitsdata[currentoutletindex];
     var decodedchartdata = jsonDecode(chartdata);
     visits.jan =decodedchartdata["data"][0]['count'];
     visits.feb =decodedchartdata["data"][1]['count'];
@@ -35,11 +35,11 @@ Future getchartdetails() async{
     visits.nov  = decodedchartdata["data"][10]['count'];
     visits.dec = decodedchartdata["data"][11]['count'];
     return visits.dec;
-  }
-  if(BCResponse.statusCode != 200){
-    print(BCResponse.statusCode);
-
-}
+  //}
+//   if(BCResponse.statusCode != 200){
+//     print(BCResponse.statusCode);
+//
+// }
 }
 
 class visits{

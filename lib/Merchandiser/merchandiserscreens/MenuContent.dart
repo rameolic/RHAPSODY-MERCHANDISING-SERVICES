@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Fieldmanager/FMdashboard.dart';
 import 'package:merchandising/login_page.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
 import '../../Constants.dart';
 import 'merchandiserdashboard.dart';
 import 'myprofile.dart';
 import 'package:merchandising/model/inappupdate.dart';
 import 'package:merchandising/feedbackform.dart';
+import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:merchandising/api/api_service.dart';
 import'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
+import 'package:merchandising/offlinedata/syncdata.dart';
 import 'package:merchandising/model/notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/model/version deailes.dart';
 import'package:merchandising/api/noti_detapi.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/logs.dart';
 final menuitemscolor = Colors.black54;
 List<bool> changecoloricon =[];
 List<Icon> listoficon =[];
@@ -103,6 +108,7 @@ class _MenuState extends State<Menu> {
             icon: Icons.dashboard_rounded,
           ),
           onTap: () {
+            createlog("My DashBoard from Menu tapped","true");
             if(currentuser.roleid == 6){
               Navigator.push(
                   context,
@@ -128,6 +134,7 @@ class _MenuState extends State<Menu> {
             icon: Icons.person,
           ),
           onTap: () {
+            createlog("My Profile from Menu tapped","true");
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -135,14 +142,29 @@ class _MenuState extends State<Menu> {
           },
         ),
         ListTile(
-          title: MenuElements(
-            title: 'My Customers',
-            icon: CupertinoIcons.group_solid,
-          ),
+          title: MenuElements(title: 'Synchronize', icon: Icons.sync_rounded),
           onTap: () async{
-            await sendemail();
+            createlog("Synchronize from Menu tapped","true");
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            message = prefs.getStringList('addtoservermessage');
+            if(message == null){
+              message =[];
+            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => SyncScreen()));
           },
         ),
+        // ListTile(
+        //   title: MenuElements(
+        //     title: 'My Customers',
+        //     icon: CupertinoIcons.group_solid,
+        //   ),
+        //   onTap: () async{
+        //     await sendemail();
+        //   },
+        // ),
         ListTile(
           title: MenuElements(
             title: 'Notifications',
@@ -151,6 +173,7 @@ class _MenuState extends State<Menu> {
 
           ),
           onTap: () {
+            createlog("Notifications from Menu tapped","true");
             for(int i=0;i<NotiDetData.title.length;i++){
               changecoloricon.add(false);
               listoficon.add(Icon(Icons.check,color: Colors.black54,));
@@ -180,10 +203,36 @@ class _MenuState extends State<Menu> {
         ListTile(
           title: MenuElements(title: 'RMS Version', icon: Icons.info),
           onTap: () {
+            createlog("RMS Version from Menu tapped","true");
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (BuildContext context) => AppVersion()));
+          },
+        ),
+        ListTile(
+          title: MenuElements(title: 'Logs', icon: Icons.message),
+          onTap: () async{
+            createlog("Logs from Menu tapped","true");
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            logreport = prefs.getStringList('logdata');
+            print("start");
+            print(logreport.length);
+            if(logreport!=null) {
+                logtime = prefs.getStringList('logtime');
+                logreportstatus = prefs.getStringList('status');
+                print(logtime.length);
+                print("check1");
+                print(logreportstatus.length);
+            }else{
+              logreport = [];
+              logtime = [];
+              logreportstatus = [];
+            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => VLogs()));
           },
         ),
         // ListTile(
@@ -214,6 +263,7 @@ class _MenuState extends State<Menu> {
             icon: Icons.logout,
           ),
           onTap: () {
+            createlog("Logout from Menu tapped","true");
             removeValues();
             logout();
             chackdata();
