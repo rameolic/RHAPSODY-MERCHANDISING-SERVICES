@@ -138,7 +138,7 @@ Future<int> addexpiryproducts() async{
   print(jsonEncode(stockdata));
   requireurlstosync.add("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
   requirebodytosync.add(jsonEncode(stockdata));
-  message.add("expiry report for $productid for the timesheet $currenttimesheetid");
+  message.add("expiry report for product id :$productid for the timesheet $currenttimesheetid, items count : $expirypc, expiry date : $pcexpirydate");
   print(requireurlstosync);
   print(requirebodytosync);
   print(message);

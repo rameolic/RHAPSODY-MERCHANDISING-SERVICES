@@ -555,14 +555,14 @@ class _DashBoardState extends State<DashBoard> {
                                                         workingid;
                                                     currenttimesheetid =
                                                         workingid;
-                                                    getTaskList();
-                                                    getVisibility();
-                                                    getPlanogram();
-                                                    getNBLdetails();
-                                                    Addedstockdataformerch();
-                                                    getPromotionDetails();
-                                                    getShareofshelf();
-                                                    await getAvaiablitity();
+                                                    // getTaskList();
+                                                    // getVisibility();
+                                                    // getPlanogram();
+                                                    // getNBLdetails();
+                                                    // Addedstockdataformerch();
+                                                    // getPromotionDetails();
+                                                    // getShareofshelf();
+                                                    // await getAvaiablitity();
                                                     setState(() {
                                                       isApiCallProcess = false;
                                                     });

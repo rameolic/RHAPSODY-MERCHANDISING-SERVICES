@@ -10,6 +10,7 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/camera.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'expiry_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
@@ -55,6 +56,7 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   @override
   void initState() {
     super.initState();
+    CreateLog("Navigated to Activities pages", "true");
     if(checkinrequested && checkindatasubmitted){
       Future.delayed(
           const Duration(seconds: 2), () {

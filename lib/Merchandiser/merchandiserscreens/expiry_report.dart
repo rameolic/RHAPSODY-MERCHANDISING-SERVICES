@@ -107,9 +107,9 @@ class _ExpiryReportState extends State<ExpiryReport> {
                 Spacer(),
                 GestureDetector(
                   onTap: () async{
-                    setState(() {
-                      isApiCallProcess = true;
-                    });
+                    // setState(() {
+                    //   isApiCallProcess = true;
+                    // });
                     print(addedproductid.length);
                     for(int u=0; u<addedproductid.length;u++){
                       print(u);
@@ -122,16 +122,15 @@ class _ExpiryReportState extends State<ExpiryReport> {
                       remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
                       await addexpiryproducts();
                     }
-                    addedproductid=[];
+
+                    // await Addedstockdataformerch();
+                    setState(() {
+                      addedproductid=[];
                     addedpriceperitem=[];
                     addeditemscount=[];
                     addedexpirydate=[];
                     addedexposurequnatity=[];
-                    addedremarks=[];
-                     await Addedstockdataformerch();
-                    setState(() {
-                      isApiCallProcess = false;
-                    });
+                    addedremarks=[];});
                     expirycheck= true;
                     // Navigator.pushReplacement(
                     //     context,
@@ -816,90 +815,94 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
       }
     });
   }
-
+  bool isApiCallProcess=false;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Column(
-          children: <Widget>[
-            _createSearchView(),
-            SizedBox(
-              height: 10.0,
-            ),
-            _firstSearch ? _createListView() : _performSearch(),
-          ],
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: GestureDetector(
-            onTap: ()async{
-              if(onlinemode.value){
-                setState(() {
-                  isApiCallProcess = true;
-                });
-                print(addedproductid.length);
-                for(int u=0; u<addedproductid.length;u++){
-                  print(u);
-                  addedexpiryindex = u;
-                  productid = addedproductid[u];
-                  pricepc = addedpriceperitem[u];
-                  expirypc = addeditemscount[u];
-                  pcexpirydate = addedexpirydate[u];
-                  exposureqntypc = addedexposurequnatity[u];
-                  remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
-                  Map stockdata = {
-                    "timesheet_id" : currenttimesheetid,
-                    "product_id": productid,
-                    "piece_price" :  pricepc,
-                    "near_expiry"  :  expirypc,
-                    "expiry_date" : pcexpirydate,
-                    "exposure_qty"  : exposureqntypc,
-                    "remarks" : remarksifany
-                  };
-                  http.Response Response = await http.post(addexpiryDetail,
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json',
-                      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-                    },
-                       body: jsonEncode(stockdata),
-                  );
-                  print(Response.body);
+    return ProgressHUD(
+      inAsyncCall: isApiCallProcess,
+      opacity: 0.3,
+      child: Stack(
+        children: [
+          Column(
+            children: <Widget>[
+              _createSearchView(),
+              SizedBox(
+                height: 10.0,
+              ),
+              _firstSearch ? _createListView() : _performSearch(),
+            ],
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10.0),
+              child: GestureDetector(
+              onTap: ()async{
+                if(onlinemode.value){
+                  setState(() {
+                    isApiCallProcess = true;
+                  });
+                  print(addedproductid.length);
+                  for(int u=0; u<addedproductid.length;u++){
+                    print(u);
+                    addedexpiryindex = u;
+                    productid = addedproductid[u];
+                    pricepc = addedpriceperitem[u];
+                    expirypc = addeditemscount[u];
+                    pcexpirydate = addedexpirydate[u];
+                    exposureqntypc = addedexposurequnatity[u];
+                    remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
+                    Map stockdata = {
+                      "timesheet_id" : currenttimesheetid,
+                      "product_id": productid,
+                      "piece_price" :  pricepc,
+                      "near_expiry"  :  expirypc,
+                      "expiry_date" : pcexpirydate,
+                      "exposure_qty"  : exposureqntypc,
+                      "remarks" : remarksifany
+                    };
+                    http.Response Response = await http.post(addexpiryDetail,
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+                      },
+                         body: jsonEncode(stockdata),
+                    );
+                    print(Response.body);
+                  }
+                  addedproductid=[];
+                  addedpriceperitem=[];
+                  addeditemscount=[];
+                  addedexpirydate=[];
+                  addedexposurequnatity=[];
+                  addedremarks=[];
+                  await Addedstockdataformerch();
+                  setState(() {
+                    isApiCallProcess = false;
+                  });
+                  expirycheck= true;
+                }else{
+                  Flushbar(
+                    message:
+                    "Active internet required",
+                    duration: Duration(seconds: 3),
+                  )..show(context);
                 }
-                addedproductid=[];
-                addedpriceperitem=[];
-                addeditemscount=[];
-                addedexpirydate=[];
-                addedexposurequnatity=[];
-                addedremarks=[];
-                await Addedstockdataformerch();
-                setState(() {
-                  isApiCallProcess = false;
-                });
-                expirycheck= true;
-              }else{
-                Flushbar(
-                  message:
-                  "Active internet required",
-                  duration: Duration(seconds: 3),
-                )..show(context);
-              }
-            },
-              child: Container(
-                padding: EdgeInsets.fromLTRB(15.0,10,15,10),
-                decoration: BoxDecoration(
-                  color: pink,
-                  borderRadius: BorderRadius.circular(25),
+              },
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(15.0,10,15,10),
+                  decoration: BoxDecoration(
+                    color: pink,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child:Text("Submit Now",style: TextStyle(color: orange),),
                 ),
-                child:Text("Submit Now",style: TextStyle(color: orange),),
               ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
