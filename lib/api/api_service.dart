@@ -450,7 +450,6 @@ void addattendence() async {
     },
   );
   print(cicoresponse.body);
-  print("Attendance In Done");
 }
 
 Future<bool> checkin() async {
@@ -467,11 +466,13 @@ Future<bool> checkin() async {
   requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
   requirebodytosync.add(jsonEncode(checkinoutresponse));
   message.add("Checkin at $checkintime for the timesheet $checkid at $checkinlocation");
+  CreateLog("checked in $checkintime for the timesheet $checkid at $checkinlocation", "true");
   print(requireurlstosync);
   print(requirebodytosync);
   print(message);
   Adddatatoserver(requireurlstosync,requirebodytosync,message);
   checkindatasubmitted = true;
+
   // print(checkinoutresponse);
   // http.Response cicoresponse = await http.post(CICOurl,
   //   headers: {
@@ -503,6 +504,7 @@ Future<bool> checkin() async {
   requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
   requirebodytosync.add(jsonEncode(checkinoutresponse));
   message.add("Checkout at $checkouttime for the timesheet $checkid at $checkoutlocation");
+  CreateLog("checked out $checkouttime for the timesheet $checkid at $checkoutlocation", "true");
   print(requireurlstosync);
   print(requirebodytosync);
   print(message);

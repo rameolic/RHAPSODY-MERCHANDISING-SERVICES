@@ -25,9 +25,15 @@ syncingsenddata()async {
     lastsyncedendtime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
     difference = lastsyncedendtime.difference(DateTime.now());
   }
-  print(requireurlstosync);
+  if(requireurlstosync == null){
+    requireurlstosync=[];
+    requirebodytosync=[];
+    message =[];
+  };
+  print("syncing current data");
     if (requireurlstosync != [] && requireurlstosync != null && onlinemode.value) {
       for (int i = 0; i < requireurlstosync.length; i++) {
+        progress.value++;
         http.Response response = await http.post(
           Uri.parse(requireurlstosync[i]),
           headers: {
@@ -39,7 +45,7 @@ syncingsenddata()async {
         );
         if (response.statusCode == 200) {
           print(response.body);
-          logreport.add("${requireurlstosync[i]}");
+          logreport.add("${requirebodytosync[i]}");
           logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
           logreportstatus.add("true");
         } else {

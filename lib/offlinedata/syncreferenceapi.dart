@@ -18,7 +18,7 @@ import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'package:merchandising/model/database.dart';
 import 'package:merchandising/api/HRapi/empdetailsforreportapi.dart';
-
+import 'package:merchandising/api/HRapi/empdetailsapi.dart';
 DateTime lastsyncedon;
 DateTime lastsyncedendtime;
 Duration difference;
@@ -43,10 +43,12 @@ syncingreferencedata()async {
       var starttime = DateTime.now();
       loginfromloginpage = false;
       await loginapi();
+      progress.value = 55;
       await getJourneyPlan();
-      getalljpoutletsdata();
-      chartvisits();
+      progress.value = 60;
+      getallempdetails();
       getempdetails();
+      progress.value = 65;
       getaddedexpiryproducts();
       getstockexpiryproducts();
       getempdetailsforreport();
@@ -56,18 +58,21 @@ syncingreferencedata()async {
       getJourneyPlanweekly();
       getSkipJourneyPlanweekly();
       getVisitJourneyPlanweekly();
+      chartvisits();
+      await getalljpoutletsdata();
+      progress.value = 90;
       await DBRequestdaily();
+      progress.value = 95;
       currentlysyncing = false;
       var endtime = DateTime.now();
       await lastsynced(date, starttime, endtime);
+      progress.value = 98;
     }else{
       DBRequestmonthly();
-      //getaddedexpiryproducts();
-      // getempdetails();
-
-      // getallempdetails();
-      // getempdetailsforreport();
-      // getstockexpiryproducts();
+      getaddedexpiryproducts();
+      getempdetails();
+      getempdetailsforreport();
+      getstockexpiryproducts();
       await DBRequestdaily();
       await callfrequently();
       getempdetails();
@@ -93,6 +98,7 @@ getalljpoutletsdata()async{
   offlineoutletdeatiles=[];
   print("length:${gettodayjp.outletids.length}");
   for(int i=0;i<gettodayjp.outletids.length;i++){
+    progress.value++;
     int outletid = gettodayjp.outletids[i];
     Map ODrequestDataforcheckin = {
       "emp_id": "${DBrequestdata.receivedempid}",

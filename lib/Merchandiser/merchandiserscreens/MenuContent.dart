@@ -6,22 +6,24 @@ import 'package:merchandising/offlinedata/syncsendapi.dart';
 import '../../Constants.dart';
 import 'merchandiserdashboard.dart';
 import 'myprofile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/model/inappupdate.dart';
 import 'package:merchandising/feedbackform.dart';
 import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:merchandising/api/api_service.dart';
-import'package:merchandising/model/rememberme.dart';
+import 'package:merchandising/model/rememberme.dart';
 import 'package:merchandising/main.dart';
 import 'package:merchandising/HR/HRdashboard.dart';
 import 'package:merchandising/offlinedata/syncdata.dart';
 import 'package:merchandising/model/notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/model/version deailes.dart';
-import'package:merchandising/api/noti_detapi.dart';
+import 'package:merchandising/api/noti_detapi.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/logs.dart';
+
 final menuitemscolor = Colors.black54;
-List<bool> changecoloricon =[];
-List<Icon> listoficon =[];
+List<bool> changecoloricon = [];
+List<Icon> listoficon = [];
 
 class DrawerHeaderinfo extends StatelessWidget {
   @override
@@ -45,12 +47,16 @@ class DrawerHeaderinfo extends StatelessWidget {
               Text(
                 DBrequestdata.empname,
                 style: TextStyle(
-                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300),
               ),
               Text(
                 DBrequestdata.receivedempid,
                 style: TextStyle(
-                    color: Colors.white, fontSize: 20, fontWeight: FontWeight.w300),
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300),
               ),
             ],
           )
@@ -108,24 +114,24 @@ class _MenuState extends State<Menu> {
             icon: Icons.dashboard_rounded,
           ),
           onTap: () {
-            createlog("My DashBoard from Menu tapped","true");
-            if(currentuser.roleid == 6){
+            createlog("My DashBoard from Menu tapped", "true");
+            if (currentuser.roleid == 6) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => DashBoard()));
-            }else if(currentuser.roleid == 3){
+            } else if (currentuser.roleid == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => HRdashboard()));
-            }else if(currentuser.roleid == 5){
+            } else if (currentuser.roleid == 5) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => FieldManagerDashBoard()));
+                      builder: (BuildContext context) =>
+                          FieldManagerDashBoard()));
             }
-
           },
         ),
         ListTile(
@@ -134,7 +140,7 @@ class _MenuState extends State<Menu> {
             icon: Icons.person,
           ),
           onTap: () {
-            createlog("My Profile from Menu tapped","true");
+            createlog("My Profile from Menu tapped", "true");
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -143,12 +149,12 @@ class _MenuState extends State<Menu> {
         ),
         ListTile(
           title: MenuElements(title: 'Synchronize', icon: Icons.sync_rounded),
-          onTap: () async{
-            createlog("Synchronize from Menu tapped","true");
+          onTap: () async {
+            createlog("Synchronize from Menu tapped", "true");
             SharedPreferences prefs = await SharedPreferences.getInstance();
             message = prefs.getStringList('addtoservermessage');
-            if(message == null){
-              message =[];
+            if (message == null) {
+              message = [];
             }
             Navigator.push(
                 context,
@@ -169,15 +175,15 @@ class _MenuState extends State<Menu> {
           title: MenuElements(
             title: 'Notifications',
             icon: Icons.notifications_on,
-
-
           ),
           onTap: () {
-            createlog("Notifications from Menu tapped","true");
-            for(int i=0;i<NotiDetData.title.length;i++){
+            createlog("Notifications from Menu tapped", "true");
+            for (int i = 0; i < NotiDetData.title.length; i++) {
               changecoloricon.add(false);
-              listoficon.add(Icon(Icons.check,color: Colors.black54,));
-
+              listoficon.add(Icon(
+                Icons.check,
+                color: Colors.black54,
+              ));
             }
             Navigator.push(
                 context,
@@ -192,7 +198,7 @@ class _MenuState extends State<Menu> {
           ),
           onTap: () {},
         ),
-      /*  ListTile(
+        /*  ListTile(
           title: MenuElements(
             title: 'Settings',
             icon: Icons.settings,
@@ -203,7 +209,7 @@ class _MenuState extends State<Menu> {
         ListTile(
           title: MenuElements(title: 'RMS Version', icon: Icons.info),
           onTap: () {
-            createlog("RMS Version from Menu tapped","true");
+            createlog("RMS Version from Menu tapped", "true");
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -212,27 +218,25 @@ class _MenuState extends State<Menu> {
         ),
         ListTile(
           title: MenuElements(title: 'Logs', icon: Icons.message),
-          onTap: () async{
-            createlog("Logs from Menu tapped","true");
+          onTap: () async {
+            createlog("Logs from Menu tapped", "true");
             SharedPreferences prefs = await SharedPreferences.getInstance();
             logreport = prefs.getStringList('logdata');
             print("start");
             print(logreport.length);
-            if(logreport!=null) {
-                logtime = prefs.getStringList('logtime');
-                logreportstatus = prefs.getStringList('status');
-                print(logtime.length);
-                print("check1");
-                print(logreportstatus.length);
-            }else{
+            if (logreport != null) {
+              logtime = prefs.getStringList('logtime');
+              logreportstatus = prefs.getStringList('status');
+              print(logtime.length);
+              print("check1");
+              print(logreportstatus.length);
+            } else {
               logreport = [];
               logtime = [];
               logreportstatus = [];
             }
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => VLogs()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) => VLogs()));
           },
         ),
         // ListTile(
@@ -262,25 +266,89 @@ class _MenuState extends State<Menu> {
             title: 'Log Out',
             icon: Icons.logout,
           ),
-          onTap: () {
-            createlog("Logout from Menu tapped","true");
-            removeValues();
-            logout();
-            chackdata();
-            loggedin.email = null;
-            loggedin.password = null;
-            currentuser.roleid = null;
-            remembereddata.email= null;
-            remembereddata.password =null;
-            DBrequestdata.empname = null;
-            DBrequestdata.emailid =null;
-            currentuser.roleid = null;
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => LoginPage()));
+          onTap: () async {
+            createlog("Logout from Menu tapped", "true");
+            if (requireurlstosync.isNotEmpty) {
+              showDialog(
+                  context: context,
+                  builder: (_) => StatefulBuilder(builder: (context, setState) {
+                        return AlertDialog(
+                          backgroundColor: alertboxcolor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          content: Builder(
+                            builder: (context) {
+                              // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Alert',
+                                    style:
+                                        TextStyle(color: orange, fontSize: 20),
+                                  ),
+                                  Divider(
+                                    color: Colors.black,
+                                    thickness: 0.8,
+                                  ),
+                                  Text(
+                                    "We found some activites that are need to sync please sync it and tryagin",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Center(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext context) => SyncScreen()));
+                                      },
+                                      child: Container(
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: orange,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Center(
+                                            child: Text('Go to Synchronize',
+                                                style: TextStyle(
+                                                    color: Colors.white))),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      }));
+            }else{
+              removeValues();
+              logout();
+              chackdata();
+              loggedin.email = null;
+              loggedin.password = null;
+              currentuser.roleid = null;
+              remembereddata.email= null;
+              remembereddata.password =null;
+              DBrequestdata.empname = null;
+              DBrequestdata.emailid =null;
+              currentuser.roleid = null;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => LoginPage()));
+            }
           },
         ),
+
         /*Image(
           image: AssetImage('images/ttflogo.png'),
           height:40,

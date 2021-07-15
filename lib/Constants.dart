@@ -17,6 +17,7 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 List<String>logreportstatus=[];
 ValueNotifier<bool> onlinemode = new ValueNotifier(true);
+ValueNotifier<int> progress = new ValueNotifier(0);
 bool currentlysyncing = false;
 List<String>logreport=[];
 List<String>logtime=[];
@@ -38,10 +39,10 @@ createlog(message,status)async{
     logreportstatus.add(status);
     await savelogreport(logreport, logtime, logreportstatus);
   }else{
-    removelogdatafromlocal();
-    logreport=[];
-    logtime=[];
-    logreportstatus=[];
+    //removelogdatafromlocal();
+    logreport.removeAt(0);
+    logtime.removeAt(0);
+    logreportstatus.removeAt(0);
     logreport.add(message);
     logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
     logreportstatus.add(status);
@@ -289,7 +290,7 @@ class EmpInfo extends StatelessWidget {
               if(currentuser.roleid == 5)
                 Text('-FMS',style: TextStyle(fontSize: 8.0,color: orange),)
               else if(currentuser.roleid == 6)
-                Text('-MRCH',
+                Text('-MRCHv3.3.1',
                   style: TextStyle(fontSize: 8.0, color: orange),)
               else if(currentuser.roleid == 3)Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
               else Text('- Client',style: TextStyle(fontSize: 8.0, color: orange),)

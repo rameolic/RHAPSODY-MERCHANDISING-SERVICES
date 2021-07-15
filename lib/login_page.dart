@@ -11,6 +11,7 @@ import 'api/HRapi/hrdashboardapi.dart';
 import 'package:merchandising/api/FMapi/fmdbapi.dart';
 import 'api/FMapi/relieverdet_api.dart';
 import 'package:merchandising/offlinedata/sharedprefsdta.dart';
+import'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/main.dart';
 import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
@@ -211,6 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                                           getalljpoutletsdata();
                                           chartvisits();
                                           getempdetails();
+                                          getallempdetails();
                                           getaddedexpiryproducts();
                                           getstockexpiryproducts();
                                           getempdetailsforreport();

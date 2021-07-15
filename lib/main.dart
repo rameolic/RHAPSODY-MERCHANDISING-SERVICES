@@ -59,8 +59,12 @@ Future<void> main() async {
     currentuser.roleid = userroleid;
     print(userroleid);
     if(userroleid == 6){
+      message = prefs.getStringList('addtoservermessage');
+      requireurlstosync = prefs.getStringList('addtoserverurl');
+      requirebodytosync = prefs.getStringList('addtoserverbody');
+
       await syncingreferencedata();
-      const time = const Duration(minutes: 30);
+      const time = const Duration(minutes: 20);
       Timer.periodic(time, (Timer t) => syncingreferencedata());
       const period = const Duration(minutes: 15);
       Timer.periodic(period, (Timer t) => syncingsenddata());

@@ -128,7 +128,6 @@ int addedexpiryindex;
 Future<int> addexpiryproducts() async{
   Map stockdata = {
     "timesheet_id" : currenttimesheetid,
-    //'outlet_products_mapping_id': comid,
     "product_id": productid,
     "piece_price" :  pricepc,
     "near_expiry"  :  expirypc,

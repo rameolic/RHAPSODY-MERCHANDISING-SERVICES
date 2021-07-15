@@ -56,6 +56,7 @@ dependencies:
   flutter_email_sender: ^5.0.2
   flutter_offline: ^2.0.0
   enough_mail:
+  getwidget: ^2.0.3
 
 dev_dependencies:
   flutter_test:

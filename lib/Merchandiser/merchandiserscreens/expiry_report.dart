@@ -8,9 +8,11 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../Constants.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 import 'Customers Activities.dart';
 import 'package:merchandising/model/database.dart';
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
@@ -817,13 +819,86 @@ class _AddedexpirydataState extends State<Addedexpirydata> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        _createSearchView(),
-        SizedBox(
-          height: 10.0,
+    return Stack(
+      children: [
+        Column(
+          children: <Widget>[
+            _createSearchView(),
+            SizedBox(
+              height: 10.0,
+            ),
+            _firstSearch ? _createListView() : _performSearch(),
+          ],
         ),
-        _firstSearch ? _createListView() : _performSearch(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: GestureDetector(
+            onTap: ()async{
+              if(onlinemode.value){
+                setState(() {
+                  isApiCallProcess = true;
+                });
+                print(addedproductid.length);
+                for(int u=0; u<addedproductid.length;u++){
+                  print(u);
+                  addedexpiryindex = u;
+                  productid = addedproductid[u];
+                  pricepc = addedpriceperitem[u];
+                  expirypc = addeditemscount[u];
+                  pcexpirydate = addedexpirydate[u];
+                  exposureqntypc = addedexposurequnatity[u];
+                  remarksifany = addedremarks[u]==""?"no remarks entered":addedremarks[u];
+                  Map stockdata = {
+                    "timesheet_id" : currenttimesheetid,
+                    "product_id": productid,
+                    "piece_price" :  pricepc,
+                    "near_expiry"  :  expirypc,
+                    "expiry_date" : pcexpirydate,
+                    "exposure_qty"  : exposureqntypc,
+                    "remarks" : remarksifany
+                  };
+                  http.Response Response = await http.post(addexpiryDetail,
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Accept': 'application/json',
+                      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+                    },
+                       body: jsonEncode(stockdata),
+                  );
+                  print(Response.body);
+                }
+                addedproductid=[];
+                addedpriceperitem=[];
+                addeditemscount=[];
+                addedexpirydate=[];
+                addedexposurequnatity=[];
+                addedremarks=[];
+                await Addedstockdataformerch();
+                setState(() {
+                  isApiCallProcess = false;
+                });
+                expirycheck= true;
+              }else{
+                Flushbar(
+                  message:
+                  "Active internet required",
+                  duration: Duration(seconds: 3),
+                )..show(context);
+              }
+            },
+              child: Container(
+                padding: EdgeInsets.fromLTRB(15.0,10,15,10),
+                decoration: BoxDecoration(
+                  color: pink,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child:Text("Submit Now",style: TextStyle(color: orange),),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

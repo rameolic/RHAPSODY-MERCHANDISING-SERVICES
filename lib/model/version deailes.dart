@@ -19,7 +19,7 @@ class AppVersion extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
-          Text("Version : 3.3.0"),
+          Text("Version : 3.3.1"),
           SizedBox(
             height: 40,
           ),

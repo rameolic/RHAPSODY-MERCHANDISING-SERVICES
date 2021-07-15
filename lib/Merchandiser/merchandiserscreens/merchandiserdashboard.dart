@@ -48,11 +48,14 @@ import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 import 'dart:io' show Platform;
 
 Future <bool>checklocationenable()async{
+  try{
     bool locationreceived = await getLocation();
-    print(locationreceived);
-    print(lat);
-    print(long);
     return locationreceived;
+  }
+  catch(e){
+    CreateLog("check of location at startday error : $e", "false");
+    return true;
+  }
 }
 
 Future<String> callfrequently()async{
@@ -380,43 +383,44 @@ class _DashBoardState extends State<DashBoard> {
                                                   ],
                                                 ),
                                               ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    location == false
-                                                        ? location = true
-                                                        : location = false;
-                                                  });
-                                                },
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Text('Location',
-                                                            style: TextStyle(
-                                                                fontSize: 16)),
-                                                        Spacer(),
-                                                        Icon(
-                                                            location == true
-                                                                ? CupertinoIcons
-                                                                    .check_mark_circled_solid
-                                                                : CupertinoIcons
-                                                                    .xmark_circle_fill,
-                                                            color: location ==
-                                                                    true
-                                                                ? orange
-                                                                : Colors.grey,
-                                                            size: 30),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                              // GestureDetector(
+                                              //   onTap: () {
+                                              //     setState(() {
+                                              //       location == false
+                                              //           ? location = true
+                                              //           : location = false;
+                                              //     });
+                                              //   },
+                                              //   child: Column(
+                                              //     children: [
+                                              //       Row(
+                                              //         mainAxisAlignment:
+                                              //             MainAxisAlignment
+                                              //                 .spaceEvenly,
+                                              //         children: [
+                                              //           Text('Location',
+                                              //               style: TextStyle(
+                                              //                   fontSize: 16)),
+                                              //           Spacer(),
+                                              //           Icon(
+                                              //               location == true
+                                              //                   ? CupertinoIcons
+                                              //                       .check_mark_circled_solid
+                                              //                   : CupertinoIcons
+                                              //                       .xmark_circle_fill,
+                                              //               color: location ==
+                                              //                       true
+                                              //                   ? orange
+                                              //                   : Colors.grey,
+                                              //               size: 30),
+                                              //         ],
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // ),
+                                              Text("Note* If you are trying to checkout any unfinished outlet please synchronize and try again",style: TextStyle(color: orange,fontSize: 10),textAlign: TextAlign.center,),
                                               SizedBox(
-                                                height: 20,
+                                                height: 5,
                                               ),
                                               Row(
                                                 mainAxisAlignment:
@@ -429,8 +433,7 @@ class _DashBoardState extends State<DashBoard> {
                                                       if (uniform &&
                                                           unit &&
                                                           transport &&
-                                                          posm &&
-                                                          location) {
+                                                          posm ) {
                                                         Navigator.pushReplacement(
                                                             context,
                                                             MaterialPageRoute(

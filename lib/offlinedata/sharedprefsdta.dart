@@ -95,9 +95,7 @@ savelogreport(data,time,status)async{
   prefs.setStringList("status",status);
 }
 
-removelogdatafromlocal()async{
+allempsdata(data)async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.remove("logdata");
-  prefs.remove("logtime");
-  prefs.remove("status");
+  prefs.setString("allemployees",data);
 }
