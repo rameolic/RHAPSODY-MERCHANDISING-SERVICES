@@ -208,23 +208,23 @@ class _LoginPageState extends State<LoginPage> {
                                           addLogindetails();
                                         }
                                         if (userroleid == 6) {
+                                          var DBMresult =  DBRequestmonthly();
                                           await getJourneyPlan();
-                                          getalljpoutletsdata();
                                           chartvisits();
                                           getempdetails();
                                           getallempdetails();
                                           getaddedexpiryproducts();
                                           getstockexpiryproducts();
                                           getempdetailsforreport();
-                                          var DBMresult =  DBRequestmonthly();
-                                          var DBDresult =  await DBRequestdaily();
                                           getskippedJourneyPlan();
                                           getvisitedJourneyPlan();
                                           getSkipJourneyPlanweekly();
                                           getJourneyPlanweekly();
                                           getVisitJourneyPlanweekly();
                                           // getLocation();
+                                          await getalljpoutletsdata();
                                           await callfrequently();
+                                          var DBDresult =  await DBRequestdaily();
                                           const time = const Duration(minutes: 30);
                                           Timer.periodic(time, (Timer t) => syncingreferencedata());
                                           const period = const Duration(minutes: 15);

@@ -62,7 +62,6 @@ Future<void> main() async {
       message = prefs.getStringList('addtoservermessage');
       requireurlstosync = prefs.getStringList('addtoserverurl');
       requirebodytosync = prefs.getStringList('addtoserverbody');
-
       await syncingreferencedata();
       const time = const Duration(minutes: 20);
       Timer.periodic(time, (Timer t) => syncingreferencedata());

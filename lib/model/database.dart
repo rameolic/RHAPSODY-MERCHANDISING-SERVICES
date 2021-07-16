@@ -136,15 +136,7 @@ Future<int> addexpiryproducts() async{
     "remarks" : remarksifany
   };
   print(jsonEncode(stockdata));
-  requireurlstosync.add("https://rms2.rhapsody.ae/api/add_stock_expiry_new");
-  requirebodytosync.add(jsonEncode(stockdata));
-  message.add("expiry report for product id :$productid for the timesheet $currenttimesheetid, items count : $expirypc, expiry date : $pcexpirydate");
-  print(requireurlstosync);
-  print(requirebodytosync);
-  print(message);
-  Adddatatoserver(requireurlstosync,requirebodytosync,message);
-
-
+  adddataforsync("https://rms2.rhapsody.ae/api/add_stock_expiry_new",jsonEncode(stockdata),"expiry report for product id :$productid for the timesheet $currenttimesheetid, items count : $expirypc, expiry date : $pcexpirydate");
    //http.Response Response = await http.post(addexpiryDetail,
   //   headers: {
   //     'Content-Type': 'application/json',

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,6 @@ class _SyncScreenState extends State<SyncScreen> {
                 appBar: AppBar(
                   backgroundColor: pink,
                   iconTheme: IconThemeData(color: orange),
-
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -51,6 +51,7 @@ class _SyncScreenState extends State<SyncScreen> {
                       GestureDetector(
                         onTap: () async {
                           if (onlinemode.value) {
+                            currentlysyncing = true;
                             showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -139,6 +140,7 @@ class _SyncScreenState extends State<SyncScreen> {
                               await syncingsenddata();
                             }
                             progress.value = 50;
+                            currentlysyncing = true;
                             await syncingreferencedata();
                             progress.value = 100;
                             currentlysyncing = false;
@@ -241,7 +243,9 @@ class _SyncScreenState extends State<SyncScreen> {
                       ),
                     ],
                   ),
-
+                ),
+                drawer: Drawer(
+                  child: Menu(),
                 ),
                 body: OfflineNotification(
                   body: Stack(

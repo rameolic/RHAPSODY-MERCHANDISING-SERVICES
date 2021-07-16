@@ -76,13 +76,14 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     createlog("navigated to DashBoard","true");
     ischatscreen = 0;
-
     print("chatscreen from dshbrd: $ischatscreen");
+
     if(fromloginscreen){
       Future.delayed(
           const Duration(seconds: 2), ()async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var synctime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
+
         showDialog(
             context: context,
             builder: (_) => StatefulBuilder(
@@ -845,44 +846,58 @@ class _DashBoardState extends State<DashBoard> {
                     children: [
                       GestureDetector(
                         onTap: ()async{
-                          createlog("time sheet tapped","true");
-                          if(requireurlstosync != null) {
-                            if (requireurlstosync.length == 0) {
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              timesheet.empid = DBrequestdata.receivedempid;
-                              await getTimeSheetdaily();
-                              await gettimesheetmonthly();
+                          if(onlinemode.value){
+                                    createlog("time sheet tapped", "true");
+                                    SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    requireurlstosync =
+                                        prefs.getStringList('addtoserverurl');
+                                    if (requireurlstosync == null) {
+                                      requireurlstosync = [];
+                                    }
+                                    if (requireurlstosync.length == 0) {
+                                      setState(() {
+                                        isApiCallProcess = true;
+                                      });
+                                      timesheet.empid =
+                                          DBrequestdata.receivedempid;
+                                      await getTimeSheetdaily();
+                                      await gettimesheetmonthly();
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContextcontext) =>
-                                          TimeSheetList()));
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
-                            }else{
-                              Flushbar(
-                                message:
-                                "we have noticed some activities need to be synced in your account, please sync it and try again.",
-                                duration: Duration(seconds: 3),
-                              )..show(context);
-                            }
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContextcontext) =>
+                                                  TimeSheetList()));
+                                      setState(() {
+                                        isApiCallProcess = false;
+                                      });
+                                    } else {
+                                      Flushbar(
+                                        message:
+                                            "we have noticed some activities need to be synced in your account, please sync it and try again.",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                    }
+                                  }else{
+                            Flushbar(
+                              message:
+                              "Active internet required.",
+                              duration: Duration(seconds: 3),
+                            )..show(context);
                           }
-                        },
+                                },
                         child: Container(
                           height: 265,
                           width: MediaQuery.of(context).size.width/2.6,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
-                            color: containerscolor,
+                            color: onlinemode.value ?containerscolor:iconscolor,
                           ),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text('Time Sheet'),
+                                Text('Time Sheet',style: TextStyle(color:onlinemode.value ? iconscolor : containerscolor),),
                                 WorkingRow(
                                   icon: CupertinoIcons.calendar,
                                   chartext: "Attendence",
@@ -943,30 +958,42 @@ class _DashBoardState extends State<DashBoard> {
                           GestureDetector(
                             onTap: ()async{
                               createlog("leave tapped","true");
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await leaveData();
-                              await Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) => leavestatusPage()));
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
-                            },
+                              if(onlinemode.value){
+                                        setState(() {
+                                          isApiCallProcess = true;
+                                        });
+                                        await leaveData();
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        leavestatusPage()));
+                                        setState(() {
+                                          isApiCallProcess = false;
+                                        });
+                                      }else{
+                                Flushbar(
+                                  message:
+                                  "Active internet required.",
+                                  duration: Duration(seconds: 3),
+                                )..show(context);
+                              }
+                                    },
                             child: Container(
                               height: 120,
                               width: MediaQuery.of(context).size.width/1.75,
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
+                                color: onlinemode.value?containerscolor:iconscolor,
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("Leave "),
-                                  Text(DBResponsedatamonthly.leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
-                                  Text("Total Available Leave's"),
+                                  Text("Leave ",style: TextStyle(color:onlinemode.value ? iconscolor : containerscolor),),
+                                  Text(DBResponsedatamonthly.leavebalance.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,color:onlinemode.value ? iconscolor : containerscolor),),
+                                  Text("Total Available Leave's",style: TextStyle(color:onlinemode.value ? iconscolor : containerscolor),),
                                 ],
                               ),
                             ),
@@ -1012,6 +1039,12 @@ class _DashBoardState extends State<DashBoard> {
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         ChatUsersformerch()));
+                          }else{
+                            Flushbar(
+                              message:
+                              "Active internet required.",
+                              duration: Duration(seconds: 3),
+                            )..show(context);
                           }
                           },
                         child: Container(
@@ -1121,20 +1154,20 @@ class WorkingRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(icon),
+          Icon(icon,color:onlinemode.value ? iconscolor : containerscolor,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                chartext,
+                chartext,style: TextStyle(color:onlinemode.value ? iconscolor : containerscolor),
               ),
               Container(
                 height: 1,
                 width: 95,
-                color: Colors.black,
+                color: onlinemode.value ? iconscolor : containerscolor,
               ),
               Text(
-                numtext,
+                numtext,style: TextStyle(color:onlinemode.value ? iconscolor : containerscolor),
               ),
             ],
           )

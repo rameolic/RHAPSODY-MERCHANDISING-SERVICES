@@ -18,20 +18,18 @@ syncingsenddata()async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   lastsyncedon =  DateTime.parse(prefs.getString('lastsyncedondate'));
   requireurlstosync =  prefs.getStringList('addtoserverurl');
-  requirebodytosync =  prefs.getStringList('addtoserverbody');
-  message =  prefs.getStringList('addtoservermessage');
   print(lastsyncedon);
-  if(lastsyncedon!=null){
-    lastsyncedendtime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
-    difference = lastsyncedendtime.difference(DateTime.now());
-  }
-  if(requireurlstosync == null){
+  if(requireurlstosync!=null){
+    requireurlstosync =  prefs.getStringList('addtoserverurl');
+    requirebodytosync =  prefs.getStringList('addtoserverbody');
+    message =  prefs.getStringList('addtoservermessage');
+  }else{
     requireurlstosync=[];
     requirebodytosync=[];
     message =[];
-  };
+  }
   print("syncing current data");
-    if (requireurlstosync != [] && requireurlstosync != null && onlinemode.value) {
+    if (requireurlstosync != [] && requireurlstosync != null && onlinemode.value) {    
       for (int i = 0; i < requireurlstosync.length; i++) {
         progress.value++;
         http.Response response = await http.post(

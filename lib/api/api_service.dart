@@ -463,16 +463,9 @@ Future<bool> checkin() async {
     "checkin_time": "$checkintime",
     "checkin_location": "$checkinlocation",
   };
-  requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
-  requirebodytosync.add(jsonEncode(checkinoutresponse));
-  message.add("Checkin at $checkintime for the timesheet $checkid at $checkinlocation");
+  adddataforsync("https://rms2.rhapsody.ae/api/check_in_out",jsonEncode(checkinoutresponse),"Checkin at $checkintime for the timesheet $checkid at $checkinlocation");
   CreateLog("checked in $checkintime for the timesheet $checkid at $checkinlocation", "true");
-  print(requireurlstosync);
-  print(requirebodytosync);
-  print(message);
-  Adddatatoserver(requireurlstosync,requirebodytosync,message);
   checkindatasubmitted = true;
-
   // print(checkinoutresponse);
   // http.Response cicoresponse = await http.post(CICOurl,
   //   headers: {
@@ -500,15 +493,8 @@ Future<bool> checkin() async {
     "checkout_time": "$checkouttime",
     "checkout_location": "$checkoutlocation",
   };
-  print(checkinoutresponse);
-  requireurlstosync.add("https://rms2.rhapsody.ae/api/check_in_out");
-  requirebodytosync.add(jsonEncode(checkinoutresponse));
-  message.add("Checkout at $checkouttime for the timesheet $checkid at $checkoutlocation");
+  adddataforsync("https://rms2.rhapsody.ae/api/check_in_out",jsonEncode(checkinoutresponse),"Checkout at $checkouttime for the timesheet $checkid at $checkoutlocation");
   CreateLog("checked out $checkouttime for the timesheet $checkid at $checkoutlocation", "true");
-  print(requireurlstosync);
-  print(requirebodytosync);
-  print(message);
-  Adddatatoserver(requireurlstosync,requirebodytosync,message);
   gettodayjp.isscheduled[currentoutletindex] == 1 ?DBResponsedatadaily.ShedulevisitssDone++:DBResponsedatadaily.UnShedulevisitsDone++;
   gettodayjp.isscheduled[currentoutletindex] == 1 ?DBResponsedatamonthly.ShedulevisitssDone++:DBResponsedatamonthly.UnShedulevisitsDone++;
   checkoutdatasubmitted = true;
@@ -661,7 +647,6 @@ class task{
 
 Future merchbreak() async{
 
-
   Map breaktime =
   {
     "type" : splitbreak.type,
@@ -704,7 +689,6 @@ Future<void> getTotalJnyTime() async {
     },
     body: jsonEncode(DBrequestData),
   );
-
   if (SDResponse.statusCode == 200){
     print("get Total Journey Plan Done");
     String stores = SDResponse.body;
@@ -721,19 +705,13 @@ Future<void> getTotalJnyTime() async {
         TotalJnyTime.checkin.add(decodestores['data'][u]['checkin_time']);
       }
       if(decodestores['data'][u]['checkout_time']==null){
-        TotalJnyTime.checkout.add("Check out not registered");
+        TotalJnyTime.checkout.add("Session ended without checkout by user");
       }
       else{
         TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
       }
-
-
-
-
-
     }
   }
-
   if(SDResponse.statusCode != 200){
     print(SDResponse.statusCode);
   }
@@ -760,13 +738,8 @@ Future addforeccheckin() async{
     "reason" : forcecheck.reason,
 
   };
-  print(jsonEncode(forceci));
-  requireurlstosync.add("https://rms2.rhapsody.ae/api/add_force_checkin");
-  requirebodytosync.add(jsonEncode(forceci));
-  message.add("Checkin type ${forcecheck.reason} for the timesheet $currenttimesheetid");
+  adddataforsync("https://rms2.rhapsody.ae/api/add_force_checkin",jsonEncode(forceci),"Checkin type ${forcecheck.reason} for the timesheet $currenttimesheetid");
   Adddatatoserver(requireurlstosync,requirebodytosync,message);
-
-
    //http.Response response = await http.post(ForceCIReason,
   //   headers: {
   //     'Content-Type': 'application/json',
@@ -798,16 +771,17 @@ Future outletsurvey() async{
     "compitetorinfo":OutletSurveySubmit.competitor,
     "stockexpiry":OutletSurveySubmit.stockexpiry,
   };
-  print(jsonEncode(outsvy));
-  http.Response response = await http.post(OutletSurvey,
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
-    },
-    body: jsonEncode(outsvy),
-  );
-  print(response.body);
+  adddataforsync("https://rms2.rhapsody.ae/api/add_outlet_survey",jsonEncode(outsvy),"outlet survey data");
+
+   //http.Response response = await http.post(OutletSurvey,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+  //   },
+  //   body: jsonEncode(outsvy),
+  // );
+  // print(response.body);
 }
 class OutletSurveySubmit{
   static var availability;

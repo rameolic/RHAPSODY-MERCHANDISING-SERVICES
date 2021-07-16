@@ -76,6 +76,7 @@ syncingreferencedata()async {
       await DBRequestdaily();
       await callfrequently();
       getempdetails();
+      getallempdetails();
       getaddedexpiryproducts();
       getstockexpiryproducts();
       getempdetailsforreport();

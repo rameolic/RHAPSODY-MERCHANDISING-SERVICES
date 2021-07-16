@@ -6,9 +6,10 @@ import 'package:merchandising/Constants.dart';
 import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 Future getallempdetails() async{
   String empdata;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  empdata = prefs.getString('allemployees');
   if(empdata == null|| currentlysyncing){
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    empdata = prefs.getString('allemployees');
+    print('online employess mode');
     Map DBrequestData = {'emp_id': '${DBrequestdata.receivedempid}'};
     http.Response EmpReport = await http.post(
       empdetailsurl,
@@ -53,6 +54,7 @@ Future getallempdetails() async{
       print(employees.FMTSempid);
     }
   }else{
+    print('offline employess mode');
     var decodedempdata = jsonDecode(empdata);
     employees.fullname = [];
     employees.rolename = [];

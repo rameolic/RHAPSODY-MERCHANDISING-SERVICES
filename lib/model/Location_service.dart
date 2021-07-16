@@ -54,7 +54,6 @@ class getaddress {
 
  SubmitCheckin() async {
    createlog("Check In tapped","true");
-  if(onlinemode.value) {
     try{
       await getLocation();
       print(lat);
@@ -66,20 +65,13 @@ class getaddress {
       checkinoutdata.checkinlocation = "${getaddress.currentaddress}($lat,$long)";
       await checkin();
     }catch(e){
+      await getLocation();
       createlog("address issue at online mode : ", "false");
       var now = DateTime.now();
       checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
-      print(checkinoutdata.checkintime);
-      checkinoutdata.checkinlocation = "offline unable to get location";
+      checkinoutdata.checkinlocation = "offline mode unable to get address ($lat,$long)";
       await checkin();
     }
-  }else{
-    var now = DateTime.now();
-    checkinoutdata.checkintime = DateFormat('HH:mm:ss').format(now);
-    print(checkinoutdata.checkintime);
-    checkinoutdata.checkinlocation = "offline unable to get location";
-    await checkin();
-  }
 
  }
 

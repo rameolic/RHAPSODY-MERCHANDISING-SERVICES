@@ -11,34 +11,38 @@ import 'api/FMapi/nbl_detailsapi.dart';
 import 'package:flushbar/flushbar.dart';
 import 'dart:ui';
 import 'package:open_file/open_file.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'package:intl/intl.dart';
 import 'package:merchandising/offlinedata/sharedprefsdta.dart';
+import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-List<String>logreportstatus=[];
+
+List<String> logreportstatus = [];
 ValueNotifier<bool> onlinemode = new ValueNotifier(true);
 ValueNotifier<int> progress = new ValueNotifier(0);
 bool currentlysyncing = false;
-List<String>logreport=[];
-List<String>logtime=[];
+List<String> logreport = [];
+List<String> logtime = [];
 
-createlog(message,status)async{
+createlog(message, status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   logreport = prefs.getStringList('logdata');
-  if(logreport == null){
-    logreport=[];
-    logreportstatus=[];
-    logtime=[];
-  }else{
+  if (logreport == null) {
+    logreport = [];
+    logreportstatus = [];
+    logtime = [];
+  } else {
     logtime = prefs.getStringList('logtime');
     logreportstatus = prefs.getStringList('status');
   }
-  if(logreport.length<500) {
+  if (logreport.length < 500) {
     logreport.add(message);
     logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
     logreportstatus.add(status);
     await savelogreport(logreport, logtime, logreportstatus);
-  }else{
+  } else {
     //removelogdatafromlocal();
     logreport.removeAt(0);
     logtime.removeAt(0);
@@ -50,8 +54,8 @@ createlog(message,status)async{
   }
 }
 
-
-String nblfile=Uri.encodeFull("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+String nblfile = Uri.encodeFull(
+    "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
 
 //bool onlinemode = true;
 //bool alreadycheckedin = false;
@@ -80,6 +84,7 @@ class BackGround extends StatelessWidget {
 }
 
 String outletid = chekinoutlet.checkinoutletid;
+
 //ignore: must_be_immutable
 class OutletDetails extends StatelessWidget {
   String outletname = chekinoutlet.checkinoutletname;
@@ -94,8 +99,7 @@ class OutletDetails extends StatelessWidget {
       margin: EdgeInsets.all(10.0),
       padding: EdgeInsets.all(5.00),
       decoration: BoxDecoration(
-          color: pink,
-          borderRadius: BorderRadiusDirectional.circular(10)),
+          color: pink, borderRadius: BorderRadiusDirectional.circular(10)),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -104,7 +108,8 @@ class OutletDetails extends StatelessWidget {
             SizedBox(width: 10.0),
             Icon(
               Icons.house_sharp,
-              color: iconscolor,size: 40,
+              color: iconscolor,
+              size: 40,
             ),
             SizedBox(width: 5.0),
             Column(
@@ -115,13 +120,13 @@ class OutletDetails extends StatelessWidget {
                   children: [
                     Text(
                       "[$outletid]",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,fontSize:16 ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     Text(
                       outletname,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,fontSize:16),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 ),
@@ -154,6 +159,7 @@ class OfflineNotification extends StatefulWidget {
   @override
   _OfflineNotificationState createState() => _OfflineNotificationState();
 }
+
 class _OfflineNotificationState extends State<OfflineNotification> {
   @override
   Widget build(BuildContext context) {
@@ -161,64 +167,62 @@ class _OfflineNotificationState extends State<OfflineNotification> {
       connectivityBuilder: (BuildContext context,
           ConnectivityResult connectivity, Widget child) {
         final bool connected = connectivity != ConnectivityResult.none;
-        if(connected){
-          Future.delayed(const Duration(seconds:1), () {
-
-              onlinemode.value = true;
-
-          });}else{
-          Future.delayed(const Duration(seconds:1), () {
-            createlog("entered to Offline mode","true");
-
+        if (connected) {
+          Future.delayed(const Duration(seconds: 1), () {
+            onlinemode.value = true;
+          });
+        } else {
+          Future.delayed(const Duration(seconds: 1), () {
+            createlog("entered to Offline mode", "true");
             onlinemode.value = false;
-
           });
         }
         return Stack(
           fit: StackFit.expand,
           children: [
             child,
-            onlinemode.value ?  SizedBox():Positioned(
-              left: 0.0,
-              right: 0.0,
-              height: 32.0,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                color:
-                connected ? orange : Color(0xFFEE4400),
-                child: connected
-                    ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "ONLINE",
-                      style: TextStyle(color: Colors.white),
+            onlinemode.value
+                ? SizedBox()
+                : Positioned(
+                    left: 0.0,
+                    right: 0.0,
+                    height: 32.0,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      color: connected ? orange : Color(0xFFEE4400),
+                      child: connected
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "ONLINE",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "OFFLINE",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                SizedBox(
+                                  width: 8.0,
+                                ),
+                                SizedBox(
+                                  width: 12.0,
+                                  height: 12.0,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.0,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
                     ),
-                  ],
-                )
-                    : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "OFFLINE",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    SizedBox(
-                      width: 12.0,
-                      height: 12.0,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.0,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
+                  )
           ],
         );
       },
@@ -228,8 +232,8 @@ class _OfflineNotificationState extends State<OfflineNotification> {
 }
 
 class Containerblock extends StatelessWidget {
-  Containerblock({this.numbertext, this.chartext,
-    this.color, this.icon,this.width});
+  Containerblock(
+      {this.numbertext, this.chartext, this.color, this.icon, this.width});
   final icon;
   final color;
   final numbertext;
@@ -258,14 +262,16 @@ class Containerblock extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                numbertext,style: TextStyle(fontSize: 20),
+                numbertext,
+                style: TextStyle(fontSize: 20),
               ),
               SizedBox(height: 10),
               FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text(
                   chartext,
-                  textAlign: TextAlign.center,style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12),
                 ),
               ),
             ],
@@ -285,15 +291,30 @@ class EmpInfo extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              Text('${DBrequestdata.empname}(${DBrequestdata.receivedempid})'
-                ,style: TextStyle(fontSize: 8.0,color: orange),),
-              if(currentuser.roleid == 5)
-                Text('-FMS',style: TextStyle(fontSize: 8.0,color: orange),)
-              else if(currentuser.roleid == 6)
-                Text('-MRCHv3.3.1',
-                  style: TextStyle(fontSize: 8.0, color: orange),)
-              else if(currentuser.roleid == 3)Text('- HR',style: TextStyle(fontSize: 8.0, color: orange),)
-              else Text('- Client',style: TextStyle(fontSize: 8.0, color: orange),)
+              Text(
+                '${DBrequestdata.empname}(${DBrequestdata.receivedempid})',
+                style: TextStyle(fontSize: 8.0, color: orange),
+              ),
+              if (currentuser.roleid == 5)
+                Text(
+                  '-FMS',
+                  style: TextStyle(fontSize: 8.0, color: orange),
+                )
+              else if (currentuser.roleid == 6)
+                Text(
+                  '-MRCHv3.3.1',
+                  style: TextStyle(fontSize: 8.0, color: orange),
+                )
+              else if (currentuser.roleid == 3)
+                Text(
+                  '- HR',
+                  style: TextStyle(fontSize: 8.0, color: orange),
+                )
+              else
+                Text(
+                  '- Client',
+                  style: TextStyle(fontSize: 8.0, color: orange),
+                )
             ],
           ),
         ),
@@ -302,72 +323,75 @@ class EmpInfo extends StatelessWidget {
   }
 }
 
-bool regularcheckout= true;
+bool regularcheckout = true;
 bool rmsdownloadsexists = false;
 bool filealreadyexists = false;
+
 class NBlFloatingButton extends StatefulWidget {
   @override
   _NBlFloatingButtonState createState() => _NBlFloatingButtonState();
 }
+
 class _NBlFloatingButtonState extends State<NBlFloatingButton> {
   Offset _dragOffset = Offset(0, 0);
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: _dragOffset.dx+MediaQuery.of(context).size.width /1.2,
-      top: _dragOffset.dy+40,
+      left: _dragOffset.dx + MediaQuery.of(context).size.width / 1.2,
+      top: _dragOffset.dy + 40,
       child: Draggable(
-        child:Container(
-            child : FloatingActionButton(
-              heroTag: "btn1",
-              onPressed: ()async{
-                createlog("NBL icon tapped tapped","true");
-                print("nbl file: ${NBLDetData.fileurl.toString()}");
-                if(NBLDetData.fileurl.toString()!="[]") {
-                  print("https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl
-                      .last}");
-                  print(nblfile);
-                  if (Platform.isAndroid) {
-                    filealreadyexists = await File(
-                        "/storage/emulated/0/Download/${NBLDetData.fileurl
-                            .last}").exists();
-                    print(filealreadyexists);
-                    if (filealreadyexists) {
-                      OpenFile.open(
-                          "/storage/emulated/0/Download/${NBLDetData.fileurl
-                              .last}");
-                    } else {
-                      print("here");
-                      await launch(
-                          "https://rms2.rhapsody.ae/nbl_file/${NBLDetData
-                              .fileurl.last}");
-                    }
-                  } else if (Platform.isIOS) {
-                    _launchURL();
-                  }
-                }else{
-                  Flushbar(
-                    message:
-                    "Nbl Not Found",
-                    duration: Duration(seconds: 3),
-                  )..show(context);
+        child: Container(
+            child: FloatingActionButton(
+          heroTag: "btn1",
+          onPressed: () async {
+            createlog("NBL icon tapped tapped", "true");
+            print("nbl file: ${NBLDetData.fileurl.toString()}");
+            if (NBLDetData.fileurl.toString() != "[]") {
+              print(
+                  "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+              print(nblfile);
+              if (Platform.isAndroid) {
+                filealreadyexists = await File(
+                        "/storage/emulated/0/Download/${NBLDetData.fileurl.last}")
+                    .exists();
+                print(filealreadyexists);
+                if (filealreadyexists) {
+                  OpenFile.open(
+                      "/storage/emulated/0/Download/${NBLDetData.fileurl.last}");
+                } else {
+                  print("here");
+                  await launch(
+                      "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
                 }
-              },
-              child: Text("NBL",style: TextStyle(color: pink),),
-              backgroundColor: orange,)
+              } else if (Platform.isIOS) {
+                _launchURL();
+              }
+            } else {
+              Flushbar(
+                message: "Nbl Not Found",
+                duration: Duration(seconds: 3),
+              )..show(context);
+            }
+          },
+          child: Text(
+            "NBL",
+            style: TextStyle(color: pink),
+          ),
+          backgroundColor: orange,
+        )),
+        childWhenDragging: Container(
+          child: Text(""),
         ),
-        childWhenDragging:Container(
-          child : Text(""),
-        ),
-        feedback:Container(
-            child : FloatingActionButton(
-              heroTag: "btn2",
-              onPressed: (){
-
-              },
-              child: Text("NBL",style: TextStyle(color: pink),),
-              backgroundColor: orange,)
-        ),
+        feedback: Container(
+            child: FloatingActionButton(
+          heroTag: "btn2",
+          onPressed: () {},
+          child: Text(
+            "NBL",
+            style: TextStyle(color: pink),
+          ),
+          backgroundColor: orange,
+        )),
         onDragEnd: (drag) {
           RenderBox renderBox = context.findRenderObject();
           onDragEnd(renderBox.globalToLocal(drag.offset));
@@ -375,6 +399,7 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
       ),
     );
   }
+
   void onDragEnd(Offset offset) {
     setState(() {
       _dragOffset += offset;
@@ -382,7 +407,29 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
   }
 }
 
-void _launchURL() async =>
-    await canLaunch(nblfile) ? await launch(nblfile) : throw 'Could not launch $nblfile';
-bool loaded=false;
+void _launchURL() async => await canLaunch(nblfile)
+    ? await launch(nblfile)
+    : throw 'Could not launch $nblfile';
+bool loaded = false;
 
+adddataforsync(url, body, comment) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  requireurlstosync = prefs.getStringList('addtoserverurl');
+  if (requireurlstosync == null) {
+    requireurlstosync = [];
+    requirebodytosync = [];
+    message = [];
+    requireurlstosync.add(url);
+    requirebodytosync.add(body);
+    message.add(comment);
+    Adddatatoserver(requireurlstosync, requirebodytosync, message);
+  } else {
+    requireurlstosync = prefs.getStringList('addtoserverurl');
+    requirebodytosync = prefs.getStringList('addtoserverbody');
+    message = prefs.getStringList('addtoservermessage');
+    requireurlstosync.add(url);
+    requirebodytosync.add(body);
+    message.add(comment);
+    Adddatatoserver(requireurlstosync, requirebodytosync, message);
+  }
+}
