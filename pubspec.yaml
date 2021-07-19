@@ -57,6 +57,7 @@ dependencies:
   flutter_offline: ^2.0.0
   enough_mail:
   getwidget: ^2.0.3
+  syncfusion_flutter_charts: ^19.2.44+1
 
 dev_dependencies:
   flutter_test:

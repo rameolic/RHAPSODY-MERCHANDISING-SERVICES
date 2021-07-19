@@ -1,139 +1,126 @@
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import '../Constants.dart';
 import 'package:merchandising/api/monthlyvisitschart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import "package:merchandising/Constants.dart";
 
-class BarChatData extends StatelessWidget {
-  final barcolor = Colors.white;
+
+class BarChatData extends StatefulWidget {
+  @override
+  _BarChatDataState createState() => _BarChatDataState();
+}
+
+class _BarChatDataState extends State<BarChatData> {
+  final LinearGradient _linearGradient = LinearGradient(
+    colors: <Color>[
+      orange,
+      pink
+    ],
+    stops: <double>[0.1,0.5],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+  );
+
+  final LinearGradient _linearGradientexp = LinearGradient(
+    colors: <Color>[
+      iconscolor,
+      Colors.grey[400],
+    ],
+    stops: <double>[0.1, 0.5],
+    begin: Alignment.bottomLeft,
+    end: Alignment.topRight,
+  );
+  List<ChartData> data = [
+    ChartData('Jan',visits.jan,expectedvisits.jan),
+    ChartData('Feb',visits.feb,expectedvisits.feb),
+    ChartData('Mar',visits.mar,expectedvisits.mar),
+    ChartData('Apr',visits.apr,expectedvisits.apr),
+    ChartData('May',visits.may,expectedvisits.may),
+    ChartData('Jun',visits.jun,expectedvisits.jun),
+    ChartData('Jul',visits.jul,expectedvisits.jul),
+    ChartData('Aug',visits.aug,expectedvisits.aug),
+    ChartData('Sep',visits.sep,expectedvisits.sep),
+    ChartData('Oct',visits.oct,expectedvisits.oct),
+    ChartData('Nov',visits.nov,expectedvisits.nov),
+    ChartData('Dec',visits.dec,expectedvisits.dec),
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Text(
-          "Monthly No. of Visits",
-          style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold,color: orange),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 1.05,
+          height: MediaQuery.of(context).size.height / 4,
+          child: SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              series: <CartesianSeries>[
+                ColumnSeries<ChartData, String>(
+                 //gradient: _linearGradientexp,
+                  color: iconscolor,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),topRight: Radius.circular(10.0)),
+                    dataSource: data,
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y1
+                ),
+                ColumnSeries<ChartData, String>(
+                    //gradient: _linearGradient,
+                  color: orange,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),topRight: Radius.circular(10.0)),
+                    dataSource: data,
+                    xValueMapper: (ChartData data, _) => data.x,
+                    yValueMapper: (ChartData data, _) => data.y
+                ),
+              ]
+          ),
         ),
-        Container(
-          height: MediaQuery.of(context).size.height/4,
-          child: SurveyChart(data: [
-            ChartData(
-              month: "JAN",
-              visits: visits.jan,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "FEB",
-              visits: visits.feb,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "MAR",
-              visits: visits.mar,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "APR",
-              visits: visits.apr,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "MAY",
-              visits: visits.may,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "JUN",
-              visits: visits.jun,
-              barColor: charts.ColorUtil.fromDartColor(barcolor ),
-            ),
-            ChartData(
-              month: "JUL",
-              visits: visits.jul,
-              barColor: charts.ColorUtil.fromDartColor(barcolor ),
-            ),
-            ChartData(
-              month: "AUG",
-              visits: visits.aug,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "SEP",
-              visits: visits.sep,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "OCT",
-              visits: visits.oct,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "NOV",
-              visits: visits.nov,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-            ChartData(
-              month: "DEC",
-              visits: visits.dec,
-              barColor: charts.ColorUtil.fromDartColor(barcolor),
-            ),
-
-          ],),
+        Padding(
+          padding: const EdgeInsets.only(right: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text("Monthly Visits"),
+              Container(
+                margin: EdgeInsets.only(left:10.0,right: 5.0),
+                height: 10,
+                width: 10,
+                decoration: BoxDecoration(gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xffffa726), Color(0xfffb8c00)])),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 10.0,bottom: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text("Monthly Expected Visits"),
+              Container(
+                margin: EdgeInsets.only(left:10.0,top: 5.0,right: 5.0),
+                height: 10,
+                width: 10,
+                color: iconscolor,
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
+
 }
-
-
-
-
-
-class Task {
-  String task;
-  String taskValue;
-  Color colour;
-
-  Task(this.colour, this.task, this.taskValue);
-}
-
-class SurveyChart extends StatelessWidget {
-  final List<ChartData> data;
-
-  SurveyChart({@required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    List<charts.Series<ChartData, String>> series = [
-      charts.Series(
-          id: "Subscribers",
-          data: data,
-          domainFn: (ChartData series, _) => series.month,
-          measureFn: (ChartData series, _) => series.visits,
-          colorFn: (ChartData series, _) => series.barColor),
-    ];
-    return Card(
-      elevation: 0,
-      color: pink,
-      child: ShaderMask(
-        child: charts.BarChart(series, animate: true),
-        shaderCallback: (Rect bounds){
-          return LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFFB4B5B9),Color(0xFFF58426)]).createShader(bounds);
-        },
-      ),
-    );
-  }
-}
-
 class ChartData {
-  final String month;
-  final int visits;
-  final charts.Color barColor;
+  ChartData(this.x, this.y, this.y1,);
+  final String x;
+  final int y;
+  final int y1;
 
-  ChartData(
-      {@required this.month, @required this.visits, @required this.barColor});
 }
+
+
+
+
+

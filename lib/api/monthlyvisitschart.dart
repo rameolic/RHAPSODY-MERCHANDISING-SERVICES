@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'api_service.dart';
 import 'package:merchandising/api/api_service.dart';
 class chartoutletid{
   static var outlet;
 }
-Future getchartdetails() async{
+Future getchartdetails() {
   // Map ODrequestDataforcheckin = {
   //   'outlet_id': '${chartoutletid.outlet}',
   // };
@@ -34,7 +33,7 @@ Future getchartdetails() async{
     visits.oct = decodedchartdata["data"][9]['count'];
     visits.nov  = decodedchartdata["data"][10]['count'];
     visits.dec = decodedchartdata["data"][11]['count'];
-    return visits.dec;
+
   //}
 //   if(BCResponse.statusCode != 200){
 //     print(BCResponse.statusCode);
@@ -55,4 +54,41 @@ class visits{
   static int oct;
   static int nov;
   static int dec;
+}
+
+
+
+
+
+class expectedvisits{
+  static int jan;
+  static int feb;
+  static int mar;
+  static int apr;
+  static int may;
+  static int jun;
+  static int jul;
+  static int aug;
+  static int sep;
+  static int oct;
+  static int nov;
+  static int dec;
+}
+
+ expectectedvistschart(){
+  String chartdata = outletEvisitsdata[currentoutletindex];
+  var decodedchartdata = jsonDecode(chartdata);
+  expectedvisits.jan =decodedchartdata["data"][0]['count'];
+  expectedvisits.feb =decodedchartdata["data"][1]['count'];
+  expectedvisits.mar = decodedchartdata["data"][2]['count'];
+  expectedvisits.apr = decodedchartdata["data"][3]['count'];
+  expectedvisits.may = decodedchartdata["data"][4]['count'];
+  expectedvisits.jun  = decodedchartdata["data"][5]['count'];
+  expectedvisits.jul  = decodedchartdata["data"][6]['count'];
+  expectedvisits.aug  = decodedchartdata["data"][7]['count'];
+  expectedvisits.sep  = decodedchartdata["data"][8]['count'];
+  expectedvisits.oct = decodedchartdata["data"][9]['count'];
+  expectedvisits.nov  = decodedchartdata["data"][10]['count'];
+  expectedvisits.dec = decodedchartdata["data"][11]['count'];
+  return expectedvisits.dec;
 }

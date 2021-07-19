@@ -237,9 +237,17 @@ class _OutLetState extends State<OutLet> {
                             SizedBox(
                               height: 10,
                             ),
-                            OutLetContainer(
+                          Center(
+                            child: Container(
+                              padding: EdgeInsets.only(top:10.0),
+                              width: MediaQuery.of(context).size.width / 1.05,
+                              decoration: BoxDecoration(
+                                color: pink,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: BarChatData(),
                             ),
+                          ),
                             SizedBox(
                               height: 30,
                             ),

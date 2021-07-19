@@ -58,6 +58,7 @@ syncingreferencedata()async {
       getJourneyPlanweekly();
       getSkipJourneyPlanweekly();
       getVisitJourneyPlanweekly();
+      Expectedchartvisits();
       chartvisits();
       await getalljpoutletsdata();
       progress.value = 90;
@@ -89,6 +90,7 @@ syncingreferencedata()async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       offlineoutletdeatiles = prefs.getStringList('alljpoutlets');
       outletvisitsdata = prefs.getStringList('alljpoutletschart');
+      outletEvisitsdata = prefs.getStringList('alljpoutletsEchart');
       const time = const Duration(seconds: 120);
       Timer.periodic(time, (Timer t) => callfrequently());
     }
@@ -141,5 +143,28 @@ chartvisits()async{
     }
   }
   Addjpoutletschartdetailesdata(outletvisitsdata);
+}
+
+Expectedchartvisits()async{
+  outletEvisitsdata=[];
+  for(int i=0;i<gettodayjp.outletids.length;i++){
+    int outletid = gettodayjp.outletids[i];
+    Map ODrequestDataforcheckin = {
+      'outlet_id': outletid,
+    };
+    print(ODrequestDataforcheckin);
+    http.Response OCResponse = await http.post(expectedvisitchart,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
+      },
+      body: jsonEncode(ODrequestDataforcheckin),
+    );
+    if(OCResponse.statusCode == 200){
+      outletEvisitsdata.add(OCResponse.body);
+    }
+  }
+  AddjpoutletsEchartdetailesdata(outletEvisitsdata);
 }
 

@@ -599,7 +599,9 @@ class _State extends State<JourneyListBuilder> {
                     checkinoutdata.checkid = gettodayjp.id[index];
                     currenttimesheetid = gettodayjp.id[index];
                     currentoutletid = gettodayjp.outletids[index];
+                    print("check1");
                     var data = await outletwhencheckin();
+                    print("check2");
                     setState(() {
                       isApiCallProcess = false;
                     });

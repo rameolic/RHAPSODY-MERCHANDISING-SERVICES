@@ -20,6 +20,7 @@ bool checkoutrequested =false;
 bool checkinrequested =false;
 
 int comid;
+Uri expectedvisitchart = Uri.parse("https://rms2.rhapsody.ae/api/outlet_expected_outlet_chart");
 Uri OutletSurvey = Uri.parse("https://rms2.rhapsody.ae/api/add_outlet_survey");
 Uri deltimesheet = Uri.parse("https://rms2.rhapsody.ae/api/delete_journeyplan");
 Uri ShareofshelfDetails = Uri.parse("https://rms2.rhapsody.ae/api/share_of_shelf_details");
@@ -386,6 +387,7 @@ class chekinoutlet{
 
 int currentoutletindex;
 List<String>outletvisitsdata=[];
+List<String>outletEvisitsdata=[];
 List<String> offlineoutletdeatiles = [];
 int outletselectedfordetails;
 Future outletwhencheckin() async {
@@ -425,7 +427,9 @@ Future outletwhencheckin() async {
       chekinoutlet.currentdistance = Geolocator.distanceBetween(
           lat, long, double.parse(chekinoutlet.checkinlat),
           double.parse(chekinoutlet.checkinlong));
-      return getchartdetails();
+       getchartdetails();
+
+      return expectectedvistschart();
     // }
     //
     // if (OCresponse.statusCode != 200) {

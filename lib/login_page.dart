@@ -211,6 +211,7 @@ class _LoginPageState extends State<LoginPage> {
                                           var DBMresult =  DBRequestmonthly();
                                           await getJourneyPlan();
                                           chartvisits();
+                                          Expectedchartvisits();
                                           getempdetails();
                                           getallempdetails();
                                           getaddedexpiryproducts();
@@ -256,7 +257,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         HRdashboard()));
                                           }
                                         }
-                                        else if (userroleid == 5){
+                                        else if (userroleid == 5 ||userroleid == 2){
                                           addattendence();
                                           getFMdb();
                                           getempdetails();

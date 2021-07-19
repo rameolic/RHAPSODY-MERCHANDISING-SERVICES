@@ -60,6 +60,10 @@ Addjpoutletschartdetailesdata(data)async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setStringList("alljpoutletschart",data);
 }
+AddjpoutletsEchartdetailesdata(data)async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setStringList("alljpoutletsEchart",data);
+}
 addempdetailesdata(data)async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("empdetails",data);
