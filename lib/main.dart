@@ -40,12 +40,15 @@ import'package:merchandising/api/clientapi/outletreport.dart';
 import 'clients/client_dashboard.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/Constants.dart';
+
+
+/// start of the application.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  /// initializing firebase at the start of the app.
   await Firebase.initializeApp();
-  // await FlutterDownloader.initialize(
-  //     debug: true // optional: set false to disable printing logs to console
-  // );
+  /// opening the app without login screen.
+  /// trying to check if any email or password has been stored in the local storage.
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var email = prefs.getString('useremail');
   var password = prefs.getString('userpassword');
@@ -53,18 +56,28 @@ Future<void> main() async {
   remembereddata.password = password;
   print("rememberme : $email");
   print("rememberme : $password");
+  /// if email and password are stored, then it will go through this loop
   if(email != null && password != null) {
     fromloginscreen = true;
+    ///make sure we receive token and empid before calling other api's
+    /// so await for login api.
     int userroleid = await loginapi();
+    ///login api will return a role id.
+    /// based on the role id we will navigate to that role id dashboard
     currentuser.roleid = userroleid;
     print(userroleid);
+    ///merchandiser's role id is 6
     if(userroleid == 6){
+      /// first we are trying to get any unsynced data that was in the local storage.
       message = prefs.getStringList('addtoservermessage');
       requireurlstosync = prefs.getStringList('addtoserverurl');
       requirebodytosync = prefs.getStringList('addtoserverbody');
+      ///fetch all the reference data from the local.
       await syncingreferencedata();
+      ///once app is up and running for every 20 minutes we are trying to get reference data.
       const time = const Duration(minutes: 20);
       Timer.periodic(time, (Timer t) => syncingreferencedata());
+      ///once app is up and running for every 15 minutes we are trying to get sync data.
       const period = const Duration(minutes: 15);
       Timer.periodic(period, (Timer t) => syncingsenddata());
       runApp(MaterialApp(
@@ -77,6 +90,7 @@ Future<void> main() async {
           home:  DashBoard()
       ));
     }
+    /// HR role id is 3
     else if(userroleid == 3){
       await HRdb();
       await getempdetails();
@@ -90,7 +104,10 @@ Future<void> main() async {
           home: HRdashboard()
       ));
     }
-    else if(userroleid == 5){
+    /// field manager role id is 5.
+    /// CDE's role id is 2.
+    /// requesting all the data that is required for fm.
+    else if(userroleid == 5||userroleid == 2){
       getempdetails();
       getWeekoffdetails();
       getBrandDetails();
@@ -106,10 +123,8 @@ Future<void> main() async {
       getRelieverDetails();
       OutletsForClient();
       await getFMoutletdetails();
-
-
       runApp(MaterialApp(
-          title: 'Rhapsody merchandising solutions',
+          title: 'Rhapsody merchandising services',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: 'Poppins',
@@ -118,6 +133,7 @@ Future<void> main() async {
           home: FieldManagerDashBoard()
       ));
     }
+    /// client role id is 7
     else if (userroleid == 7){
       await OutletsForClient();
       await getallempdetails();
@@ -145,6 +161,7 @@ Future<void> main() async {
     }
   }
   else{
+    ///if no email or password found it will open login page.
     runApp(MaterialApp(
         title: 'Rhapsody merchandising solutions',
         debugShowCheckedModeBanner: false,

@@ -13,7 +13,6 @@ import 'api/FMapi/relieverdet_api.dart';
 import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'package:merchandising/main.dart';
-import 'model/Location_service.dart';
 import 'package:merchandising/api/empdetailsapi.dart';
 import 'api/HRapi/empdetailsforreportapi.dart';
 import 'dart:async';
@@ -31,7 +30,6 @@ import 'package:merchandising/api/FMapi/product_detailsapi.dart';
 import'package:merchandising/api/FMapi/outlet brand mappingapi.dart';
 import 'package:merchandising/clients/client_dashboard.dart';
 import 'api/clientapi/outletreport.dart';
-import'package:merchandising/api/HRapi/empdetailsapi.dart';
 import 'offlinedata/syncsendapi.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/journeyplanapi.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
@@ -47,36 +45,26 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool rememberMe = false;
-
-  void _onRememberMeChanged(bool newValue) => setState(() {
-
-        rememberMe = newValue;
-
-        if (rememberMe) {
-          // TODO: Here goes your functionality that remembers the user.
-
-        }
-      });
   bool hidePassword = true;
   bool isApiCallProcess = false;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController emailinputcontroller = TextEditingController();
-  static TextEditingController passwordinputcontroller =
-      TextEditingController();
-
+  static TextEditingController passwordinputcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    /// ProgressHUD is a custom widget created to show loading screen.
     return ProgressHUD(
       child: _uiSetup(context),
       inAsyncCall: isApiCallProcess,
       opacity: 0.3,
     );
   }
-
   Widget _uiSetup(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        /// the below code is because text field will triggered automatically.
+        /// with the help of the below line keyboard will show only if textfield got tapped.
         FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus) {
           currentFocus.unfocus();
@@ -84,7 +72,6 @@ class _LoginPageState extends State<LoginPage> {
       },
       child: Scaffold(
         key: scaffoldKey,
-
          // backgroundColor: Theme.of(context).accentColor,
         body: Stack(
           children: [
@@ -187,10 +174,15 @@ class _LoginPageState extends State<LoginPage> {
                                 SizedBox(height: 30),
                                 GestureDetector(
                                   onTap: () async {
+                                    /// validate and save function will return a bool
+                                    /// it will for the validation conditions given for the text field.
                                     if (validateAndSave()) {
                                       setState(() {
                                         isApiCallProcess = true;
                                       });
+                                      /// it will tell login api to consider
+                                      /// email and password typed in the login page
+                                      /// if not login api will try get locally stored email and password.
                                       loginfromloginpage = true;
                                       loginrequestdata.inputemail = emailinputcontroller.text;
                                       loginrequestdata.inputpassword =passwordinputcontroller.text;
@@ -199,12 +191,15 @@ class _LoginPageState extends State<LoginPage> {
                                           fromloginscreen = true;
                                           var date = DateTime.now();
                                           var starttime = DateTime.now();
+                                          ///this below will make sure to get latest data from online instead
+                                          /// of accessing data from local.
                                           currentlysyncing = true;
                                         int userroleid = await loginapi();
                                         currentuser.roleid = userroleid;
                                         print(userroleid);
                                         if(userroleid!=null){
                                           print("logindetails added");
+                                          /// this function will store email and password of the user in local
                                           addLogindetails();
                                         }
                                         if (userroleid == 6) {
@@ -226,13 +221,15 @@ class _LoginPageState extends State<LoginPage> {
                                           await getalljpoutletsdata();
                                           await callfrequently();
                                           var DBDresult =  await DBRequestdaily();
-                                          const time = const Duration(minutes: 30);
+                                          ///once app is up and running for every 20 minutes we are trying to get reference data.
+                                          const time = const Duration(minutes: 20);
                                           Timer.periodic(time, (Timer t) => syncingreferencedata());
+                                          ///once app is up and running for every 15 minutes we are trying to send sync data.
                                           const period = const Duration(minutes: 15);
                                           Timer.periodic(period, (Timer t) => syncingsenddata());
                                           const hat = const Duration(seconds: 120);
+                                          ///once app is up and running for every 2 minutes we are trying to get location and distance.
                                           Timer.periodic(hat, (Timer t) => callfrequently());
-
                                           var endtime = DateTime.now();
                                           await lastsynced(date, starttime, endtime);
                                           if (DBMresult != null && DBDresult != null) {
@@ -244,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                                             DashBoard()));
                                           }
                                         }
+                                        /// HR role id is 3.
                                         else if(userroleid == 3){
                                           await getempdetails();
                                           int result = await HRdb();
@@ -257,6 +255,9 @@ class _LoginPageState extends State<LoginPage> {
                                                         HRdashboard()));
                                           }
                                         }
+                                        /// field manager role id is 5.
+                                        /// CDE's role id is 2.
+                                        /// requesting all the data that is required for fm.
                                         else if (userroleid == 5 ||userroleid == 2){
                                           addattendence();
                                           getFMdb();
@@ -281,6 +282,7 @@ class _LoginPageState extends State<LoginPage> {
                                                       (BuildContextcontext) =>
                                                           FieldManagerDashBoard()));
                                         }
+                                        /// Client role id is 7.
                                         else if (userroleid == 7){
                                           await OutletsForClient();
                                           await getallempdetails();
@@ -292,10 +294,12 @@ class _LoginPageState extends State<LoginPage> {
                                                       (BuildContextcontext) =>
                                                           ClientDB()));
                                         }
+                                        ///if login was not sucessfull.
                                         else {
                                           setState(() {
                                             isApiCallProcess = false;
                                           });
+                                          /// snack bar pop's out with the message coming from login api.
                                           final snackBar = SnackBar(
                                               elevation: 20.00,
                                               duration: Duration(seconds: 2),

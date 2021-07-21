@@ -293,7 +293,7 @@ class _MenuState extends State<Menu> {
                                     thickness: 0.8,
                                   ),
                                   Text(
-                                    "We found some activites that are need to sync please sync it and tryagin",
+                                    "We found some activites that are need to sync please sync it and try again",
                                     textAlign: TextAlign.center,
                                   ),
                                   SizedBox(

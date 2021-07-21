@@ -12,6 +12,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
+import 'package:path/path.dart';
 
 class SyncScreen extends StatefulWidget {
   @override
@@ -50,184 +51,7 @@ class _SyncScreenState extends State<SyncScreen> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          if (onlinemode.value) {
-                            currentlysyncing = true;
-                            showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (_) => StatefulBuilder(
-                                        builder: (context, setState) {
-                                          progress.value = 10;
-                                          currentlysyncing = true;
-                                      return ValueListenableBuilder<int>(
-                                          valueListenable: progress,
-                                          builder: (context, value, child) {
-                                            return AlertDialog(
-                                              backgroundColor: alertboxcolor,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              content: Builder(
-                                                builder: (context) {
-                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                  return Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment.center,
-                                                        children: [
-                                                          Text(
-                                                            'Synchronizing',
-                                                            style: TextStyle(
-                                                                color: Colors.black,
-                                                                fontSize: 18),
-                                                          ),
-                                                          SizedBox(width: 5,),
-                                                          currentlysyncing ?SizedBox(
-                                                              height: 20,
-                                                              width: 20,
-                                                              child: CircularProgressIndicator(color: orange,strokeWidth: 2,)):SizedBox(),
-                                                        ],
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                        thickness: 0.8,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Text(
-                                                        "${progress.value} %",
-                                                        style: TextStyle(
-                                                            fontSize: 25,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: orange),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      GFProgressBar(
-                                                          percentage: (progress.value)/100,
-                                                          backgroundColor:
-                                                              Colors.black26,
-                                                          progressBarColor:
-                                                              orange),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Center(
-                                                          child: Text(
-                                                        'Please don\'t turn off your data, or close the app',
-                                                        style: TextStyle(
-                                                            fontSize: 10,
-                                                            color:
-                                                                Colors.black),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          });
-                                    }));
-                            if (message.length > 0) {
-                              await syncingsenddata();
-                            }
-                            progress.value = 50;
-                            currentlysyncing = true;
-                            await syncingreferencedata();
-                            progress.value = 100;
-                            currentlysyncing = false;
-                            dispose.value = true;
-                            showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (_) => StatefulBuilder(
-                                    builder: (context, setState) {
-                                      progress.value = 10;
-                                      currentlysyncing = true;
-                                      return ValueListenableBuilder<int>(
-                                          valueListenable: progress,
-                                          builder: (context, value, child) {
-                                            return AlertDialog(
-                                              backgroundColor: alertboxcolor,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                  BorderRadius.all(
-                                                      Radius.circular(
-                                                          10.0))),
-                                              content: Builder(
-                                                builder: (context) {
-                                                  // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                                                  return Column(
-                                                    mainAxisSize:
-                                                    MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        'Success',
-                                                        style: TextStyle(
-                                                            color: orange,
-                                                            fontSize: 18),
-                                                      ),
-                                                      Divider(
-                                                        color: Colors.black,
-                                                        thickness: 0.8,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Text(
-                                                        "Synchronization done sucessfully",
-                                                        style: TextStyle(
-                                                            fontSize: 15,
-                                                            color :Colors.black,),
-                                                      ),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: (){
-                                                          Navigator.pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (BuildContext context) => DashBoard()));
-                                                        },
-                                                        child: Container(
-                                                          padding: EdgeInsets.fromLTRB(15,10,15,10),
-                                                          decoration: BoxDecoration(
-                                                            color: orange,
-                                                            borderRadius: BorderRadius.circular(10),
-                                                          ),
-                                                          child:Row(
-                                                            mainAxisSize: MainAxisSize.min,
-                                                            children: [
-                                                              Icon(Icons.arrow_back_ios_new,color: Colors.white,size: 12,),
-                                                              SizedBox(width: 15,),
-                                                              Text("DashBoard",style: TextStyle(color: pink,fontSize: 12),),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          });
-                                    }));
-
-                          } else {
-                            Flushbar(
-                              message: "Make sure you had an active internet",
-                              duration: Duration(seconds: 3),
-                            )..show(context);
-                          }
+                          syncnow(context);
                         },
                         child: Container(
                           padding: EdgeInsets.all(10.0),
@@ -311,5 +135,187 @@ class _SyncScreenState extends State<SyncScreen> {
                 )),
           );
         });
+  }
+}
+
+
+syncnow(context)async{
+  if (onlinemode.value) {
+    currentlysyncing = true;
+    showDialog(
+      context: context ,
+        barrierDismissible: false,
+        builder: (_) => StatefulBuilder(
+            builder: (context, setState) {
+              progress.value = 10;
+              currentlysyncing = true;
+              return ValueListenableBuilder<int>(
+                  valueListenable: progress,
+                  builder: (context, value, child) {
+                    return AlertDialog(
+                      backgroundColor: alertboxcolor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.all(
+                              Radius.circular(
+                                  10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          return Column(
+                            mainAxisSize:
+                            MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Synchronizing',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  currentlysyncing ?SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(color: orange,strokeWidth: 2,)):SizedBox(),
+                                ],
+                              ),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 0.8,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "${progress.value} %",
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight:
+                                    FontWeight.bold,
+                                    color: orange),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              GFProgressBar(
+                                  percentage: (progress.value)/100,
+                                  backgroundColor:
+                                  Colors.black26,
+                                  progressBarColor:
+                                  orange),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Center(
+                                  child: Text(
+                                    'Please don\'t turn off your data, or close the app',
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color:
+                                        Colors.black),
+                                    textAlign:
+                                    TextAlign.center,
+                                  )),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  });
+            }));
+    if (message.length > 0) {
+      await syncingsenddata();
+    }
+    progress.value = 50;
+    currentlysyncing = true;
+    await syncingreferencedata();
+    progress.value = 100;
+    currentlysyncing = false;
+    dispose.value = true;
+    showDialog(
+        context: context ,
+        barrierDismissible: false,
+        builder: (_) => StatefulBuilder(
+            builder: (context, setState) {
+              progress.value = 10;
+              currentlysyncing = true;
+              return ValueListenableBuilder<int>(
+                  valueListenable: progress,
+                  builder: (context, value, child) {
+                    return AlertDialog(
+                      backgroundColor: alertboxcolor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                          BorderRadius.all(
+                              Radius.circular(
+                                  10.0))),
+                      content: Builder(
+                        builder: (context) {
+                          // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                          return Column(
+                            mainAxisSize:
+                            MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Success',
+                                style: TextStyle(
+                                    color: orange,
+                                    fontSize: 18),
+                              ),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 0.8,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Synchronization done sucessfully",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color :Colors.black,),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) => DashBoard()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(15,10,15,10),
+                                  decoration: BoxDecoration(
+                                    color: orange,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child:Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.arrow_back_ios_new,color: Colors.white,size: 12,),
+                                      SizedBox(width: 15,),
+                                      Text("DashBoard",style: TextStyle(color: pink,fontSize: 12),),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  });
+            }));
+
+  } else {
+    Flushbar(
+      message: "Make sure you had an active internet",
+      duration: Duration(seconds: 3),
+    );
   }
 }

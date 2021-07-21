@@ -58,6 +58,7 @@ dependencies:
   enough_mail:
   getwidget: ^2.0.3
   syncfusion_flutter_charts: ^19.2.44+1
+  background_fetch: ^1.0.1
 
 dev_dependencies:
   flutter_test:

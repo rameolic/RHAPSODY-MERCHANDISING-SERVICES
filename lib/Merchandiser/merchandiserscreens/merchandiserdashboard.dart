@@ -40,6 +40,7 @@ import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:merchandising/api/customer_activites_api/Competitioncheckapi.dart';
 import 'package:merchandising/api/customer_activites_api/planogramdetailsapi.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:merchandising/offlinedata/syncdata.dart';
 
 import 'package:location_permissions/location_permissions.dart';
 import 'package:merchandising/model/Location_service.dart';
@@ -65,6 +66,7 @@ Future<String> callfrequently()async{
    }
 }
 int workingid;
+var synctime;
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
@@ -76,14 +78,14 @@ class _DashBoardState extends State<DashBoard> {
   void initState() {
     createlog("navigated to DashBoard","true");
     ischatscreen = 0;
+    //synctime=null;
     print("chatscreen from dshbrd: $ischatscreen");
 
     if(fromloginscreen){
       Future.delayed(
           const Duration(seconds: 2), ()async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        var synctime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
-
+        synctime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
         showDialog(
             context: context,
             builder: (_) => StatefulBuilder(
@@ -172,7 +174,9 @@ class _DashBoardState extends State<DashBoard> {
             GestureDetector(
                 onTap: () async{
                   createlog("startday tapped","true");
-                  if(true){
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  synctime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
+                  if(DateFormat('yyyy-MM-dd').format(synctime).toString() == DateFormat('yyyy-MM-dd').format(DateTime.now()).toString() && synctime!=null){
                   setState(() {
                     isApiCallProcess = true;
                   });
@@ -668,10 +672,592 @@ class _DashBoardState extends State<DashBoard> {
                             }));
                   }
                 }else{
-                    Flushbar(
-                      message: "Please make sure internet is active and try again.",
-                      duration: Duration(seconds: 5),
-                    )..show(context);
+                    showDialog(
+                        context: context,
+                        builder: (_) =>
+                            StatefulBuilder(builder: (context, setState) {
+                              return ProgressHUD(
+                                inAsyncCall: isApiCallProcess,
+                                opacity: 0.3,
+                                child: AlertDialog(
+                                  backgroundColor: alertboxcolor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  content: Builder(
+                                    builder: (context) {
+                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Alert',
+                                            style: TextStyle(
+                                                color: orange,
+                                                fontSize: 20),
+                                          ),
+                                          Divider(
+                                            color: Colors.black,
+                                            thickness: 0.8,
+                                          ),
+                                          Text("Your last synchronized time was not today ! Do you want to continue with your Journey Plan for the date below.",style: TextStyle(fontSize: 14),textAlign: TextAlign.center,),
+                                          synctime!=null?Padding(
+                                              padding: const EdgeInsets.only(top:5.0,bottom: 10),
+                                              child: Text("last synced on : ${DateFormat.yMd().add_jm().format(synctime)}",textAlign: TextAlign.center,style: TextStyle(color: orange,fontSize: 10),)
+                                          ):SizedBox(),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  createlog("synchronize page from startday","true");
+                                                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                  message = prefs.getStringList('addtoservermessage');
+                                                  if (message == null) {
+                                                    message = [];
+                                                  }
+                                                  syncnow(context);
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 80,
+                                                  decoration: BoxDecoration(
+                                                    color: orange,
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(5),
+                                                  ),
+                                                  child: Center(
+                                                      child: Text('Synchronize',
+                                                          style: TextStyle(fontSize: 12,
+                                                              color: Colors
+                                                                  .white))),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () async{
+                                                  setState(() {
+                                                    isApiCallProcess = true;
+                                                  });
+                                                  if (await checklocationenable()) {
+                                                    print(gettodayjp.checkintime);
+                                                    print(gettodayjp.checkouttime);
+                                                    print(gettodayjp.status);
+                                                    workingid = null;
+                                                    for (int u = 0; u < gettodayjp.status.length; u++) {
+                                                      if (gettodayjp.status[u] == "working") {
+                                                        workingid = gettodayjp.id[u];
+                                                        currentoutletindex = u;
+                                                        currentoutletid = gettodayjp.outletids[u];
+                                                        print(workingid);
+                                                        print(gettodayjp.id[u]);
+                                                        chekinoutlet.checkinoutletid = gettodayjp.storecodes[u];
+                                                        chekinoutlet.checkinoutletname =
+                                                        gettodayjp.storenames[u];
+                                                        chekinoutlet.checkinarea = gettodayjp.outletarea[u];
+                                                        chekinoutlet.checkincity = gettodayjp.outletcity[u];
+                                                        chekinoutlet.checkinstate = gettodayjp.outletcountry[u];
+                                                        chekinoutlet.checkincountry =
+                                                        gettodayjp.outletcountry[u];
+                                                      }
+                                                    }
+                                                    setState(() {
+                                                      isApiCallProcess = false;
+                                                    });
+
+                                                    workingid == null
+                                                        ? showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            StatefulBuilder(builder: (context, setState) {
+                                                              return ProgressHUD(
+                                                                inAsyncCall: isApiCallProcess,
+                                                                opacity: 0.3,
+                                                                child: AlertDialog(
+                                                                  backgroundColor: alertboxcolor,
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.all(
+                                                                          Radius.circular(10.0))),
+                                                                  content: Builder(
+                                                                    builder: (context) {
+                                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                      return Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        children: [
+                                                                          Text(
+                                                                            'Roll Call',
+                                                                            style: TextStyle(
+                                                                                color: orange,
+                                                                                fontSize: 20),
+                                                                          ),
+                                                                          Divider(
+                                                                            color: Colors.black,
+                                                                            thickness: 0.8,
+                                                                          ),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                uniform == false
+                                                                                    ? uniform = true
+                                                                                    : uniform = false;
+                                                                              });
+                                                                            },
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisAlignment:
+                                                                                  MainAxisAlignment
+                                                                                      .spaceEvenly,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      'Uniform and Hygiene',
+                                                                                      style: TextStyle(
+                                                                                          fontSize: 16),
+                                                                                    ),
+                                                                                    Spacer(),
+                                                                                    Icon(
+                                                                                      uniform == true
+                                                                                          ? CupertinoIcons
+                                                                                          .check_mark_circled_solid
+                                                                                          : CupertinoIcons
+                                                                                          .xmark_circle_fill,
+                                                                                      color: uniform == true
+                                                                                          ? orange
+                                                                                          : Colors.grey,
+                                                                                      size: 30,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                unit == false
+                                                                                    ? unit = true
+                                                                                    : unit = false;
+                                                                              });
+                                                                            },
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisAlignment:
+                                                                                  MainAxisAlignment
+                                                                                      .spaceEvenly,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                        'Hand Held Unit Charge',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 16)),
+                                                                                    Spacer(),
+                                                                                    Icon(
+                                                                                        unit == true
+                                                                                            ? CupertinoIcons
+                                                                                            .check_mark_circled_solid
+                                                                                            : CupertinoIcons
+                                                                                            .xmark_circle_fill,
+                                                                                        color: unit == true
+                                                                                            ? orange
+                                                                                            : Colors.grey,
+                                                                                        size: 30),
+                                                                                  ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                transport == false
+                                                                                    ? transport = true
+                                                                                    : transport = false;
+                                                                              });
+                                                                            },
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisAlignment:
+                                                                                  MainAxisAlignment
+                                                                                      .spaceEvenly,
+                                                                                  children: [
+                                                                                    Text('Transportation',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 16)),
+                                                                                    Spacer(),
+                                                                                    Icon(
+                                                                                        transport == true
+                                                                                            ? CupertinoIcons
+                                                                                            .check_mark_circled_solid
+                                                                                            : CupertinoIcons
+                                                                                            .xmark_circle_fill,
+                                                                                        color: transport ==
+                                                                                            true
+                                                                                            ? orange
+                                                                                            : Colors.grey,
+                                                                                        size: 30),
+                                                                                  ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                posm == false
+                                                                                    ? posm = true
+                                                                                    : posm = false;
+                                                                              });
+                                                                            },
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisAlignment:
+                                                                                  MainAxisAlignment
+                                                                                      .spaceEvenly,
+                                                                                  children: [
+                                                                                    Text('POSM',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 16)),
+                                                                                    Spacer(),
+                                                                                    Icon(
+                                                                                        posm == true
+                                                                                            ? CupertinoIcons
+                                                                                            .check_mark_circled_solid
+                                                                                            : CupertinoIcons
+                                                                                            .xmark_circle_fill,
+                                                                                        color: posm == true
+                                                                                            ? orange
+                                                                                            : Colors.grey,
+                                                                                        size: 30),
+                                                                                  ],
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  height: 5,
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          // GestureDetector(
+                                                                          //   onTap: () {
+                                                                          //     setState(() {
+                                                                          //       location == false
+                                                                          //           ? location = true
+                                                                          //           : location = false;
+                                                                          //     });
+                                                                          //   },
+                                                                          //   child: Column(
+                                                                          //     children: [
+                                                                          //       Row(
+                                                                          //         mainAxisAlignment:
+                                                                          //             MainAxisAlignment
+                                                                          //                 .spaceEvenly,
+                                                                          //         children: [
+                                                                          //           Text('Location',
+                                                                          //               style: TextStyle(
+                                                                          //                   fontSize: 16)),
+                                                                          //           Spacer(),
+                                                                          //           Icon(
+                                                                          //               location == true
+                                                                          //                   ? CupertinoIcons
+                                                                          //                       .check_mark_circled_solid
+                                                                          //                   : CupertinoIcons
+                                                                          //                       .xmark_circle_fill,
+                                                                          //               color: location ==
+                                                                          //                       true
+                                                                          //                   ? orange
+                                                                          //                   : Colors.grey,
+                                                                          //               size: 30),
+                                                                          //         ],
+                                                                          //       ),
+                                                                          //     ],
+                                                                          //   ),
+                                                                          // ),
+                                                                          Text("Note* If you are trying to checkout any unfinished outlet please synchronize and try again",style: TextStyle(color: orange,fontSize: 10),textAlign: TextAlign.center,),
+                                                                          SizedBox(
+                                                                            height: 5,
+                                                                          ),
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                            MainAxisAlignment
+                                                                                .spaceEvenly,
+                                                                            children: [
+                                                                              GestureDetector(
+                                                                                onTap: () async {
+                                                                                  createlog("Roll Call OK tapped","true");
+                                                                                  if (uniform &&
+                                                                                      unit &&
+                                                                                      transport &&
+                                                                                      posm ) {
+                                                                                    Navigator.pushReplacement(
+                                                                                        context,
+                                                                                        MaterialPageRoute(
+                                                                                            builder: (BuildContext
+                                                                                            context) =>
+                                                                                                JourneyPlan()));
+                                                                                  }
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 30,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: orange,
+                                                                                    borderRadius:
+                                                                                    BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                      child: Text('ok',
+                                                                                          style: TextStyle(
+                                                                                              color: Colors
+                                                                                                  .white))),
+                                                                                ),
+                                                                              ),
+                                                                              GestureDetector(
+                                                                                onTap: () {
+                                                                                  Navigator.pop(
+                                                                                      context,
+                                                                                      MaterialPageRoute(
+                                                                                          builder: (BuildContext
+                                                                                          context) =>
+                                                                                              DashBoard()));
+                                                                                },
+                                                                                child: Container(
+                                                                                  height: 30,
+                                                                                  width: 70,
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: Colors.grey,
+                                                                                    borderRadius:
+                                                                                    BorderRadius
+                                                                                        .circular(5),
+                                                                                  ),
+                                                                                  child: Center(
+                                                                                      child: Text('Cancel',
+                                                                                          style: TextStyle(
+                                                                                              color: Colors
+                                                                                                  .white))),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }))
+                                                        : showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            StatefulBuilder(builder: (context, setState) {
+                                                              return ProgressHUD(
+                                                                inAsyncCall: isApiCallProcess,
+                                                                opacity: 0.3,
+                                                                child: AlertDialog(
+                                                                  backgroundColor: alertboxcolor,
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.all(
+                                                                          Radius.circular(10.0))),
+                                                                  content: Builder(
+                                                                    builder: (context) {
+                                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                      return Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        children: [
+                                                                          Text(
+                                                                            'Alert',
+                                                                            style: TextStyle(
+                                                                                color: orange,
+                                                                                fontSize: 20),
+                                                                          ),
+                                                                          Divider(
+                                                                            color: Colors.black,
+                                                                            thickness: 0.8,
+                                                                          ),
+                                                                          Text(
+                                                                            "you have unfinished outlet!",
+                                                                            textAlign: TextAlign.center,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 10,
+                                                                          ),
+                                                                          Text(
+                                                                            "Note* if you recently checked out please wait 2 minutes minimum to get the updated data",
+                                                                            textAlign: TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                color: orange,
+                                                                                fontSize: 10),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 5,
+                                                                          ),
+                                                                          Center(
+                                                                            child: GestureDetector(
+                                                                              onTap: () async {
+                                                                                createlog("unfinished outlet OK tapped","true");
+
+                                                                                setState(() {
+                                                                                  isApiCallProcess = true;
+                                                                                  regularcheckout = false;
+                                                                                });
+                                                                                print(
+                                                                                    "current outlet id: $currentoutletid");
+                                                                                outletrequestdata
+                                                                                    .outletidpressed =
+                                                                                    currentoutletid;
+                                                                                checkinoutdata.checkid =
+                                                                                    workingid;
+                                                                                currenttimesheetid =
+                                                                                    workingid;
+                                                                                // getTaskList();
+                                                                                // getVisibility();
+                                                                                // getPlanogram();
+                                                                                // getNBLdetails();
+                                                                                // Addedstockdataformerch();
+                                                                                // getPromotionDetails();
+                                                                                // getShareofshelf();
+                                                                                // await getAvaiablitity();
+                                                                                setState(() {
+                                                                                  isApiCallProcess = false;
+                                                                                });
+                                                                                Navigator.pushReplacement(
+                                                                                    context,
+                                                                                    MaterialPageRoute(
+                                                                                        builder: (BuildContext
+                                                                                        context) =>
+                                                                                            CustomerActivities()));
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 30,
+                                                                                width: 70,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: orange,
+                                                                                  borderRadius:
+                                                                                  BorderRadius.circular(
+                                                                                      5),
+                                                                                ),
+                                                                                child: Center(
+                                                                                    child: Text('ok',
+                                                                                        style: TextStyle(
+                                                                                            color: Colors
+                                                                                                .white))),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }));
+                                                  } else {
+                                                    setState(() {
+                                                      isApiCallProcess = false;
+                                                    });
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            StatefulBuilder(builder: (context, setState) {
+                                                              return ProgressHUD(
+                                                                inAsyncCall: isApiCallProcess,
+                                                                opacity: 0.3,
+                                                                child: AlertDialog(
+                                                                  backgroundColor: alertboxcolor,
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.all(
+                                                                          Radius.circular(10.0))),
+                                                                  content: Builder(
+                                                                    builder: (context) {
+                                                                      // Get available height and width of the build area of this widget. Make a choice depending on the size.
+                                                                      return Column(
+                                                                        mainAxisSize: MainAxisSize.min,
+                                                                        children: [
+                                                                          Text(
+                                                                            'Alert',
+                                                                            style: TextStyle(
+                                                                                color: orange, fontSize: 20),
+                                                                          ),
+                                                                          Divider(
+                                                                            color: Colors.black,
+                                                                            thickness: 0.8,
+                                                                          ),
+                                                                          Text(
+                                                                            "Location permissions need to be granted to proceed further.",
+                                                                            textAlign: TextAlign.center,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            height: 10,
+                                                                          ),
+                                                                          Center(
+                                                                            child: GestureDetector(
+                                                                              onTap: () async {
+                                                                                bool permission =
+                                                                                await LocationPermissions()
+                                                                                    .openAppSettings();
+                                                                                print(permission);
+                                                                              },
+                                                                              child: Container(
+                                                                                height: 30,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: orange,
+                                                                                  borderRadius:
+                                                                                  BorderRadius.circular(5),
+                                                                                ),
+                                                                                child: Center(
+                                                                                    child: Text('Open Settings',
+                                                                                        style: TextStyle(
+                                                                                            color:
+                                                                                            Colors.white))),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 80,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey,
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(5),
+                                                  ),
+                                                  child: Center(
+                                                      child: Text('continue',
+                                                          style: TextStyle(fontSize: 12,
+                                                              color: Colors
+                                                                  .white))),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            }));
                   }
               },
                   child: Container(
@@ -923,35 +1509,40 @@ class _DashBoardState extends State<DashBoard> {
                       ),
                       Column(
                         children: [
-                          Container(
-                            height: 140,
-                            width: MediaQuery.of(context).size.width/1.75,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: containerscolor,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text("Journey Plan",),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    JourneryPlan(
-                                      color: Colors.orange,
-                                      percent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) < 101 ?(int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}'))/(int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) :0.0: (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}'))<101? (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')):0.0,
-                                      textpercent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')*100).toStringAsFixed(0) :(int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')*100).toStringAsFixed(0),
-                                      title: "Journey Plan\nCompletion",
-                                    ),
-                                    JourneryPlan(
-                                      color: Colors.grey[600],
-                                      percent: pressAttentionMTB == true ? 0.5 : 0.1,
-                                      textpercent: pressAttentionMTB == true ? '50' : '10',
-                                      title: "Process\nCompliance",
-                                    ),
-                                  ],
-                                ),
-                              ],
+                          GestureDetector(
+                            onTap: (){
+
+                            },
+                            child: Container(
+                              height: 140,
+                              width: MediaQuery.of(context).size.width/1.75,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text("Journey Plan",),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      JourneryPlan(
+                                        color: Colors.orange,
+                                        percent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) < 101 ?(int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}'))/(int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')) :0.0: (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}'))<101? (int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')):0.0,
+                                        textpercent: pressAttentionMTB == true ? (int.parse('${DBResponsedatamonthly.ShedulevisitssDone + DBResponsedatamonthly.UnShedulevisitsDone}')/int.parse('${DBResponsedatamonthly.shedulevisits + DBResponsedatamonthly.unshedulevisits}')*100).toStringAsFixed(0) :(int.parse('${DBResponsedatadaily.ShedulevisitssDone+DBResponsedatadaily.UnShedulevisitsDone}')/int.parse('${DBResponsedatadaily.shedulevisits+DBResponsedatadaily.unshedulevisits}')*100).toStringAsFixed(0),
+                                        title: "Journey Plan\nCompletion",
+                                      ),
+                                      JourneryPlan(
+                                        color: Colors.grey[600],
+                                        percent: pressAttentionMTB == true ? 0.5 : 0.1,
+                                        textpercent: pressAttentionMTB == true ? '50' : '10',
+                                        title: "Process\nCompliance",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(height: 5,),
