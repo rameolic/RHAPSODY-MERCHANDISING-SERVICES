@@ -27,6 +27,7 @@ class VLogs extends StatefulWidget {
 
 class _VLogsState extends State<VLogs> {
   bool isApiCallProcess = false;
+
   @override
   Widget build(BuildContext context) {
     return ProgressHUD(
@@ -53,9 +54,9 @@ class _VLogsState extends State<VLogs> {
                   });
                   sharelog = [];
                   for(int i =0;i<logreportstatus.length;i++){
-                    sharelog.add("${logreport[i]} ---on--- ${logtime[i]} ---status--- ${logreportstatus[i]}\n");
+                    sharelog.add("${logreport[i]}-on-${logtime[i]}-status-${logreportstatus[i]}\n");
                   }
-                  await smtpExample();
+                  await smtpExample('Log details for empid ${DBrequestdata.receivedempid}');
                   setState(() {
                     isApiCallProcess = false;
                   });
@@ -148,7 +149,7 @@ class _VLogsState extends State<VLogs> {
   }
 }
 
-Future<void> smtpExample() async {
+Future<void> smtpExample(body) async {
   print (".......");
   final client = SmtpClient('thethoughtfactory.ae', isLogEnabled: true);
   print (".......:${client}");
@@ -165,7 +166,6 @@ Future<void> smtpExample() async {
       print('plain');
     } else if (client.serverInfo.supportsAuth(AuthMechanism.login)) {
       await client.authenticate(userName, password, AuthMechanism.login);
-
       print('login');
     } else {
       return;
@@ -173,7 +173,7 @@ Future<void> smtpExample() async {
     final builder = MessageBuilder.prepareMultipartAlternativeMessage();
     builder.from = [MailAddress('My name', 'ramananv@thethoughtfactory.ae')];
     builder.to = [MailAddress('Your name', 'vilvaroja@gmail.com')];
-    builder.subject = 'Log details for empid ${DBrequestdata.receivedempid}';
+    builder.subject = body;
     builder.addTextPlain(sharelog.toString());
    // builder.addTextHtml('<p>hello <b>world</b></p>');
     final mimeMessage = builder.buildMimeMessage();

@@ -37,6 +37,7 @@ import 'package:merchandising/api/Journeyplansapi/todayplan/JPvisitedapi.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
+import'package:merchandising/api/cde api/cdedashboard.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -209,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                                           Expectedchartvisits();
                                           getempdetails();
                                           getallempdetails();
-                                          getaddedexpiryproducts();
+                                          //getaddedexpiryproducts();
                                           getstockexpiryproducts();
                                           getempdetailsforreport();
                                           getskippedJourneyPlan();
@@ -222,11 +223,11 @@ class _LoginPageState extends State<LoginPage> {
                                           await callfrequently();
                                           var DBDresult =  await DBRequestdaily();
                                           ///once app is up and running for every 20 minutes we are trying to get reference data.
-                                          const time = const Duration(minutes: 20);
-                                          Timer.periodic(time, (Timer t) => syncingreferencedata());
+                                          // const time = const Duration(minutes: 20);
+                                          // Timer.periodic(time, (Timer t) => syncingreferencedata());
                                           ///once app is up and running for every 15 minutes we are trying to send sync data.
-                                          const period = const Duration(minutes: 15);
-                                          Timer.periodic(period, (Timer t) => syncingsenddata());
+                                          // const period = const Duration(minutes: 15);
+                                          // Timer.periodic(period, (Timer t) => syncingsenddata());
                                           const hat = const Duration(seconds: 120);
                                           ///once app is up and running for every 2 minutes we are trying to get location and distance.
                                           Timer.periodic(hat, (Timer t) => callfrequently());
@@ -259,8 +260,6 @@ class _LoginPageState extends State<LoginPage> {
                                         /// CDE's role id is 2.
                                         /// requesting all the data that is required for fm.
                                         else if (userroleid == 5 ||userroleid == 2){
-                                          addattendence();
-                                          getFMdb();
                                           getempdetails();
                                           getWeekoffdetails();
                                           getBrandDetails();
@@ -268,13 +267,20 @@ class _LoginPageState extends State<LoginPage> {
                                           getCategoryDetails();
                                           getProductDetails();
                                           getmappedoutlets();
-                                          getmyattandance();
-                                           getmerchnamelist();
+                                          //getmyattandance();
                                           getallempdetails();
                                            getStoreDetails();
                                           OutletsForClient();
                                           getRelieverDetails();
                                           await getFMoutletdetails();
+                                          if(userroleid == 2){
+                                            await merchnamelistunderCDE();
+                                            await getCDEdb();
+                                          }else{
+                                            await getmerchnamelist();
+                                            await getFMdb();
+                                          }
+
                                           Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(

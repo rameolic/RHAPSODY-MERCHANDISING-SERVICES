@@ -32,7 +32,7 @@ syncingreferencedata()async {
   if(lastsyncedon!=null){
     lastsyncedendtime = DateTime.parse(prefs.getString('lastsyncedonendtime'));
      difference = DateTime.now().difference(lastsyncedendtime);
-     print("diffrence: ${difference.inMinutes}");
+     print("difference: ${difference.inMinutes}");
      print("${DateFormat('yyyy-MM-dd').format(lastsyncedon)} = ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
   }
     if (currentlysyncing && onlinemode.value) {

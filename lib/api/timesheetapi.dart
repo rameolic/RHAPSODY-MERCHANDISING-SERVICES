@@ -36,6 +36,7 @@ Future getTimeSheetdaily() async {
     TimeSheetdatadaily.outletname = [];
     TimeSheetdatadaily.checkouttime = [];
     TimeSheetdatadaily.checkintime = [];
+    TimeSheetdatadaily.tsid = [];
     String data = tsresponse.body;
     var decodeData = jsonDecode(data);
     for(int u=0;u<decodeData['data'].length;u++){

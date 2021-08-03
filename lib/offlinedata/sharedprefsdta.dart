@@ -103,3 +103,13 @@ allempsdata(data)async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("allemployees",data);
 }
+
+currentpagestatus(pageid,outletid,timesheetid,currentoutletindex)async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("pageiddata",pageid);
+  prefs.setString("outletiddata", outletid);
+  prefs.setString("timesheetiddata",timesheetid);
+  prefs.setString('currentoutletindexdata', currentoutletindex);
+
+}
+

@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
 import 'package:merchandising/Constants.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:merchandising/Fieldmanager/FMdashboard.dart';
+import 'package:merchandising/main.dart';
+import 'package:merchandising/HR/HRdashboard.dart';
 
 class AppVersion extends StatelessWidget {
 
@@ -19,16 +23,29 @@ class AppVersion extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
-          Text("Version : 3.3.1"),
+          Text("Version : RMS$appversionnumber"),
           SizedBox(
             height: 40,
           ),
           GestureDetector(
             onTap: (){
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => DashBoard()));
+              if (currentuser.roleid == 6) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => DashBoard()));
+              } else if (currentuser.roleid == 3) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => HRdashboard()));
+              } else if (currentuser.roleid == 5||currentuser.roleid == 2) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            FieldManagerDashBoard()));
+              }
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 10.0),

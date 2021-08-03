@@ -23,6 +23,8 @@ Future getmerchnamelist() async{
     body: currentuser.roleid==5?jsonEncode(DBrequestData):currentuser.roleid==7?jsonEncode(clientFM):null,
   );
   print("Client FM:${jsonEncode(clientFM)}");
+  print("FM:${jsonEncode(DBrequestData)}");
+
   print(Merchname.body);
   if (Merchname.statusCode == 200){
     merchnamelist.employeeid = [];
@@ -49,4 +51,50 @@ class merchnamelist {
   static List<String> employeeid = [];
   static List<String> firstname=[];
   static List<String> name=[];
+}
+
+
+Future merchnamelistunderCDE() async{
+
+  Map DBrequestData = {
+    'emp_id': '${DBrequestdata.receivedempid}'
+  };
+
+
+  http.Response Merchname = await http.post(Merchlistundercde,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization':  'Bearer ${DBrequestdata.receivedtoken}',
+    },
+    body:jsonEncode(DBrequestData),
+  );
+
+  print(Merchname.body);
+  if (Merchname.statusCode == 200){
+    MerchUnderCDE.employeeid = [];
+    MerchUnderCDE.firstname = [];
+    MerchUnderCDE.name = [];
+
+    String empdata = Merchname.body;
+    var decodeddata = jsonDecode(empdata);
+    for(int u=0;u<decodeddata['data'].length;u++) {
+      MerchUnderCDE.firstname.add('${decodeddata["data"][u]['first_name']}'
+          '${decodeddata["data"][u]['surname']}(${decodeddata["data"][u]['employee_id']})');
+      MerchUnderCDE.employeeid.add(decodeddata["data"][u]['employee_id']);
+      MerchUnderCDE.name.add('${decodeddata["data"][u]['first_name']}');
+    }
+  }
+  print("MerchandiserNameList under CDE Done");
+
+  if(Merchname.statusCode != 200){
+    print(Merchname.body);
+  }
+}
+
+class MerchUnderCDE{
+  static List<String> employeeid = [];
+  static List<String> firstname=[];
+  static List<String> name=[];
+
 }

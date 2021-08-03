@@ -43,7 +43,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdkVersion 30
     lintOptions {
         checkReleaseBuilds false
     }
@@ -55,9 +55,9 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "rameolic.merchandising"
         minSdkVersion 21
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "RMSv3.3.1"
+        targetSdkVersion 30
+        versionCode 21
+        versionName "RMSv3.3.2"
     }
 
     signingConfigs {

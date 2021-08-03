@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/merchandiserdashboard.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import '../../Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'MenuContent.dart';
@@ -32,21 +33,23 @@ import 'package:merchandising/api/avaiablityapi.dart';
 import 'package:intl/intl.dart';
 import 'package:flushbar/flushbar.dart';
 
+
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/FMapi/nbl_detailsapi.dart';
 
 List<String> breakspl = [];
 bool jptimecal = false;
 
-class JourneyPlan extends StatefulWidget {
+class JourneyPlanPage extends StatefulWidget {
   @override
-  _JourneyPlanState createState() => _JourneyPlanState();
+  _JourneyPlanPageState createState() => _JourneyPlanPageState();
 }
 
-class _JourneyPlanState extends State<JourneyPlan> {
+class _JourneyPlanPageState extends State<JourneyPlanPage> {
   @override
   void initState() {
     createlog("Navigated to Journey plan Page","true");
+    currentpagestatus('1', '1', '1','1');
     super.initState();
     if (checkoutrequested && checkoutdatasubmitted) {
       Future.delayed(const Duration(seconds: 2), () {
@@ -399,12 +402,10 @@ class JourneyPlanHeader extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: textcolor),
-            SizedBox(
-              width: 2,
-            ),
+            SizedBox(width: 10,),
             Text(
               chartext,
               style: TextStyle(

@@ -78,6 +78,10 @@ Future getallempdetails() async{
       decodedempdata['data'][u]['role'][0]['id'] == 5
           ? employees.FMTSempid.add(decodedempdata["data"][u]['employee_id'])
           : null;
+      decodedempdata['data'][u]['role'][0]['id'] == 2
+          ? employees.cdenames.add(
+          '${decodedempdata["data"][u]['first_name']} ${decodedempdata["data"][u]['surname']}(${decodedempdata["data"][u]['employee_id']})')
+          : null;
     }
   }
 }
@@ -89,6 +93,7 @@ class employees {
   static List<String> feildmanagers = [];
   static List<String> merchandisers = [];
   static List<String> FMTSempid=[];
+  static List<String> cdenames=[];
 }
 class updatedata{
   static bool employee = false;

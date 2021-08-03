@@ -1,10 +1,14 @@
+import 'package:merchandising/Merchandiser/merchandiserscreens/Customers%20Activities.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/expiry_report.dart';
 import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Constants.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart';
 import 'package:merchandising/model/rememberme.dart';
+import 'model/Location_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpskipped.dart';
 import 'package:merchandising/api/Journeyplansapi/weekly/jpvisited.dart';
@@ -39,7 +43,11 @@ import 'package:merchandising/api/FMapi/product_detailsapi.dart';
 import'package:merchandising/api/clientapi/outletreport.dart';
 import 'clients/client_dashboard.dart';
 import'package:merchandising/api/HRapi/empdetailsapi.dart';
-import 'package:merchandising/Constants.dart';
+import'package:merchandising/api/cde api/cdedashboard.dart';
+import 'offlinedata/backgroundsynchronize.dart';
+import 'package:background_fetch/background_fetch.dart';
+
+
 
 
 /// start of the application.
@@ -68,6 +76,11 @@ Future<void> main() async {
     print(userroleid);
     ///merchandiser's role id is 6
     if(userroleid == 6){
+      //BackgroundFetch.configure(config, onFetch)
+      BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+      initPlatformState();
+      //BackgroundConfig();
+      print("background fetch detail's : ${prefs.getString('fetch_events')}");
       /// first we are trying to get any unsynced data that was in the local storage.
       message = prefs.getStringList('addtoservermessage');
       requireurlstosync = prefs.getStringList('addtoserverurl');
@@ -75,20 +88,58 @@ Future<void> main() async {
       ///fetch all the reference data from the local.
       await syncingreferencedata();
       ///once app is up and running for every 20 minutes we are trying to get reference data.
-      const time = const Duration(minutes: 20);
-      Timer.periodic(time, (Timer t) => syncingreferencedata());
+      // const time = const Duration(minutes: 20);
+      // Timer.periodic(time, (Timer t) => syncingreferencedata());
       ///once app is up and running for every 15 minutes we are trying to get sync data.
-      const period = const Duration(minutes: 15);
-      Timer.periodic(period, (Timer t) => syncingsenddata());
-      runApp(MaterialApp(
-          title: 'Rhapsody merchandising solutions',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: 'Poppins',
-            primaryColor: Colors.white,
-            accentColor: orange,),
-          home:  DashBoard()
-      ));
+      // const period = const Duration(minutes: 15);
+      // Timer.periodic(period, (Timer t) => syncingsenddata());
+      var currentpage = prefs.getString('pageiddata');
+      print("current page : $currentpage");
+      if(currentpage=="2"){
+        currentoutletid = int.parse(prefs.getString('outletiddata'));
+        currenttimesheetid = prefs.getString('timesheetiddata');
+        currentoutletindex = int.parse(prefs.getString('currentoutletindexdata'));
+
+      }
+      if(currentpage == "1"){
+        await getLocation();
+        await callfrequently();
+        fromloginscreen = false;
+        runApp(MaterialApp(
+            title: 'Rhapsody merchandising solutions',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+              primaryColor: Colors.white,
+              accentColor: orange,),
+            home:  JourneyPlanPage()
+        ));
+      }else if(currentpage == "2"){
+        await getLocation();
+        await outletwhencheckin();
+        print("KPI current page timesheet id");
+        print(currenttimesheetid);
+        fromloginscreen = false;
+        runApp(MaterialApp(
+            title: 'Rhapsody merchandising solutions',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+              primaryColor: Colors.white,
+              accentColor: orange,),
+            home:  CustomerActivities()
+        ));
+      }else{
+        runApp(MaterialApp(
+            title: 'Rhapsody merchandising solutions',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'Poppins',
+              primaryColor: Colors.white,
+              accentColor: orange,),
+            home:  DashBoard()
+        ));
+      }
     }
     /// HR role id is 3
     else if(userroleid == 3){
@@ -114,15 +165,22 @@ Future<void> main() async {
       getemployeestoaddbrand();
       getCategoryDetails();
       getProductDetails();
-      getmyattandance();
-      getmerchnamelist();
-      getFMdb();
+      //getmyattandance();
       getStoreDetails();
       getmappedoutlets();
       getallempdetails();
       getRelieverDetails();
       OutletsForClient();
       await getFMoutletdetails();
+
+      if(userroleid == 2){
+        await merchnamelistunderCDE();
+        await getCDEdb();
+      }else{
+        await getmerchnamelist();
+        await getFMdb();
+      }
+
       runApp(MaterialApp(
           title: 'Rhapsody merchandising services',
           debugShowCheckedModeBanner: false,

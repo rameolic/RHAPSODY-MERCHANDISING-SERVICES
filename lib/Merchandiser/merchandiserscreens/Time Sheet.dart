@@ -36,16 +36,11 @@ class _TimeSheetListState extends State<TimeSheetList> {
       backgroundColor: containerscolor,
       iconTheme: IconThemeData(color: orange),
       title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Text(
-                'Time Sheet',
-                style: TextStyle(color: orange),
-              ),
-              Spacer(),
-            ],
+          Text(
+            'Time Sheet',
+            style: TextStyle(color: orange),
           ),
           EmpInfo()
         ],
@@ -161,7 +156,7 @@ class _TimeSheetListState extends State<TimeSheetList> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(currentuser.roleid == 5 ? timesheet.empname : DBrequestdata.empname,
+                    Text(currentuser.roleid == 5||currentuser.roleid == 2 ? timesheet.empname : DBrequestdata.empname,
                         style: TextStyle(fontSize: 16,)),
                     Row(
                       children: [
@@ -172,23 +167,37 @@ class _TimeSheetListState extends State<TimeSheetList> {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(currentuser.roleid == 5 ? timesheet.empid :DBrequestdata.receivedempid,
-                            style: TextStyle(fontSize: 16,))
+                        Text(currentuser.roleid == 5||currentuser.roleid == 2 ? timesheet.empid :DBrequestdata.receivedempid,
+                            style: TextStyle(fontSize: 16,)),
                       ],
                     ),
+                    currentuser.roleid == 2 ?Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 10.0),
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: orange,
+                            borderRadius: BorderRadius.circular(10.00),
+                          ),
+                          child: Text( pressAttentionMTB == true ?"Approve Monthly":"Approve Today",style: TextStyle(fontSize: 15,color: Colors.white),),
+                        ),
+                      ],
+                    ):SizedBox(),
                     //Text(currentuser.roleid==5?"Total TimeSheet Monthly:${tts}":" ",style: TextStyle(fontSize: 16,))
                   ],
                 ),
               ),
-              pressAttentionMTB == true ? Timesheetmonthly() : SizedBox(
+
+              pressAttentionMTB == true ? SafeArea(child: Timesheetmonthly()) : SizedBox(
                 height: MediaQuery.of(context).size.height/1.43,
                 width: double.infinity,
                 child: ListView.builder(
-                    shrinkWrap: false,
+                    //shrinkWrap: false,
                     itemCount: TimeSheetdatadaily.checkintime.length,
                     itemBuilder: (BuildContext context, int index) {
                       outletindex=index;
-
                       return GestureDetector(
                         onTap: ()async{
 

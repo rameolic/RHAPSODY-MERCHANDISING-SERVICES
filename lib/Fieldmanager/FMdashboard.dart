@@ -5,6 +5,7 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:merchandising/Fieldmanager/rel_details.dart';
 import 'package:merchandising/api/api_service.dart';
+import 'package:merchandising/api/cde%20api/cdedashboard.dart';
 import 'package:merchandising/api/customer_activites_api/competition_details.dart';
 import 'Outlets.dart';
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
@@ -20,6 +21,12 @@ import 'chatusers.dart';
 import 'package:merchandising/clients/clientoutlet_details.dart';
 import 'package:merchandising/model/myattendance.dart';
 import'package:merchandising/api/noti_detapi.dart';
+import'package:merchandising/api/FMapi/merchnamelistapi.dart';
+import'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
+import 'package:merchandising/main.dart';
+import 'package:merchandising/api/FMapi/cdereportapi.dart';
+import'package:merchandising/Fieldmanager/reporting.dart';
+
 
 
 
@@ -182,8 +189,8 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.merchtotal.toString(), style: TextStyle(fontSize: 14,
+                                              Text(currentuser.roleid==5?
+                                                FMdashboarddata.merchtotal.toString():CDEDBdata.merchtotal.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -199,7 +206,8 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(FMdashboarddata.merchpresent.toString(), style: TextStyle(fontSize: 14,
+                                              Text(currentuser.roleid==5?FMdashboarddata.merchpresent.toString()
+                                                :CDEDBdata.merchpresent.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -215,8 +223,8 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.merchabsent.toString(), style: TextStyle(fontSize: 14,
+                                              Text(currentuser.roleid==5?
+                                                FMdashboarddata.merchabsent.toString():CDEDBdata.merchabsent.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -247,7 +255,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                                 .spaceEvenly,
                                             children: [
                                               Text(
-                                                FMdashboarddata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
+                                                currentuser.roleid==5?
+                                                FMdashboarddata.mtotaloutlets.toString():
+                                                CDEDBdata.mtotaloutlets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -264,7 +274,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                                 .spaceEvenly,
                                             children: [
                                               Text(
-                                                FMdashboarddata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
+                                                currentuser.roleid==5?
+                                                FMdashboarddata.mcompoutlets.toString():
+                                                CDEDBdata.mcompoutlets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -280,8 +292,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                              Text( currentuser.roleid==5?
+                                                FMdashboarddata.mpendingoutlets.toString():
+                                                CDEDBdata.mpendingoutlets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -310,8 +323,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.totaloulets.toString(), style: TextStyle(fontSize: 14,
+                                              Text( currentuser.roleid==5?
+                                                FMdashboarddata.totaloulets.toString():
+                                                CDEDBdata.totaloulets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -327,8 +341,8 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.compoutlets.toString(), style: TextStyle(fontSize: 14,
+                                              Text( currentuser.roleid==5?
+                                                FMdashboarddata.compoutlets.toString():CDEDBdata.compoutlets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -344,8 +358,9 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                             mainAxisAlignment: MainAxisAlignment
                                                 .spaceEvenly,
                                             children: [
-                                              Text(
-                                                FMdashboarddata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
+                                              Text( currentuser.roleid==5?
+                                                FMdashboarddata.pendingoutlets.toString():
+                                                CDEDBdata.pendingoutlets.toString(), style: TextStyle(fontSize: 14,
                                                   fontWeight: FontWeight.bold),
                                               ),
                                               Text(
@@ -427,6 +442,16 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                               // setState(() {
                               //   isApiCallProcess = false;
                               // });
+
+                              setState(() {
+                                isApiCallProcess=true;
+                              });
+                              // await merchnamelistunderCDE();
+                              await getJourneyPlanweekly();
+
+                              setState(() {
+                                isApiCallProcess=false;
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -435,7 +460,7 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                             },
                             child: Container(
                               height: 120,
-                              width: MediaQuery
+                              width:MediaQuery
                                   .of(context)
                                   .size
                                   .width / 3.2,
@@ -465,6 +490,241 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                     ],
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: ()async{
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ClientOutletsdata()));
+                            },
+                            child: Container(
+                              height: 120,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.doc_chart_fill,
+                                    size: 35,
+                                    color: iconscolor,
+                                  ),
+                                  Text("Reports",style: TextStyle(fontSize: 15.0),),
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap:()async{
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          MerchandisersList()));
+                            },
+                            child: Container(
+                              height: 120,
+                              width:currentuser.roleid==5? MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2:MediaQuery.of(context).size.width/2.2,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add_chart,
+                                        size: 35,
+                                        color: iconscolor,
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Time Sheet',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 15,),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: ()async{
+                              // setState(() {
+                              //   isApiCallProcess = true;
+                              // });
+                              // await getFMoutletdetails();
+                              // await getBrandDetails();
+                              // await getemployeestoaddbrand();
+                              // await getCategoryDetails();
+                              // await getProductDetails();
+                              // await getFMoutletdetails();
+                              // await getPromoDetails();
+                              // setState(() {
+                              //   isApiCallProcess = false;
+                              // });
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (BuildContext context) => Products()));
+                            },
+                            child: Container(
+                              height: 120,
+                              width:currentuser.roleid==5? MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2:MediaQuery.of(context).size.width/2.0,
+
+                              padding: EdgeInsets.all(10),
+
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.barcode,
+                                        size: 35,
+                                        color: iconscolor,
+                                      ),
+
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Activities',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          currentuser.roleid==5?
+                          GestureDetector(
+                            onTap:()async{
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              await merchleavedetails();
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ResponsetoLeave()));
+                            },
+                            child: Container(
+                              height: 120,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(FMdashboarddata.leaveresponsetotal.toString(),style:TextStyle(fontSize: 25,fontWeight: FontWeight.bold)),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        'Leave Response',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(fontSize: 15,),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ):SizedBox(),
+
+                        ],
+                      ),
+                      // SizedBox(height: 10,),
+                      // Text("My Activities", style: TextStyle(color: containerscolor,
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold),),
+                      SizedBox(height: 10),
+                     currentuser.roleid==5? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: () async{
+                              setState(() {
+                                isApiCallProcess = true;
+                              });
+                              await leaveData();
+                              setState(() {
+                                isApiCallProcess = false;
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext
+                                      context) =>
+                                          leavestatusPage()));
+                            },
+                            child: Container(
+                              height: 120,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 3.2,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: containerscolor,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(FMdashboarddata.leavebalance.toString(), style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 30),),
+                                  Text("Leave Balance",style: TextStyle(fontSize: 15),),
+                                ],
                               ),
                             ),
                           ),
@@ -533,123 +793,21 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                             ),
                           ),
 
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap:()async{
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          MerchandisersList()));
-                            },
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 3.2,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add_chart,
-                                        size: 35,
-                                        color: iconscolor,
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Time Sheet',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 15,),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: ()async{
-                              // setState(() {
-                              //   isApiCallProcess = true;
-                              // });
-                              // await getFMoutletdetails();
-                              // await getBrandDetails();
-                              // await getemployeestoaddbrand();
-                              // await getCategoryDetails();
-                              // await getProductDetails();
-                              // await getFMoutletdetails();
-                              // await getPromoDetails();
-                              // setState(() {
-                              //   isApiCallProcess = false;
-                              // });
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (BuildContext context) => Products()));
-                            },
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 3.2,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        CupertinoIcons.barcode,
-                                        size: 35,
-                                        color: iconscolor,
-                                      ),
-
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Activities',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap:()async{
+                           GestureDetector(
+                            onTap: () async{
                               setState(() {
                                 isApiCallProcess = true;
                               });
-                              await merchleavedetails();
+                              await CDEReportingDetails();
                               setState(() {
                                 isApiCallProcess = false;
                               });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ResponsetoLeave()));
+                                      builder: (BuildContext
+                                      context) =>
+                                          CDEReportScreen()));
                             },
                             child: Container(
                               height: 120,
@@ -657,55 +815,6 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                   .of(context)
                                   .size
                                   .width / 3.2,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Center(
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(FMdashboarddata.leaveresponsetotal.toString(),style:TextStyle(fontSize: 25,fontWeight: FontWeight.bold)),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        'Leave Response',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 15,),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                      SizedBox(height: 10,),
-                      Text("My Activities", style: TextStyle(color: containerscolor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),),
-                      SizedBox(height: 5,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap: ()async{
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ClientOutletsdata()));
-                            },
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 2.6,
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -715,55 +824,19 @@ class _FieldManagerDashBoardState extends State<FieldManagerDashBoard> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Icon(
-                                    CupertinoIcons.doc_chart_fill,
+                                    CupertinoIcons.link,
                                     size: 35,
                                     color: iconscolor,
                                   ),
-                                  Text("Reports",style: TextStyle(fontSize: 15.0),),
-                                ],
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async{
-                              setState(() {
-                                isApiCallProcess = true;
-                              });
-                              await leaveData();
-                              setState(() {
-                                isApiCallProcess = false;
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext
-                                      context) =>
-                                          leavestatusPage()));
-                            },
-                            child: Container(
-                              height: 120,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width / 1.75,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: containerscolor,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text("Apply Leave"),
-                                  Text(FMdashboarddata.leavebalance.toString(), style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 30),),
-                                  Text("Total available Leave's",style: TextStyle(fontSize: 15),),
+
+                                  Text("CDE Reporting"),
+
                                 ],
                               ),
                             ),
                           ),
                         ],
-                      ),
+                      ):SizedBox(),
                       Container(
                         height: 125,
                         margin: EdgeInsets.only(top: 10, bottom: 10),

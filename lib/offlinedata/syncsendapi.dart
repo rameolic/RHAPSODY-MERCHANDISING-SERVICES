@@ -8,13 +8,14 @@ import 'package:merchandising/Constants.dart';
 import 'package:intl/intl.dart';
 import 'syncreferenceapi.dart';
 
-
+ bool backgroundsyncing  = false;
 List<String>requireurlstosync=[];
 List<String>requirebodytosync=[];
 List<String>message=[];
 
 
 syncingsenddata()async {
+  CreateLog("synchronising data to server started",true);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   lastsyncedon =  DateTime.parse(prefs.getString('lastsyncedondate'));
   requireurlstosync =  prefs.getStringList('addtoserverurl');
@@ -66,6 +67,6 @@ syncingsenddata()async {
 CreateLog(message,status){
   logreport.add(message);
   logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
-  logreportstatus.add(status);
+  logreportstatus.add("$status");
   savelogreport(logreport,logtime,logreportstatus);
 }

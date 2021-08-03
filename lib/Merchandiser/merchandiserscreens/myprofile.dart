@@ -179,7 +179,8 @@ class _MyprofileState extends State<Myprofile> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Expanded(child: Text(myprofile.visacompanyname)),
+                                Expanded(child: Text(myprofile.visacompanyname!=null?
+                                myprofile.visacompanyname:"")),
                               ],
                             ),
                             Row(
@@ -190,7 +191,7 @@ class _MyprofileState extends State<Myprofile> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(myprofile.visaexpirydate),
+                                Text(myprofile.visaexpirydate!=null?myprofile.visaexpirydate:" "),
                               ],
                             ),
                             Row(
@@ -201,7 +202,7 @@ class _MyprofileState extends State<Myprofile> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(myprofile.passportexpirydate),
+                                Text(myprofile.passportexpirydate!=null?myprofile.passportexpirydate:""),
                               ],
                             ),
                             Row(
@@ -212,7 +213,7 @@ class _MyprofileState extends State<Myprofile> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(myprofile.employeescore.toString()),
+                                Text(myprofile.employeescore!=null?myprofile.employeescore.toString():""),
                               ],
                             ),
                           ],
@@ -493,7 +494,7 @@ class _MyprofileState extends State<Myprofile> {
                                                                 new InputDecoration(
                                                               focusColor: grey,
                                                               hintText:
-                                                                  "Confrim new Password",
+                                                                  "Confirm new Password",
                                                               hintStyle:
                                                                   TextStyle(
                                                                 color: grey,

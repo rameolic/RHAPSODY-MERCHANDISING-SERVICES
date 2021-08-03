@@ -6,6 +6,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Customers Activit
 import 'package:merchandising/Merchandiser/merchandiserscreens/MenuContent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:merchandising/api/timesheetapi.dart';
@@ -77,6 +78,7 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     createlog("navigated to DashBoard","true");
+    currentpagestatus('0', '0', '0','0');
     ischatscreen = 0;
     //synctime=null;
     print("chatscreen from dshbrd: $ischatscreen");
@@ -388,41 +390,41 @@ class _DashBoardState extends State<DashBoard> {
                                                   ],
                                                 ),
                                               ),
-                                              // GestureDetector(
-                                              //   onTap: () {
-                                              //     setState(() {
-                                              //       location == false
-                                              //           ? location = true
-                                              //           : location = false;
-                                              //     });
-                                              //   },
-                                              //   child: Column(
-                                              //     children: [
-                                              //       Row(
-                                              //         mainAxisAlignment:
-                                              //             MainAxisAlignment
-                                              //                 .spaceEvenly,
-                                              //         children: [
-                                              //           Text('Location',
-                                              //               style: TextStyle(
-                                              //                   fontSize: 16)),
-                                              //           Spacer(),
-                                              //           Icon(
-                                              //               location == true
-                                              //                   ? CupertinoIcons
-                                              //                       .check_mark_circled_solid
-                                              //                   : CupertinoIcons
-                                              //                       .xmark_circle_fill,
-                                              //               color: location ==
-                                              //                       true
-                                              //                   ? orange
-                                              //                   : Colors.grey,
-                                              //               size: 30),
-                                              //         ],
-                                              //       ),
-                                              //     ],
-                                              //   ),
-                                              // ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    location == false
+                                                        ? location = true
+                                                        : location = false;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text('Location',
+                                                            style: TextStyle(
+                                                                fontSize: 16)),
+                                                        Spacer(),
+                                                        Icon(
+                                                            location == true
+                                                                ? CupertinoIcons
+                                                                    .check_mark_circled_solid
+                                                                : CupertinoIcons
+                                                                    .xmark_circle_fill,
+                                                            color: location ==
+                                                                    true
+                                                                ? orange
+                                                                : Colors.grey,
+                                                            size: 30),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                               Text("Note* If you are trying to checkout any unfinished outlet please synchronize and try again",style: TextStyle(color: orange,fontSize: 10),textAlign: TextAlign.center,),
                                               SizedBox(
                                                 height: 5,
@@ -444,7 +446,7 @@ class _DashBoardState extends State<DashBoard> {
                                                             MaterialPageRoute(
                                                                 builder: (BuildContext
                                                                         context) =>
-                                                                    JourneyPlan()));
+                                                                    JourneyPlanPage()));
                                                       }
                                                     },
                                                     child: Container(
@@ -949,41 +951,41 @@ class _DashBoardState extends State<DashBoard> {
                                                                               ],
                                                                             ),
                                                                           ),
-                                                                          // GestureDetector(
-                                                                          //   onTap: () {
-                                                                          //     setState(() {
-                                                                          //       location == false
-                                                                          //           ? location = true
-                                                                          //           : location = false;
-                                                                          //     });
-                                                                          //   },
-                                                                          //   child: Column(
-                                                                          //     children: [
-                                                                          //       Row(
-                                                                          //         mainAxisAlignment:
-                                                                          //             MainAxisAlignment
-                                                                          //                 .spaceEvenly,
-                                                                          //         children: [
-                                                                          //           Text('Location',
-                                                                          //               style: TextStyle(
-                                                                          //                   fontSize: 16)),
-                                                                          //           Spacer(),
-                                                                          //           Icon(
-                                                                          //               location == true
-                                                                          //                   ? CupertinoIcons
-                                                                          //                       .check_mark_circled_solid
-                                                                          //                   : CupertinoIcons
-                                                                          //                       .xmark_circle_fill,
-                                                                          //               color: location ==
-                                                                          //                       true
-                                                                          //                   ? orange
-                                                                          //                   : Colors.grey,
-                                                                          //               size: 30),
-                                                                          //         ],
-                                                                          //       ),
-                                                                          //     ],
-                                                                          //   ),
-                                                                          // ),
+                                                                          GestureDetector(
+                                                                            onTap: () {
+                                                                              setState(() {
+                                                                                location == false
+                                                                                    ? location = true
+                                                                                    : location = false;
+                                                                              });
+                                                                            },
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Row(
+                                                                                  mainAxisAlignment:
+                                                                                      MainAxisAlignment
+                                                                                          .spaceEvenly,
+                                                                                  children: [
+                                                                                    Text('Location',
+                                                                                        style: TextStyle(
+                                                                                            fontSize: 16)),
+                                                                                    Spacer(),
+                                                                                    Icon(
+                                                                                        location == true
+                                                                                            ? CupertinoIcons
+                                                                                                .check_mark_circled_solid
+                                                                                            : CupertinoIcons
+                                                                                                .xmark_circle_fill,
+                                                                                        color: location ==
+                                                                                                true
+                                                                                            ? orange
+                                                                                            : Colors.grey,
+                                                                                        size: 30),
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
                                                                           Text("Note* If you are trying to checkout any unfinished outlet please synchronize and try again",style: TextStyle(color: orange,fontSize: 10),textAlign: TextAlign.center,),
                                                                           SizedBox(
                                                                             height: 5,
@@ -1005,7 +1007,7 @@ class _DashBoardState extends State<DashBoard> {
                                                                                         MaterialPageRoute(
                                                                                             builder: (BuildContext
                                                                                             context) =>
-                                                                                                JourneyPlan()));
+                                                                                                JourneyPlanPage()));
                                                                                   }
                                                                                 },
                                                                                 child: Container(
@@ -1786,7 +1788,7 @@ class JourneryPlan extends StatelessWidget {
             lineWidth: 2.0,
             backgroundColor: Colors.grey[350],
             progressColor: color,
-            center: Text(textpercent),
+            center: Text(textpercent == null ? "":textpercent),
           ),
           SizedBox(height: 10,),
           AutoSizeText(

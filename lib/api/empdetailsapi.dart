@@ -56,6 +56,7 @@ Future getempdetails() async {
       myprofile.visacompanyname =
       decodedempdata["data"][0]['visa_company_name'];
       myprofile.employeescore = decodedempdata["data"][0]['employee_score'];
+      logoutmessage = decodedempdata["data"][0]['logout_message'];
     }
     if (DBresponse.statusCode != 200) {
       print("empdeatils");
@@ -76,5 +77,6 @@ Future getempdetails() async {
     myprofile.visacompanyname =
     decodedempdata["data"][0]['visa_company_name'];
     myprofile.employeescore = decodedempdata["data"][0]['employee_score'];
+    logoutmessage = decodedempdata["data"][0]['logout_message'];
   }
 }

@@ -21,8 +21,7 @@ Future<void> getJourneyPlanweekly() async {
         'Accept': 'application/json',
         'Authorization': 'Bearer ${DBrequestdata.receivedtoken}',
       },
-      body:
-          jsonEncode(currentuser.roleid == 6 ? DBrequestData : FmDBrequestData),
+      body: jsonEncode(currentuser.roleid == 6 ? DBrequestData : FmDBrequestData),
     );
     if (JPresponse.statusCode == 200) {
       getweeklyjp.sundaystorenames = [];
@@ -84,7 +83,7 @@ Future<void> getJourneyPlanweekly() async {
       getweeklyjp.timeid = [];
       getweeklyjp.outletid = [];
 
-      print('journey plan weekly done');
+      currentuser.roleid==5?print('journey plan weekly done'):print("journey plan done for merch under CDE");
       JPweekly = JPresponse.body;
       plannedjpweekly(JPweekly);
       var decodeJPData = jsonDecode(JPweekly);

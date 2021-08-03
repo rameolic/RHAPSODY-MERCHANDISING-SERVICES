@@ -7,6 +7,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Time Sheet.dart';
 import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/timesheetmonthly.dart';
 import 'package:merchandising/api/FMapi/merchnamelistapi.dart';
+import 'package:merchandising/main.dart';
 
 
 var tts;
@@ -44,19 +45,16 @@ class _MerchandisersListState extends State<MerchandisersList> {
             ListView.builder(
               // physics: NeverScrollableScrollPhysics(),
                // shrinkWrap: true,
-                itemCount: merchnamelist.firstname.length,
+                itemCount: currentuser.roleid==2?MerchUnderCDE.firstname.length:merchnamelist.firstname.length,
                 itemBuilder: (BuildContext context, int index) {
 
 
                   return GestureDetector(
                     onTap:()async{
-
-
-                      print(merchnamelist.employeeid[index]);
-                      timesheet.empid = merchnamelist.employeeid[index];
-                      timesheet.empname = merchnamelist.name[index];
-
-
+                      //print(merchnamelist.name[index]);
+                      timesheet.empid = currentuser.roleid==2?MerchUnderCDE.employeeid[index]:merchnamelist.employeeid[index];
+                      timesheet.empname = currentuser.roleid==2?MerchUnderCDE.name[index]:merchnamelist.name[index];
+                      print(timesheet.empname);
                       setState(() {
                         isApiCallProcess = true;
                       });
@@ -91,12 +89,12 @@ class _MerchandisersListState extends State<MerchandisersList> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Merchandiser : ${merchnamelist.name[index]}',
+                            Text(currentuser.roleid==2?'Merchandiser :${MerchUnderCDE.firstname[index]}' :'Merchandiser: ${merchnamelist.name[index]}',
                                 style: TextStyle(
                                     fontSize: 16.0,color: orange
                                 )),
                             SizedBox(height: 5),
-                            Text('Emp ID : ${merchnamelist.employeeid[index]}',
+                            Text(currentuser.roleid==2?'Emp ID:${MerchUnderCDE.employeeid[index]}':'Emp ID : ${merchnamelist.employeeid[index]}',
                                 style: TextStyle(
                                   fontSize: 14.0,
                                 )),

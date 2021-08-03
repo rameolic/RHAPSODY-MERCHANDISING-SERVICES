@@ -121,6 +121,11 @@ Uri ForceCIReason = Uri.parse("https://rms2.rhapsody.ae/api/add_force_checkin");
 Uri Uploadfile = Uri.parse("https://rms2.rhapsody.ae/api/add_excel_report");
 Uri downloadfile = Uri.parse("https://rms2.rhapsody.ae/api/excel_report_details");
 Uri Logout = Uri.parse("https://rms2.rhapsody.ae/api/logout");
+Uri Merchlistundercde = Uri.parse("https://rms2.rhapsody.ae/api/merchandiser_under_cde_details");
+Uri CDEdashboard = Uri.parse("https://rms2.rhapsody.ae/api/cde_dashboard");
+Uri CDEReportingDet = Uri.parse("https://rms2.rhapsody.ae/api/cde_reporting_to_details");
+Uri AddReportCDE = Uri.parse("https://rms2.rhapsody.ae/api/add_cde");
+
 int ischatscreen;
 bool newmsgavaiable = false;
 var currenttimesheetid;
@@ -198,6 +203,7 @@ Future loginapi() async {
       return currentuser.roleid;
     }
     else {
+      print(response.body);
       print(response.statusCode);
       String data = response.body;
       var decodeData = jsonDecode(data);
@@ -257,6 +263,7 @@ Future DBRequestdaily() async{
       body: jsonEncode(DBrequestData),
     );
     if (DBresponse.statusCode == 200){
+      print(DBresponse.body);
       print('dashboard daily done');
       dbdailyresponse = DBresponse.body;
       adddailydashboardmerch(dbdailyresponse);
@@ -488,7 +495,7 @@ Future<bool> checkin() async {
 }
  checkout() async {
   checkoutrequested = true;
-  var checkid = checkinoutdata.checkid;
+  var checkid = currenttimesheetid;
   var checkouttime = checkinoutdata.checkouttime;
   var checkoutlocation = checkinoutdata.checkoutlocation;
   Map checkinoutresponse =
@@ -710,10 +717,16 @@ Future<void> getTotalJnyTime() async {
       }
       if(decodestores['data'][u]['checkout_time']==null){
         TotalJnyTime.checkout.add("Session ended without checkout by user");
+
+      }
+      if(decodestores['data'][u]['checkin_time']!=null&&decodestores['data'][u]['checkout_time']==null){
+        TotalJnyTime.status.add("pending");
+
       }
       else{
         TotalJnyTime.checkout.add(decodestores['data'][u]['checkout_time']);
       }
+      print(TotalJnyTime.status);
     }
   }
   if(SDResponse.statusCode != 200){
@@ -726,6 +739,7 @@ class TotalJnyTime {
   static List<String> checkin =[];
   static List<String> checkout=[];
   static List<String> type=[];
+  static List<String> status=[];
 
 }
 

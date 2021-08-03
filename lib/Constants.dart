@@ -18,6 +18,7 @@ import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import 'package:merchandising/offlinedata/syncreferenceapi.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import'package:merchandising/Merchandiser/merchandiserscreens/logs.dart';
 
 List<String> logreportstatus = [];
 ValueNotifier<bool> onlinemode = new ValueNotifier(true);
@@ -25,7 +26,8 @@ ValueNotifier<int> progress = new ValueNotifier(0);
 bool currentlysyncing = false;
 List<String> logreport = [];
 List<String> logtime = [];
-
+String appversionnumber = "v3.3.3";
+String logoutmessage;
 createlog(message, status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   logreport = prefs.getStringList('logdata');
@@ -37,16 +39,24 @@ createlog(message, status) async {
     logtime = prefs.getStringList('logtime');
     logreportstatus = prefs.getStringList('status');
   }
+  print("current length of logs : ${logreport.length}");
   if (logreport.length < 500) {
     logreport.add(message);
     logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
-    logreportstatus.add(status);
+    logreportstatus.add("$status");
     await savelogreport(logreport, logtime, logreportstatus);
   } else {
+    await smtpExample('automatic >500 Log details for empid ${DBrequestdata.receivedempid}');
+    logreport = [];
+    logreportstatus = [];
+    logtime = [];
+    logreport.add("auto clear 500 limit reached");
+    logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
+    logreportstatus.add("true");
     //removelogdatafromlocal();
-    logreport.removeAt(0);
-    logtime.removeAt(0);
-    logreportstatus.removeAt(0);
+    // logreport.removeAt(0);
+    // logtime.removeAt(0);
+    // logreportstatus.removeAt(0);
     logreport.add(message);
     logtime.add(DateFormat.yMd().add_jm().format(DateTime.now()).toString());
     logreportstatus.add(status);
@@ -297,24 +307,29 @@ class EmpInfo extends StatelessWidget {
               ),
               if (currentuser.roleid == 5)
                 Text(
-                  '-FMS',
+                  '-FM$appversionnumber',
                   style: TextStyle(fontSize: 8.0, color: orange),
                 )
               else if (currentuser.roleid == 6)
                 Text(
-                  '-MRCHv3.3.1',
+                  '-MRCH$appversionnumber',
                   style: TextStyle(fontSize: 8.0, color: orange),
                 )
               else if (currentuser.roleid == 3)
                 Text(
-                  '- HR',
+                  '- HR$appversionnumber',
+                  style: TextStyle(fontSize: 8.0, color: orange),
+                )
+              else if (currentuser.roleid == 2)
+                Text(
+                  '-CDE$appversionnumber',
                   style: TextStyle(fontSize: 8.0, color: orange),
                 )
               else
                 Text(
-                  '- Client',
+                  '-Client$appversionnumber',
                   style: TextStyle(fontSize: 8.0, color: orange),
-                )
+                ),
             ],
           ),
         ),
@@ -352,9 +367,9 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
               print(nblfile);
               if (Platform.isAndroid) {
                 filealreadyexists = await File(
-                        "/storage/emulated/0/Download/${NBLDetData.fileurl.last}")
+                    "/storage/emulated/0/Download/${NBLDetData.fileurl.last}")
                     .exists();
-                print(filealreadyexists);
+                print("already exits : $filealreadyexists");
                 if (filealreadyexists) {
                   OpenFile.open(
                       "/storage/emulated/0/Download/${NBLDetData.fileurl.last}");
@@ -366,14 +381,46 @@ class _NBlFloatingButtonState extends State<NBlFloatingButton> {
               } else if (Platform.isIOS) {
                 _launchURL();
               }
-            } else {
-              Flushbar(
-                message: "Nbl Not Found",
-                duration: Duration(seconds: 3),
-              )..show(context);
+            }else{
+              if(onlinemode.value){
+                await getNBLdetails();
+                if (NBLDetData.fileurl.toString() != "[]") {
+                  print(
+                      "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                  print(nblfile);
+                  if (Platform.isAndroid) {
+                    filealreadyexists = await File(
+                        "/storage/emulated/0/Download/${NBLDetData.fileurl.last}")
+                        .exists();
+                    print(filealreadyexists);
+                    if (filealreadyexists) {
+                      OpenFile.open(
+                          "/storage/emulated/0/Download/${NBLDetData.fileurl.last}");
+                    } else {
+                      print("here");
+                      await launch(
+                          "https://rms2.rhapsody.ae/nbl_file/${NBLDetData.fileurl.last}");
+                    }
+                  } else if (Platform.isIOS) {
+                    _launchURL();
+                  }
+                } else {
+                  Flushbar(
+                    message: "Nbl Not Found",
+                    duration: Duration(seconds: 3),
+                  )..show(context);
+                }
+              }else{
+                Flushbar(
+                  message: "Active internet connection is required",
+                  duration: Duration(seconds: 3),
+                )..show(context);
+              }
             }
-          },
-          child: Text(
+
+            },
+
+              child: Text(
             "NBL",
             style: TextStyle(color: pink),
           ),

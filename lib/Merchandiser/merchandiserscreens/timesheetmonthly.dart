@@ -59,8 +59,6 @@ class _TimesheetmonthlyState extends State<Timesheetmonthly> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-        height: MediaQuery.of(context).size.height/1.4,
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.fromLTRB(10.0, 0, 10.0, 10.0),
         decoration: BoxDecoration(

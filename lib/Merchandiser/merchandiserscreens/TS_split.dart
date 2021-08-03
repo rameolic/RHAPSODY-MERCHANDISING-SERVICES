@@ -19,8 +19,6 @@ class TimeSheetListSS extends StatefulWidget {
 class _TimeSheetListSSState extends State<TimeSheetListSS> {
   bool pressAttentionMTB = false;
   bool pressAttentionTODAY = true;
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

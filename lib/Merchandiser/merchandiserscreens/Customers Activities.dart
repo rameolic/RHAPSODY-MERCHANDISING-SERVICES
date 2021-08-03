@@ -10,6 +10,7 @@ import 'package:merchandising/ProgressHUD.dart';
 import 'package:merchandising/api/customer_activites_api/visibilityapi.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/camera.dart';
+import 'package:merchandising/offlinedata/sharedprefsdta.dart';
 import 'package:merchandising/offlinedata/syncsendapi.dart';
 import 'expiry_report.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ import 'package:merchandising/Merchandiser/merchandiserscreens/Journeyplan.dart'
 import 'package:merchandising/api/clientapi/stockexpirydetailes.dart';
 import 'package:merchandising/api/Journeyplansapi/todayplan/jpskippedapi.dart';
 import 'package:merchandising/api/customer_activites_api/add_competitionapi.dart';
+import'package:merchandising/model/rememberme.dart';
 
 List<bool> CheckList = [];
 List<String> CheckListItems = task.list;
@@ -57,6 +59,9 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
   void initState() {
     super.initState();
     CreateLog("Navigated to Activities pages", "true");
+    currentpagestatus('2', '${currentoutletid}', '${currenttimesheetid}', '${currentoutletindex}');
+
+
     if (checkinrequested && checkindatasubmitted) {
       Future.delayed(const Duration(seconds: 2), () {
         Flushbar(
@@ -309,10 +314,11 @@ class _CustomerActivitiesState extends State<CustomerActivities> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Activities(
-                                  completedicon:
-                                      CupertinoIcons.check_mark_circled_solid,
-                                  iconcolor: expirycheck ? Colors.green : pink,
-                                  icon: CupertinoIcons.calendar_badge_minus,
+
+                                  // completedicon:
+                                  //     CupertinoIcons.check_mark_circled_solid,
+                                  // iconcolor: expirycheck ? Colors.green : pink,
+                                   icon: CupertinoIcons.calendar_badge_minus,
                                   chartext: 'Products Expiry Info',
                                   tap: () {
                                     Navigator.of(context).push(
@@ -485,6 +491,8 @@ class _checkoutbuttonState extends State<checkoutbutton> {
     return GestureDetector(
       onTap: () async {
         print("printed");
+        print("currentouletid:");
+        print("${currentoutletindex}");
 
         showDialog(
             context: context,
@@ -768,6 +776,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                 children: [
                                   GestureDetector(
                                     onTap: () async {
+
                                       setState(() {
                                         isApiCallProcess = true;
                                       });
@@ -825,7 +834,7 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                               MaterialPageRoute(
                                                   builder:
                                                       (BuildContext context) =>
-                                                          JourneyPlan()));
+                                                          JourneyPlanPage()));
                                         }else{
                                         Flushbar(
                                           message:
@@ -858,12 +867,14 @@ class _checkoutbuttonState extends State<checkoutbutton> {
                                         // todayskipjplist.outletcountry.removeAt(skippedoutletindex);
                                         // todayskipjplist.id.removeAt(skippedoutletindex);
                                         // todayskipjplist.contactnumbers.removeAt(skippedoutletindex);
+                                        NBLDetData.fileurl =[];
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        JourneyPlan()));
+                                                        JourneyPlanPage()));
+
                                       }
                                     },
                                     child: Container(

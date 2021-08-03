@@ -9,7 +9,7 @@ import 'package:merchandising/api/Journeyplansapi/weekly/jpplanned.dart';
 class markers {
   static Set<Marker> outlets = {};
 }
-
+String selectedmerch;
 class polyline {
   static Set<Polyline> route = {};
 }
@@ -49,6 +49,10 @@ class MapVeiw extends StatefulWidget {
 }
 
 class _MapVeiwState extends State<MapVeiw> {
+  void initState() {
+    super.initState();
+    Selectedday = null;
+  }
   static List DropDownItems = [
     "sunday",
     "monday",
@@ -93,8 +97,8 @@ class _MapVeiwState extends State<MapVeiw> {
           children: [
             GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(lat, long),
-                zoom: 13,
+                target: lat != null ? LatLng(lat, long):LatLng(25.06944764736989, 55.14185053415265),
+                zoom: 8,
               ),
               myLocationEnabled: true,
               //myLocationButtonEnabled: true,
@@ -210,6 +214,15 @@ class _MapVeiwState extends State<MapVeiw> {
                   style: TextStyle(color: Colors.grey),
                 ),
               ),
+            ),
+
+            SafeArea(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text("Week journey plan for $selectedmerch",style: TextStyle(color: orange,fontSize: 12),),
+                  )),
             ),
           ],
         ),

@@ -8,6 +8,7 @@ import'package:merchandising/model/chatscreen.dart';
 import 'package:merchandising/api/api_service.dart';
 import 'package:merchandising/model/goupchatscreen.dart';
 import 'package:merchandising/model/allEmployeechatscreen.dart';
+import'package:merchandising/main.dart';
 class ChatUsers extends StatefulWidget {
   @override
   _ChatUsersState createState() => _ChatUsersState();
@@ -100,15 +101,18 @@ class _ChatUsersState extends State<ChatUsers> {
                 child: ListView.builder(
                   // physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: merchnamelist.firstname.length,
+                    itemCount:currentuser.roleid==5? merchnamelist.firstname.length:
+                    MerchUnderCDE.firstname.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap:()async{
                           setState(() {
-                            chat.receiver = merchnamelist.employeeid[index];
+                            chat.receiver = currentuser.roleid==5?merchnamelist.employeeid[index]
+                            :MerchUnderCDE.employeeid[index];
                           });
-                          fieldmanagernameofcurrentmerch = merchnamelist.name[index];
+                          currentuser.roleid==5?fieldmanagernameofcurrentmerch = merchnamelist.name[index]:MerchUnderCDE.name[index];
                           print(merchnamelist.employeeid[index]);
+                          print(fieldmanagernameofcurrentmerch);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -125,12 +129,12 @@ class _ChatUsersState extends State<ChatUsers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Merchandiser : ${merchnamelist.name[index]}',
+                                Text(currentuser.roleid==5?'Merchandiser :${merchnamelist.name[index]}':'Merchandiser :${MerchUnderCDE.name[index]}',
                                     style: TextStyle(
                                         fontSize: 16.0,color: orange
                                     )),
                                 SizedBox(height: 5),
-                                Text('Emp ID : ${merchnamelist.employeeid[index]}',
+                                Text(currentuser.roleid==5?'Emp ID : ${merchnamelist.employeeid[index]}':'Emp ID : ${MerchUnderCDE.employeeid[index]}',
                                     style: TextStyle(
                                         fontSize: 14.0,color: grey
                                     )),
