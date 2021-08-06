@@ -58,11 +58,11 @@ class _MapVeiwState extends State<MapVeiw>{
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              borderRadius:
-              BorderRadius.all(Radius.circular(10)),
-              color: pink,
-            ),
+            // decoration: BoxDecoration(
+            //   borderRadius:
+            //   BorderRadius.all(Radius.circular(10)),
+            //   color: pink,
+            // ),
             child: GoogleMap(
               initialCameraPosition: CameraPosition(target: LatLng(lat, long), zoom: 13.5,),
               myLocationEnabled: true,
@@ -215,6 +215,7 @@ class _MapVeiwState extends State<MapVeiw>{
     for(int u=0;u<gettodayjp.outletlat.length;u++){
       markers.outlets.add(
           Marker(markerId: MarkerId("Markers$u"),
+
             position: LatLng(double.parse(gettodayjp.outletlat[u]),
                 double.parse(gettodayjp.outletlong[u])),
             //infoWindow: InfoWindow(title: gettodayjp.storenames[u],
@@ -239,7 +240,7 @@ class _MapVeiwState extends State<MapVeiw>{
                       visible: true,
                       points: points.polylinePoints.map((e) => LatLng(e.latitude,e.longitude)).toList(),
                       color: orange,
-                      width: 2,
+                      width: 3,
                     ));
               });
 
@@ -264,7 +265,7 @@ class _MapVeiwState extends State<MapVeiw>{
               points: points.polylinePoints.map((e) =>
                   LatLng(e.latitude, e.longitude)).toList(),
               color: orange,
-              width: 2,
+              width: 3,
             ));
       });
     }
